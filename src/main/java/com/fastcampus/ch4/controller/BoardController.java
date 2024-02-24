@@ -151,7 +151,6 @@ public class BoardController {
             List<BoardDto> list =  boardService.getSearchResultPage(sc);
 
             System.out.println("list = " + list);
-
             return new ResponseEntity<List<BoardDto>>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

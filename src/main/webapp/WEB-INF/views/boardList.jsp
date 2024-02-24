@@ -242,14 +242,13 @@
         " <th class='viewcnt'>조회수</th>" +
         "</tr>";
 
-    console.log(list);
 
     list.forEach(function(listEach){
       tmp += "<tr>"
       tmp += "<td class='no'>"+listEach.bno+"</td>";
       tmp += "<td class='title'><a href='/board/read?bno="+listEach.bno+"'>" + listEach.title + "</a>";
       tmp += "<td class='writer'>"+listEach.writer+"</td>";
-      tmp += "<td class='regdate'>"+listEach.reg_date+"</td>";
+      tmp += "<td class='regdate'>" + listEach.reg_date + "</td>";
       tmp += "<td class='viewcnt'>"+ listEach.view_cnt +"</td>";
       tmp += "</tr>";
     });

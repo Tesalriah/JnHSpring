@@ -1,5 +1,8 @@
 package com.fastcampus.ch4.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,6 +13,7 @@ public class BoardDto {
     private String writer;
     private int view_cnt;
     private int comment_cnt;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date reg_date;
 
     public BoardDto(){}
