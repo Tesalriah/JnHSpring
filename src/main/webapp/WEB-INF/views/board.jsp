@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <title>fastcampus</title>
-    <link rel="stylesheet" href="<c:url value='/css/menu.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/menu.css'/>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
     <style>
@@ -105,10 +105,12 @@
             <button type="button" id="removeBtn" class="btn btn-remove"><i class="fa fa-trash"></i> 삭제</button>
         </c:if>
         <button type="button" id="listBtn" class="btn btn-list"><i class="fa fa-bars"></i> 목록</button>
+        <a href="<c:url value='/board/list${searchCondition.queryString}'/>">asdasd</a>
     </form>
 </div>
 <script>
     $(document).ready(function(){
+
         let formCheck = function() {
             let form = document.getElementById("form");
             if(form.title.value=="") {
@@ -168,7 +170,7 @@
         });
 
         $("#listBtn").on("click", function(){
-            location.href="<c:url value='/board/list${searchCondition.queryString}'/>";
+            history.back();
         });
     });
 </script>

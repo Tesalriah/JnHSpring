@@ -111,20 +111,20 @@ public class BoardController {
     }
 
     @GetMapping("/read")
-    public String read(Integer bno, Integer page, Integer pageSize, Model m, RedirectAttributes rattr){
+    public String read(Integer bno, SearchCondition sc, Model m, RedirectAttributes rattr){
         try {
             BoardDto boardDto = boardService.read(bno);
             if(boardDto.getTitle() == null)
                 throw new Exception("board is removed");
 
             m.addAttribute(boardDto);
-            m.addAttribute("page", page);
-            m.addAttribute("pageSize", pageSize);
+            m.addAttribute("page", sc.getPage());
+            m.addAttribute("pageSize", sc.getPageSize());
         } catch (Exception e) {
             e.printStackTrace();
             rattr.addFlashAttribute("msg","REMOVED");
 
-            return "redirect:/board/list?page="+page+"&pageSize="+pageSize;
+            return "redirect:/board/list?page="+sc.getPage()+"&pageSize="+sc.getPageSize();
         }
 
         return "board";
@@ -150,7 +150,6 @@ public class BoardController {
         try {
             List<BoardDto> list =  boardService.getSearchResultPage(sc);
 
-            System.out.println("list = " + list);
             return new ResponseEntity<List<BoardDto>>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +161,7 @@ public class BoardController {
     public String list(SearchCondition sc, Model m, HttpServletRequest request) {
         if(!loginCheck(request))
             return "redirect:/login/login?toURL="+request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
-
+//
         try {
             int totalCnt = boardService.getSearchResultCnt(sc);
             m. addAttribute("totalCnt", totalCnt);
