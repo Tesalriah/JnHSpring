@@ -21,8 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
-	<context:component-scan base-package="com.fastcampus.ch4"/>
+	<context:component-scan base-package="kr.co.jnh"/>
 
-	<view-controller path="/" view-name="index"/>
+	<view-controller path="/" view-name="main"/>
 
 </beans:beans>

@@ -2,9 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fastcampus.ch4.dao.UserMapper">
+<mapper namespace="kr.co.jnh.dao.UserMapper">
     <select id="selectUser" parameterType="map" resultType="User">
-        SELECT * FROM user_info where id = #{id} and pwd = #{pwd}
+        SELECT * FROM user_info where user_id = #{id} and user_pwd = #{pwd}
+    </select>
+
+    <select id="insert" parameterType="User">
+        INSERT INTO user_info
+            (user_id, user_pwd, user_name, email, phone, address, gender, birth)
+        VALUE
+            (#{id}, #{pwd}, #{name}, #{email}, #{phone}, #{address}, #{gender}, #{birth})
     </select>
 
 </mapper>

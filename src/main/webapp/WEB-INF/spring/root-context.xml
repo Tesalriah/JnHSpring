@@ -13,8 +13,8 @@
 		<!--property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property-->
 		<!--property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/springbasic?useUnicode=true&amp;characterEncoding=utf8"></property-->
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://localhost:3306/springbasic?useUnicode=true&amp;characterEncoding=utf8"></property>
-		<property name="username" value="tesalriah"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/jnh?useUnicode=true&amp;characterEncoding=utf8"></property>
+		<property name="username" value="jnh"></property>
 		<property name="password" value="1234"></property>
 	</bean>
 
@@ -32,5 +32,5 @@
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	<tx:annotation-driven/>
-	<context:component-scan base-package="com.fastcampus.ch4"/>
+	<context:component-scan base-package="kr.co.jnh"/>
 </beans>
