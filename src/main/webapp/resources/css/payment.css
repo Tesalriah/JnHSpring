@@ -1,0 +1,111 @@
+.container{
+    padding:30px;
+}
+.payment{
+    border-radius:15px;
+    margin:0 auto;
+    padding:30px;
+    width:90%;
+    max-width: 1300px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+.title{
+    font-size:28px;
+    font-weight: bold;
+    border-bottom: 1px solid #555555;
+    padding:0 20px 20px 20px;
+}
+.subheading{
+    padding:20px;
+    font-size:20px;
+}
+.payment table{
+    width:100%;
+}
+.payment td{
+    padding: 15px;
+    text-align: center;
+}
+.payment table tr td:first-child{
+    background-color:#f9f9f9;
+    width:20%;
+}
+.payment table tr td:last-child{
+    text-align:left;
+}
+.payment table tr:first-child{
+    border-top:1px solid black;
+}
+.payment table tr{
+    border-bottom:1px solid #dddddd;
+}
+.payment table input{
+    border:1px solid #dddddd;
+    font-size:14px;
+    padding:10px;
+}
+#find_address{
+    font-size:14px;
+    width:10%;
+    padding:11px;
+    color:#ffffff;
+    background-color:#FFAEC9;
+}
+.payment input[name="address"]{
+    width: 50%;
+}
+.payment td > select {
+    width:30%;
+    padding: 5px;
+}
+.payment select{
+    font-size: 14px;
+}
+.product{
+    border:1px solid #cccccc;
+}
+.product_each{
+    font-size:18px;
+    padding:0 20px 0 20px;
+}
+.product_each > div{
+    padding:10px;
+    border-bottom:1px solid #dddddd;
+}
+.product_each span{
+    margin:0 10px;
+}
+.payment_method > div:first-child{
+    text-align:center;
+    display: flex;
+}
+.payment_method > div:first-child > div{
+    width:25%;
+}
+.payment_btn{
+    text-align:center;
+    margin-top:40px;
+    margin-bottom:40px;
+}
+.payment_btn button{
+    font-size:20px;
+    font-weight:bold;
+    padding:10px 30px;
+    margin:5px;
+    background-color:#FFAEC9;
+    color: #ffffff;
+    border-radius: 5px;
+}
+.payment_btn button:hover, #find_address{
+    cursor: pointer;
+}
+/* .account, .card, .phone, .transfer{
+    padding:15px;
+    border:1px solid #dddddd;
+    margin-top:20px;
+    display: flex;
+    align-items: center;
+}
+.account > div:first-child, .card > div:first-child, .card div:nth-child(4), .phone div:first-child, .transfer div:first-child{
+    width:10%;
+} */
