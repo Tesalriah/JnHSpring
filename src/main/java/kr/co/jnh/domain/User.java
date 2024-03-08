@@ -14,15 +14,16 @@ public class User {
     private String phone;
     private String address;
     private String gender;
-    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     private Integer status;
     private Integer cumulative_report;
-    private String member_since;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date member_since;
 
     public User(){};
 
-    public User(String user_id, String user_pwd, String user_name, String email, String phone, String address, String gender, Date birth, String member_since) {
+    public User(String user_id, String user_pwd, String user_name, String email, String phone, String address, String gender, Date birth) {
         this.user_id = user_id;
         this.user_pwd = user_pwd;
         this.user_name = user_name;
@@ -31,7 +32,6 @@ public class User {
         this.address = address;
         this.gender = gender;
         this.birth = birth;
-        this.member_since = member_since;
     }
 
     @Override
@@ -140,11 +140,11 @@ public class User {
         this.cumulative_report = cumulative_report;
     }
 
-    public String getMember_since() {
+    public Date getMember_since() {
         return member_since;
     }
 
-    public void setMember_since(String member_since) {
+    public void setMember_since(Date member_since) {
         this.member_since = member_since;
     }
 }

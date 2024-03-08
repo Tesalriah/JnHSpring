@@ -10,7 +10,7 @@ okBtn.addEventListener("click",function(){
 })
 
 cancelBtn.addEventListener('click', function (){
-    location.href = history.go(-2);
+    history.back();
 })
 
 allBtn.addEventListener("click", function(){

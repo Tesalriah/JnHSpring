@@ -7,4 +7,6 @@ import java.util.Map;
 public interface UserDao {
     User selectUser(Map map) throws Exception;
 
+    Integer selectUserGrade(String id) throws Exception;
+    Integer insert(User user) throws Exception;
 }

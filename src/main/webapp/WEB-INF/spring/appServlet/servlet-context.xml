@@ -25,4 +25,11 @@
 
 	<view-controller path="/" view-name="main"/>
 
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"></mapping>
+			<beans:bean id="AdminIntreceptor" class="kr.co.jnh.interceptor.AdminInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+
 </beans:beans>

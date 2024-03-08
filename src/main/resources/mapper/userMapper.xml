@@ -4,14 +4,36 @@
 
 <mapper namespace="kr.co.jnh.dao.UserMapper">
     <select id="selectUser" parameterType="map" resultType="User">
-        SELECT * FROM user_info where user_id = #{id} and user_pwd = #{pwd}
+        SELECT * FROM user_info
+        WHERE user_id = #{id} and user_pwd = #{pwd}
+    </select>
+
+    <select id="selectUserGrade" parameterType="String" resultType="Integer">
+        SELECT grade FROM user_info
+        WHERE user_id = #{id}
     </select>
 
     <select id="insert" parameterType="User">
         INSERT INTO user_info
             (user_id, user_pwd, user_name, email, phone, address, gender, birth)
         VALUE
-            (#{id}, #{pwd}, #{name}, #{email}, #{phone}, #{address}, #{gender}, #{birth})
+            (#{user_id}, #{user_pwd}, #{user_name}, #{email}, #{phone}, #{address}, #{gender}, #{birth})
     </select>
 
+    <delete id="delete" parameterType="Map">
+        DELETE FROM user_info
+        WHERE user_id = #{id} and user_pwd = #{pwd}
+    </delete>
+
+    <update id="update" parameterType="Map">
+        UPDATE user_info
+        SET user_pwd = #{pwd}, address =  #{address}
+        WHERE user_id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE  user_info
+        SET status = #{status}
+        WHERE user_id = #{id}
+    </update>
 </mapper>

@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="loginId" value="${pageContext.request.getSession(false) == null ? '' : pageContext.request.session.getAttribute('id')}"/>
+<c:set var="mypageLink" value="${empty loginId ? '/login' : '/mypage'}"/>
+<c:set var="logOutLink" value="${empty loginId ? '/register' : '/logout'}"/>
+<c:set var="logOut" value="${empty loginId ? 'SignUp' : 'LogOut'}"/>
 <title>J&H</title>
 </head>
 <body>
@@ -28,13 +33,15 @@
                         </ul>
                     </li>
                     <li><a href="">SERVICE</a></li>
-                    <li class="gender_on" style="display:none;">
-                        <a href="">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
-                        <ul class="submenu_nav" >
-                            <li><a href="">유저관리</a></li>
-                            <li><a href="">상품관리</a></li>
-                        </ul>
-                    </li>
+                    <c:if test="${grade == 0}">
+                        <li class="gender_on">
+                            <a href="">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                            <ul class="submenu_nav" >
+                                <li><a href="">유저관리</a></li>
+                                <li><a href="">상품관리</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
                 </ul>
             </div>
             <div class="tools">
@@ -47,9 +54,9 @@
                         </form>
                     </div>
                 </div>
-                <div><a href="<c:url value='/login'/>"><i class="fa-solid fa-user"></i></a></div>
+                <div><a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a></div>
                 <div><a href=""><i class="fa-solid fa-cart-shopping"></i></a></div>
-                <div style="font-size:20px;"><a href="<c:url value='/register'/>">Sign UP</a></div>
+                <div style="font-size:20px;"><a href="<c:url value='${logOutLink}'/>">${logOut}</a></div>
             </div>
         </div>
     </div>

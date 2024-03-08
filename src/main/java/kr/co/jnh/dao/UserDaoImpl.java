@@ -22,4 +22,14 @@ public class UserDaoImpl implements UserDao {
         return session.selectOne(namespace + "selectUser", map);
     }
 
+    @Override
+    public Integer selectUserGrade(String id) throws Exception{
+        return session.selectOne(namespace + "selectUserGrade", id);
+    }
+
+    @Override
+    public Integer insert(User user) throws Exception{
+        return session.insert(namespace + "insert", user);
+    }
+
 }
