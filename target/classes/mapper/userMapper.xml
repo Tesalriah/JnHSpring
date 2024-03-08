@@ -13,12 +13,22 @@
         WHERE user_id = #{id}
     </select>
 
-    <select id="insert" parameterType="User">
+    <select id="selectEmail" parameterType="String" resultType="String">
+        SELECT email FROM user_info
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="selectUserId" parameterType="String" resultType="String">
+        SELECT user_id FROM user_info
+        WHERE user_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="User">
         INSERT INTO user_info
             (user_id, user_pwd, user_name, email, phone, address, gender, birth)
         VALUE
             (#{user_id}, #{user_pwd}, #{user_name}, #{email}, #{phone}, #{address}, #{gender}, #{birth})
-    </select>
+    </insert>
 
     <delete id="delete" parameterType="Map">
         DELETE FROM user_info

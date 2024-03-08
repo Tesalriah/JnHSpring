@@ -23,6 +23,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public String selectUserId(String id) throws Exception{
+        return session.selectOne(namespace + "selectUserId", id);
+    }
+
+    @Override
+    public String selectEmail(String id) throws Exception{
+        return session.selectOne(namespace + "selectEmail", id);
+    }
+
+    @Override
     public Integer selectUserGrade(String id) throws Exception{
         return session.selectOne(namespace + "selectUserGrade", id);
     }
@@ -30,6 +40,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Integer insert(User user) throws Exception{
         return session.insert(namespace + "insert", user);
+    }
+
+    @Override
+    public Integer updateStatus(Map map) throws Exception{
+        return session.update(namespace + "updateStatus", map);
     }
 
 }

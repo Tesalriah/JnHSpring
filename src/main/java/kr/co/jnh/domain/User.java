@@ -2,6 +2,7 @@ package kr.co.jnh.domain;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 public class User {

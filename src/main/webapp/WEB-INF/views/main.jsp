@@ -3,6 +3,10 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
     <script type="text/javascript" src="<c:url value='/resources/js/bannerSlide.js'/>" defer></script>
 <%@ include file="header.jsp" %>
+<script>
+    msg = "${msg}";
+    if(msg == "REG_OK")alert("이메일 인증이 완료되었습니다.");
+</script>
 <main>
     <div class="container">
         <div class="move_img">
