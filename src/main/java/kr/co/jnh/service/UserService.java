@@ -1,16 +1,18 @@
 package kr.co.jnh.service;
 
-import kr.co.jnh.dao.UserDao;
+import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserService {
+import java.util.Map;
 
-    @Autowired
-    UserDao userDao;
+public interface UserService {
+    int addUser(User user) throws Exception;
 
-    public int addUser(User user){
+    User showUser(Map map) throws Exception;
 
-        return 0;
-    }
+    String findEmail(String id) throws Exception;
+
+    boolean idDupl(String id) throws Exception;
+
+    int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception;
 }

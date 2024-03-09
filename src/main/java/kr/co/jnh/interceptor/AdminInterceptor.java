@@ -15,7 +15,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     UserDao userDao;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         String id = null;
 
         HttpSession session = request.getSession(false);
@@ -27,9 +27,18 @@ public class AdminInterceptor implements HandlerInterceptor {
         if( id == null || id == ""){
             return true;
         }
-        // 인터셉터 전처리, 로그인 했을 시 유저등급을 파라미터에 저장
-        int grade  = userDao.selectUserGrade(id);
-        request.setAttribute("grade", grade);
+        try {
+            // 인터셉터 전처리, 로그인 했을 시 유저등급을 파라미터에 저장
+            Integer grade  = userDao.selectUserGrade(id);
+            if(grade != null){
+                request.setAttribute("grade", grade);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 이상 있을시 로그아웃
+            session.invalidate();
+        }
 
         return true;
     }

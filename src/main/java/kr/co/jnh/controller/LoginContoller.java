@@ -2,6 +2,7 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.User;
+import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class LoginContoller {
 
     @Autowired
-    UserDao userDao;
+    UserService userService;
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -58,13 +59,18 @@ public class LoginContoller {
             return "redirect:/login";
         }
         try {
+            User user = userService.showUser(map);
             // 정지된 유저, 탈퇴 유저 확인
-            if(userDao.selectUser(map).getStatus() == 1){
+            if(user.getStatus() == 1){
                 rattb.addFlashAttribute("msg", "SANCTIONED_USER");
                 return "redirect:/login";
-            }if(userDao.selectUser(map).getStatus() == 2){
+            }if(user.getStatus() == 2){
                 rattb.addFlashAttribute("msg", "WITHDREW_USER");
                 return "redirect:/login";
+            }if(user.getStatus() == 3){
+                HttpSession session = request.getSession();
+                session.setAttribute("id", id);
+                return "redirect:/emailAuth";
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +101,7 @@ public class LoginContoller {
         User user = null;
 
         try {
-            user = userDao.selectUser(map);
+            user = userService.showUser(map);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
