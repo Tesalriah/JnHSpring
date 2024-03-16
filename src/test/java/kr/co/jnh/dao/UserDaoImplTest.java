@@ -30,16 +30,6 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void selectUserGrade() throws Exception{
-        String id = "zxcv";
-
-        int grade = userdao.selectUserGrade(id);
-
-        System.out.println("grade = " + grade);
-
-    }
-
-    @Test
     public void select() throws Exception{
         User user = new User("zxcv","1234","김유신","rladbtls12@naver.com", "01000000000", "서울시 성북구", "남성", new Date());
 

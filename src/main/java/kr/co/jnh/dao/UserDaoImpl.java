@@ -23,18 +23,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public String selectUserId(String id) throws Exception{
-        return session.selectOne(namespace + "selectUserId", id);
+    public User selectUserById(String id) throws Exception{
+        return session.selectOne(namespace + "selectUserById", id);
     }
 
     @Override
-    public String selectEmail(String id) throws Exception{
-        return session.selectOne(namespace + "selectEmail", id);
-    }
-
-    @Override
-    public Integer selectUserGrade(String id) throws Exception{
-        return session.selectOne(namespace + "selectUserGrade", id);
+    public String selectId(String email) throws Exception{
+        return session.selectOne(namespace + "selectId", email);
     }
 
     @Override

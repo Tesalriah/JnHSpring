@@ -1,7 +1,6 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.Validator.UserValidator;
-import kr.co.jnh.dao.EmailAuthDao;
+import kr.co.jnh.validation.UserValidator;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
 import kr.co.jnh.domain.User;
@@ -35,7 +34,7 @@ public class RegisterController {
     @Autowired
     UserService userService;
 
-    @InitBinder("signUp")
+    @InitBinder("user")
     public void toDate(WebDataBinder binder) {
         binder.setValidator(new UserValidator()); // UserValidator를 WebDataBinder의 로컬 validator로 등록
     }
@@ -52,49 +51,54 @@ public class RegisterController {
         return "signUp";
     }
 
-    // 이메일 인증
+    // 이메일 인증코드 발송
     @GetMapping("/emailAuth")
     public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
-        System.out.println("email = " + email);
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
+        String id = getSessionId(request);
 
+        // 랜덤 6자리 인증번호 발급
         Integer authNumber = makeRandomNumber();
         MailAuthDto mailAuthDto = null;
 
         try {
-            if(email.isEmpty()){
+            // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
+            if(email != null && email.isEmpty()){
                 email = userService.findEmail(id);
                 m.addAttribute("email", email);
             }
+            // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
+            String prevPage = request.getHeader("Referer");
+            if(prevPage != null){
+                if(prevPage.contains("emailAuth")){
+                    m.addAttribute("msg", "CHECK_EMAIL");
+                    return "emailAuth";
+                }
+            }
+            // 이메일, 인증번호 db에 저장
             mailAuthDto = new MailAuthDto(email, authNumber+"");
             emailService.addAuth(mailAuthDto);
+            // 이메일 전송
             MailDto mailDto = new MailDto(email, authNumber+"");
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
-            rattb.addFlashAttribute("authNumber", authNumber);
             rattb.addFlashAttribute("email", email);
-            m.addAttribute("msg", "SEND_OK"); // 이메일이 발송되었다는 메시지를 출력시킨다.
-
+            return "emailAuth";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("message", "SEND_FAIL"); // 이메일 발송이 실패되었다는 메시지를 출력
+            return "redirect:/";
         }
-        return "emailAuth";
     }
 
     @PostMapping("/emailAuth")
     public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
-        HttpSession session = request.getSession();
-        String user_id = (String)session.getAttribute("id");
+        String id = getSessionId(request);
         String email = "";
 
         try {
-            email = userService.findEmail(user_id);
-            System.out.println("email = " + email);
+            email = userService.findEmail(id);
             String authNumber = request.getParameter("auth_num");
-            System.out.println("authNumber = " + authNumber);
 
-            if(userService.emailAuth(new MailAuthDto(email, authNumber), user_id) != 1){
+            if(userService.emailAuth(new MailAuthDto(email, authNumber), id) != 1){
                 throw new Exception("Auth Fail");
             }
             emailService.removeAuth(email);
@@ -118,13 +122,13 @@ public class RegisterController {
         // 기타 검증
         userValidation(user, result, request);
 
-        System.out.println("user.toString() = " + user.toString());
-        System.out.println("result = " + result);
-
         try {
             // 아이디 중복확인
             if(userService.idDupl(user.getUser_id())){
                 result.rejectValue("user_id", "duplicate");
+            }
+            if(userService.emailDupl(user.getEmail())){
+                result.rejectValue("email", "duplicate");
             }
             // 검증에러 있을시 예외처리
             if(result.hasErrors()) {
@@ -136,7 +140,6 @@ public class RegisterController {
             }
             // 성공
             session.setAttribute("id", user.getUser_id());
-            rattb.addFlashAttribute("user_id" ,user.getUser_id());
             rattb.addFlashAttribute("email" ,user.getEmail());
             return "redirect:/emailAuth";
         } catch (Exception e) {
@@ -162,23 +165,32 @@ public class RegisterController {
             result.rejectValue("user_pwd", "notLikePwd");
         }
         // 주소 값 비어있는지 검증
-        if(user.getAddress().isEmpty()){
+        if(user.getAddress() != null &&  user.getAddress().isEmpty()){
             result.rejectValue("address", "required");
         }
 
-        // 주소 값 한글, 숫자, 대쉬(-)만 가능
-        String addressPattern = "^[가-힣0-9() -]*$";
+        // 주소 값 한글, 영문, 숫자, 대쉬(-)만 가능
+        String addressPattern = "^[가-힣0-9a-zA-Z() -]*$";
 
         if(!Pattern.matches(addressPattern, user.getAddress())){
             result.rejectValue("address", "adressPattern");
         }
     }
 
-    public Integer makeRandomNumber() {
+    public String getSessionId(HttpServletRequest request){
+        HttpSession session =  request.getSession();
+        return (String)session.getAttribute("id");
+    }
+
+    private Integer makeRandomNumber() {
         Random r = new Random();
         String randomNumber = "";
         for(int i = 0; i < 6; i++) {
             randomNumber += Integer.toString(r.nextInt(10));
+
+            if(i == 0 && randomNumber.equals("0")){
+                randomNumber = String.valueOf((int)(Math.random()*1+9));
+            }
         }
 
         return Integer.parseInt(randomNumber);

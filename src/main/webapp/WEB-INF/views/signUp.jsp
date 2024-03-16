@@ -1,25 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<!DOCTYPE html>
 <html lang="kr">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/f988057b70.js" crossorigin="anonymous"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
     <script src="<c:url value="/resources/js/address.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/loading.js"/>" defer></script>
     <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/signUp.css'/>">
     <title>회원가입</title>
 </head>
-<style>
-    .error{
-        margin-top:15px;
-        font-size:14px;
-        color:red;
-    }
-</style>
 <body>
 <div class="container">
     <div class="logo"><a href="<c:url value='/'/>">J&H</a></div>
@@ -34,6 +26,7 @@
             <div class="input"><i class="fa-solid fa-lock"></i><input type="password" name="user_pwd" placeholder="비밀번호"></div>
             <div class="error"><form:errors path="user_pwd"/></div>
             <div class="input"><i class="fa-solid fa-check"></i><input type="password" name="pwd_check" placeholder="비밀번호 확인"></div>
+            <div class="loding_fix"><div class="loading_circle"></div></div>
             <div class="input"><i class="fa-solid fa-user"></i><input type="text" name="user_name" value="${user.user_name}" placeholder="이름" autocomplete="off"></div>
             <div class="error"><form:errors path="user_name"/></div>
             <div class="input"><i class="fa-solid fa-envelope"></i><input type="email" name="email" value="${user.email}" placeholder="이메일" autocomplete="off"></div>
@@ -48,7 +41,7 @@
             <div class="input"><i class="fa-solid fa-cake-candles"></i><input type="date" name="birth" value="${birth}"></div>
             <div class="error"><form:errors path="birth"/></div>
             <div class="button_menu">
-                <input type="submit" value="가입하기">
+                <input id="submit" type="submit" value="가입하기">
             </div>
         </form:form>
     </div>

@@ -1,4 +1,4 @@
-package kr.co.jnh.Validator;
+package kr.co.jnh.validation;
 
 import kr.co.jnh.domain.User;
 import org.springframework.validation.Errors;
@@ -17,8 +17,6 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        System.out.println("UserValidator.validate() is called");
-
         User user = (User)target;
 
         String id = user.getUser_id();
@@ -56,8 +54,10 @@ public class UserValidator implements Validator {
         if(!Pattern.matches(namePattern, user.getUser_name())){
             errors.rejectValue("user_name", "namePattern");
         }
-        if(!Pattern.matches(phonePattern, user.getPhone())){
-            errors.rejectValue("phone", "phonePattern");
+        if(!user.getPhone().isBlank()){
+            if(!Pattern.matches(phonePattern, user.getPhone())){
+                errors.rejectValue("phone", "phonePattern");
+            }
         }
     }
 

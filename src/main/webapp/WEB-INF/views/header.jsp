@@ -1,12 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="loginId" value="${pageContext.request.getSession(false) == null ? '' : pageContext.request.session.getAttribute('id')}"/>
-<c:set var="mypageLink" value="${empty loginId ? '/login' : '/mypage'}"/>
-<c:set var="logOutLink" value="${empty loginId ? '/register' : '/logout'}"/>
-<c:set var="logOut" value="${empty loginId ? 'SignUp' : 'LogOut'}"/>
-<title>J&H</title>
-</head>
-<body>
 <header>
     <div class="header_area">
         <div class="row">
