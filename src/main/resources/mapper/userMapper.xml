@@ -8,19 +8,14 @@
         WHERE user_id = #{id} and user_pwd = #{pwd}
     </select>
 
-    <select id="selectUserGrade" parameterType="String" resultType="Integer">
-        SELECT grade FROM user_info
+    <select id="selectUserById" parameterType="String" resultType="User">
+        SELECT * FROM user_info
         WHERE user_id = #{id}
     </select>
 
-    <select id="selectEmail" parameterType="String" resultType="String">
-        SELECT email FROM user_info
-        WHERE user_id = #{id}
-    </select>
-
-    <select id="selectUserId" parameterType="String" resultType="String">
+    <select id="selectId" parameterType="String" resultType="String">
         SELECT user_id FROM user_info
-        WHERE user_id = #{id}
+        WHERE email = #{email}
     </select>
 
     <insert id="insert" parameterType="User">

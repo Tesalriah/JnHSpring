@@ -29,13 +29,46 @@ public class UserServiceImpl implements UserService {
         return userDao.selectUser(map);
     }
 
+    public Integer getGrade(String id) throws Exception{
+        User user = userDao.selectUserById(id);
+        return user.getGrade();
+    }
+
+    public Integer getStatus(String id) throws Exception{
+        User user = userDao.selectUserById(id);
+        return user.getStatus();
+    }
+
     public String findEmail(String id) throws Exception{
-        return userDao.selectEmail(id);
+        User user = userDao.selectUserById(id);
+        return user.getEmail();
+    }
+
+    public String findName(String email) throws Exception{
+        String id = userDao.selectId(email);
+        User user = userDao.selectUserById(id);
+        return user.getUser_name();
     }
 
     @Override
     public boolean idDupl(String id) throws Exception{
-        return userDao.selectUserId(id) != null;
+        User user = userDao.selectUserById(id);
+        if(user != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean emailDupl(String email) throws Exception{
+        String id = userDao.selectId(email);
+        User user = userDao.selectUserById(id);
+        if(user != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -48,5 +81,15 @@ public class UserServiceImpl implements UserService {
 
        }
         return userDao.updateStatus(map);
+    }
+
+    public String emailAuth(MailAuthDto mailAuthDto) throws Exception{
+        String auth_num = emailAuthDao.selectAuthNum(mailAuthDto.getEmail());
+        User user = null;
+        if(mailAuthDto.getAuth_number().equals(auth_num)){
+            String id = userDao.selectId(mailAuthDto.getEmail());
+            user = userDao.selectUserById(id);
+        }
+        return user.getUser_id();
     }
 }

@@ -149,3 +149,34 @@ hr{
     font-size:14px;
     padding:10px;
 }
+.error{
+    margin-top:15px;
+    font-size:14px;
+    color:red;
+}
+.loding_fix{
+    display: none;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.loading_circle {
+    width: 50px;
+    height: 50px;
+    margin: 10px auto;
+
+    border: 10px solid #e3e3e3;
+    border-bottom: 10px solid #FFAEC9;
+    border-radius: 50%;
+
+    animation: load 1.5s linear infinite;
+}
+
+@keyframes load {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

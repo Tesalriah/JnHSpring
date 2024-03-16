@@ -1,22 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="head.jsp"/>
-<jsp:include page="header.jsp"/>
-    <div>
-        <script>
-            msg = "${msg}";
-            if(msg == "SEND_OK")alert("전송완료");
-            if(msg == "SEND_FAIL")alert("전송실패");
-            if(msg == "AUTH_FAIL")alert("인증번호가 맞지 않습니다.");
-        </script>
-        ${email} 로 인증번호를 전송하였습니다! ${user_id}
-        <form action="<c:url value="/emailAuth"/>" method="post">
-            <div>
-                <input type="hidden" name="email" value="${email}">
-                인증번호<input type="text" name="auth_num">
-                <button type="submit">확인</button>
+<%@ page session="true"%>
+<!DOCTYPE html>
+<html lang="kr">
+    <head>
+        <%@ include file="head.jsp" %>
+        <link rel="stylesheet" href="<c:url value='/resources/css/auth.css'/>">
+        <title>J&H</title>
+    </head>
+    <body>
+    <%@include file="header.jsp"%>
+        <main>
+            <div class="auth_box">
+                <script>
+                    msg = "${msg}";
+                    if(!msg){
+                        msg = "${param.msg}";
+                    }
+                    if(msg == "CHECK_EMAIL")alert("이메일 인증을 완료해주세요.");
+                    if(msg == "AUTH_FAIL")alert("인증번호가 맞지 않습니다.");
+                </script>
+                <div class="auth_title">
+                    ${sessionScope.id}님 회원가입 해주셔서 감사합니다!
+                    <div class="email">${email}</div>
+                    으로 메일을 보냈습니다.
+                </div>
+                <form action="<c:url value="/emailAuth"/>" method="post">
+                    <div class="auth_form">
+                        <input type="hidden" name="email" value="${email}">
+                        인증번호<input type="text" name="auth_num" autocomplete="off">
+                    </div>
+                    <div class="submit_btn">
+                        <button type="submit">확인</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</body>
+        </main>
+        <jsp:include page="footer.jsp"/>
+    </body>
 </html>

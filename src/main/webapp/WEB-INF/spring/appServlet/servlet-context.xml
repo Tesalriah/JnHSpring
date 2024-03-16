@@ -39,6 +39,13 @@
 			<mapping path="/**"></mapping>
 			<beans:bean id="AdminIntreceptor" class="kr.co.jnh.interceptor.AdminInterceptor"></beans:bean>
 		</interceptor>
+		<interceptor>
+			<mapping path="/**"></mapping>
+			<exclude-mapping path="/emailAuth"></exclude-mapping>
+			<exclude-mapping path="/login"></exclude-mapping>
+			<exclude-mapping path="/logout"></exclude-mapping>
+			<beans:bean id="StatusInterceptor" class="kr.co.jnh.interceptor.StatusInterceptor"></beans:bean>
+		</interceptor>
 	</interceptors>
 
 </beans:beans>

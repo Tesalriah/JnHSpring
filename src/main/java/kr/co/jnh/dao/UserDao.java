@@ -7,11 +7,9 @@ import java.util.Map;
 public interface UserDao {
     User selectUser(Map map) throws Exception;
 
-    String selectUserId(String id) throws Exception;
+    User selectUserById(String id) throws Exception;
 
-    String selectEmail(String id) throws Exception;
-
-    Integer selectUserGrade(String id) throws Exception;
+    String selectId(String email) throws Exception;
 
     Integer insert(User user) throws Exception;
 

@@ -2,6 +2,7 @@ package kr.co.jnh.interceptor;
 
 import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.User;
+import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpSession;
 public class AdminInterceptor implements HandlerInterceptor {
 
     @Autowired
-    UserDao userDao;
+    UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
@@ -29,7 +30,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
         try {
             // 인터셉터 전처리, 로그인 했을 시 유저등급을 파라미터에 저장
-            Integer grade  = userDao.selectUserGrade(id);
+            Integer grade  = userService.getGrade(id);
             if(grade != null){
                 request.setAttribute("grade", grade);
             }
