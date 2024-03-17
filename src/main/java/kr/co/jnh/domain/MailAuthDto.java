@@ -5,6 +5,8 @@ public class MailAuthDto {
     private String email;
     private String auth_number;
 
+    public MailAuthDto() {}
+
     public MailAuthDto(String email, String auth_number) {
         this.email = email;
         this.auth_number = auth_number;

@@ -46,14 +46,15 @@ public class RegisterController {
     }
 
     // 회원가입 Get
-    @GetMapping("/signUp")
+    @GetMapping("/signup")
     public String signUp(){
         return "signUp";
     }
 
     // 이메일 인증코드 발송
-    @GetMapping("/emailAuth")
+    @GetMapping("/emailauth")
     public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
+        // 세선에서 넘어온 id 저장
         String id = getSessionId(request);
 
         // 랜덤 6자리 인증번호 발급
@@ -62,7 +63,7 @@ public class RegisterController {
 
         try {
             // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
-            if(email != null && email.isEmpty()){
+            if(email.isBlank()){
                 email = userService.findEmail(id);
                 m.addAttribute("email", email);
             }
@@ -89,19 +90,22 @@ public class RegisterController {
         }
     }
 
-    @PostMapping("/emailAuth")
+    // 이메일 인증
+    @PostMapping("/emailauth")
     public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
+        // 세선에서 넘어온 id 저장
         String id = getSessionId(request);
         String email = "";
 
         try {
+            // 가져온 id를 통해 이메일 가져오기
             email = userService.findEmail(id);
             String authNumber = request.getParameter("auth_num");
 
+            // 인증번호 일치 시 status를 0(정상)으로 update, 성공시 1을 저장
             if(userService.emailAuth(new MailAuthDto(email, authNumber), id) != 1){
                 throw new Exception("Auth Fail");
             }
-            emailService.removeAuth(email);
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "AUTH_FAIL");
@@ -113,7 +117,7 @@ public class RegisterController {
 
 
     // 회원가입 Post
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, RedirectAttributes rattb, HttpSession session){
         // 따로 받은 주소 값 합치기
         String address = request.getParameter("address1") + request.getParameter("address2");
@@ -141,7 +145,7 @@ public class RegisterController {
             // 성공
             session.setAttribute("id", user.getUser_id());
             rattb.addFlashAttribute("email" ,user.getEmail());
-            return "redirect:/emailAuth";
+            return "redirect:/emailauth";
         } catch (Exception e) {
             e.printStackTrace();
             // 실패시 원래 페이지에 생년월일 값을 반환받기 위함
@@ -177,11 +181,14 @@ public class RegisterController {
         }
     }
 
+
+    // 세션에서 아이디 가져오기
     public String getSessionId(HttpServletRequest request){
         HttpSession session =  request.getSession();
         return (String)session.getAttribute("id");
     }
 
+    // 랜덤 인증번호 생성
     private Integer makeRandomNumber() {
         Random r = new Random();
         String randomNumber = "";

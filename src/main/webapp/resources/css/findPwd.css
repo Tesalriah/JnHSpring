@@ -9,10 +9,10 @@
     font-weight:bold;
 }
 .select_var{
-border-bottom:2px solid #FFAEC9;
-display: block;
-float:left;
-width:100%;
+    border-bottom:2px solid #FFAEC9;
+    display: block;
+    float:left;
+    width:100%;
 }
 .select_list li{
     float:left;
@@ -85,7 +85,6 @@ button {
     appearance: none;
 }
 .send_email{
-    border:1px solid #FFAEC9;
     width: 100px;
     height: 26px;
     padding:0;
@@ -110,7 +109,7 @@ button {
     cursor:pointer;
     background-color:#DC98AF;
 }
-.loding_fix{
+.loading_fix{
     display: none;
     position: fixed;
     left: 50%;

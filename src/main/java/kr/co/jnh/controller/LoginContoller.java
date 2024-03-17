@@ -10,15 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.*;
 import java.net.http.HttpRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.regex.Pattern;
 
 @Controller
 public class LoginContoller {
@@ -36,11 +35,11 @@ public class LoginContoller {
         return "redirect:/";
     }
 
-    @GetMapping("/findId")
+    @GetMapping("/findid")
     public String findId(){return "findId";}
 
     @ResponseBody
-    @PostMapping("/findId")
+    @PostMapping("/findid")
     public Map findIdAuth(@RequestBody MailAuthDto mailAuthDto){
         Map map = new HashMap();
         try {
@@ -62,8 +61,6 @@ public class LoginContoller {
         String email = user.getEmail();
         Map map = new HashMap();
 
-        System.out.println("name = " + name);
-        System.out.println("email = " + email);
         Integer authNumber = makeRandomNumber();
         MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
 
@@ -74,19 +71,107 @@ public class LoginContoller {
                 MailDto mailDto = new MailDto(email, authNumber+"");
                 emailService.sendMail(mailDto);
                 map.put("msg", "전송완료");
-                return map;
+            }else{
+                map.put("msg", "이름과 이메일이 일치하지 않습니다.");
             }
-            map.put("msg", "이름과 이메일이 일치하지 않습니다.");
-            return map;
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("msg", "이메일 전송 실패");
-            return map;
+            map.put("msg", "이메일 전송 실패\n이름과 이메일을 확인해주세요.");
         }
+        return map;
     }
 
-    @GetMapping("/findPwd")
-    public String findpwd(){return "findPwd";}
+    @GetMapping("/findpwd")
+    public String findPwd(){return "findPwd";}
+
+    @PostMapping("/findpwd")
+    public String findPwdAuth(MailAuthDto mailAuthDto, String id, Model m, RedirectAttributes rattb){
+        try {
+            String resultId = userService.emailAuth(mailAuthDto);
+            if(resultId == ""){
+                m.addAttribute("msg", "잘못된 인증번호입니다. 다시 시도해주세요");
+                throw new Exception("Invalid Auth Number");
+            }
+            if(!resultId.equals(id)){
+                m.addAttribute("msg", "아이디와 이메일이 일치하지 않습니다.");
+                throw new Exception("ID Does Not Match");
+            }
+            rattb.addFlashAttribute("auth","AUTHOK");
+            rattb.addFlashAttribute("id", id);
+            return "redirect:/changepwd";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        m.addAttribute("id",id);
+        m.addAttribute("email", mailAuthDto.getEmail());
+        return "findPwd";
+    }
+
+    @ResponseBody
+    @PostMapping("/pwdauth")
+    public Map pwdAuth(@RequestBody User user){
+        String id = user.getUser_id();
+        String email = user.getEmail();
+        Map map = new HashMap();
+
+        System.out.println("id = " + id);
+        System.out.println("email = " + email);
+        Integer authNumber = makeRandomNumber();
+        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
+
+        try {
+            String foundEmail = userService.findEmail(id);
+            if(foundEmail.equals(email)) {
+                emailService.addAuth(mailAuthDto);
+                MailDto mailDto = new MailDto(email, authNumber + "");
+                emailService.sendMail(mailDto);
+                map.put("msg", "전송완료");
+            }else{
+                map.put("msg", "아이디와 이메일이 일치하지 않습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("msg", "이메일 전송 실패\n아이디와 이메일을 확인해주세요.");
+        }
+        return map;
+    }
+
+    @GetMapping("/changepwd")
+    public String changePwd( @ModelAttribute("auth") String auth, RedirectAttributes rattb){
+        if(auth == null || !auth.equals("AUTHOK")){
+            rattb.addFlashAttribute("msg","WRONG_APPROACH");
+            return "redirect:/";
+        }
+        return "changePwd";
+    }
+
+    @PostMapping("/changepwd")
+    public String changePwd(User user, String check_pwd, Model m, RedirectAttributes rattb){
+
+        try {
+            if(!user.getUser_pwd().equals(check_pwd)){
+                m.addAttribute("msg","NOT_MATCH_PWD");
+                throw new Exception("Passwords Do Not Match");
+            }
+            if(user.getUser_pwd().length() < 5 || user.getUser_pwd().length() > 20 || user.getUser_pwd().isBlank()){
+                m.addAttribute("msg","INCORRECT_PWD");
+                throw new Exception("Password Format Is Incorrect.");
+            }
+            if(!userService.checkBirth(user.getUser_id(), user.getBirth())){
+                m.addAttribute("msg","NOT_MATCH_BIRTH");
+                throw new Exception("Birth Does Not Match");
+            }
+            if(userService.changePwd(user.getUser_id(), user.getUser_pwd()) != 0) {
+                rattb.addFlashAttribute("msg", "PWD_CHANGED");
+            }
+            return "redirect:/";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        m.addAttribute("id", user.getUser_id());
+        return "changePwd";
+    }
 
     @GetMapping("/login")
     public String LoginForm(HttpServletRequest request){
@@ -130,7 +215,7 @@ public class LoginContoller {
             }if(user.getStatus() == 3){
                 HttpSession session = request.getSession();
                 session.setAttribute("id", id);
-                return "redirect:/emailAuth";
+                return "redirect:/emailauth";
             }
         } catch (Exception e) {
             e.printStackTrace();

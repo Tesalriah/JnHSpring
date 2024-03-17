@@ -41,9 +41,10 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/**"></mapping>
-			<exclude-mapping path="/emailAuth"></exclude-mapping>
+			<exclude-mapping path="/emailauth"></exclude-mapping>
 			<exclude-mapping path="/login"></exclude-mapping>
 			<exclude-mapping path="/logout"></exclude-mapping>
+			<exclude-mapping path="/resources/**"></exclude-mapping>
 			<beans:bean id="StatusInterceptor" class="kr.co.jnh.interceptor.StatusInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>

@@ -7,6 +7,8 @@ public class MailDto {
     private String subject = "J&H 인증번호입니다.";       //제목
     private String message;       //본문
 
+    public MailDto() {}
+
     public MailDto(String receiveMail, String message) {
         this.receiveMail = receiveMail;
         this.message = message;

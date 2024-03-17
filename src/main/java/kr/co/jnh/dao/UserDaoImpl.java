@@ -33,12 +33,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Integer insert(User user) throws Exception{
+    public int insert(User user) throws Exception{
         return session.insert(namespace + "insert", user);
     }
 
     @Override
-    public Integer updateStatus(Map map) throws Exception{
+    public int updatePwd(Map map) throws Exception{
+        return session.update(namespace + "updatePwd", map);
+    }
+
+    @Override
+    public int updateStatus(Map map) throws Exception{
         return session.update(namespace + "updateStatus", map);
     }
 
