@@ -6,6 +6,7 @@
 <head>
     <%@ include file="head.jsp" %>
     <link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
+    <script type="text/javascript" src="<c:url value='/resources/js/mainMenu.js'/>" defer></script>
     <script type="text/javascript" src="<c:url value='/resources/js/bannerSlide.js'/>" defer></script>
     <title>J&H</title>
 </head>
