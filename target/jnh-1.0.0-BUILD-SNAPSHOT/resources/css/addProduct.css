@@ -1,0 +1,86 @@
+.add_table{
+    border:1px solid #dddddd;
+    padding:30px;
+    border-radius:15px;
+}
+.add_table input{
+    border:1px solid #dddddd;
+    padding:10px;
+    width:100%;
+    box-sizing: border-box;
+}
+.add_table > div{
+    display: flex;
+    align-items: center;
+}
+.add_table > div:not(.add_table > div:last-child){
+    border-bottom:1px solid #dddddd;
+}.add_table > div > div{
+    padding:15px;
+}
+.add_table > div > div:first-child{
+    width:20%;
+    text-align: center;
+}
+.add_table > div > div:nth-child(2){
+    width:30%;
+    border-left:1px solid #dddddd;
+}
+.add_table > div > div:nth-child(3){
+    width: 10%;
+    text-align: center;
+}
+.add_table > div > div:last-child{
+    width: 29%;
+    border-left: 1px solid #dddddd;;
+}
+#category_menu{
+    display: flex;
+    width:100%;
+}
+#category_menu > div{
+    height:200px;
+    border:1px solid #dddddd;
+    width:50%;
+}
+#category_menu > div:not(#category_menu > div:first-child){
+    margin-left: -1px;
+}
+#category_menu > div > div{
+    padding:10px;
+    border-bottom: 1px solid #dddddd;
+    display: flex;
+    justify-content: space-between;
+}
+#category_menu > div > div:hover{
+    cursor: pointer;
+}
+.selected_category{
+    margin:20px 0 10px 0;
+}
+.display_category i{
+    color:#ffffff;
+}
+.submit_button{
+    margin-top: 30px;
+    text-align: center;
+}
+.submit_button button{
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.submit_button button:hover{
+    cursor: pointer;
+}
+.submit_button button[type='submit']{
+    padding:15px 30px;
+    color:#ffffff;
+    background-color: #FFAEC9;
+}
+.submit_button button[type='button']{
+    padding:14px 29px;
+    color:#000000;
+    background-color: #ffffff;
+    border:1px solid #dddddd;
+}
