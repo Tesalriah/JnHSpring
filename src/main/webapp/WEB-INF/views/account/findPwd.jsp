@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    <%@ include file="head.jsp" %>
+    <%@ include file="../head.jsp" %>
     <link rel="stylesheet" href="<c:url value='/resources/css/findPwd.css'/>">
     <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
     <title>J&H</title>
 </head>
 <body>
-    <%@ include file="header.jsp" %>
+    <%@ include file="../header.jsp" %>
     <main>
         <div class="container">
             <div class="title">계정정보 찾기</div>
@@ -52,7 +52,7 @@
             </div>
         </div>
     </main>
-    <%@ include file="footer.jsp" %>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>
 <script>
