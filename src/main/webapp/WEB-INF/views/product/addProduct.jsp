@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    <%@ include file="head.jsp" %>
+    <%@ include file="../head.jsp" %>
     <link rel="stylesheet" href="<c:url value='/resources/css/sideMenu.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/addProduct.css'/>">
     <script type="text/javascript" src="<c:url value='/resources/js/productMNG.js'/>" defer></script>
@@ -12,7 +12,7 @@
     <title>J&H</title>
 </head>
 <body>
-    <%@ include file="header.jsp" %>
+    <%@ include file="../header.jsp" %>
     <main>
         <div class="container">
             <div class="title">
@@ -77,6 +77,6 @@
             </div>
         </div>
     </main>
-    <%@ include file="footer.jsp" %>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>
