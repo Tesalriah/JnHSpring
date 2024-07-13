@@ -1,0 +1,92 @@
+.MNG_nav{
+    margin-top: 15px;
+    position: relative;
+    display: flex;
+    padding: 13px 0;
+}
+.point{
+    font-weight: bold;
+    margin-top: 15px;
+}
+.nav_each > a{
+    border: 1px solid #dddddd;
+    padding:8px 25px;
+}
+.nav_each:hover .sub_MNG_nav{
+    opacity: 1;
+    pointer-events: auto;
+}
+.nav_each:hover > a{
+    color:#FFAEC9;
+}
+.nav_each:last-child > a{
+    margin-left: -1px;
+}
+.sub_MNG_nav{
+    position: absolute;
+    border: 1px solid #dddddd;
+    top:41px;
+    padding:5px 0;
+    text-align: center;
+    background-color: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    transition:opacity 0.3s;
+}
+.sub_MNG_nav div{
+    padding:10px 15px;
+}
+.sub_MNG_nav a{
+    padding:5px 15px;
+}
+.sub_MNG_nav a:hover{
+    color:#FFAEC9;
+}
+.MGN_box{
+    margin-top:15px;
+}
+.MGN_table{
+    width: 100%;
+}
+.MGN_table tr:first-child{
+    font-weight: bold;
+}
+.MGN_table tr:first-child > td{
+    padding:10px;
+}
+.MGN_table td{
+    padding:5px 10px;
+}
+.MGN_table td input[type="text"]{
+    border:1px solid #cccccc;
+    width:50%;
+    padding:5px;
+}
+.MGN_table td > button{
+    background-color: #FFAEC9;
+    color:#ffffff;
+    border-radius: 5px;
+    padding:1px 5px;
+    margin-left: 3px;
+}
+.MGN_table td > button:hover{
+    cursor: pointer;
+}
+.MGN_table td > a{
+    color: #FFAEC9;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.paging{
+    text-align:center;
+    font-size: 18px;
+    font-weight:bold;
+    margin-top:50px;
+    margin-bottom: 100px;
+}
+.paging a{
+    padding:10px;
+}
+.paging a:hover{
+    color:#FFAEC9;
+}

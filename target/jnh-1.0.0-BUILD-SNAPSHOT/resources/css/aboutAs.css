@@ -1,0 +1,11 @@
+.about_as{
+    margin: 0 auto;
+}
+.about_as div{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 18px;
+}
+.about_as a{
+    color:#FFAEC9;
+}
