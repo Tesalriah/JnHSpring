@@ -3,6 +3,7 @@ package kr.co.jnh.service;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.User;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface UserService {
@@ -17,6 +18,10 @@ public interface UserService {
     String findEmail(String id) throws Exception;
 
     String findName(String email) throws Exception;
+
+    boolean checkBirth(String id, Date birth) throws Exception;
+
+    int changePwd(String id, String pwd) throws Exception;
 
     boolean idDupl(String id) throws Exception;
 

@@ -26,7 +26,7 @@
             <div class="input"><i class="fa-solid fa-lock"></i><input type="password" name="user_pwd" placeholder="비밀번호"></div>
             <div class="error"><form:errors path="user_pwd"/></div>
             <div class="input"><i class="fa-solid fa-check"></i><input type="password" name="pwd_check" placeholder="비밀번호 확인"></div>
-            <div class="loding_fix"><div class="loading_circle"></div></div>
+            <div class="loading_fix"><div class="loading_circle"></div></div>
             <div class="input"><i class="fa-solid fa-user"></i><input type="text" name="user_name" value="${user.user_name}" placeholder="이름" autocomplete="off"></div>
             <div class="error"><form:errors path="user_name"/></div>
             <div class="input"><i class="fa-solid fa-envelope"></i><input type="email" name="email" value="${user.email}" placeholder="이메일" autocomplete="off"></div>

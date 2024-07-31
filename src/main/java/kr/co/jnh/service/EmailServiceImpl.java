@@ -55,15 +55,10 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public Integer addAuth(MailAuthDto mailAuthDto) throws Exception{
+    public int addAuth(MailAuthDto mailAuthDto) throws Exception{
         if(emailAuthDao.selectAuthNum(mailAuthDto.getEmail()) != null){
             emailAuthDao.deleteAuth(mailAuthDto.getEmail());
         }
         return emailAuthDao.insertAuth(mailAuthDto);
-    }
-
-    @Override
-    public Integer removeAuth(String email) throws Exception{
-        return emailAuthDao.deleteAuth(email);
     }
 }

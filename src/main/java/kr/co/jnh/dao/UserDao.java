@@ -11,7 +11,9 @@ public interface UserDao {
 
     String selectId(String email) throws Exception;
 
-    Integer insert(User user) throws Exception;
+    int insert(User user) throws Exception;
 
-    Integer updateStatus(Map map) throws Exception;
+    int updatePwd(Map map) throws Exception;
+
+    int updateStatus(Map map) throws Exception;
 }

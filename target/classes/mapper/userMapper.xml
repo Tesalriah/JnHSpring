@@ -36,6 +36,12 @@
         WHERE user_id = #{id}
     </update>
 
+    <update id="updatePwd" parameterType="Map">
+        UPDATE user_info
+        SET user_pwd = #{pwd}
+        WHERE user_id = #{id}
+    </update>
+
     <update id="updateStatus" parameterType="Map">
         UPDATE  user_info
         SET status = #{status}

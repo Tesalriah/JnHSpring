@@ -154,7 +154,7 @@ hr{
     font-size:14px;
     color:red;
 }
-.loding_fix{
+.loading_fix{
     display: none;
     position: fixed;
     left: 50%;

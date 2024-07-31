@@ -85,7 +85,6 @@ button {
     appearance: none;
 }
 .send_email{
-    border:1px solid #FFAEC9;
     width: 100px;
     height: 26px;
     padding:0;
@@ -111,7 +110,7 @@ button {
     background-color:#DC98AF;
 }
 
-.loding_fix{
+.loading_fix{
     display: none;
     position: fixed;
     left: 50%;

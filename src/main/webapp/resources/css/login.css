@@ -89,7 +89,7 @@ border: none;
 hr{
     margin:20px 0px 20px 0px;
 }
-.loding_fix{
+.loading_fix{
     display: none;
     position: fixed;
     left: 50%;
