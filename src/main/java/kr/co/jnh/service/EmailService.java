@@ -4,8 +4,9 @@ import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
 
 public interface EmailService {
-    void sendMail(MailDto mailDto);
+    public void sendMail(MailDto mailDto);
 
-    int addAuth(MailAuthDto mailAuthDto) throws Exception;
+    Integer addAuth(MailAuthDto mailAuthDto) throws Exception;
 
+    Integer removeAuth(String email) throws Exception;
 }
