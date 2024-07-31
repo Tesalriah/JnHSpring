@@ -42,37 +42,41 @@
 .sub_MNG_nav a:hover{
     color:#FFAEC9;
 }
-.MGN_box{
+.MNG_box{
     margin-top:15px;
 }
-.MGN_table{
+.MNG_table{
     width: 100%;
 }
-.MGN_table tr:first-child{
+.MNG_table, .MNG_table tr, .MNG_table td{
+    border-collapse: collapse;
+    border:1px solid #dddddd;
+}
+.MNG_table tr:first-child{
     font-weight: bold;
 }
-.MGN_table tr:first-child > td{
+.MNG_table tr:first-child > td{
     padding:10px;
 }
-.MGN_table td{
+.MNG_table td{
     padding:5px 10px;
 }
-.MGN_table td input[type="text"]{
+.MNG_table td input[type="text"]{
     border:1px solid #cccccc;
     width:50%;
     padding:5px;
 }
-.MGN_table td > button{
+.MNG_table td > button{
     background-color: #FFAEC9;
     color:#ffffff;
     border-radius: 5px;
     padding:1px 5px;
     margin-left: 3px;
 }
-.MGN_table td > button:hover{
+.MNG_table td > button:hover{
     cursor: pointer;
 }
-.MGN_table td > a{
+.MNG_table td > a{
     color: #FFAEC9;
     font-weight: bold;
     text-decoration: underline;

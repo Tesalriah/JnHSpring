@@ -2,7 +2,7 @@
 <footer>
     <div class="footer">
         <div class="shopInfo">
-            <div class="logo" style="color:#fff;"><a href="main.html">J&H</a></div>
+            <div class="logo" style="color:#fff;"><a href="<c:url value="/"/>">J&H</a></div>
             <ul class="terms">
                 <li><a href="">이용안내</a></li>
                 <li><a href="">이용약관</a></li>

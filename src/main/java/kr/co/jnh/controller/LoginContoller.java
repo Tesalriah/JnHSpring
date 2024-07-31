@@ -1,22 +1,18 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.*;
-import java.net.http.HttpRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -37,22 +33,26 @@ public class LoginContoller {
     }
 
     @GetMapping("/findId")
-    public String findId(){return "findId";}
+    public String findId(){return "account/findId";}
 
-    @ResponseBody
     @PostMapping("/findId")
-    public Map findIdAuth(@RequestBody MailAuthDto mailAuthDto){
+    public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request){
         Map map = new HashMap();
         try {
             String id = userService.emailAuth(mailAuthDto);
             if(id!=null){
                 map.put("id", id);
             }
+            System.out.println("id = " + id);
+            emailService.removeAuth(mailAuthDto.getEmail());
+            request.setAttribute("msg", id);
+            request.setAttribute("url", "/jnh/login");
         } catch (Exception e) {
             e.printStackTrace();
             map.put("msg", "잘못된 인증번호입니다. 다시 입력해주세요.");
+            return "redirect:/findId";
         }
-        return map;
+        return "account/alert";
     }
 
     @ResponseBody
@@ -86,7 +86,7 @@ public class LoginContoller {
     }
 
     @GetMapping("/findPwd")
-    public String findpwd(){return "findPwd";}
+    public String findpwd(){return "account/findPwd";}
 
     @GetMapping("/login")
     public String LoginForm(HttpServletRequest request){
@@ -100,7 +100,7 @@ public class LoginContoller {
             String prevPage = request.getHeader("Referer");
             request.setAttribute("prevPage", prevPage);
         }
-        return "login";
+        return "account/login";
     }
 
     @PostMapping("/login")
@@ -116,17 +116,17 @@ public class LoginContoller {
             if(!loginCheck(user, map)){
                 rattb.addFlashAttribute("msg", "LOGIN_FAIL");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
+                return "account/login";
             }
             // 정지된 유저, 탈퇴 유저, 이메일 미인증 유저 확인
             if(user.getStatus() == 1){
                 rattb.addFlashAttribute("msg", "SANCTIONED_USER");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
+                return "account/login";
             }if(user.getStatus() == 2){
                 rattb.addFlashAttribute("msg", "WITHDREW_USER");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
+                return "account/login";
             }if(user.getStatus() == 3){
                 HttpSession session = request.getSession();
                 session.setAttribute("id", id);

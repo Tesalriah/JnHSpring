@@ -42,13 +42,13 @@ public class RegisterController {
     // 약관동의
     @GetMapping("/register")
     public String register(){
-        return "terms";
+        return "account/terms";
     }
 
     // 회원가입 Get
     @GetMapping("/signUp")
     public String signUp(){
-        return "signUp";
+        return "account/signUp";
     }
 
     // 이메일 인증코드 발송
@@ -62,16 +62,17 @@ public class RegisterController {
 
         try {
             // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
-            if(email != null && email.isEmpty()){
+            if(email != null || email.isEmpty()){
                 email = userService.findEmail(id);
                 m.addAttribute("email", email);
             }
             // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
             String prevPage = request.getHeader("Referer");
+            System.out.println("prevPage = " + prevPage);
             if(prevPage != null){
                 if(prevPage.contains("emailAuth")){
                     m.addAttribute("msg", "CHECK_EMAIL");
-                    return "emailAuth";
+                    return "account/emailAuth";
                 }
             }
             // 이메일, 인증번호 db에 저장
@@ -81,7 +82,7 @@ public class RegisterController {
             MailDto mailDto = new MailDto(email, authNumber+"");
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
             rattb.addFlashAttribute("email", email);
-            return "emailAuth";
+            return "account/emailAuth";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("message", "SEND_FAIL"); // 이메일 발송이 실패되었다는 메시지를 출력
@@ -105,7 +106,7 @@ public class RegisterController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "AUTH_FAIL");
-            return "emailAuth";
+            return "redirect:/emailAuth";
         }
         rattb.addFlashAttribute("msg","REG_OK");
         return "redirect:/";
@@ -141,7 +142,7 @@ public class RegisterController {
             // 성공
             session.setAttribute("id", user.getUser_id());
             rattb.addFlashAttribute("email" ,user.getEmail());
-            return "redirect:/emailAuth";
+            return "account/emailAuth";
         } catch (Exception e) {
             e.printStackTrace();
             // 실패시 원래 페이지에 생년월일 값을 반환받기 위함
@@ -154,7 +155,7 @@ public class RegisterController {
             m.addAttribute("user", user);
             m.addAttribute("address1", request.getParameter("address1"));
             m.addAttribute("address2", request.getParameter("address2"));
-            return "signUp";
+            return "account/signUp";
         }
     }
 

@@ -1,5 +1,7 @@
 package kr.co.jnh.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
 
 public class Product {
@@ -10,7 +12,7 @@ public class Product {
     private String category;
     private String color;
     private String size;
-    private int stock;
+    private String stock;
     private int price;
     private int discount;
     private String image;
@@ -20,10 +22,34 @@ public class Product {
     private int bougth_cnt;
     private String state;
 
+    private MultipartFile uploadFile;
+
     public Product(){}
 
-    public Product(String product_id, String product_name, String gender, String category, String color,
-                   String size, int stock, int price, int discount, String image, int bougth_cnt) {
+    @Override
+    public String toString() {
+        return "Product{" +
+                "product_id='" + product_id + '\'' +
+                ", product_name='" + product_name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", category='" + category + '\'' +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                ", stock='" + stock + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", image='" + image + '\'' +
+                ", reg_date=" + reg_date +
+                ", up_date=" + up_date +
+                ", rating=" + rating +
+                ", bougth_cnt=" + bougth_cnt +
+                ", state='" + state + '\'' +
+                ", uploadFile=" + uploadFile +
+                '}';
+    }
+
+    public Product(String product_id, String product_name, String gender, String category, String color, String size,
+                   String stock, int price, int discount, String image, int bougth_cnt, MultipartFile uploadFile) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.gender = gender;
@@ -35,6 +61,7 @@ public class Product {
         this.discount = discount;
         this.image = image;
         this.bougth_cnt = bougth_cnt;
+        this.uploadFile = uploadFile;
     }
 
     public String getProduct_id() {
@@ -85,11 +112,11 @@ public class Product {
         this.size = size;
     }
 
-    public int getStock() {
+    public String getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 
@@ -156,4 +183,8 @@ public class Product {
     public void setState(String state) {
         this.state = state;
     }
+
+    public MultipartFile getUploadFile() { return uploadFile; }
+
+    public void setUploadFile(MultipartFile uploadFile) { this.uploadFile = uploadFile; }
 }
