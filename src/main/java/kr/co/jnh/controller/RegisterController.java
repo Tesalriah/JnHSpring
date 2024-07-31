@@ -42,19 +42,18 @@ public class RegisterController {
     // 약관동의
     @GetMapping("/register")
     public String register(){
-        return "terms";
+        return "account/terms";
     }
 
     // 회원가입 Get
-    @GetMapping("/signup")
+    @GetMapping("/signUp")
     public String signUp(){
-        return "signUp";
+        return "account/signUp";
     }
 
     // 이메일 인증코드 발송
-    @GetMapping("/emailauth")
+    @GetMapping("/emailAuth")
     public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
-        // 세선에서 넘어온 id 저장
         String id = getSessionId(request);
 
         // 랜덤 6자리 인증번호 발급
@@ -63,16 +62,17 @@ public class RegisterController {
 
         try {
             // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
-            if(email.isBlank()){
+            if(email != null || email.isEmpty()){
                 email = userService.findEmail(id);
                 m.addAttribute("email", email);
             }
             // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
             String prevPage = request.getHeader("Referer");
+            System.out.println("prevPage = " + prevPage);
             if(prevPage != null){
                 if(prevPage.contains("emailAuth")){
                     m.addAttribute("msg", "CHECK_EMAIL");
-                    return "emailAuth";
+                    return "account/emailAuth";
                 }
             }
             // 이메일, 인증번호 db에 저장
@@ -82,7 +82,7 @@ public class RegisterController {
             MailDto mailDto = new MailDto(email, authNumber+"");
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
             rattb.addFlashAttribute("email", email);
-            return "emailAuth";
+            return "account/emailAuth";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("message", "SEND_FAIL"); // 이메일 발송이 실패되었다는 메시지를 출력
@@ -90,26 +90,23 @@ public class RegisterController {
         }
     }
 
-    // 이메일 인증
-    @PostMapping("/emailauth")
+    @PostMapping("/emailAuth")
     public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
-        // 세선에서 넘어온 id 저장
         String id = getSessionId(request);
         String email = "";
 
         try {
-            // 가져온 id를 통해 이메일 가져오기
             email = userService.findEmail(id);
             String authNumber = request.getParameter("auth_num");
 
-            // 인증번호 일치 시 status를 0(정상)으로 update, 성공시 1을 저장
             if(userService.emailAuth(new MailAuthDto(email, authNumber), id) != 1){
                 throw new Exception("Auth Fail");
             }
+            emailService.removeAuth(email);
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "AUTH_FAIL");
-            return "emailAuth";
+            return "redirect:/emailAuth";
         }
         rattb.addFlashAttribute("msg","REG_OK");
         return "redirect:/";
@@ -117,7 +114,7 @@ public class RegisterController {
 
 
     // 회원가입 Post
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, RedirectAttributes rattb, HttpSession session){
         // 따로 받은 주소 값 합치기
         String address = request.getParameter("address1") + request.getParameter("address2");
@@ -145,7 +142,7 @@ public class RegisterController {
             // 성공
             session.setAttribute("id", user.getUser_id());
             rattb.addFlashAttribute("email" ,user.getEmail());
-            return "redirect:/emailauth";
+            return "account/emailAuth";
         } catch (Exception e) {
             e.printStackTrace();
             // 실패시 원래 페이지에 생년월일 값을 반환받기 위함
@@ -158,7 +155,7 @@ public class RegisterController {
             m.addAttribute("user", user);
             m.addAttribute("address1", request.getParameter("address1"));
             m.addAttribute("address2", request.getParameter("address2"));
-            return "signUp";
+            return "account/signUp";
         }
     }
 
@@ -181,14 +178,11 @@ public class RegisterController {
         }
     }
 
-
-    // 세션에서 아이디 가져오기
     public String getSessionId(HttpServletRequest request){
         HttpSession session =  request.getSession();
         return (String)session.getAttribute("id");
     }
 
-    // 랜덤 인증번호 생성
     private Integer makeRandomNumber() {
         Random r = new Random();
         String randomNumber = "";

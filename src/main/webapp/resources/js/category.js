@@ -3,50 +3,54 @@ const setWomen = document.querySelector('#set_women');
 const setTops = document.querySelector('#set_tops');
 const setBottom = document.querySelector('#set_bottom');
 const setOuter = document.querySelector('#set_outer');
+const arr = [setTops, setBottom, setOuter];
+const arrG = [setMen, setWomen];
 let setValue = '';
 
-setMen.addEventListener('click', function(){
-    setValue = 'MEN';
-    setMen.style.backgroundColor = '#f5f5f5';
-    setWomen.style.backgroundColor = '#ffffff';
-    genderSet(setValue);
-    unfold();
-})
-setWomen.addEventListener('click', function(){
-    setValue = 'WOMEN';
-    setWomen.style.backgroundColor = '#f5f5f5';
-    setMen.style.backgroundColor = '#ffffff';
-    genderSet(setValue);
-    unfold();
-})
-setTops.addEventListener('click', function(){
-    setValue = 'TOPS';
-    setTops.style.backgroundColor="#f5f5f5";
-    setBottom.style.backgroundColor="#ffffff";
-    setOuter.style.backgroundColor="#ffffff";
-    categorySet(setValue);
-})
-setBottom.addEventListener('click', function(){
-    setValue = 'BOTTOM';
-    setTops.style.backgroundColor="#ffffff";
-    setBottom.style.backgroundColor="#f5f5f5";
-    setOuter.style.backgroundColor="#ffffff";
-    categorySet(setValue);
-})
-setOuter.addEventListener('click', function(){
-    setValue = 'OUTER';
-    setTops.style.backgroundColor="#ffffff";
-    setBottom.style.backgroundColor="#ffffff";
-    setOuter.style.backgroundColor="#f5f5f5";
-    categorySet(setValue);
-})
+for(let i=0; i<arrG.length; i++){
+    arrG[i].addEventListener('click', function(){
+        arrG[i].style.backgroundColor="#f5f5f5";
+        for(let j=0; j<arrG.length; j++){
+            if(arrG[i] != arrG[j]){
+                arrG[j].style.backgroundColor="#ffffff";
+            }
+        }
+        if(i == 0){
+            setValue = 'MEN';
+        }else if(i == 1){
+            setValue = 'WOMEN';
+        }
+        genderSet(setValue);
+        unfold();
+    })
+}
+for(let i=0; i<arr.length; i++){
+    arr[i].addEventListener('click', function(){
+        arr[i].style.backgroundColor="#f5f5f5";
+        arr[i].lastElementChild.firstElementChild.style.color='#f5f5f5';
+        for(let j=0; j<arr.length; j++){
+            if(arr[i] != arr[j]){
+                arr[j].style.backgroundColor="#ffffff";
+                arr[j].lastElementChild.firstElementChild.style.color='#ffffff';
+            }
+        }
+        if(i == 0){
+            setValue = 'TOPS';
+        }else if(i == 1){
+            setValue = 'BOTTOM';
+        }else if(i == 2){
+            setValue = 'OUTER';
+        }
+        categorySet(setValue);
+    })
+}
 
 const displayCategory = document.querySelector('.display_category');
 const emptied = document.querySelector('.emptied');
 const genderSpan = document.querySelector('#gender_span');
 const categorySpan = document.querySelector('#category_span');
 const productCategory = document.getElementsByName('category');
-const productGender = document.getElementsByName('product_gender');
+const productGender = document.getElementsByName('gender');
 const arrow = document.querySelector('#arrow');
 
 function genderSet(val){

@@ -3,11 +3,14 @@
     padding:30px;
     border-radius:15px;
 }
-.add_table input{
+.add_table input:not(#image, .stock input){
     border:1px solid #dddddd;
     padding:10px;
     width:100%;
     box-sizing: border-box;
+}
+#image{
+    padding:8.5px;
 }
 .add_table > div{
     display: flex;
@@ -16,21 +19,21 @@
 .add_table > div:not(.add_table > div:last-child){
     border-bottom:1px solid #dddddd;
 }.add_table > div > div{
-    padding:15px;
-}
+     padding:15px;
+ }
 .add_table > div > div:first-child{
     width:20%;
     text-align: center;
 }
-.add_table > div > div:nth-child(2){
+.add_table > div > div:nth-child(2):not(.stock div){
     width:30%;
     border-left:1px solid #dddddd;
 }
-.add_table > div > div:nth-child(3){
+.add_table > div > div:nth-child(3):not(.stock div){
     width: 10%;
     text-align: center;
 }
-.add_table > div > div:last-child{
+.add_table > div > div:last-child:not(.stock div){
     width: 29%;
     border-left: 1px solid #dddddd;;
 }
@@ -83,4 +86,34 @@
     color:#000000;
     background-color: #ffffff;
     border:1px solid #dddddd;
+}
+#add_stock, .del_table{
+    padding:5px 15px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}
+#add_stock:hover, .del_table:hover{
+    background-color: #eeeeee;
+    cursor:pointer;
+}
+.stock > div:last-child{
+    border-left: 1px solid #dddddd;
+    width:50%;
+}
+.stock table{
+    width: 100%;
+    text-align: center;
+    margin-top:-1px;
+}
+.stock table, .stock tr, .stock td{
+    border-collapse: collapse;
+    border:1px solid #dddddd;
+}
+.stock table input{
+    width:100%;
+    text-align:center;
+}
+.stock table td:not(.stock table td:last-child){
+    width:40%;
+    padding:15px;
 }

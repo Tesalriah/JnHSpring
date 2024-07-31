@@ -21,11 +21,11 @@
     </script>
     <form method="post" action="<c:url value='/login'/>">
         <div class="input_id"><i class="fa-regular fa-id-card"></i><input type="text" name="id" value="${cookie.id.value}" placeholder="아이디"><br></div>
-        <div class="loading_fix">
+        <div class="loding_fix">
             <div class="loading_circle"></div>
         </div>
         <div class="input_pwd"><i class="fa-solid fa-lock"></i><input type="password" name="pwd" placeholder="비밀번호"><br></div>
-        <div class="menu"><input type="checkbox" name="rememberId" id="save_id"  ${empty cookie.id.value ? "":"checked"}><label for="save_id">아이디 저장</label> <a href="<c:url value="/findid"/>">아이디 / 비밀번호 찾기</a></div>
+        <div class="menu"><input type="checkbox" name="rememberId" id="save_id"  ${empty cookie.id.value ? "":"checked"}><label for="save_id">아이디 저장</label> <a href="<c:url value="/findId"/>">아이디 / 비밀번호 찾기</a></div>
         <input type="hidden" name="prevPage" value="${prevPage}">
         <div class="button_menu">
             <input id="submit" type="submit" value="로그인">
