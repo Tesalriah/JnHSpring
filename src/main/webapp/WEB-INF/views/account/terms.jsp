@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/terms.css'/>">
     <script type="text/javascript" src="<c:url value='/resources/js/terms.js'/>" defer></script>
-    <title>회원가입</title>
+    <title>J&H 회원가입</title>
 </head>
 <body>
 <div class="container">

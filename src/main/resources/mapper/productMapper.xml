@@ -3,15 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.jnh.dao.ProductMapper">
-    <select id="select" parameterType="String" resultType="product">
+    <select id="select" parameterType="String" resultType="Product">
         SELECT * FROM product
-        WHERE product_id LIKE CONCAT(#{product_id},'%') ORDER BY size DESC LIMIT 1
+        WHERE product_id LIKE CONCAT(#{product_id},'%') ORDER BY size ASC LIMIT 1
     </select>
 
     <insert id="insert" parameterType="Product">
         INSERT INTO product
-            (product_id, product_name, product_gender, category, color, size, stock, price, discount, image)
-        VALUES (#{product_id}, #{product_name}, #{product_gender}, #{category}, #{color}, #{size}, #{stock}, #{price}, #{discount}, #{image})
+            (product_id, product_name, gender, category, color, size, stock, price, discount, image)
+        VALUES (#{product_id}, #{product_name}, #{gender}, #{category}, #{color}, #{size}, #{stock}, #{price}, #{discount}, #{image})
     </insert>
 
     <delete id="delete" parameterType="Integer">
@@ -22,5 +22,57 @@
     <select id="selectAll" parameterType="map" resultType="Integer">
         SELECT * FROM product
         WHERE gender = #{gender} AND categoty = #{category} ORDER BY rating DESC
+    </select>
+
+    <select id="selectId" parameterType="String" resultType="String">
+        SELECT product_id FROM product
+        WHERE product_id LIKE CONCAT(#{product_id},'%') ORDER BY product_id DESC LIMIT 1
+    </select>
+
+    <select id="selectSize" parameterType="String" resultType="String">
+        SELECT size FROM product
+        WHERE product_id LIKE #{product_id} AND stock != 0 ORDER BY size asc
+    </select>
+
+    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(distinct product_id)
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+    </select>
+
+    <sql id="searchCondition">
+        <if test="gender != null and !gender.equals('')">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="gender != null and !gender.equals('') and (category == null and category.equals(''))">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="gender != null and !gender.equals('') and (category != null and !category.equals(''))">
+            AND gender LIKE concat(#{gender})
+            AND category LIKE concat(#{category})
+        </if>
+        <if test="gender == null and gender.equals('')">
+            AND (product_name   LIKE concat('%', #{keyword}, '%')
+            OR category LIKE concat('%', #{keyword}, '%'))
+        </if>
+    </sql>
+
+    <select id="searchSelectPage" parameterType="SearchCondition" resultType="Product">
+        SELECT product_id, product_name, gender, category, color, size, stock, price, discount, image, rating, bougth_cnt, state
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+        group by product_id, rating
+        <if test="option == 'product_id'">
+            ORDER BY product_id asc, rating desc
+        </if>
+        <if test="option == 'rating'">
+            ORDER BY rating desc, product_id asc
+        </if>
+        <if test="option == 'bought_cnt'">
+            ORDER BY bought_cnt desc, product_id asc
+        </if>
+        LIMIT #{offset}, #{pageSize}
     </select>
 </mapper>

@@ -1,5 +1,20 @@
 package kr.co.jnh.service;
 
+import kr.co.jnh.domain.Product;
+import kr.co.jnh.domain.SearchCondition;
+
+import java.util.List;
+
 public interface ProductService {
+    Product getProduct(String product_id) throws Exception;
+
+    Integer addProduct(Product product) throws Exception;
+
     boolean productIdCheck(String date) throws Exception;
+
+    String returnId(String product_id) throws Exception;
+
+    int getSearchResultCnt(SearchCondition sc) throws Exception;
+
+    List<Product> getSearchSelectPage(SearchCondition sc) throws Exception;
 }

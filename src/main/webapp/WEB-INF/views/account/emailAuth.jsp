@@ -6,7 +6,7 @@
     <head>
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/emailAuth.css'/>">
-        <title>J&H</title>
+        <title>J&H 이메일 인증</title>
     </head>
     <body>
     <%@include file="../header.jsp"%>

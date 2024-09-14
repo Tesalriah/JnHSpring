@@ -19,7 +19,7 @@ document.getElementById('add_stock').addEventListener("click", function(){
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
 
-    cell1.innerHTML = '<input type="text" name="size">';
-    cell2.innerHTML = '<input type="text" name="stock" oninput="Slimit(this);">';
+    cell1.innerHTML = '<input type="text" name="size" autocomplete="off">';
+    cell2.innerHTML = '<input type="text" name="stock" oninput="Slimit(this);" autocomplete="off">';
     cell3.innerHTML = '<button type="button" class="del_table" onclick="removeCell(this);">삭제</button>'
 });

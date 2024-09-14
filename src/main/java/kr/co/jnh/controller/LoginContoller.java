@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.*;
+import java.net.http.HttpRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -33,37 +36,39 @@ public class LoginContoller {
     }
 
     @GetMapping("/findId")
-    public String findId(){return "account/findId";}
+    public String findId(HttpSession session){
+        if(sessionCheck(session)){
+            return "redirect:/";
+        }
+        return "account/findId";
+    }
 
     @PostMapping("/findId")
-    public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request){
-        Map map = new HashMap();
+    public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
         try {
             String id = userService.emailAuth(mailAuthDto);
-            if(id!=null){
-                map.put("id", id);
+            if(id.isBlank()){
+                throw new Exception("Wrong approach");
             }
-            System.out.println("id = " + id);
-            emailService.removeAuth(mailAuthDto.getEmail());
             request.setAttribute("msg", id);
             request.setAttribute("url", "/jnh/login");
+            return "account/alert";
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("msg", "잘못된 인증번호입니다. 다시 입력해주세요.");
-            return "redirect:/findId";
+            m.addAttribute("name", request.getParameter("name"));
+            m.addAttribute("email", mailAuthDto.getEmail());
+            m.addAttribute("msg","AUTH_FAIL");
+            return "account/findId";
         }
-        return "account/alert";
     }
 
     @ResponseBody
-    @PostMapping("/idauth")
+    @PostMapping("/idAuth")
     public Map idauth(@RequestBody User user){
         String name = user.getUser_name();
         String email = user.getEmail();
         Map map = new HashMap();
 
-        System.out.println("name = " + name);
-        System.out.println("email = " + email);
         Integer authNumber = makeRandomNumber();
         MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
 
@@ -86,7 +91,101 @@ public class LoginContoller {
     }
 
     @GetMapping("/findPwd")
-    public String findpwd(){return "account/findPwd";}
+    public String findpwd(HttpSession session){
+        if(sessionCheck(session)){
+            return "redirect:/";
+        }
+        return "account/findPwd";
+    }
+
+    @PostMapping("/findPwd")
+    public String postFindPwd(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
+        String inputId = request.getParameter("id");
+        try {
+            String id = userService.emailAuth(mailAuthDto);
+            if(id.isBlank()){
+                throw new Exception("Wrong approach");
+            }
+            if(id.equals(inputId)){
+               HttpSession session = request.getSession();
+               session.setAttribute("changePwdID", id);
+            }
+            return "redirect:/changePwd";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("id", inputId);
+            m.addAttribute("email", mailAuthDto.getEmail());
+            m.addAttribute("msg", "AUTH_FAIL");
+            return "account/findPwd";
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/pwdAuth")
+    public Map pwdAuth(@RequestBody User user){
+        String id = user.getUser_id();
+        String email = user.getEmail();
+        Map map = new HashMap();
+
+        Integer authNumber = makeRandomNumber();
+        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
+
+        try {
+            String foundId = userService.findId(email);
+            if(foundId.equals(id)){
+                emailService.addAuth(mailAuthDto);
+                MailDto mailDto = new MailDto(email, authNumber+"");
+                emailService.sendMail(mailDto);
+                map.put("msg", "전송완료");
+                return map;
+            }
+            map.put("msg", "아이디와 이메일이 일치하지 않습니다.");
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("msg", "이메일 전송 실패");
+            return map;
+        }
+    }
+
+    @GetMapping("/changePwd")
+    public String changePwd(HttpSession session){
+        if(sessionCheck(session)){
+            return "redirect:/";
+        }
+        return "account/changePwd";
+    }
+
+    @PostMapping("/changePwd")
+    public String PostChangePwd(HttpServletRequest request, Model m){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("changePwdID");
+        String pwd = request.getParameter("new_pwd");
+        String checkPwd = request.getParameter("check_new_pwd");
+        String birth = request.getParameter("birth");
+        m.addAttribute("birth",birth);
+
+        if(!pwd.equals(checkPwd)){
+            m.addAttribute("msg", "NOT_MATCH_PWD");
+            return "account/changePwd";
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date birthToDate = formatter.parse(birth);
+            if(!userService.checkBirth(id, birthToDate)){
+                m.addAttribute("msg", "NOT_MATCH_BIRTH");
+                return "account/changePwd";
+            };
+            userService.changePwd(id, pwd);
+            m.addAttribute("msg","CHANGED_PWD");
+            session.invalidate();
+            return "redirect:/login";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg", "CHANGE_FAIL");
+            return "account/changePwd";
+        }
+    }
 
     @GetMapping("/login")
     public String LoginForm(HttpServletRequest request){
@@ -173,5 +272,9 @@ public class LoginContoller {
         }
 
         return Integer.parseInt(randomNumber);
+    }
+
+    private boolean sessionCheck(HttpSession session){
+        return session.getAttribute("id") != null;
     }
 }

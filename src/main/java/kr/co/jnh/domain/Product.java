@@ -2,6 +2,7 @@ package kr.co.jnh.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 public class Product {
@@ -13,16 +14,14 @@ public class Product {
     private String color;
     private String size;
     private String stock;
-    private int price;
-    private int discount;
+    private Integer price;
+    private Integer discount;
     private String image;
     private Date reg_date;
     private Date up_date;
     private float rating;
     private int bougth_cnt;
     private String state;
-
-    private MultipartFile uploadFile;
 
     public Product(){}
 
@@ -44,12 +43,11 @@ public class Product {
                 ", rating=" + rating +
                 ", bougth_cnt=" + bougth_cnt +
                 ", state='" + state + '\'' +
-                ", uploadFile=" + uploadFile +
                 '}';
     }
 
     public Product(String product_id, String product_name, String gender, String category, String color, String size,
-                   String stock, int price, int discount, String image, int bougth_cnt, MultipartFile uploadFile) {
+                   String stock, Integer price, Integer discount, String image, int bougth_cnt) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.gender = gender;
@@ -61,7 +59,6 @@ public class Product {
         this.discount = discount;
         this.image = image;
         this.bougth_cnt = bougth_cnt;
-        this.uploadFile = uploadFile;
     }
 
     public String getProduct_id() {
@@ -120,19 +117,19 @@ public class Product {
         this.stock = stock;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 
@@ -184,7 +181,4 @@ public class Product {
         this.state = state;
     }
 
-    public MultipartFile getUploadFile() { return uploadFile; }
-
-    public void setUploadFile(MultipartFile uploadFile) { this.uploadFile = uploadFile; }
 }
