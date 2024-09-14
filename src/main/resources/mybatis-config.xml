@@ -7,5 +7,6 @@
         <typeAlias alias="User" type="kr.co.jnh.domain.User"/>
         <typeAlias alias="MailAuthDto" type="kr.co.jnh.domain.MailAuthDto"/>
         <typeAlias alias="Product" type="kr.co.jnh.domain.Product"/>
+        <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
     </typeAliases>
 </configuration>

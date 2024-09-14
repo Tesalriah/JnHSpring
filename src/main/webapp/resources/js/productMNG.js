@@ -1,35 +1,31 @@
 const productPrice = document.getElementsByName('price');
 const productDiscount = document.getElementsByName('discount');
 const productStock = document.getElementsByName('stock');
-let savePrevPrice = null;
-let savePrevstocktity = null;
-let savePrevDiscount = null;
+let savePrevPrice = 0;
+let savePrevstock = 0;
+let savePrevDiscount = 0;
 
 
 for(let i=0; i<productPrice.length; i++){
     productPrice[i].addEventListener('input', function(){
-        cantminus(productPrice[i]);
-        savePrevPrice = productPrice[i].value;
+        cantMinus(productPrice[i]);
     })
 }
 
 for(let i=0; i<productDiscount.length; i++){
     productDiscount[i].addEventListener('input',function(){
         set100(productDiscount[i]);
-        savePrevDiscount = productDiscount[i].value;
     })
 }
 
 for(let i=0; i<productStock.length; i++){
     productStock[i].addEventListener('input',function(){
         Slimit(productStock[i]);
-        savePrevstocktity = productStock[i].value;
     })
 }
-// 가격, 문자제한
-function cantminus(set){
-    let isval = Number(set.value);
 
+// 가격, 문자제한
+function cantMinus(set){
     if(set.value < 0){
         alert('양수만 입력가능합니다.');
         if(savePrevPrice == null){
@@ -41,7 +37,7 @@ function cantminus(set){
     }
 
     if(set.value > 1000000000){
-        alert('가격은 1000000000을 초과 할 수 없습니다.');
+        alert('가격은 1,000,000,000을 초과 할 수 없습니다.');
         if(savePrevPrice == null){
             set.value = 0;
         }else{
@@ -50,14 +46,18 @@ function cantminus(set){
         }
     }
 
-    if(isNaN(isval)){
-        set.value = savePrevPrice;
-        return false;
-    }else{
-        set.value = isval;
+    let isvalPrice = Number(set.value);
+    var str = savePrevPrice.toString();
+    str = str.slice(0,-1);
+    if( str == isvalPrice){
+        return;
     }
-
-    savePrevPrice = set.value;
+    if(isNaN(isvalPrice)){
+        set.value = savePrevPrice;
+    }else{
+        set.value = isvalPrice;
+        savePrevPrice = isvalPrice;
+    }
 }
 
 // 할인율, 문자 제한
@@ -70,26 +70,45 @@ function set100(set){
         alert('최소 0까지 입력가능합니다.');
         set.value = savePrevDiscount;
     }
-    let isval = Number(set.value);
-    if(isNaN(isval)){
+
+    let isvalDiscount = Number(set.value);
+    var str = savePrevDiscount.toString();
+    str = str.slice(0,-1);
+    if( str == isvalDiscount){
+        return;
+    }
+    if(isNaN(isvalDiscount)){
         set.value = savePrevDiscount;
     }else{
-        set.value = isval;
+        set.value = isvalDiscount;
+        savePrevDiscount = isvalDiscount;
     }
 }
 
 //재고수량, 문자제한
 function Slimit(stock){
     if(stock.value > 99999){
-        alert('재고수량은 99999를 초과 할 수 없습니다.')
-        stock.value = savePrevstocktity;
-        return false;
+        alert('재고수량은 99,999를 초과 할 수 없습니다.')
+        stock.value = savePrevstock;
+        return;
     }
 
-    let isval = Number(stock.value);
-    if(isNaN(isval)){
-        stock.value = savePrevstocktity;
+    let isvalStock = Number(stock.value);
+    var str = savePrevstock.toString();
+    str = str.slice(0,-1);
+    if( str == isvalStock){
+        return;
+    }
+    if(isNaN(isvalStock)){
+        stock.value = savePrevstock;
     }else{
-        stock.value = isval;
+        stock.value = isvalStock;
+        savePrevstock = isvalStock;
     }
 }
+
+
+const submitBtn = document.getElementById('submit');
+submitBtn.addEventListener('click',function(){
+    confirm("작성하시겠습니까?");
+})

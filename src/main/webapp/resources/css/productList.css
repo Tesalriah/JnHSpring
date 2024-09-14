@@ -23,6 +23,28 @@
 }
 .move{
     margin:40px 0;
+    display: flex;
+    justify-content: space-between;
+}
+#addProduct{
+    padding:10px 20px;
+    background-color: #FFAEC9;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 18px;
+}
+#addProduct:hover{
+    background-color: #DC98AF;
+}
+.search_option > a{
+    padding:0 20px;
+}
+.search_option > a:hover{
+    color: #FFAEC9;
+    font-weight: bold;
+}
+.search_option > a:not(.search_option > a:last-child){
+    border-right: 1px solid #999999;
 }
 .product_line{
     width:100%;
