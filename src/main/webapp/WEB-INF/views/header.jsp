@@ -7,21 +7,21 @@
             </div>
             <div class="menu_list">
                 <ul class="top_menu">
-                    <li><a href="">HOME</a></li>
+                    <li><a href="<c:url value='/'/>">HOME</a></li>
                     <li class="gender_on">
-                        <a href="">MEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="<c:url value="/productList?gender=MEN"/>">MEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">
-                            <li><a href="">TOPS</a></li>
-                            <li><a href="">BOTTOM</a></li>
-                            <li><a href="">OUTER</a></li>
+                            <li><a href="<c:url value="/productList?gender=MEN&category=TOPS"/>">TOPS</a></li>
+                            <li><a href="<c:url value="/productList?gender=MEN&category=BOTTOM"/>">BOTTOM</a></li>
+                            <li><a href="<c:url value="/productList?gender=MEN&category=OUTER"/>">OUTER</a></li>
                         </ul>
                     </li>
                     <li class="gender_on">
-                        <a href="">WOMEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="<c:url value="/productList?gender=WOMEN"/>">WOMEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">
-                            <li><a href="">TOPS</a></li>
-                            <li><a href="">BOTTOM</a></li>
-                            <li><a href="">OUTER</a></li>
+                            <li><a href="<c:url value="/productList?gender=WOMEN&category=TOPS"/>">TOPS</a></li>
+                            <li><a href="<c:url value="/productList?gender=WOMEN&category=BOTTOM"/>">BOTTOM</a></li>
+                            <li><a href="<c:url value="/productList?gender=WOMEN&category=OUTER"/>">OUTER</a></li>
                         </ul>
                     </li>
                     <li><a href="<c:url value="/noticeList" />">SERVICE</a></li>

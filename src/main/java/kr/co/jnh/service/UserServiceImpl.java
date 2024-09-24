@@ -50,6 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String findId(String email) throws Exception{
+        String id = userDao.selectId(email);
+        return id;
+    }
+
+    @Override
     public String findName(String email) throws Exception{
         String id = userDao.selectId(email);
         User user = userDao.selectUserById(id);

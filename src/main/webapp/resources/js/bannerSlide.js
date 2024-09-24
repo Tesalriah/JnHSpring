@@ -247,10 +247,23 @@ document.querySelector('.curcle2').addEventListener('click', function(){
     MoveReady();
     clearInterval(moveBanner);
     set=1;
+    console.log(size);
     if(window.innerWidth < 1235){
-        size-=1235;
+        if(size != -1235){
+            if(size == 0){
+                size -= 1235 + 1235;
+            }if(size % -1235 == 0){
+                size += 1235;
+            }
+        }
     }else{
-        size-=window.innerWidth;
+        if(size != -window.innerWidth){
+            if(size == 0){
+                size -= window.innerWidth + window.innerWidth;
+            }if(size % -window.innerWidth == 0){
+                size += window.innerWidth;
+            }
+        }
     }
     moveImg.style.transform = 'translate('+size+'px)';
     checkCurcle(set);

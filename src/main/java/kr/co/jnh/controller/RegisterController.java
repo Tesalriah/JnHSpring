@@ -102,7 +102,6 @@ public class RegisterController {
             if(userService.emailAuth(new MailAuthDto(email, authNumber), id) != 1){
                 throw new Exception("Auth Fail");
             }
-            emailService.removeAuth(email);
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "AUTH_FAIL");

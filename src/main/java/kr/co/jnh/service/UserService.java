@@ -17,6 +17,8 @@ public interface UserService {
 
     String findEmail(String id) throws Exception;
 
+    String findId(String email) throws Exception;
+
     String findName(String email) throws Exception;
 
     boolean checkBirth(String id, Date birth) throws Exception;

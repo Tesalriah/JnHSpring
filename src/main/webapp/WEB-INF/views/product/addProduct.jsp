@@ -10,11 +10,15 @@
         <script type="text/javascript" src="<c:url value='/resources/js/productMNG.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/category.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/stock.js'/>" defer></script>
-        <title>J&H</title>
+        <title>J&H 상품 추가</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
     <main>
+        <script>
+            msg = "${msg}";
+            if(!!msg){alert(msg);}
+        </script>
         <div class="container">
             <div class="title">
                 <div class="image">
@@ -29,7 +33,7 @@
                             <div class="add_table">
                                 <div class="product_name">
                                     <div>상품명</div>
-                                    <div><input type="text" name="product_name" autocomplete="off"></div>
+                                    <div><input type="text" name="product_name" autocomplete="off" value="${product_name}"></div>
                                 </div>
                                 <div class="category">
                                     <div>카테고리</div>
@@ -55,13 +59,13 @@
                                 </div>
                                 <div>
                                     <div>가격</div>
-                                    <div style="border-right: 1px solid #dddddd;"><input type="text" name="price" placeholder="(단위:원)" autocomplete="off"></div>
+                                    <div style="border-right: 1px solid #dddddd;"><input type="text" name="price" placeholder="(단위:원)" autocomplete="off" value="${price}"></div>
                                     <div>할인율</div>
-                                    <div><input type="text" name="discount" placeholder="(단위:%)" autocomplete="off"></div>
+                                    <div><input type="text" name="discount" placeholder="(단위:%)" autocomplete="off" value="${discount}"></div>
                                 </div>
                                 <div>
                                     <div>색상</div>
-                                    <div style="border-right: 1px solid #dddddd;"><input type="text" name="color" autocomplete="off"></div>
+                                    <div style="border-right: 1px solid #dddddd;"><input type="text" name="color" autocomplete="off" value="${color}"></div>
                                     <div>이미지</div>
                                     <div>
                                         <input id="image" type="file" name="uploadFile">
@@ -89,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="submit_button">
-                                <button type="submit">등록</button>&nbsp;&nbsp;<button type="button">취소</button>
+                                <button type="submit" id="submit">등록</button>&nbsp;&nbsp;<button type="button">취소</button>
                             </div>
                         </div>
                     </form>
