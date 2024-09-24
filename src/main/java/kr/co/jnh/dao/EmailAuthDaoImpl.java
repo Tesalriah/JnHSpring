@@ -15,7 +15,6 @@ public class EmailAuthDaoImpl implements EmailAuthDao {
 
     @Autowired
     private SqlSession session;
-
     private static String namespace = "kr.co.jnh.dao.EmailMapper.";
 
     public String selectAuthNum(String email) throws Exception{

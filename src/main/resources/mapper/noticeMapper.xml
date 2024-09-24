@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.NoticeMapper">
+    <select id="count" resultType="int">
+        SELECT count(*) FROM notice
+    </select>
+
+    <select id="lastBno" resultType="int">
+        select bno from notice order by bno desc LIMIT 1;
+    </select>
+
+    <select id="mustReadCount" resultType="int">
+        SELECT count(*) FROM notice where must_read = 0
+    </select>
+
+    <delete id="deleteAll">
+        DELETE FROM notice
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM notice WHERE bno = #{bno} and id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="NoticeDto">
+        INSERT INTO notice
+            (id, must_read, category, title, contents)
+        VALUES
+            (#{id} ,#{must_read}, #{category}, #{title}, #{contents})
+    </insert>
+
+    <select id="selectAll" resultType="NoticeDto">
+        SELECT bno, id, must_read, category, title, contents, reg_date, up_date
+        FROM notice
+        ORDER BY must_read asc ,reg_date DESC, bno asc
+    </select>
+
+    <sql id="selectFromNotice">
+        SELECT bno, id, must_read, category, title, contents, reg_date, up_date
+        FROM notice
+    </sql>
+
+    <select id="select" parameterType="int" resultType="NoticeDto">
+        <include refid="selectFromNotice"/>
+        WHERE bno = #{bno}
+    </select>
+
+    <select id="selectPage" parameterType="map" resultType="NoticeDto">
+        <include refid="selectFromNotice"/>
+        ORDER BY reg_date DESC, bno DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+
+    <update id="update" parameterType="NoticeDto">
+        UPDATE notice
+        SET   title = #{title}
+          , contents = #{contents}
+          , up_date = now()
+        WHERE bno = #{bno} and id = #{id}
+    </update>
+
+    <select id="selectMustRead" resultType="NoticeDto">
+        <include refid="selectFromNotice"/>
+        where true
+        AND must_read = 0
+    </select>
+
+    <select id="searchSelectPage" parameterType="SearchCondition" resultType="NoticeDto">
+        <include refid="selectFromNotice"/>
+        where true
+        <include refid="searchCondition"/>
+        ORDER BY reg_date DESC, bno DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
+        select count(*)
+        from notice
+        WHERE true
+        <include refid="searchCondition"></include>
+    </select>
+
+    <sql id="searchCondition">
+            AND category LIKE concat('%', #{option}, '%')
+            AND must_read = 1
+    </sql>
+
+    <select id="prevNext" parameterType="map" resultType="map">
+        select * from(
+                         select
+                             LEAD(bno,2) over (order by bno) as arr0,
+                                 LEAD(bno,1) over (order by bno) as arr1,
+                                 bno as arr2,
+                             LAG(bno,1) over (order by bno) as arr3,
+                                 LAG(bno,2) over (order by bno) as arr4
+                         from notice where true AND category LIKE concat('%',#{option},'%') order by bno desc )abc
+        where arr2=#{bno};
+    </select>
+
+
+
+
+
+
+<!--    <select id="searchSelectPage" parameterType="SearchCondition" resultType="BoardDto">-->
+<!--        <include refid="selectFromNotice"/>-->
+<!--        WHERE true-->
+<!--        <include refid="searchCondition"></include>-->
+<!--        ORDER BY reg_date DESC, bno DESC-->
+<!--        LIMIT #{offset}, #{pageSize}-->
+<!--    </select>-->
+
+<!--    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">-->
+<!--        select count(*)-->
+<!--        from notice-->
+<!--        WHERE true-->
+<!--        <include refid="searchCondition"></include>-->
+<!--    </select>-->
+
+<!--    <sql id="searchCondition">-->
+<!--        <choose>-->
+<!--            <when test='option=="T"'>-->
+<!--                AND title LIKE concat('%', #{keyword}, '%')-->
+<!--            </when>-->
+<!--            <when test='option=="W"'>-->
+<!--                AND writer LIKE concat('%', #{keyword}, '%')-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                AND (title   LIKE concat('%', #{keyword}, '%')-->
+<!--                OR   content LIKE concat('%', #{keyword}, '%'))-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--    </sql>-->
+
+</mapper>

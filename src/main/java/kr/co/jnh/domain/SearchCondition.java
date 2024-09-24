@@ -44,6 +44,17 @@ public class SearchCondition{
                 .build().toString();
     }
 
+    public String getOptionQueryString(Integer page) {
+        // ?page=1&pageSize=10&option=T&keyword="title"
+        return UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("pageSize", pageSize)
+                .queryParam("option", option)
+                .build().toString();
+    }
+
+    public String getOptionQueryString(){ return getOptionQueryString(page);}
+
     public String getQueryString(){
         return getQueryString(page);
     }
