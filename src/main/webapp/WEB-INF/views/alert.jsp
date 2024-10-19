@@ -8,7 +8,8 @@
 <script>
   var msg = "<c:out value="${msg}"/>";
   var url = "<c:out value="${url}"/>";
-  alert('회원님의 아이디는 ' + msg + ' 입니다.');
+  url = url.replace(/&amp;/g, '&');
+  alert(msg);
   location.href = url;
 </script>
 </body>

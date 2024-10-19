@@ -2,6 +2,7 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.*;
-import java.net.http.HttpRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,9 +50,9 @@ public class LoginContoller {
             if(id.isBlank()){
                 throw new Exception("Wrong approach");
             }
-            request.setAttribute("msg", id);
+            request.setAttribute("msg", "회원님의 ID는 " + id + " 입니다.");
             request.setAttribute("url", "/jnh/login");
-            return "account/alert";
+            return "alert";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("name", request.getParameter("name"));
@@ -188,7 +188,7 @@ public class LoginContoller {
     }
 
     @GetMapping("/login")
-    public String LoginForm(HttpServletRequest request){
+    public String LoginForm(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
         if( id != null && id.isBlank()){
@@ -197,6 +197,9 @@ public class LoginContoller {
         // 이전페이지를 받아서 파라미터로 넘겨주기
         if(request.getParameter("prevPage") == null){
             String prevPage = request.getHeader("Referer");
+            if(request.getParameter("product_id") != null){
+                prevPage += "&product_id=" + request.getParameter("product_id");
+            }
             request.setAttribute("prevPage", prevPage);
         }
         return "account/login";

@@ -77,7 +77,9 @@ public class RegisterController {
             }
             // 이메일, 인증번호 db에 저장
             mailAuthDto = new MailAuthDto(email, authNumber+"");
-            emailService.addAuth(mailAuthDto);
+            if(emailService.addAuth(mailAuthDto) != 1){
+                throw new Exception("AUTH_ADD_FAIL");
+            }
             // 이메일 전송
             MailDto mailDto = new MailDto(email, authNumber+"");
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함

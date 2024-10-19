@@ -22,6 +22,9 @@ public class Product {
     private float rating;
     private int bougth_cnt;
     private String state;
+    private Integer quantity;
+    private Integer total;
+    private Integer dis_price;
 
     public Product(){}
 
@@ -43,6 +46,9 @@ public class Product {
                 ", rating=" + rating +
                 ", bougth_cnt=" + bougth_cnt +
                 ", state='" + state + '\'' +
+                ", quantity=" + quantity +
+                ", total=" + total +
+                ", dis_price=" + dis_price +
                 '}';
     }
 
@@ -125,12 +131,14 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getDiscount() {
-        return discount;
-    }
+    public Integer getDiscount() { return discount; }
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public Integer getDis_price() {
+        return dis_price;
     }
 
     public String getImage() {
@@ -181,4 +189,13 @@ public class Product {
         this.state = state;
     }
 
+    public Integer getQuantity() { return quantity; }
+
+    public void setQuantity(Integer quantity) {
+        dis_price = price - (int) ((double)price * (double)discount / 100);
+        total = dis_price * quantity;
+        this.quantity = quantity;
+    }
+
+    public Integer getTotal() { return total; }
 }

@@ -1,0 +1,194 @@
+package kr.co.jnh.controller;
+
+import kr.co.jnh.dao.ProductDao;
+import kr.co.jnh.domain.*;
+import kr.co.jnh.service.CartService;
+import kr.co.jnh.service.ProductService;
+import kr.co.jnh.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Controller
+public class CartController {
+    @Autowired
+    CartService cartService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    ProductService productService;
+
+    @GetMapping("cart")
+    public String getCart(HttpServletRequest request, RedirectAttributes rattr){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == null || id.equals("")){
+            rattr.addFlashAttribute("prevPage", "/cart");
+            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            return "redirect:/login";
+        }
+
+        try {
+            List<Cart> cartList = cartService.showCart(id);
+            List<Product> productList = new ArrayList<>();
+            for(int i=0; i<cartList.size(); i++){
+                Product product = productService.getProduct(cartList.get(i).getProduct_id());
+                product.setQuantity(cartList.get(i).getQuantity());
+                productList.add(product);
+            }
+            request.setAttribute("cartList", cartList);
+            request.setAttribute("productList", productList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "product/cart";
+    }
+
+    @PostMapping("cart")
+    public String postCart(Cart cart, String quantity, HttpServletRequest request, RedirectAttributes rattr){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == null || id.equals("")){
+            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            return "redirect:/login";
+        }
+        int total = 0;
+        String[] product_id = cart.getProduct_id().split(",");
+        String[] size = cart.getSize().split(",");
+        String[] quan = quantity.split(",");
+        Product product = null;
+        List<Product> list = new ArrayList();
+        try {
+            for(int i=0; i<product_id.length; i++){
+                product = null;
+                product = productService.getProduct(product_id[i]);
+                product.setSize(size[i]);
+                product.setQuantity(Integer.parseInt(quan[i]));
+                total += product.getTotal();
+                list.add(product);
+            }
+            User user = userService.getUser(id);
+            request.setAttribute("list", list);
+            request.setAttribute("total", total);
+            request.setAttribute("user", user);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return "product/payment";
+    }
+
+    @PostMapping("addCart")
+    public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == null || id.equals("")){
+            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            return "redirect:/login";
+        }
+        Map map = new HashMap();
+        map.put("id", id);
+        map.put("product_id", cart.getProduct_id());
+        map.put("size", cart.getSize());
+        int result = -1;
+        cart.setUser_id(id);
+        try {
+            if(cart.getSize().equals("")){
+                request.setAttribute("msg", "사이즈를 선택해주세요.");
+                throw new Exception("SIZE_IS_REQUIRED");
+            }
+            if(cartService.checkCart(map) != null){
+                request.setAttribute("msg", "이미 등록된 상품입니다.");
+                throw new Exception("ALREADY_ADDED");
+            }
+
+            result = cartService.addCart(cart);
+            if(result == 1){
+                request.setAttribute("msg", "장바구니에 상품을 추가하였습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("url", "product" + sc.getQueryString() + "&product_id=" + cart.getProduct_id());
+        return "alert";
+    }
+
+    @PostMapping("delCart")
+    public String delCart(String check_box, Cart cart, HttpServletRequest request, RedirectAttributes rattr){
+        if(check_box == null || check_box.equals("")){
+            request.setAttribute("msg", "선택된 상품이 없습니다.");
+            request.setAttribute("url", "cart");
+            return "alert";
+        }
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == null || id.equals("")){
+            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            return "redirect:/login";
+        }
+        Map map = new HashMap();
+        map.put("id", id);
+        String[] product_id = cart.getProduct_id().split(",");
+        String[] size = cart.getSize().split(",");
+        String[] check = check_box.split(",");
+        try {
+            for (int i=0; i<product_id.length; i++) {
+                for(int j=0; j<check.length; j++){
+                    if(i  == Integer.parseInt(check[j])){
+                        map.put("size", size[i]);
+                        map.put("product_id", product_id[i]);
+                        if(cartService.delCart(map) != 1){
+                            throw new Exception("DEL_FAIL");
+                        }
+                    }
+                    map.remove("product_id");
+                    map.remove("size");
+                }
+            }
+            request.setAttribute("msg", "삭제되었습니다.");
+            request.setAttribute("url", "cart");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "삭제 도중 실패했습니다.");
+            request.setAttribute("url", "cart");
+        }
+
+        return "alert";
+    }
+
+    @PostMapping("delOneCart")
+    public String delOneCart(String del_product_id, String del_size, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        Map map = new HashMap();
+        map.put("product_id", del_product_id);
+        map.put("size", del_size);
+        map.put("id", id);
+        System.out.println("map = " + map);
+
+        try {
+            if(cartService.delCart(map) != 1){
+                request.setAttribute("msg", "삭제에 실패했습니다.");
+                throw new Exception("DEL_FAIL");
+            }
+            request.setAttribute("msg", "삭제되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("url", "cart");
+        return "alert";
+    }
+}

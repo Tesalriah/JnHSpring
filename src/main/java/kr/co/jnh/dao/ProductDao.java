@@ -21,5 +21,5 @@ public interface ProductDao {
 
     List<Product> searchSelectPage(SearchCondition sc) throws Exception;
 
-    List<String> getSize(String product_id) throws Exception;
+    List<String> selectSize(String product_id) throws Exception;
 }
