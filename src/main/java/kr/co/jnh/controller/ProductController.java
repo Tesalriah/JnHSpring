@@ -4,7 +4,9 @@ import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.SearchCondition;
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.ProductService;
+import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,28 +14,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Controller
 public class ProductController {
     @Autowired
     ProductService productService;
-
     @Autowired
-    ProductDao dao;
+    UserService userService;
 
     @GetMapping("/product")
     public String product(@RequestParam String product_id, SearchCondition sc, Model m){
@@ -41,8 +38,9 @@ public class ProductController {
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
         try {
             Product product = productService.getProduct(product_id);
+            product.setQuantity(1);
             m.addAttribute("product", product);
-            List<String> list =  dao.getSize(product_id);
+            List<String> list =  productService.getSize(product_id);
             List<String> sizeList =  new ArrayList<>();
             for(int i=0; i<sizeFrame.length; i++){
                 for(int j=0; j<list.size(); j++){
@@ -61,6 +59,35 @@ public class ProductController {
             return "product/productInfo";
         }
     }
+
+    @PostMapping("product")
+    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == "" || id == null){
+            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            return "redirect:login";
+        }
+
+        try {
+            if(size.equals("")){
+                request.setAttribute("msg", "사이즈를 선택해주세요.");
+                request.setAttribute("url", "product"+ sc.getQueryString() + "&product_id=" + product_id);
+                throw new Exception("SIZE_IS_REQUIRED");
+            }
+            Product product = productService.getProduct(product_id);
+            product.setQuantity(quantity);
+            product.setSize(size);
+            User user = userService.getUser(id);
+            request.setAttribute("product", product);
+            request.setAttribute("user", user);
+            return "product/payment";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "alert";
+        }
+    }
+
     @GetMapping("/productList")
     public String productList(SearchCondition sc, Model m){
         sc.setPageSize(6);
@@ -71,16 +98,10 @@ public class ProductController {
             int totalCnt = productService.getSearchResultCnt(sc);
             m.addAttribute("totalCnt", totalCnt);
             PageHandler ph = new PageHandler(totalCnt, sc);
-            System.out.println("totalCnt = " + totalCnt);
 
             List<Product> list = productService.getSearchSelectPage(sc);
-            System.out.println("sc.getPage() = " + sc.getPage());
             m.addAttribute("list", list);
             m.addAttribute("ph", ph);
-            for (int i = 0; i < list.size(); i++) {
-                Product product = list.get(i);
-                System.out.println("product.getProduct_id() = " + product.getProduct_id());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +109,22 @@ public class ProductController {
     }
 
     @GetMapping("/addProduct")
-    public String getAddProduct(){return "product/addProduct";}
+    public String getAddProduct(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        try {
+            if(userService.getGrade(id) == 0){
+                return "product/addProduct";
+            }else{
+                request.setAttribute("msg", "관리자만 접근가능합니다.");
+                request.setAttribute("url", "productList");
+                throw new Exception("NOT_ADMIN");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "alert";
+        }
+    }
 
     @PostMapping("/addProduct")
     public String addProduct(Product product, HttpServletRequest request, @RequestParam("uploadFile")MultipartFile file){
@@ -102,7 +138,7 @@ public class ProductController {
             request.setAttribute("color", product.getColor());
             return "product/addProduct";
         }
-        int result = 0;
+        int result = -1;
         String[] sizeArr = product.getSize().split(",");
         String[] stockArr = product.getStock().split(",");
         Date date = new Date();
@@ -123,7 +159,6 @@ public class ProductController {
                 product_id = Long.parseLong(today + "001");
             }
             product.setProduct_id(product_id + "");
-            product.setImage(product_id + "");
             product.setState("판매");
 
             // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
@@ -138,6 +173,8 @@ public class ProductController {
             originalFileName = fileNameArr[0] + "." + fileNameArr[1];
             File newFile = new File(savePath + originalFileName);
             file.transferTo(newFile);
+
+            product.setImage(originalFileName);
 
             if(sizeArr.length > 1 || stockArr.length > 1){
                 for(int i=0; i<sizeArr.length; i++){

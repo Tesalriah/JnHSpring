@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Integer addProduct(Product product) throws Exception{
+    public int addProduct(Product product) throws Exception{
         return productDao.insert(product);
     }
     @Override
@@ -43,5 +43,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getSearchSelectPage(SearchCondition sc) throws Exception{
         return productDao.searchSelectPage(sc);
+    }
+
+    @Override
+    public List<String> getSize(String product_id) throws Exception{
+        return productDao.selectSize(product_id);
     }
 }

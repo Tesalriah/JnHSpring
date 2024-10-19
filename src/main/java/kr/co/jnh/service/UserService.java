@@ -32,4 +32,6 @@ public interface UserService {
     int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception;
 
     String emailAuth(MailAuthDto mailAuthDto) throws Exception;
+
+    User getUser(String id) throws Exception;
 }

@@ -54,7 +54,7 @@ public class ProductDaoImpl implements ProductDao {
         return session.selectList( nameSpace + "searchSelectPage", sc);
     }
 
-    public List<String> getSize(String product_id) throws Exception{
+    public List<String> selectSize(String product_id) throws Exception{
         return session.selectList( nameSpace + "selectSize", product_id);
     }
 }

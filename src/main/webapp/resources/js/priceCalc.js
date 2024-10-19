@@ -10,7 +10,7 @@ function totalSet(result){
     total.innerHTML = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 window.onload = function(){
-    totalPrice = price[0].value * quantity[0].value;
+    totalPrice = price[0].value * quantity[0].value + 3000;
     totalSet(totalPrice);
 }
 
@@ -33,7 +33,7 @@ for(let i=0; i<quantity.length; i++){
         if(n_quantity >= 1){
             quantity[i].value = String(n_quantity);
         }
-        totalPrice = price[0].value * quantity[0].value;
+        totalPrice = price[0].value * quantity[0].value + 3000;
         totalSet(totalPrice);
     })
 
@@ -42,7 +42,7 @@ for(let i=0; i<quantity.length; i++){
         if(n_quantity <= 100){
             quantity[i].value = String(n_quantity);
         }
-        totalPrice = price[0].value * quantity[0].value;
+        totalPrice = price[0].value * quantity[0].value + 3000;
         totalSet(totalPrice);
     })
 }

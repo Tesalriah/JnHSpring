@@ -37,11 +37,11 @@ button,input[type="submit"]{
     align-items:center;
     justify-content: space-between;
 }
-button[type="submit"]:hover{
+input[type="submit"]:hover{
     cursor: pointer;
     background-color:#DC98AF;
 }
-button[type="submit"]{
+input[type="submit"]{
     border:1px solid #FFAEC9;
     color:#ffffff;
     background-color:#FFAEC9;
@@ -65,14 +65,14 @@ button[type="submit"]{
     object-fit: cover;
 }
 .product_info{
-    width:50%;
+    width:45%;
     font-size:15px;
     font-weight:bold;
 }
 .list_button button:hover{
     cursor:pointer;
 }
-.list_button button{
+.list_button input[type="submit"]{
     width:113px;
     height:30px;
     font-size:12px;
