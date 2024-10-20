@@ -12,7 +12,7 @@ public interface CartService {
 
     int delCart(Map map) throws Exception;
 
-    int modCart(Map map) throws Exception;
+    int modQuantity(Cart cart) throws Exception;
 
     Cart checkCart(Map map) throws Exception;
 }

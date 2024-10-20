@@ -12,7 +12,7 @@ public interface CartDao {
 
     int delete(Map map) throws Exception;
 
-    int update(Map map) throws Exception;
+    int update(Cart cart) throws Exception;
 
     Cart checkCart(Map map) throws Exception;
 }

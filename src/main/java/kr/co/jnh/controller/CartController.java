@@ -8,9 +8,7 @@ import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,8 +35,8 @@ public class CartController {
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
         if(id == null || id.equals("")){
-            rattr.addFlashAttribute("prevPage", "/cart");
             rattr.addFlashAttribute("msg", "NEED_LOGIN");
+            rattr.addFlashAttribute("prevPage", "/cart");
             return "redirect:/login";
         }
 
@@ -59,27 +57,37 @@ public class CartController {
     }
 
     @PostMapping("cart")
-    public String postCart(Cart cart, String quantity, HttpServletRequest request, RedirectAttributes rattr){
+    public String postCart(Cart cart, String quantity, String check_box, HttpServletRequest request, RedirectAttributes rattr){
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
         if(id == null || id.equals("")){
             rattr.addFlashAttribute("msg", "NEED_LOGIN");
             return "redirect:/login";
         }
+        if(check_box == null || check_box.equals("")){
+            request.setAttribute("msg", "상품을 선택해주세요.");
+            request.setAttribute("url", "cart");
+            return "alert";
+        }
         int total = 0;
         String[] product_id = cart.getProduct_id().split(",");
         String[] size = cart.getSize().split(",");
         String[] quan = quantity.split(",");
+        String[] checkbox = check_box.split(",");
         Product product = null;
         List<Product> list = new ArrayList();
         try {
             for(int i=0; i<product_id.length; i++){
-                product = null;
-                product = productService.getProduct(product_id[i]);
-                product.setSize(size[i]);
-                product.setQuantity(Integer.parseInt(quan[i]));
-                total += product.getTotal();
-                list.add(product);
+                for(int j=0; j<checkbox.length; j++){
+                    if( i == Integer.parseInt(checkbox[j])){
+                        product = null;
+                        product = productService.getProduct(product_id[i]);
+                        product.setSize(size[i]);
+                        product.setQuantity(Integer.parseInt(quan[i]));
+                        total += product.getTotal();
+                        list.add(product);
+                    }
+                }
             }
             User user = userService.getUser(id);
             request.setAttribute("list", list);
@@ -140,7 +148,7 @@ public class CartController {
             return "redirect:/login";
         }
         Map map = new HashMap();
-        map.put("id", id);
+        map.put("user_id", id);
         String[] product_id = cart.getProduct_id().split(",");
         String[] size = cart.getSize().split(",");
         String[] check = check_box.split(",");
@@ -176,7 +184,7 @@ public class CartController {
         Map map = new HashMap();
         map.put("product_id", del_product_id);
         map.put("size", del_size);
-        map.put("id", id);
+        map.put("user_id", id);
         System.out.println("map = " + map);
 
         try {
@@ -190,5 +198,31 @@ public class CartController {
         }
         request.setAttribute("url", "cart");
         return "alert";
+    }
+
+    @PostMapping("setQuantity")
+    @ResponseBody
+    public Map<String, Object> setQuantity(@RequestBody Map<String, Object> cartMap, HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        if(id == null || id.equals("")){
+            map.put("msg", "로그인을 확인해주세요.");
+            return map;
+        }
+
+        Cart cart = new Cart();
+        cart.setUser_id(id);
+        cart.setProduct_id((String)cartMap.get("product_id"));
+        cart.setSize((String)cartMap.get("size"));
+        cart.setQuantity((Integer)cartMap.get("quantity"));
+        try {
+            cartService.modQuantity(cart);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        map.put("quantity", cart.getQuantity());
+
+        return map;
     }
 }

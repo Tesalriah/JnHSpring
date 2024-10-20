@@ -72,7 +72,7 @@
 .product_each > div{
     padding:10px;
 }
-.product_each > div:not(.product_each > div:first-child){
+.product_each > div:not(.product_each > div:first-of-type){
     border-top:1px solid #dddddd;
 }
 .product_each span{
