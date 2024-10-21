@@ -79,7 +79,10 @@ public class ProductController {
             product.setQuantity(quantity);
             product.setSize(size);
             User user = userService.getUser(id);
-            request.setAttribute("product", product);
+            List<Product> list = new ArrayList<>();
+            list.add(product);
+            request.setAttribute("list", list);
+            request.setAttribute("total", product.getTotal());
             request.setAttribute("user", user);
             return "product/payment";
         } catch (Exception e) {

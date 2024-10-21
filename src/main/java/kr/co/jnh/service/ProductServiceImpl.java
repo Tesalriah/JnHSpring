@@ -49,4 +49,5 @@ public class ProductServiceImpl implements ProductService {
     public List<String> getSize(String product_id) throws Exception{
         return productDao.selectSize(product_id);
     }
+
 }

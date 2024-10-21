@@ -9,6 +9,7 @@
         <typeAlias alias="Product" type="kr.co.jnh.domain.Product"/>
         <typeAlias alias="NoticeDto" type="kr.co.jnh.domain.NoticeDto"/>
         <typeAlias alias="Cart" type="kr.co.jnh.domain.Cart"/>
+        <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
     </typeAliases>
 </configuration>

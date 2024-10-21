@@ -3,6 +3,7 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.domain.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public int modCart(Map map) throws Exception{
-        return cartDao.update(map);
+    public int modQuantity(Cart cart) throws Exception{
+        return cartDao.update(cart);
     }
 
     @Override

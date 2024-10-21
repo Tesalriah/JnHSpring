@@ -17,17 +17,21 @@
 
     <delete id="delete" parameterType="Map">
         DELETE FROM cart
-        WHERE user_id = #{id} and product_id = #{product_id} and size = #{size}
+        <include refid="where"/>
     </delete>
 
-    <update id="update" parameterType="Map">
+    <update id="update" parameterType="Cart">
         UPDATE cart
         SET quantity = #{quantity}
-        WHERE user_id = #{id}
+        <include refid="where"/>
     </update>
 
     <select id="checkCart" parameterType="Map" resultType="Cart">
         SELECT * FROM cart
-        WHERE user_id = #{id} and product_id=#{product_id} and size=#{size};
+        <include refid="where"/>
     </select>
+
+    <sql id="where">
+        WHERE user_id = #{user_id} AND product_id=#{product_id} AND size=#{size};
+    </sql>
 </mapper>

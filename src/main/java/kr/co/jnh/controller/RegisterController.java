@@ -68,7 +68,6 @@ public class RegisterController {
             }
             // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
             String prevPage = request.getHeader("Referer");
-            System.out.println("prevPage = " + prevPage);
             if(prevPage != null){
                 if(prevPage.contains("emailAuth")){
                     m.addAttribute("msg", "CHECK_EMAIL");

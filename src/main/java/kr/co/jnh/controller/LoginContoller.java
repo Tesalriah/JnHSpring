@@ -218,17 +218,17 @@ public class LoginContoller {
             if(!loginCheck(user, map)){
                 rattb.addFlashAttribute("msg", "LOGIN_FAIL");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "account/login";
+                return "redirect:/login";
             }
             // 정지된 유저, 탈퇴 유저, 이메일 미인증 유저 확인
             if(user.getStatus() == 1){
                 rattb.addFlashAttribute("msg", "SANCTIONED_USER");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "account/login";
+                return "redirect:/login";
             }if(user.getStatus() == 2){
                 rattb.addFlashAttribute("msg", "WITHDREW_USER");
                 rattb.addFlashAttribute("prevPage", prevPage);
-                return "account/login";
+                return "redirect:/login";
             }if(user.getStatus() == 3){
                 HttpSession session = request.getSession();
                 session.setAttribute("id", id);

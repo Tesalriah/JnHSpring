@@ -1,20 +1,23 @@
 const checkboxes = document.querySelectorAll('.delete_check');
+const selectAll = document.querySelector('.select_all');
 
-function selectAll(selectAll){
+selectAll.addEventListener('click', function(){
     checkboxes.forEach((checkbox) =>{
         checkbox.checked = selectAll.checked;
     })
-}
+})
 
-function checkAll(checkAll){
-    for(let i=0; i<checkboxes.length; i++){
-        if(checkboxes[i].checked == true){
-            if(i==checkboxes.length-1){
-                document.querySelector('.select_all').checked = true;
+for(let k=0; k<checkboxes.length; k++){
+    checkboxes[k].addEventListener('click',function(){
+        for(let i=0; i<checkboxes.length; i++){
+            if(checkboxes[i].checked == true){
+                if(i==checkboxes.length-1){
+                    selectAll.checked = true;
+                }
+            }else{
+                selectAll.checked = false;
+                return;
             }
-        }else{
-            document.querySelector('.select_all').checked = false;
-            return;
         }
-    }
+    })
 }

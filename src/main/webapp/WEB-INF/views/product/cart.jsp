@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page session="false"%>
@@ -24,7 +25,7 @@
             <form action="<c:url value="/cart"/>" method="post" >
                 <div class="list_option">
                     <div style="width:16%;">
-                        <input type="checkbox" id="delete_all" class="select_all" onclick="selectAll(this)"><label for="delete_all">&nbsp;전체 선택</label>
+                        <input type="checkbox" id="delete_all" class="select_all"><label for="delete_all">&nbsp;전체 선택</label>
                     </div>
                     <div style="width:45%;">상품정보</div>
                     <div style="width:4%;text-align:center;">사이즈</div>
@@ -44,7 +45,7 @@
                     <c:forEach items="${cartList}" var="cart" varStatus="status">
                         <li>
                             <div style="display:flex; width:16%;">
-                                <input type="checkbox" class="delete_check" value="${status.index}" name="check_box" onclick="checkAll(this)">
+                                <input type="checkbox" class="delete_check" value="${status.index}" name="check_box">
                                 <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/${productList[status.index].product_id}/${productList[status.index].image}"/>"></a>
                             </div>
                             <div class="product_info">
@@ -59,7 +60,7 @@
                                 <button type="button" class="quantity_minus"><i class="fa-solid fa-minus"></i></button><input class="quantity" type="text" name="quantity" value="${cart.quantity}"><button type="button" class="quantity_plus"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <div class="list_button">
-                                <input type="submit" formaction="<c:url value="/delOneCart"/>?del_product_id=${cart.product_id}&del_siz e=${cart.size}" value="삭제">
+                                <input type="submit" formaction="<c:url value="/delOneCart"/>?del_product_id=${cart.product_id}&del_size=${cart.size}" value="삭제">
                             </div>
                         </li>
                     </c:forEach>
@@ -67,7 +68,7 @@
                 <div class="end_list">
                     <div>
                         <c:if test="${not empty cartList}">
-                            총 주문금액 <span id="total"></span>원
+                            총 주문금액 <span id="total">0</span>원
                         </c:if>
                     </div>
                 </div>

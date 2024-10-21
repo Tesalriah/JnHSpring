@@ -7,8 +7,9 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
-        <script src="<c:url value="/resources/js/address.js" />"></script>
+        <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/address.js"/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/order.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/payment.css'/>">
         <title>J&H 상품결제</title>
     </head>
@@ -16,7 +17,7 @@
     <%@ include file="../header.jsp" %>
     <main>
         <div class="container">
-            <form action="" method="post">
+            <form action="<c:url value="/buy"/>" method="post" id="buy">
                 <div class="payment">
                     <div class="title">주문 / 결제</div>
                     <div class="subheading">구매자 정보</div>
@@ -38,27 +39,27 @@
                     <table>
                         <tr>
                             <td>이름</td>
-                            <td><input name="name" type="text" value="${user.user_name}"></td>
+                            <td><input name="name" type="text" value="${empty order.name ? user.user_name : order.name}"></td>
                         </tr>
                         <tr>
                             <td>배송주소</td>
                             <td>
-                                <input name="address" class="address" type="text" value="${user.address}" readonly><button class="find_address" type="button">주소변경</button>
+                                <input name="address" class="address" type="text" value="${empty order.address ? user.address :order.address}" readonly><button class="find_address" type="button">주소변경</button>
                                 <br><div style="display: none; margin-top: 10px;"><input style="width:50%;" name="address2" class="address_detail" type="text" placeholder="상세주소"></div>
                             </td>
                         </tr>
                         <tr>
                             <td>연락처</td>
-                            <td><input name="phone" type="text" value="${user.phone}" placeholder="- 구문없이 입력해주세요"></td>
+                            <td><input name="phone" type="text" value="${empty order.phone ? user.phone : order.phone}" placeholder="- 구문없이 입력해주세요"></td>
                         </tr>
                         <tr>
                             <td>배송 요청사항</td>
                             <td>
-                                <select name="delivery_req">
-                                    <option value="" selected style="display: none;">배송요청사항 선택</option>
-                                    <option value="문앞에 두고가주세요">문앞에 두고가주세요</option>
-                                    <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
-                                    <option value="배송시 연락주세요">배송시 연락주세요</option>
+                                <select name="del_request">
+                                    <option value="" style="display: none;" ${order.del_requset == "" ? "selected" : ""} ${empty order ? "selected": ""}}>배송요청사항 선택</option>
+                                    <option value="문앞에 두고가주세요" ${order.del_requset == "문앞에 두고가주세요" ? "selected" : ""}>문앞에 두고가주세요</option>
+                                    <option value="경비실에 맡겨주세요" ${order.del_requset == "경비실에 맡겨주세요" ? "selected" : ""}>경비실에 맡겨주세요</option>
+                                    <option value="배송시 연락주세요" ${order.del_requset == "배송시 연락주세요" ? "selected" : ""}>배송시 연락주세요</option>
                                 </select>
                             </td>
                         </tr>
@@ -66,26 +67,20 @@
                     <div class="subheading" style="margin-top:25px;">구매목록</div>
                     <div class="product">
                         <div class="product_each">
-                            <c:choose>
-                                <c:when test="${not empty product}">
-                                    <div><span><a href="product?product_id=${product.product_id}" target="_blank">${product.product_name}</a></span>/<span>${product.color}</span>/<span>${product.size}</span>/<span>${product.quantity}개</span>/<span><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.total}"/>₩</span></div>
-                                </c:when>
-                                <c:when test="${not empty list}">
-                                    <c:forEach items="${list}" var="product">
-                                        <div><span><a href="product?product_id=${product.product_id}" target="_blank">${product.product_name}</a></span>/<span>${product.color}</span>/<span>${product.size}</span>/<span>${product.quantity}개</span>/<span><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.total}"/>₩</span></div>
-                                    </c:forEach>
-                                </c:when>
-                            </c:choose>
-<%--                            <div><span>옥스포드 셔츠</span>/<span>Blue</span>/<span>XL</span>/<span>1개</span></div>--%>
-<%--                            <div><span>라이더 자켓</span>/<span>Black</span>/<span>L</span>/<span>1개</span></div>--%>
-<%--                            <div><span>와이드 팬츠</span>/<span>Pink</span>/<span>XL</span>/<span>1개</span></div>--%>
-<%--                            <div><span>옥스포드 셔츠</span>/<span>Black</span>/<span>XL</span>/<span>1개</span></div>--%>
+                            <c:forEach items="${list}" var="product">
+                                <input type="hidden" name="product_id" value="${product.product_id}"><input type="hidden" name="size" value="${product.size}"><input type="hidden" name="quantity" value="${product.quantity}">
+                                <div><span><a href="product?product_id=${product.product_id}" target="_blank">${product.product_name}</a></span>/<span>${product.color}</span>/<span>${product.size}</span>/<span>${product.quantity}개</span>/<span><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.total}"/>₩</span></div>
+                            </c:forEach>
+<%--                        <div><span>옥스포드 셔츠</span>/<span>Blue</span>/<span>XL</span>/<span>1개</span></div>--%>
+<%--                        <div><span>라이더 자켓</span>/<span>Black</span>/<span>L</span>/<span>1개</span></div>--%>
+<%--                        <div><span>와이드 팬츠</span>/<span>Pink</span>/<span>XL</span>/<span>1개</span></div>--%>
+<%--                        <div><span>옥스포드 셔츠</span>/<span>Black</span>/<span>XL</span>/<span>1개</span></div>--%>
                         </div>
                     </div>
                     <table style="margin-top:85px;">
                         <tr>
                             <td>총 상품가격</td>
-                            <td><fmt:formatNumber type="number" maxFractionDigits="0" value="${empty product ? total : product.total}"/>₩</td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="0" value="${total}"/>₩</td>
                         </tr>
                         <tr>
                             <td>배송비</td>
@@ -94,7 +89,7 @@
                         </tr>
                         <tr>
                             <td>총결제금액</td>
-                            <td><fmt:formatNumber type="number" maxFractionDigits="0" value="${empty product ? total+3000 : product.total+3000}"/>₩</td>
+                            <td><fmt:formatNumber type="number" maxFractionDigits="0" value="${total+3000}"/>₩</td>
                         </tr>
                         <!-- <tr>
                             <td>결제방법</td>
@@ -187,7 +182,7 @@
                         </tr> -->
                     </table>
                     <div class="payment_btn">
-                        <button type="button">결제하기</button><button type="button">취소</button>
+                        <button type="button" id="submit_btn" >결제하기</button><button type="button">취소</button>
                     </div>
                 </div>
             </form>

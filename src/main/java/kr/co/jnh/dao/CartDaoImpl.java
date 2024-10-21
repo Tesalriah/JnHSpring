@@ -34,8 +34,8 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public int update(Map map) throws Exception{
-        return  session.update( nameSpace + "update", map);
+    public int update(Cart cart) throws Exception{
+        return  session.update( nameSpace + "update", cart);
     }
 
     @Override
