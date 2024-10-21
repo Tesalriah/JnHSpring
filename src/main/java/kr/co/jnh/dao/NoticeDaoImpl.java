@@ -71,6 +71,18 @@ public class NoticeDaoImpl implements NoticeDao {
         return session.selectOne(namespace + "prevNext", map);
     }
 
+    @Override
+    public int delete(Map map) throws Exception {
+        return session.delete(namespace + "delete", map);
+    }
+
+    @Override
+    public int update(NoticeDto noticeDto) throws Exception {
+        return session.update(namespace + "update", noticeDto);
+    }
+
+
+
 
     /*@Override
     public NoticeDto update() throws Exception {

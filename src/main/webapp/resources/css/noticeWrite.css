@@ -37,15 +37,15 @@
     text-align:center;
     margin-top: 20px;
 }
-.notice_button button{
+.notice_button button, .notice_button input[type="submit"]{
     font-size:20px;
     font-weight: bold;
     border-radius: 5px;
 }
-.notice_button button:hover{
+.notice_button button:hover , .notice_button input:hover{
     cursor: pointer;
 }
-.notice_button button[type="submit"]{
+.notice_button button[type="submit"], .notice_button input[type="submit"]{
     padding:10px 20px;
     color:#ffffff;
     background-color:#FFAEC9;
