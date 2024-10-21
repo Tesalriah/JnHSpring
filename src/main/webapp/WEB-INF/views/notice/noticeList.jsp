@@ -12,6 +12,12 @@
     </head>
     <body>
     <%@ include file="../header.jsp" %>
+    <script>
+        msg = "${msg}";
+       // if(msg == "WRT_OK")    alert("성공적으로 등록되었습니다.");
+        if(msg == "mod_OK")    alert("수정.");
+        if(msg == "REMOVE_OK")   if(confirm('삭제하시겠습니까?') == true) alert("성공적으로 삭제되었습니다.");
+    </script>
     <main>
         <div class="container">
             <div class="title">
@@ -22,8 +28,8 @@
             </div>
             <div class="nav">
                 <div class="left_menu">
-                    <div><a href="">공지사항</a></div>
-                    <div><a href="">이벤트</a></div>
+                    <div><a href="<c:url value='/noticeList'/>?option=notice">공지사항</a></div>
+                    <div><a href="<c:url value='/noticeList'/>?option=event ">이벤트</a></div>
                     <div><a href="">FAQ</a></div>
                 </div>
                 <div class="contents">
@@ -58,7 +64,7 @@
 
                             <c:forEach var="notice" items="${list}">
                                 <tr>
-                                    <td>${notice.bno}</td>
+                                    <td>${notice.number}</td>
                                     <td><span>${notice.category.equals('notice') ? "공지" : "이벤트"}</span>
                                         <a href="<c:url value='/notice'/>${ph.sc.optionQueryString}&bno=${notice.bno}"><c:out value="${notice.title}"/></a>
                                     </td>

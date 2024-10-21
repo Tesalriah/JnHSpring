@@ -8,6 +8,7 @@
 <script>
     var msg = "<c:out value='${msg}'/>";
     var url = "<c:out value="${url}"/>";
+    url = url.replace(/&amp;/g, '&');
     alert(msg);
     location.href = url;
 </script>

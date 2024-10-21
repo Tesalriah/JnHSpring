@@ -17,6 +17,7 @@ public class NoticeDto {
     private String contents;
     private Date reg_date;
     private Date up_date;
+    private Integer number;
 
 
     public NoticeDto(Integer bno, String id, Integer must_read, String category, String title, String contents) {
