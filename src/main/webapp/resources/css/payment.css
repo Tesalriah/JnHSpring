@@ -44,10 +44,11 @@
     font-size:14px;
     padding:10px;
 }
-#find_address{
+.find_address{
+    margin-left:5px;
     font-size:14px;
     width:10%;
-    padding:11px;
+    padding:10.8px;
     color:#ffffff;
     background-color:#FFAEC9;
 }
@@ -70,7 +71,9 @@
 }
 .product_each > div{
     padding:10px;
-    border-bottom:1px solid #dddddd;
+}
+.product_each > div:not(.product_each > div:first-child){
+    border-top:1px solid #dddddd;
 }
 .product_each span{
     margin:0 10px;
@@ -96,7 +99,7 @@
     color: #ffffff;
     border-radius: 5px;
 }
-.payment_btn button:hover, #find_address{
+.payment_btn button:hover, .find_address{
     cursor: pointer;
 }
 /* .account, .card, .phone, .transfer{

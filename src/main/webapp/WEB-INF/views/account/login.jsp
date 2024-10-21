@@ -15,6 +15,7 @@
         <div class="logo"><a href="<c:url value='/'/>">J&H</a></div>
         <script>
             msg = "${msg}";
+            if(msg == "NEED_LOGIN")alert("로그인을 해주세요.");
             if(msg == "LOGIN_FAIL")alert("로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.");
             if(msg == "SANCTIONED_USER")alert("제재된 사용자입니다. 고객센터에 문의해주세요.");
             if(msg == "WITHDREW_USER")alert("탈퇴한 사용자입니다. 고객센터에 문의해주세요.");

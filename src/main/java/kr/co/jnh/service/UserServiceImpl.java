@@ -33,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getGrade(String id) throws Exception{
+        if(id == null || id.equals("")){
+            return -1;
+        }
         User user = userDao.selectUserById(id);
         return user.getGrade();
     }
@@ -119,5 +122,11 @@ public class UserServiceImpl implements UserService {
         }
         emailAuthDao.deleteAuth(mailAuthDto.getEmail());
         return user == null ? "" : user.getUser_id();
+    }
+
+    public User getUser(String id) throws Exception{
+        User user = userDao.selectUserById(id);
+        user.setUser_pwd("");
+        return user;
     }
 }

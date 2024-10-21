@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.CartMapper">
+    <select id="select" parameterType="String" resultType="Cart">
+        SELECT * FROM cart
+        WHERE user_id = #{id};
+    </select>
+
+    <insert id="insert" parameterType="Cart">
+        INSERT INTO cart
+            (user_id, product_id, size, quantity)
+        VALUE
+            (#{user_id}, #{product_id}, #{size}, #{quantity})
+    </insert>
+
+    <delete id="delete" parameterType="Map">
+        DELETE FROM cart
+        WHERE user_id = #{id} and product_id = #{product_id} and size = #{size}
+    </delete>
+
+    <update id="update" parameterType="Map">
+        UPDATE cart
+        SET quantity = #{quantity}
+        WHERE user_id = #{id}
+    </update>
+
+    <select id="checkCart" parameterType="Map" resultType="Cart">
+        SELECT * FROM cart
+        WHERE user_id = #{id} and product_id=#{product_id} and size=#{size};
+    </select>
+</mapper>

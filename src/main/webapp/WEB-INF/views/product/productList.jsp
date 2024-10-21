@@ -34,7 +34,7 @@
                 <div>
                     <a href="<c:url value="/"/>">HOME</a>
                     <c:if test="${!ph.sc.gender.equals('')}">
-                         > <a href="<c:url value="/productList?ph.sc.gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
+                         > <a href="<c:url value="/productList?gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
                     </c:if>
                     <c:choose>
                         <c:when test="${!ph.sc.category.equals('')}">
@@ -61,7 +61,7 @@
                     </c:if>
                         <div class="product">
                             <a href="<c:url value="/product${ph.sc.queryString}&product_id=${product.product_id}"/>">
-                                <img src="<c:url value='/resources/img/upload/${product.image}/${product.image}.jpg'/>">
+                                <img src="<c:url value='/resources/img/upload/${product.product_id}/${product.image}'/>">
                                 <div class="detail">
                                     <div>${product.product_name}</div>
                                     <div>

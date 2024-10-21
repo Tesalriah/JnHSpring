@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductService {
     Product getProduct(String product_id) throws Exception;
 
-    Integer addProduct(Product product) throws Exception;
+    int addProduct(Product product) throws Exception;
 
     boolean productIdCheck(String date) throws Exception;
 
@@ -17,4 +17,6 @@ public interface ProductService {
     int getSearchResultCnt(SearchCondition sc) throws Exception;
 
     List<Product> getSearchSelectPage(SearchCondition sc) throws Exception;
+
+    List<String> getSize(String product_id) throws Exception;
 }

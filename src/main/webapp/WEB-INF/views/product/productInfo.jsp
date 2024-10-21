@@ -37,15 +37,16 @@
             <!-- 상품정보 -->
             <div class="product_info">
                 <div class="product_img">
-                    <img src="<c:url value="/resources/img/upload/${product.image}/${product.image}.jpg"/>">
+                    <img src="<c:url value="/resources/img/upload/${product.product_id}/${product.image}"/>">
                 </div>
                 <div class="info" style="width:45%;">
                     <form action="" method="post">
+                        <input type="hidden" name="product_id" value="${product.product_id}">
                         <div class="name">${product.product_name}</div>
                         <div class="price">
-                            <input name="price" type="hidden" value="<fmt:formatNumber type="number" maxFractionDigits="0" groupingUsed="false" value="${product.price - (product.price * (product.discount / 100))}"/>">
+                            <input name="price" type="hidden" value="${product.dis_price}">
                             <c:if test="${product.discount != 0}">
-                                <fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price - (product.price * (product.discount / 100))}"/>₩
+                                <fmt:formatNumber type="number" maxFractionDigits="0" value="${product.dis_price}"/>₩
                                 <del><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price}"/>₩</del>
                             </c:if>
                             <c:if test="${product.discount == 0}">
@@ -55,7 +56,7 @@
                         <div class="delivery_fee"><div>Delivery Fee</div><div>3,000₩</div></div>
                         <div class="color">
                             <div>Color</div>
-                            <select name="color" disabled><option value="${product.color}" selected>${product.color}</option></select></div>
+                            <select name="color"><option value="${product.color}" selected>${product.color}</option></select></div>
                         <div class="size">
                             <div>Size</div>
                             <div>
@@ -81,7 +82,8 @@
                             </div>
                         </div>
                         <div class="product_button">
-                            <button type="button">Add Cart</button><button type="button">Buy</button>
+                            <input type="submit" formaction="<c:url value="/addCart${sc.queryString}"/>" value="Add Cart">
+                            <input type="submit" formaction="<c:url value="/product${sc.queryString}"/>" value="Buy">
                         </div>
                     </form>
                 </div>
