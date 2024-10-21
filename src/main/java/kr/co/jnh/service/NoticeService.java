@@ -26,4 +26,8 @@ public interface NoticeService {
     List<NoticeDto> getSelectMustRead() throws Exception;
 
     Map getPrevNext(Map map) throws Exception;
+
+    int remove(Map map) throws Exception;
+    int modify(NoticeDto noticeDto) throws Exception;
+
     }

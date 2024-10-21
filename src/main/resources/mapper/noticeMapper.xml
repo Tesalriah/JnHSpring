@@ -20,7 +20,7 @@
     </delete>
 
     <delete id="delete" parameterType="map">
-        DELETE FROM notice WHERE bno = #{bno} and id = #{id}
+        DELETE FROM notice WHERE bno = #{bno}
     </delete>
 
     <insert id="insert" parameterType="NoticeDto">
@@ -31,13 +31,12 @@
     </insert>
 
     <select id="selectAll" resultType="NoticeDto">
-        SELECT bno, id, must_read, category, title, contents, reg_date, up_date
-        FROM notice
+        <include refid="selectFromNotice"/>
         ORDER BY must_read asc ,reg_date DESC, bno asc
     </select>
 
     <sql id="selectFromNotice">
-        SELECT bno, id, must_read, category, title, contents, reg_date, up_date
+        SELECT bno, id, must_read, category, title, contents, reg_date, up_date,row_number() over (order by bno) as number
         FROM notice
     </sql>
 
@@ -58,7 +57,7 @@
         SET   title = #{title}
           , contents = #{contents}
           , up_date = now()
-        WHERE bno = #{bno} and id = #{id}
+        WHERE bno = #{bno}
     </update>
 
     <select id="selectMustRead" resultType="NoticeDto">
@@ -89,15 +88,19 @@
 
     <select id="prevNext" parameterType="map" resultType="map">
         select * from(
-                         select
-                             LEAD(bno,2) over (order by bno) as arr0,
-                                 LEAD(bno,1) over (order by bno) as arr1,
-                                 bno as arr2,
-                             LAG(bno,1) over (order by bno) as arr3,
-                                 LAG(bno,2) over (order by bno) as arr4
-                         from notice where true AND category LIKE concat('%',#{option},'%') order by bno desc )abc
+            select
+                LEAD(bno,2) over (order by bno) as arr0,
+                LEAD(bno,1) over (order by bno) as arr1,
+                bno as arr2,
+                LAG(bno,1) over (order by bno) as arr3,
+                LAG(bno,2) over (order by bno) as arr4
+            from notice where true AND category
+            LIKE concat('%',#{option},'%')
+            order by bno desc )abc
         where arr2=#{bno};
     </select>
+
+
 
 
 

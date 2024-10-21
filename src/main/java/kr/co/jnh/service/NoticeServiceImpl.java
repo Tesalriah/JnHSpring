@@ -64,5 +64,16 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeDao.prevNext(map);
     }
 
+    @Override
+    public int remove(Map map) throws Exception {
+        return noticeDao.delete(map);
+    }
+
+    @Override
+    public int modify(NoticeDto noticeDto) throws Exception {
+        return noticeDao.update(noticeDto);
+    }
+
+
 }
 

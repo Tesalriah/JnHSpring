@@ -27,4 +27,7 @@ public interface NoticeDao {
 
     Map prevNext(Map map) throws Exception;
 
+    int delete(Map map) throws Exception;
+    int update(NoticeDto noticeDto) throws Exception;
+
     }
