@@ -165,8 +165,9 @@ public class ProductController {
             product.setState("판매");
 
             // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
-            String savePath = "C:/Users/Tesalriah/IdeaProjects/JnHSpring/src/main/webapp/resources/img/upload/";
+            String savePath = request.getServletContext().getRealPath("resources/img/upload/");
             savePath += product_id + "/";
+            System.out.println("savePath = " + savePath);
             Path directory = Paths.get(savePath);
             Files.createDirectories(directory);
             // 이미지 파일이름을 product_id로 변경하여 저장

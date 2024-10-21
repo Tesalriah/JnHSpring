@@ -31,7 +31,7 @@ public class CartController {
     ProductService productService;
 
     @GetMapping("cart")
-    public String getCart(HttpServletRequest request, RedirectAttributes rattr){
+    public String getCart(HttpServletRequest request, RedirectAttributes rattr, SearchCondition sc){
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
         if(id == null || id.equals("")){
@@ -50,6 +50,7 @@ public class CartController {
             }
             request.setAttribute("cartList", cartList);
             request.setAttribute("productList", productList);
+            request.setAttribute("sc", sc);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,7 +109,7 @@ public class CartController {
             return "redirect:/login";
         }
         Map map = new HashMap();
-        map.put("id", id);
+        map.put("user_id", id);
         map.put("product_id", cart.getProduct_id());
         map.put("size", cart.getSize());
         int result = -1;

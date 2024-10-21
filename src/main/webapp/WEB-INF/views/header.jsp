@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div><a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a></div>
-                <div><a href="<c:url value="/cart"/>"><i class="fa-solid fa-cart-shopping"></i></a></div>
+                <div><a href="<c:url value="/cart"/>${empty ph ? sc.queryString : ph.sc.queryString}"><i class="fa-solid fa-cart-shopping"></i></a></div>
                 <div style="font-size:20px;"><a href="<c:url value='${logOutLink}'/>">${logOut}</a></div>
             </div>
         </div>

@@ -75,7 +75,7 @@
                 <div class="end_button_area">
                     <div>
                         <button class="end_button" type="submit">구매하기</button>
-                        <button class="end_button" type="button" onclick="<c:url value="/productList"/>">계속쇼핑하기</button>
+                        <button class="end_button" type="button" onclick="location.href='<c:url value="/productList"/>${sc.queryString}'">계속쇼핑하기</button>
                     </div>
                 </div>
             </form>
