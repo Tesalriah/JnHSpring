@@ -80,7 +80,6 @@ public class NoticeController {
 
         //필독 (5개)
         String mustread = request.getParameter("mustread");
-        System.out.println("mustread = " + mustread);
         int mRead = mustread != null ? 0 : 1;
         noticeDto.setId(id);
         noticeDto.setMust_read(mRead);
@@ -117,7 +116,6 @@ public class NoticeController {
             e.printStackTrace();
         }
         return "notice/noticeList";*/
-        System.out.println("sc.toString() = " + sc.toString());
 
 
         try {
@@ -131,8 +129,6 @@ public class NoticeController {
 
             PageHandler pageHandler = new PageHandler(totalCnt,sc);
             m.addAttribute("ph", pageHandler);
-
-            System.out.println("pageHandler.toString() = " + pageHandler.toString());
 
             List<NoticeDto> mustRead = noticeService.getSelectMustRead();
             m.addAttribute("mustRead",mustRead);
@@ -224,69 +220,6 @@ public class NoticeController {
         }
     }
 
-    @GetMapping("/wriT")
-    public String wriT(){
-        return "notice/noticeT";
-    }
-
-    @PostMapping("/wriT")
-    public String wriTPost(NoticeDto noticeDto, String mustread, Model m){
-        String id = "asdf";
-        System.out.println("noticeDto = " + noticeDto);
-        int mread = mustread != null ? 0 : 1;
-        noticeDto.setMust_read(mread);
-        noticeDto.setId(id);
-        System.out.println("noticeDto = " + noticeDto);
-        try {
-            if(noticeService.write(noticeDto) != 1){
-                throw new Exception("FAIL");
-            }
-            m.addAttribute("msg", "성공");
-            m.addAttribute("url" , "noticeList");
-            return  "alert";
-        } catch (Exception e) {
-            e.printStackTrace();
-            m.addAttribute("msg", "FAIL");
-            m.addAttribute("asd", noticeDto);
-            return "notice/noticeT";
-        }
-    }
-
-    @GetMapping("/modT")
-    public String modT(Integer bno, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        System.out.println("bno = " + bno);
-        String id = (String)session.getAttribute("id");
-        try {
-            NoticeDto dto = noticeService.read(bno);
-            System.out.println(dto);
-            request.setAttribute("asd", dto);
-            request.setAttribute("modi", 1);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return "notice/noticeT";
-    }
-
-    @PostMapping("/modT")
-    public String modTPost(NoticeDto noticeDto, Model m){
-        System.out.println("noticeDto = " + noticeDto);
-        try {
-            if(noticeService.modify(noticeDto) != 1){
-                throw new Exception();
-            }
-            m.addAttribute("msg", "수정 성공");
-            m.addAttribute("url", "notice?bno=" + noticeDto.getBno());
-            return "alert";
-        } catch (Exception e) {
-            e.printStackTrace();
-            m.addAttribute("msg", "FAIL");
-            m.addAttribute("modi", 1);
-            m.addAttribute("asd", noticeDto);
-            return "notice/noticeT";
-        }
-    }
-
     @GetMapping("/modify")
     public String getMod(int bno, SearchCondition sc, Model m){
         NoticeDto noticeDto = null;
@@ -308,7 +241,6 @@ public class NoticeController {
     public String modify(NoticeDto noticeDto,SearchCondition sc , HttpServletRequest request, RedirectAttributes rattr){
         HttpSession session = request.getSession();
         String id= (String) session.getAttribute("id");
-        System.out.println(noticeDto.toString());
         try {
             if(userService.getGrade(id) != 0){
                 request.setAttribute("msg","관리자만 수정이 가능합니다.");
@@ -328,7 +260,5 @@ public class NoticeController {
         }
 
     }
-
-
 
 }

@@ -185,7 +185,6 @@ public class CartController {
         map.put("product_id", del_product_id);
         map.put("size", del_size);
         map.put("user_id", id);
-        System.out.println("map = " + map);
 
         try {
             if(cartService.delCart(map) != 1){
