@@ -6,6 +6,7 @@ import kr.co.jnh.domain.User;
 import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +32,9 @@ public class OrderContoller {
 
     @PostMapping("buy")
     public String buy(Order order, String quantity, String address2, HttpServletRequest request, RedirectAttributes rattr, HttpServletResponse response){
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
+        String id = SessionIdUtil.getSessionId(request, rattr);
         if(id == null || id.equals("")){
-            rattr.addFlashAttribute("msg", "NEED_LOGIN");
-            return "redirect:/login";
+            return "redirect:login";
         }
         String[] product_id = order.getProduct_id().split(",");
         String[] size = order.getSize().split(",");

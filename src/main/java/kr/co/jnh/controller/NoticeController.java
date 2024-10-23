@@ -243,7 +243,7 @@ public class NoticeController {
         String id= (String) session.getAttribute("id");
         try {
             if(userService.getGrade(id) != 0){
-                request.setAttribute("msg","관리자만 수정이 가능합니다.");
+                request.setAttribute("msg","관리자만 수정 가능합니다.");
                 request.setAttribute("url", "noticeList"+sc.getOptionQueryString());
                 return "alert";
             }

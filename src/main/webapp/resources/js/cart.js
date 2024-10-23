@@ -114,10 +114,13 @@ for(let i=0; i<quantity.length; i++){
         var httpRequest = new XMLHttpRequest();
         /* httpRequest의 readyState가 변화했을때 함수 실행 */
         httpRequest.onreadystatechange = () => {
-            /* readyState가 Done이고 응답 값이 200일 때, 받아온 response로 name과 age를 그려줌 */
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     var result = httpRequest.response;
+                    if(!!result.msg){
+                        alert(result.msg);
+                        return false;
+                    }
                     quantity[i].value = result.quantity;
                     each_price[i].innerText = (price[i].value * quantity[i].value).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 } else {

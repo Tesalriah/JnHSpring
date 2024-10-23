@@ -7,6 +7,7 @@ import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,10 +63,8 @@ public class ProductController {
 
     @PostMapping("product")
     public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
-        if(id == "" || id == null){
-            rattr.addFlashAttribute("msg", "NEED_LOGIN");
+        String id = SessionIdUtil.getSessionId(request, rattr);
+        if(id == null || id.equals("")){
             return "redirect:login";
         }
 
