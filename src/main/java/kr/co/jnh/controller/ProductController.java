@@ -7,6 +7,7 @@ import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,13 +62,8 @@ public class ProductController {
     }
 
     @PostMapping("product")
-    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
-        if(id == "" || id == null){
-            rattr.addFlashAttribute("msg", "NEED_LOGIN");
-            return "redirect:login";
-        }
+    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
 
         try {
             if(size.equals("")){
@@ -165,8 +161,9 @@ public class ProductController {
             product.setState("판매");
 
             // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
-            String savePath = "C:/Users/Tesalriah/IdeaProjects/JnHSpring/src/main/webapp/resources/img/upload/";
+            String savePath = request.getServletContext().getRealPath("resources/img/upload/");
             savePath += product_id + "/";
+            System.out.println("savePath = " + savePath);
             Path directory = Paths.get(savePath);
             Files.createDirectories(directory);
             // 이미지 파일이름을 product_id로 변경하여 저장

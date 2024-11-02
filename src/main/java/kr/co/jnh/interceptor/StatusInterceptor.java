@@ -15,47 +15,29 @@ public class StatusInterceptor implements HandlerInterceptor {
     UserService userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        String id = null;
-
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         HttpSession session = request.getSession(false);
         if(session != null){
-            id = (String)session.getAttribute("id");
-        }else{
-            return true;
-        }
-        if( id == null || id.equals("") ){
-            return true;
-        }
-        try {
+            String id = (String)session.getAttribute("id");
             // 전처리 로그인 돼있을시 스테이터스 확인
-            Integer status  = userService.getStatus(id);
-            if(status != null){
-                if(status != 0){
-                    // 정지된 유저 로그아웃
-                    if(status == 1){
-                        session.invalidate();
-                        response.sendRedirect("/jnh");
+            if(session != null || id != null || !id.equals("")){
+                Integer status = (Integer)session.getAttribute("status");
+
+                if (status != null) {
+                    if (status != 0) {
+                        // 정지된 유저 로그아웃, 회원탈퇴된 유저 로그아웃
+                        if (status == 1 || status == 2) {
+                            session.invalidate();
+                            response.sendRedirect("/jnh");
+                        }
+                        // 이메일 미인증 유저 이메일 인증으로
+                        if (status == 3) {
+                            response.sendRedirect("/jnh/emailAuth");
+                        }
                     }
-                    // 회원탈퇴된 유저 로그아웃
-                    if(status == 2){
-                        session.invalidate();
-                        response.sendRedirect("/jnh");
-                    }
-                    // 이메일 미인증 유저 이메일 인증으로
-                    if(status == 3){
-                        response.sendRedirect("/jnh/emailAuth");
-                    }
-                    return true;
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 이상 있을시 로그아웃
-            session.invalidate();
         }
-
         return true;
     }
 }

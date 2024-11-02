@@ -1,11 +1,8 @@
 package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.Order;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.User;
 import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
-import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,25 +23,19 @@ public class OrderContoller {
 
     @Autowired
     OrderService orderService;
-    @Autowired
-    ProductService productService;
 
     @PostMapping("buy")
-    public String buy(Order order, String quantity, String address2, HttpServletRequest request, RedirectAttributes rattr, HttpServletResponse response){
+    public String buy(Order order, String quantity, String address2, HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
-        if(id == null || id.equals("")){
-            rattr.addFlashAttribute("msg", "NEED_LOGIN");
-            return "redirect:/login";
-        }
+
         String[] product_id = order.getProduct_id().split(",");
         String[] size = order.getSize().split(",");
         String[] quan = quantity.split(",");
         if(order.getDel_request().equals("")) {
+            String referer = request.getHeader("referer");
             try {
-                PrintWriter out = response.getWriter();
-                out.println("<scricpt>history.back()</script>");
-                out.flush();
+                response.sendRedirect(referer);
             } catch (IOException e) {
                 e.printStackTrace();
             }
