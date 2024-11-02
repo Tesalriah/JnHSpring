@@ -24,11 +24,7 @@ public class CartController {
 
     @GetMapping("cart")
     public String getCart(HttpServletRequest request, SearchCondition sc, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            rattr.addFlashAttribute("prevPage", "/cart");
-            return "redirect:login";
-        }
+        String id = SessionIdUtil.getSessionId(request);
 
         try {
             List<Cart> cartList = cartService.showCart(id);
@@ -49,10 +45,7 @@ public class CartController {
 
     @PostMapping("cart")
     public String postCart(Cart cart, String quantity, String check_box, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+        String id = SessionIdUtil.getSessionId(request);
 
         if(check_box == null || check_box.equals("")){
             request.setAttribute("msg", "상품을 선택해주세요.");
@@ -90,11 +83,8 @@ public class CartController {
     }
 
     @PostMapping("addCart")
-    public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+    public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
 
         Map map = new HashMap();
         map.put("user_id", id);
@@ -125,10 +115,8 @@ public class CartController {
 
     @PostMapping("delCart")
     public String delCart(String check_box, Cart cart, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+        String id = SessionIdUtil.getSessionId(request);
+
         if(check_box == null || check_box.equals("")){
             request.setAttribute("msg", "선택된 상품이 없습니다.");
             request.setAttribute("url", "cart");
@@ -167,10 +155,8 @@ public class CartController {
 
     @PostMapping("delOneCart")
     public String delOneCart(String del_product_id, String del_size, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+        String id = SessionIdUtil.getSessionId(request);
+
         Map map = new HashMap();
         map.put("product_id", del_product_id);
         map.put("size", del_size);
@@ -193,7 +179,7 @@ public class CartController {
     @ResponseBody
     public Map<String, Object> setQuantity(@RequestBody Map<String, Object> cartMap, HttpServletRequest request, RedirectAttributes rattr){
         Map<String, Object> map = new HashMap<>();
-        String id = SessionIdUtil.getSessionId(request, rattr);
+        String id = SessionIdUtil.getSessionId(request);
         if(id == null || id.equals("")){
             map.put("msg", "로그인을 확인해주세요.");
             return map;

@@ -62,11 +62,8 @@ public class ProductController {
     }
 
     @PostMapping("product")
-    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
 
         try {
             if(size.equals("")){

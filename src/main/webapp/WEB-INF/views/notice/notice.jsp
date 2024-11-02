@@ -22,21 +22,27 @@
             </div>
             <div class="nav">
                 <div class="left_menu">
-                    <div><a href="<c:url value='/noticeList'/>?option=notice">공지사항</a></div>
-                    <div><a href="<c:url value='/noticeList'/>?option=event">이벤트</a></div>
+                    <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
+                    <div><a href="<c:url value='/notice/list'/>?option=event">이벤트</a></div>
                     <div><a href="">FAQ</a></div>
                 </div>
                 <div class="contents">
                     <div class="post_box">
                         <div class="post_button">
 <%--                            <button type="button" OnClick="if(confirm('삭제하시겠습니까?') == true){alert('취소를 누르셨습니다.'); location.href = '/jnh/noticeList'; }">취소</button>--%>
-                            <form action="<c:url value="/remove"/>" method="post">
-                                <input type="hidden" name="bno" value="${noticeDto.bno}">
-                                <input type="submit" value="삭제">
-                                <button type="button" onclick="location.href='<c:url value="modify"/>${sc.optionQueryString}&bno=${noticeDto.bno}'">수정</button>
-                                <button type="button" onclick="location.href='<c:url value="notice"/>${sc.optionQueryString}&bno=${prevNext[0]}'">이전글</button>
-                                <button type="button" onclick="location.href='<c:url value="notice"/>${sc.optionQueryString}&bno=${prevNext[1]}'">다음글</button>
-                                <button type="button" onclick="location.href='<c:url value="noticeList"/>${sc.optionQueryString}'">목록</button>
+                            <form action="${grade == 0 ? "<c:url value='/notice/remove'/>" : ""}" method="post">
+                                <c:if test="${grade == 0}">
+                                    <input type="hidden" name="bno" value="${noticeDto.bno}">
+                                    <input type="submit" value="삭제">
+                                    <button type="button" onclick="location.href='<c:url value="/notice/modify"/>${sc.optionQueryString}&bno=${noticeDto.bno}'">수정</button>
+                                </c:if>
+                                <c:if test="${!empty prevNext[0]}">
+                                    <button type="button" onclick="location.href='<c:url value="/notice/read"/>${sc.optionQueryString}&bno=${prevNext[0]}'">이전글</button>
+                                </c:if>
+                                <c:if test="${!empty prevNext[1]}">
+                                    <button type="button" onclick="location.href='<c:url value="/notice/read"/>${sc.optionQueryString}&bno=${prevNext[1]}'">다음글</button>
+                                </c:if>
+                                <button type="button" onclick="location.href='<c:url value="/notice/list"/>${sc.optionQueryString}'">목록</button>
                             </form>
                         </div>
 
@@ -63,7 +69,7 @@
                                 <div class="post_each" ${dto.bno == noticeDto.bno ? "style='background-color:#f5f5f5;'" : ""}}>
                                     <div>
                                         <span>${dto.bno}</span>
-                                            <a href="<c:url value="notice"/>${sc.optionQueryString}&bno=${dto.bno}">
+                                            <a href="<c:url value="/notice/read"/>${sc.optionQueryString}&bno=${dto.bno}">
                                                 <span>${noticeDto.category.equals('notice')? "공지":"이벤트"}</span><c:out value="${dto.title}"/>
                                             </a>
                                     </div>
@@ -73,7 +79,7 @@
                         </div>
                     </div>
                     <div class="post_button">
-                        <button type="button" onclick="location.href='<c:url value="noticeList"/>${sc.optionQueryString}'">목록</button>
+                        <button type="button" onclick="location.href='<c:url value="/notice/list"/>${sc.optionQueryString}'">목록</button>
                     </div>
                 </div>
             </div>

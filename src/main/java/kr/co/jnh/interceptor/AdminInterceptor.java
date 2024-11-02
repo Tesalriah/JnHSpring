@@ -1,8 +1,7 @@
 package kr.co.jnh.interceptor;
 
-import kr.co.jnh.dao.UserDao;
-import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,31 +15,26 @@ public class AdminInterceptor implements HandlerInterceptor {
     UserService userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        String id = null;
-
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         HttpSession session = request.getSession(false);
-        if(session != null){
-            id = (String)session.getAttribute("id");
-        }else{
-            return true;
-        }
-        if( id == null || id == ""){
-            return true;
-        }
-        try {
-            // 인터셉터 전처리, 로그인 했을 시 유저등급을 파라미터에 저장
-            Integer grade  = userService.getGrade(id);
-            if(grade != null){
-                request.setAttribute("grade", grade);
+        String id = SessionIdUtil.getSessionId(request);
+
+        if (session != null && id != null && !id.equals("")) {
+            Integer grade = (Integer) session.getAttribute("grade");
+
+            if (grade != null && grade == 0) {
+                return true;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 이상 있을시 로그아웃
-            session.invalidate();
         }
 
-        return true;
+        // 관리자가 아닌 경우 이전 페이지로 리다이렉트
+        String referer = request.getHeader("referer");
+        System.out.println("request.getHeader(\"referer\") = " + request.getHeader("referer"));
+        if(referer == null || referer.equals("")){
+            response.sendRedirect("/jnh");
+        }else{
+            response.sendRedirect(referer);
+        }
+        return false;
     }
 }

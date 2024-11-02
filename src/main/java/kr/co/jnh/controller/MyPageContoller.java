@@ -14,11 +14,7 @@ public class MyPageContoller {
 
 
     @GetMapping("orderList")
-    public String mypage(HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request, rattr);
-        if(id == null || id.equals("")){
-            return "redirect:login";
-        }
+    public String mypage(HttpServletRequest request){
         return "myPage/orderList";
     }
 }

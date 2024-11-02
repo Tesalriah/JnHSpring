@@ -6,6 +6,7 @@ import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -189,28 +190,29 @@ public class LoginContoller {
 
     @GetMapping("/login")
     public String LoginForm(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
-        if( id != null && id.isBlank()){
-            return "redirect:/";
-        }
-        // 이전페이지를 받아서 파라미터로 넘겨주기
-        if(request.getParameter("prevPage") == null){
-            String prevPage = request.getHeader("Referer");
-            if(request.getParameter("product_id") != null){
-                prevPage += "&product_id=" + request.getParameter("product_id");
+        String id = SessionIdUtil.getSessionId(request);
+        if( id == null || id.equals("")){
+            // 이전페이지를 받아서 파라미터로 넘겨주기
+            if(request.getParameter("prevPage") == null){
+                String prevPage = request.getHeader("Referer");
+                if(request.getParameter("product_id") != null){
+                    prevPage += "&product_id=" + request.getParameter("product_id");
+                }
+                request.setAttribute("prevPage", prevPage);
             }
-            request.setAttribute("prevPage", prevPage);
+            return "account/login";
         }
-        return "account/login";
+        return "redirect:/";
     }
 
     @PostMapping("/login")
-    public String Login(String id, String pwd, Model m, String prevPage, boolean rememberId,
+    public String Login(String id, String pwd, String prevPage, boolean rememberId,
                         HttpServletRequest request, HttpServletResponse response, RedirectAttributes rattb){
+        Integer status = null;
         Map map = new HashMap();
         map.put("id",id);
         map.put("pwd",pwd);
+        HttpSession session = request.getSession(false);
 
         try {
             User user = userService.showUser(map);
@@ -220,26 +222,35 @@ public class LoginContoller {
                 rattb.addFlashAttribute("prevPage", prevPage);
                 return "redirect:/login";
             }
+            status = user.getStatus();
             // 정지된 유저, 탈퇴 유저, 이메일 미인증 유저 확인
-            if(user.getStatus() == 1){
-                rattb.addFlashAttribute("msg", "SANCTIONED_USER");
-                rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
-            }if(user.getStatus() == 2){
-                rattb.addFlashAttribute("msg", "WITHDREW_USER");
-                rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
-            }if(user.getStatus() == 3){
-                HttpSession session = request.getSession();
-                session.setAttribute("id", id);
-                return "redirect:/emailAuth";
+            if (status != null) {
+                if(status == 1){
+                    rattb.addFlashAttribute("msg", "SANCTIONED_USER");
+                    rattb.addFlashAttribute("prevPage", prevPage);
+                    return "redirect:/login";
+                }if(status == 2){
+                    rattb.addFlashAttribute("msg", "WITHDREW_USER");
+                    rattb.addFlashAttribute("prevPage", prevPage);
+                    return "redirect:/login";
+                }if(status == 3){
+                    session.setAttribute("id", id);
+                    return "redirect:/emailAuth";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        try {
+            Integer grade = userService.getGrade(id);
+            if(grade != null){
+                session.setAttribute("grade", grade);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 로그인 처리
-        HttpSession session = request.getSession();
         session.setAttribute("id", id);
         // 아이디 저장 체크시 아이디를 쿠키에 저장
         if(rememberId) {
@@ -253,6 +264,14 @@ public class LoginContoller {
             cookie.setMaxAge(0); // 쿠키를 삭제 (만효기간을 0으로해서 삭제됨 )
             // 응답에 저장
             response.addCookie(cookie);
+        }
+        // 세션에 따로 저장된 이전페이지가 있을 시 그곳으로 리다이렉트
+        if(session != null && session.getAttribute("prevPage") != null){
+            prevPage = (String)session.getAttribute("prevPage");
+            session.removeAttribute("prevPage");
+        }
+        if(status != 0 || status != null){
+            session.setAttribute("status", status);
         }
         // 파라미터로 넘겨받은 이전페이지가 있을시 이전페이지로 리다이렉트
         prevPage = prevPage.equals("") || prevPage == null ? "/" : prevPage;

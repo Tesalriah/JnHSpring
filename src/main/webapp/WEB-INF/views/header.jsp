@@ -24,7 +24,7 @@
                             <li><a href="<c:url value="/productList?gender=WOMEN&category=OUTER"/>">OUTER</a></li>
                         </ul>
                     </li>
-                    <li><a href="<c:url value="/noticeList" />">SERVICE</a></li>
+                    <li><a href="<c:url value="/notice/list" />">SERVICE</a></li>
                     <c:if test="${grade == 0}">
                         <li class="gender_on">
                             <a href="">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>

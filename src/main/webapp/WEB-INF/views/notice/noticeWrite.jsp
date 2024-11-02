@@ -29,15 +29,15 @@
             </div>
             <div class="nav">
                 <div class="left_menu">
-                    <div><a href="<c:url value='/noticeList'/>?option=notice">공지사항</a></div>
-                    <div><a href="<c:url value='/noticeList'/>?option=event">이벤트</a></div>
+                    <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
+                    <div><a href="<c:url value='/notice/list'/>?option=event">이벤트</a></div>
                     <div><a href="">FAQ</a></div>
                 </div>
                 <div class="contents">
                     <h2>게시글 ${modify == "1" ? "수정" : "작성"}</h2>
                     <div class="notice_write">
 
-                        <form action="<c:url value='/noticeWrite'/>" method="post">
+                        <form action="<c:url value='/notice/write'/>" method="post">
                             <c:if test="${modify=='1'}">
                                 <input type="hidden" name="bno" value="${noticeDto.bno}">
                             </c:if>
@@ -58,13 +58,13 @@
                             <div class="notice_button">
                                 <c:choose>
                                     <c:when test="${modify == '1'}">
-                                        <input type="submit" formaction="<c:url value="/modify"/>${sc.optionQueryString}" value="수정" >
+                                        <input type="submit" formaction="<c:url value="/notice/modify"/>${sc.optionQueryString}" value="수정" >
                                     </c:when>
                                     <c:otherwise>
                                         <button type="submit" onclick="confirm('등록하시겠습니까?')">등록</button>
                                     </c:otherwise>
                                 </c:choose>
-                                <button type="button" OnClick="if(confirm('취소하시겠습니까?') == true){alert('취소를 누르셨습니다.'); location.href = '/jnh/noticeList'; }">취소</button>
+                                <button type="button" OnClick="if(confirm('취소하시겠습니까?') == true){ location.href = '+ <c:url value="/notice/list"/> +'; }">취소</button>
                             </div>
                         </form>
                     </div>
