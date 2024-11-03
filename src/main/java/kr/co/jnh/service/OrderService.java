@@ -20,4 +20,6 @@ public interface OrderService {
 
     boolean orderIdCheck(String date) throws Exception;
 
+    boolean checkStock(String product_id, String quantity, String size) throws Exception;
+
 }

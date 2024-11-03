@@ -62,8 +62,9 @@ public class ProductController {
     }
 
     @PostMapping("product")
-    public String PostProduct(String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request){
+    public String PostProduct(@RequestParam String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
+        product_id = product_id.split(",")[0];
 
         try {
             if(size.equals("")){
@@ -71,6 +72,7 @@ public class ProductController {
                 request.setAttribute("url", "product"+ sc.getQueryString() + "&product_id=" + product_id);
                 throw new Exception("SIZE_IS_REQUIRED");
             }
+            System.out.println("product_id = " + product_id);
             Product product = productService.getProduct(product_id);
             product.setQuantity(quantity);
             product.setSize(size);

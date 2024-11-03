@@ -31,7 +31,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         String referer = request.getHeader("referer");
         System.out.println("request.getHeader(\"referer\") = " + request.getHeader("referer"));
         if(referer == null || referer.equals("")){
-            response.sendRedirect("/jnh");
+            response.sendRedirect("/jnh?msg=WRONG_APPROACH");
         }else{
             response.sendRedirect(referer);
         }

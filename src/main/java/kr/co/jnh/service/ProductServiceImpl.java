@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -48,6 +49,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<String> getSize(String product_id) throws Exception{
         return productDao.selectSize(product_id);
+    }
+
+    @Override
+    public Product getProductAtSize(Map map) throws Exception{
+        return productDao.selectAtSize(map);
     }
 
 }

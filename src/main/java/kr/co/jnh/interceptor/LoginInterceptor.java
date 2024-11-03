@@ -19,7 +19,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
         if(session != null){
             id = (String)session.getAttribute("id");
+            String requestURI = request.getRequestURI(); // 요청 URI 가져오기
             String method = request.getMethod();
+            if(requestURI.equals("/jnh/product") && "GET".equalsIgnoreCase(method)){
+                return true;
+            }
 
             String prevPage = null;
 
@@ -28,7 +32,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                     prevPage = request.getHeader("referer");
                     session.setAttribute("prevPage", prevPage);
                 }if("GET".equalsIgnoreCase(method)){
-                    prevPage = request.getRequestURI();
+                    prevPage = requestURI;
                     prevPage = prevPage.replace("/jnh", "");
                     session.setAttribute("prevPage", prevPage);
                 }

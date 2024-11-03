@@ -25,12 +25,17 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Integer insert(Product product) throws Exception{
+    public int insert(Product product) throws Exception{
         return session.insert(nameSpace + "insert", product);
     }
 
     @Override
-    public Integer delete(String product_id) throws Exception{
+    public int updateStock(Product product) throws Exception{
+        return session.update( nameSpace + "updateStock", product);
+    }
+
+    @Override
+    public int delete(String product_id) throws Exception{
         return session.delete(nameSpace + "delete", product_id);
     }
 
@@ -54,7 +59,14 @@ public class ProductDaoImpl implements ProductDao {
         return session.selectList( nameSpace + "searchSelectPage", sc);
     }
 
+    @Override
     public List<String> selectSize(String product_id) throws Exception{
         return session.selectList( nameSpace + "selectSize", product_id);
     }
+
+    @Override
+    public Product selectAtSize(Map map) throws Exception{
+        return session.selectOne(nameSpace + "selectAtSize", map);
+    }
+
 }
