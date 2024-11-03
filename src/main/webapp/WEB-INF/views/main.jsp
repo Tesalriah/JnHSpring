@@ -13,7 +13,7 @@
 <body>
     <%@ include file="header.jsp" %>
     <script>
-        msg = "${msg}";
+        msg = "${empty msg ? param.msg : msg}";
         if(msg == "REG_OK")alert("이메일 인증이 완료되었습니다.");
         if(msg == "WRONG_APPROACH")alert("잘못된 접근입니다.");
         if(msg == "PWD_CHANGED")alert("비밀번호가 변경되었습니다.");

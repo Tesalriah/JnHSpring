@@ -23,14 +23,17 @@ public class CartController {
     ProductService productService;
 
     @GetMapping("cart")
-    public String getCart(HttpServletRequest request, SearchCondition sc, RedirectAttributes rattr){
+    public String getCart(HttpServletRequest request, SearchCondition sc){
         String id = SessionIdUtil.getSessionId(request);
 
         try {
             List<Cart> cartList = cartService.showCart(id);
             List<Product> productList = new ArrayList<>();
             for(int i=0; i<cartList.size(); i++){
-                Product product = productService.getProduct(cartList.get(i).getProduct_id());
+                HashMap map = new HashMap();
+                map.put("product_id", cartList.get(i).getProduct_id());
+                map.put("size", cartList.get(i).getSize());
+                Product product = productService.getProductAtSize(map);
                 product.setQuantity(cartList.get(i).getQuantity());
                 productList.add(product);
             }
@@ -46,6 +49,7 @@ public class CartController {
     @PostMapping("cart")
     public String postCart(Cart cart, String quantity, String check_box, HttpServletRequest request, RedirectAttributes rattr){
         String id = SessionIdUtil.getSessionId(request);
+        System.out.println("cart = " + cart);
 
         if(check_box == null || check_box.equals("")){
             request.setAttribute("msg", "상품을 선택해주세요.");
@@ -58,6 +62,7 @@ public class CartController {
         String[] quan = quantity.split(",");
         String[] checkbox = check_box.split(",");
         Product product = null;
+        System.out.println("check_box = " + check_box);
         List<Product> list = new ArrayList();
         try {
             for(int i=0; i<product_id.length; i++){
@@ -68,6 +73,7 @@ public class CartController {
                         product.setSize(size[i]);
                         product.setQuantity(Integer.parseInt(quan[i]));
                         total += product.getTotal();
+                        System.out.println("product = " + product);
                         list.add(product);
                     }
                 }

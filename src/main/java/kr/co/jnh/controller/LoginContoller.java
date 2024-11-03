@@ -30,9 +30,13 @@ public class LoginContoller {
     EmailService emailService;
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletRequest request) {
         // 로그아웃 세션 비우기
         session.invalidate();
+        String referer = request.getHeader("referer");
+        if(referer != null || !referer.equals("")){
+            return "redirect:"+referer;
+        }
         return "redirect:/";
     }
 

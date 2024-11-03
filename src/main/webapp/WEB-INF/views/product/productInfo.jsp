@@ -83,7 +83,7 @@
                         </div>
                         <div class="product_button">
                             <input type="submit" formaction="<c:url value="/addCart${sc.queryString}"/>" value="Add Cart">
-                            <input type="submit" formaction="<c:url value="/product${sc.queryString}"/>" value="Buy">
+                            <input type="submit" formaction="<c:url value="/product${sc.queryString}&product_id=${product.product_id}"/>" value="Buy">
                         </div>
                     </form>
                 </div>

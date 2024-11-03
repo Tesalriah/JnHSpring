@@ -36,32 +36,33 @@
 
 	<interceptors>
 		<interceptor>
-			<mapping path="/**"></mapping>
-			<exclude-mapping path="/resources/**"></exclude-mapping>
-			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"></beans:bean>
+			<mapping path="/**"/>
+			<exclude-mapping path="/resources/**"/>
+			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/notice/remove"></mapping>
-			<mapping path="/notice/write"></mapping>
-			<mapping path="/notice/modify"></mapping>
-			<beans:bean id="AdminInterceptor" class="kr.co.jnh.interceptor.AdminInterceptor"></beans:bean>
+			<mapping path="/notice/remove"/>
+			<mapping path="/notice/write"/>
+			<mapping path="/notice/modify"/>
+			<beans:bean id="AdminInterceptor" class="kr.co.jnh.interceptor.AdminInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/**"></mapping>
-			<exclude-mapping path="/emailAuth"></exclude-mapping>
-			<exclude-mapping path="/login"></exclude-mapping>
-			<exclude-mapping path="/logout"></exclude-mapping>
-			<exclude-mapping path="/resources/**"></exclude-mapping>
-			<exclude-mapping path="/mal"></exclude-mapping>
-			<beans:bean id="StatusInterceptor" class="kr.co.jnh.interceptor.StatusInterceptor"></beans:bean>
+			<mapping path="/**"/>
+			<exclude-mapping path="/emailAuth"/>
+			<exclude-mapping path="/login"/>
+			<exclude-mapping path="/logout"/>
+			<exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/mal"/>
+			<beans:bean id="StatusInterceptor" class="kr.co.jnh.interceptor.StatusInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/cart"></mapping>
-			<mapping path="/addCart"></mapping>
-			<mapping path="/delCart"></mapping>
-			<mapping path="/delOneCart"></mapping>
-			<mapping path="/myPage/**"></mapping>
-			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"></beans:bean>
+			<mapping path="/cart"/>
+			<mapping path="/product"/>
+			<mapping path="/addCart"/>
+			<mapping path="/delCart"/>
+			<mapping path="/delOneCart"/>
+			<mapping path="/myPage/**"/>
+			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
 

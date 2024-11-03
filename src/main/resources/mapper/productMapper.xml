@@ -14,6 +14,12 @@
         VALUES (#{product_id}, #{product_name}, #{gender}, #{category}, #{color}, #{size}, #{stock}, #{price}, #{discount}, #{image})
     </insert>
 
+    <update id="updateStock" parameterType="Product">
+        UPDATE product
+        SET stock = #{stock}
+        WHERE product_id = #{product_id} AND size = #{size}
+    </update>
+
     <delete id="delete" parameterType="Integer">
         DELETE FROM product
         WHERE product_id = #{product_id}
@@ -74,5 +80,10 @@
             ORDER BY bought_cnt desc, product_id asc
         </if>
         LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectAtSize" parameterType="map" resultType="Product">
+        SELECT * FROM product
+        WHERE product_id LIKE CONCAT(#{product_id},'%') AND size = #{size}
     </select>
 </mapper>

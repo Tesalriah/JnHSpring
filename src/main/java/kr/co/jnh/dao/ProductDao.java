@@ -9,9 +9,11 @@ import java.util.Map;
 public interface ProductDao {
     Product select(String product_id) throws Exception;
 
-    Integer insert(Product product) throws Exception;
+    int insert(Product product) throws Exception;
 
-    Integer delete(String product_id) throws Exception;
+    int updateStock(Product product) throws Exception;
+
+    int delete(String product_id) throws Exception;
 
     List<Product> selectAll(Map map) throws Exception;
 
@@ -22,4 +24,6 @@ public interface ProductDao {
     List<Product> searchSelectPage(SearchCondition sc) throws Exception;
 
     List<String> selectSize(String product_id) throws Exception;
+
+    Product selectAtSize(Map map) throws Exception;
 }

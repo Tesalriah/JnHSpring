@@ -2,8 +2,10 @@ package kr.co.jnh.service;
 
 import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.OrderDao;
+import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.domain.Cart;
 import kr.co.jnh.domain.Order;
+import kr.co.jnh.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     CartDao cartDao;
+
+    @Autowired
+    ProductDao productDao;
 
 
     @Override
@@ -46,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
             order = list.get(i);
 
             result = orderDao.insert(order);
+
             if(result != 1){
                 throw new Exception("ORDER_FAIL");
             }
@@ -53,11 +59,18 @@ public class OrderServiceImpl implements OrderService {
             map.put("user_id", order.getUser_id());
             map.put("product_id", order.getProduct_id());
             map.put("size", order.getSize());
-            if(cartDao.checkCart(map) == null){
-                return result;
+
+            Product product = productDao.select(order.getProduct_id());
+            int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
+            product.setStock(calStock + "");
+            if(productDao.updateStock(product) != 1){
+                throw new Exception("STOCK_ERROR");
             }
-            if(cartDao.delete(map) != 1){
-                throw new Exception("CART_DELETE_FAIL");
+
+            if(cartDao.checkCart(map) != null){
+                if(cartDao.delete(map) != 1){
+                    throw new Exception("CART_DELETE_FAIL");
+                }
             }
         }
         return result;
@@ -76,6 +89,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean orderIdCheck(String date) throws Exception {
         if(orderDao.selectId(date) != null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkStock(String product_id, String quantity, String size) throws Exception {
+        HashMap map = new HashMap();
+        map.put("product_id", product_id);
+        map.put("size", size);
+        Product product = productDao.selectAtSize(map);
+
+        int stock = Integer.parseInt(product.getStock());
+        int quan = Integer.parseInt(quantity);
+        if(stock < quan || stock - quan < 0){
             return true;
         }
         return false;

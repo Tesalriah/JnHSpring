@@ -182,7 +182,7 @@
                         </tr> -->
                     </table>
                     <div class="payment_btn">
-                        <button type="button" id="submit_btn" >결제하기</button><button type="button">취소</button>
+                        <button type="button" id="submit_btn" >결제하기</button><button type="button" onclick="window.history.go(-1);">취소</button>
                     </div>
                 </div>
             </form>

@@ -11,7 +11,7 @@ const del_all = document.getElementById('delete_all');
 let totalCal = 0;
 
 window.onload = function(){
-    for(let i=0; i<each_price.length; i++){
+    for(let i=0; i<del_check.length; i++){
         each_price[i].innerText = (price[i].value * quantity[i].value).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         if(del_check[i].checked == true){
             totalCal += price[i].value * parseInt(quantity[i].value);
@@ -33,7 +33,7 @@ del_all.addEventListener('click', function(){
     total.innerHTML = totalCal.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 })
 
-for(let i=0; i<quantity.length; i++){
+for(let i=0; i<del_check.length; i++){
 
     del_check[i].addEventListener('click', function(){
         if(del_check[i].checked == true){

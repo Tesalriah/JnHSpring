@@ -4,6 +4,7 @@ import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     Product getProduct(String product_id) throws Exception;
@@ -19,4 +20,6 @@ public interface ProductService {
     List<Product> getSearchSelectPage(SearchCondition sc) throws Exception;
 
     List<String> getSize(String product_id) throws Exception;
+
+    Product getProductAtSize(Map map) throws Exception;
 }
