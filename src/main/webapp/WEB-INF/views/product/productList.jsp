@@ -84,13 +84,13 @@
             <div class="paging">
                 <c:if test="${totalCnt != null && totalCnt != 0}">
                     <c:if test="${ph.showPrev}">
-                        <a href="<c:url value="/productList?${ph.sc.getQueryString(ph.beginPage-1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                        <a href="<c:url value="/productList${ph.sc.getQueryString(ph.beginPage-1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
                     </c:if>
                     <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                         <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/productList${ph.sc.getQueryString(i)}" />">${i}</a>
                     </c:forEach>
                     <c:if test="${ph.showNext}">
-                        <a href="<c:url value="/productList?${ph.sc.getQueryString(ph.endpage+1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                        <a href="<c:url value="/productList${ph.sc.getQueryString(ph.endpage+1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
                     </c:if>
                 </c:if>
             </div>

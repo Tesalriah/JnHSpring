@@ -21,11 +21,11 @@ public class EmailAuthDaoImpl implements EmailAuthDao {
         return session.selectOne(namespace + "select", email);
     }
 
-    public Integer insertAuth(MailAuthDto mailAuth) throws Exception{
+    public int insertAuth(MailAuthDto mailAuth) throws Exception{
         return session.insert(namespace + "insert", mailAuth);
     }
 
-    public Integer deleteAuth(String email) throws Exception{
+    public int deleteAuth(String email) throws Exception{
         return  session.delete(namespace + "delete", email);
     }
 }

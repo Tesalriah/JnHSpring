@@ -21,114 +21,49 @@
                 <div style="font-family: 'Raleway', sans-serif;">Mypage</div>
             </div>
             <div class="nav">
-                <div class="left_menu">
-                    <div><a href="orderList.html">주문목록</a></div>
-                    <div><a href="">취소/반품/교환</a></div>
-                    <div><a href="">찜리스트</a></div>
-                    <br>
-                    <div><a href="">개인정보 확인/수정</a></div>
-                    <div><a href="">신고내역확인</a></div>
-                    <br>
-                    <div><a href="">리뷰관리</a></div>
-                    <br>
-                    <div><a href="">문의하기</a></div>
-                    <div><a href="">문의내역확인</a></div>
-                </div>
+                <%@ include file="leftMenu.jsp" %>
                 <div class="contents">
                     <h2>주문목록</h2>
                     <div class="order_list">
-                        <div class="order">
-                            <div class="order_top"><div>2024.01.01 주문</div><div><a href="orderDetail.html">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
-                            <div class="order_contents">
-                                <div class="order_img"><img src="<c:url value="/resources/img/best.jpg"/>"></div>
-                                <div class="order_status">
-                                    <div>배송중</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
+                        <c:forEach var="orderList" items="${orderList}" varStatus="OLstatus">
+                            <form method="post" action="">
+                                <div class="order">
+                                    <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div><a href="<%--<c:url value="/orderDetail?order_no=#{order.order_no}"/>--%>">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
+                                    <div class="order_contents">
+                                        <div class="order_img">
+                                            <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
+                                                <img src="<c:url value="/resources/img/upload/${productList[OLstatus.index][orderStatus.index].product_id}/${productList[OLstatus.index][orderStatus.index].image}"/>">
+                                            </c:forEach>
+                                        </div>
+                                        <div class="order_status">
+                                            <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
+                                                <div>${order.status}</div>
+                                                <div><a href="">${productList[OLstatus.index][orderStatus.index].product_name} / ${order.size}</a></div>
+                                                <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${productList[OLstatus.index][orderStatus.index].total}"/>원 / ${order.quantity}개</div>
+                                            </c:forEach>
+                                        </div>
+                                        <div class="order_button">
+                                            <div><button type="button" onclick="window.open('<c:url value="/product"/>?product_id=${order.product_id}', '_blank');">재구매</button></div>
+                                            <div><button type="button">교환, 반품신청</button></div>
+                                            <div><button type="button">리뷰작성</button></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="order_button">
-                                    <div><button type="button">재구매</button></div>
-                                    <div><button type="button">교환, 반품신청</button></div>
-                                    <div><button type="button">리뷰작성</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order">
-                            <div class="order_top"><div>2024.01.01 주문</div><div><a href="">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
-                            <div class="order_contents">
-                                <div class="order_img"><img src="<c:url value="/resources/img/main1.jpg"/>"><img src="<c:url value="/resources/img/weekly.jpg"/>"></div>
-                                <div class="order_status">
-                                    <div>배송완료</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
-                                    <div>배송중</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
-                                </div>
-                                <div class="order_button">
-                                    <div><button type="button">재구매</button></div>
-                                    <div><button type="button">교환, 반품신청</button></div>
-                                    <div><button type="button">리뷰작성</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order">
-                            <div class="order_top"><div>2024.01.01 주문</div><div><a href="">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
-                            <div class="order_contents">
-                                <div class="order_img"><img src="<c:url value="/resources/img/women.jpg"/>"></div>
-                                <div class="order_status">
-                                    <div>배송완료</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
-                                </div>
-                                <div class="order_button">
-                                    <div><button type="button">재구매</button></div>
-                                    <div><button type="button">교환, 반품신청</button></div>
-                                    <div><button type="button">리뷰작성</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order">
-                            <div class="order_top"><div>2024.01.01 주문</div><div><a href="">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
-                            <div class="order_contents">
-                                <div class="order_img"><img src="<c:url value="/resources/img/men.jpg"/>"></div>
-                                <div class="order_status">
-                                    <div>배송완료</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
-                                </div>
-                                <div class="order_button">
-                                    <div><button type="button">재구매</button></div>
-                                    <div><button type="button">교환, 반품신청</button></div>
-                                    <div><button type="button">리뷰작성</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order">
-                            <div class="order_top"><div>2024.01.01 주문</div><div><a href="">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
-                            <div class="order_contents">
-                                <div class="order_img"><img src="<c:url value="/resources/img/weekly.jpg"/>"></div>
-                                <div class="order_status">
-                                    <div>배송완료</div>
-                                    <div><a href="">상품명</a></div>
-                                    <div>150,000원 / 1개</div>
-                                </div>
-                                <div class="order_button">
-                                    <div><button type="button">재구매</button></div>
-                                    <div><button type="button">교환, 반품신청</button></div>
-                                    <div><button type="button">리뷰작성</button></div>
-                                </div>
-                            </div>
-                        </div>
+                            </form>
+                        </c:forEach>
                     </div>
                     <div class="paging">
-                        <a href=""><i class="fa-solid fa-angle-left"></i></a>
-                        <a href="">1</a>
-                        <a href="">2</a>
-                        <a href="">3</a>
-                        <a href="">4</a>
-                        <a href="">5</a>
-                        <a href=""><i class="fa-solid fa-angle-right"></i></a>
+                        <c:if test="${totalCnt != null && totalCnt != 0}">
+                            <c:if test="${ph.showPrev}">
+                                <a href="<c:url value="/myPage/orderList?page=${ph.beginPage-1}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                            </c:if>
+                            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+                                <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/myPage/orderList?page=${i}" />">${i}</a>
+                            </c:forEach>
+                            <c:if test="${ph.showNext}">
+                                <a href="<c:url value="/myPage/orderList?page=${ph.endPage+1}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                            </c:if>
+                        </c:if>
                     </div>
                 </div>
             </div>

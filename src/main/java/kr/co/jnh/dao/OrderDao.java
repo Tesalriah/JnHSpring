@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderDao {
-    List<Order> select(String id) throws Exception;
+    List<Order> select(Map map) throws Exception;
+
+    List<Order> selectEach(Map map) throws Exception;
+
+    int selectCnt(Map map) throws Exception;
 
     List<Order> selectAll() throws Exception;
 

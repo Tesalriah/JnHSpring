@@ -3,8 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.jnh.dao.OrderMapper">
-    <select id="select" parameterType="String" resultType="Order">
+    <select id="select" parameterType="Map" resultType="Order">
         SELECT * FROM order_status
+        WHERE user_id = #{id} AND NOT (status = '삭제처리')
+        group by order_no
+        ORDER BY order_no DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectEach" parameterType="Map" resultType="Order">
+        SELECT * FROM order_status
+        WHERE user_id = #{id} AND order_no = #{order_no} AND NOT (status = '삭제처리')
+        ORDER BY order_no DESC
+    </select>
+
+    <select id="selectCnt" parameterType="Map" resultType="int">
+        SELECT count(distinct order_no) FROM order_status
         WHERE user_id = #{id} AND NOT (status = '삭제처리')
     </select>
 

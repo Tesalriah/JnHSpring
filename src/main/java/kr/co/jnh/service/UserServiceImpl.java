@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getGrade(String id) throws Exception{
+    public int getGrade(String id) throws Exception{
         if(id == null || id.equals("")){
             return -1;
         }
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getStatus(String id) throws Exception{
+    public int getStatus(String id) throws Exception{
         User user = userDao.selectUserById(id);
         return user.getStatus();
     }
