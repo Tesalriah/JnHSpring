@@ -9,7 +9,8 @@ import java.util.Map;
 
 public interface NoticeDao {
     int count() throws Exception;
-    Integer insert(NoticeDto noticeDto) throws Exception;
+
+    int insert(NoticeDto noticeDto) throws Exception;
 
     List<NoticeDto> selectAll() throws Exception;
 
@@ -17,7 +18,7 @@ public interface NoticeDao {
 
     List<NoticeDto> selectPage(Map map) throws Exception;
 
-    Integer Mcount() throws Exception;
+    int Mcount() throws Exception;
 
     List<NoticeDto> searchSelectPage(SearchCondition sc) throws Exception;
 

@@ -27,7 +27,7 @@ public class NoticeDaoImpl implements NoticeDao {
     }
 
     @Override
-    public Integer insert(NoticeDto noticeDto) throws Exception{
+    public int insert(NoticeDto noticeDto) throws Exception{
         return session.insert(namespace + "insert", noticeDto);
     }
 
@@ -53,7 +53,7 @@ public class NoticeDaoImpl implements NoticeDao {
 
 
     @Override
-    public Integer Mcount() throws Exception {
+    public int Mcount() throws Exception {
         return session.selectOne(namespace+"mustReadCount");
     }
 

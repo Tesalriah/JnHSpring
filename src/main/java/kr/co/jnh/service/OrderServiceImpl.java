@@ -28,8 +28,18 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<Order> read(String id) throws Exception{
-        return orderDao.select(id);
+    public List<Order> read(Map map) throws Exception{
+        return orderDao.select(map);
+    }
+
+    @Override
+    public List<Order> readEach(Map map) throws Exception{
+        return orderDao.selectEach(map);
+    }
+
+    @Override
+    public int readCnt(Map map) throws Exception{
+        return orderDao.selectCnt(map);
     }
 
     @Override

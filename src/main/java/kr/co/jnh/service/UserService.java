@@ -11,9 +11,9 @@ public interface UserService {
 
     User showUser(Map map) throws Exception;
 
-    Integer getGrade(String id) throws Exception;
+    int getGrade(String id) throws Exception;
 
-    Integer getStatus(String id) throws Exception;
+    int getStatus(String id) throws Exception;
 
     String findEmail(String id) throws Exception;
 

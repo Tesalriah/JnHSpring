@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    List<Order> read(String id) throws Exception;
+    List<Order> read(Map map) throws Exception;
+
+    List<Order> readEach(Map map) throws Exception;
+
+    int readCnt(Map map) throws Exception;
 
     List<Order> selectAll() throws Exception;
 

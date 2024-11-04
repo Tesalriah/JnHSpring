@@ -20,8 +20,18 @@ public class OrderDaoImpl implements OrderDao {
     private static String nameSpace = "kr.co.jnh.dao.OrderMapper.";
 
     @Override
-    public List<Order> select(String id) throws Exception{
-        return session.selectList(nameSpace + "select", id);
+    public List<Order> select(Map map) throws Exception{
+        return session.selectList(nameSpace + "select", map);
+    }
+
+    @Override
+    public List<Order> selectEach(Map map) throws Exception{
+        return session.selectList(nameSpace + "selectEach", map);
+    }
+
+    @Override
+    public int selectCnt(Map map) throws Exception{
+        return session.selectOne(nameSpace + "selectCnt", map);
     }
 
     public Order selectOne(String id) throws Exception{
