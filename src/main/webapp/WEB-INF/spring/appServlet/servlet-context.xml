@@ -64,6 +64,10 @@
 			<mapping path="/myPage/**"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/myPage/**"/>
+			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
+		</interceptor>
 	</interceptors>
 
 </beans:beans>

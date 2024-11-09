@@ -14,6 +14,8 @@ public interface OrderService {
 
     List<Order> selectAll() throws Exception;
 
+    List<Order> selectOne(Map map) throws Exception;
+
     String returnId(String order_no) throws Exception;
 
     int buy(List<Order> order) throws Exception;

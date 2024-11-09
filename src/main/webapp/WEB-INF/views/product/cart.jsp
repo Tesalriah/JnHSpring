@@ -59,7 +59,7 @@
                             </div>
                             <div class="product_info" ${productList[status.index].stock <= 0 ? "style='color:#dddddd'" : ""}>
                                     ${productList[status.index].stock <= 0 ? "<span style='color:#999999;'>일시품절</span><br><br>" : ""}
-                                <a href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank">${productList[status.index].product_name}</a><br><br>
+                                <a href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank">${productList[status.index].product_name}</a> / ${productList[status.index].color}<br><br>
                                 <span class="price"><fmt:formatNumber type="number" value="${productList[status.index].dis_price}"/></span>원
                                 <input type="hidden" name="price" value="${productList[status.index].dis_price}">
                                 <input type="hidden" name="size" value="${cart.size}">

@@ -34,8 +34,8 @@ public class OrderDaoImpl implements OrderDao {
         return session.selectOne(nameSpace + "selectCnt", map);
     }
 
-    public Order selectOne(String id) throws Exception{
-        return session.selectOne(nameSpace + "selectOne", id);
+    public List<Order> selectOne(Map map) throws Exception{
+        return session.selectOne(nameSpace + "selectOne", map);
     }
 
     @Override

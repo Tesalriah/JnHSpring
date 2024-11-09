@@ -28,7 +28,7 @@
                         <c:forEach var="orderList" items="${orderList}" varStatus="OLstatus">
                             <form method="post" action="">
                                 <div class="order">
-                                    <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div><a href="<%--<c:url value="/orderDetail?order_no=#{order.order_no}"/>--%>">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
+                                    <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div><a href="<c:url value="/myPage/orderDetail?order_no=${orderList[0].order_no}&page=${ph.sc.page}"/>">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
                                     <div class="order_contents">
                                         <div class="order_img">
                                             <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
@@ -38,12 +38,12 @@
                                         <div class="order_status">
                                             <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
                                                 <div>${order.status}</div>
-                                                <div><a href="">${productList[OLstatus.index][orderStatus.index].product_name} / ${order.size}</a></div>
+                                                <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${productList[OLstatus.index][orderStatus.index].product_name} / ${productList[OLstatus.index][orderStatus.index].color} / ${order.size}</a></div>
                                                 <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${productList[OLstatus.index][orderStatus.index].total}"/>원 / ${order.quantity}개</div>
                                             </c:forEach>
                                         </div>
                                         <div class="order_button">
-                                            <div><button type="button" onclick="window.open('<c:url value="/product"/>?product_id=${order.product_id}', '_blank');">재구매</button></div>
+                                            <div><button type="submit" formaction="<%--<c:url value="/repurchase"/>--%>">재구매</button></div>
                                             <div><button type="button">교환, 반품신청</button></div>
                                             <div><button type="button">리뷰작성</button></div>
                                         </div>

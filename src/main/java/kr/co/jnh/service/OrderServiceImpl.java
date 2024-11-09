@@ -48,6 +48,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> selectOne(Map map) throws Exception{
+        return orderDao.selectOne(map);
+    }
+
+    @Override
     public String returnId(String order_no) throws Exception{
         return orderDao.selectId(order_no);
     }

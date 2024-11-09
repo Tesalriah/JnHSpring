@@ -14,7 +14,7 @@ public interface OrderDao {
 
     List<Order> selectAll() throws Exception;
 
-    Order selectOne(String id) throws Exception;
+    List<Order> selectOne(Map map) throws Exception;
 
     int insert(Order order) throws Exception;
 

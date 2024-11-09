@@ -1,5 +1,6 @@
 package kr.co.jnh.controller;
 
+import com.mysql.cj.Session;
 import kr.co.jnh.domain.Order;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Product;
@@ -9,8 +10,10 @@ import kr.co.jnh.service.ProductService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +34,7 @@ public class MyPageContoller {
     ProductService productService;
 
     @GetMapping("orderList")
-    public String mypage(HttpServletRequest request, SearchCondition sc){
+    public String mypage(HttpServletRequest request, SearchCondition sc, Model m){
         HttpSession session = request.getSession(false);
         String id = (String)session.getAttribute("id");
         sc.setPageSize(5);
@@ -60,14 +63,23 @@ public class MyPageContoller {
                 orderList.add(each);
             }
 
-            request.setAttribute("productList", productList);
-            request.setAttribute("orderList", orderList);
-            request.setAttribute("totalCnt", totalCnt);
-            request.setAttribute("ph", ph);
+            m.addAttribute("productList", productList);
+            m.addAttribute("orderList", orderList);
+            m.addAttribute("totalCnt", totalCnt);
+            m.addAttribute("ph", ph);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "myPage/orderList";
+    }
+
+    @GetMapping("orderDetail")
+    public String orderDetail(@RequestParam String order_no, @RequestParam int page, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+
+
+
+        return "myPage/orderDetail";
     }
 }

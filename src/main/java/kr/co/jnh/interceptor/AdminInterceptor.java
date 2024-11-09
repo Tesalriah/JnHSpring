@@ -29,7 +29,6 @@ public class AdminInterceptor implements HandlerInterceptor {
 
         // 관리자가 아닌 경우 이전 페이지로 리다이렉트
         String referer = request.getHeader("referer");
-        System.out.println("request.getHeader(\"referer\") = " + request.getHeader("referer"));
         if(referer == null || referer.equals("")){
             response.sendRedirect("/jnh?msg=WRONG_APPROACH");
         }else{

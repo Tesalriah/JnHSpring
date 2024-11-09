@@ -8,13 +8,13 @@
                 <li><a href="">이용약관</a></li>
                 <li><a href="">개인정보처리방침</a></li>
             </ul>
-            <div class="Info"><span>J&H</span><span>서울특별시 OO구 OO로OO길 OO빌딩 OOOO호</span><span>대표자 OOO</span><span>support@JNH.co.kr</span></div>
+            <div class="Info"><span>J&H</span><span>서울특별시 OO구 OO로OO길 OO빌딩 OOOO호</span><span>대표자 OOO</span><span>shopjnhmall@gmail.com</span></div>
             <div class="Info" style="padding-top:5px;"><span>사업자등록번호 000-00-00000</span></div>
             <p>Copyright J&H. All Rights Reserved.</p>
             <ul class="sns">
-                <li><a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a></li>
-                <li><a href="https://www.facebook.com/?locale=ko_KR"><i class="fa-brands fa-facebook"></i></a></li>
-                <li><a href="https://www.youtube.com/"> <i class="fa-brands fa-youtube"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                <li><a href="https://www.facebook.com/?locale=ko_KR" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>
+                <li><a href="https://www.youtube.com/" target="_blank"> <i class="fa-brands fa-youtube"></i></a></li>
             </ul>
         </div>
         <div class="area_right">
@@ -24,7 +24,7 @@
                     <li><a href="">회사소개</a></li>
                     <li><a href="">매장안내</a></li>
                     <li><a href="">단체구매</a></li>
-                    <li><a href="">공지사항</a></li>
+                    <li><a href="<c:url value="/notice/list"/>">공지사항</a></li>
                 </ul>
                 <ul>
                     <li><a href="">문의</a></li>

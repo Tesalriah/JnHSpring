@@ -2,7 +2,6 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
-import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
