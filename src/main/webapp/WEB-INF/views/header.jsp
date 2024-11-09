@@ -9,19 +9,19 @@
                 <ul class="top_menu">
                     <li><a href="<c:url value='/'/>">HOME</a></li>
                     <li class="gender_on">
-                        <a href="<c:url value="/productList?gender=MEN"/>">MEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="<c:url value="/product-list"/>?gender=MEN">MEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">
-                            <li><a href="<c:url value="/productList?gender=MEN&category=TOPS"/>">TOPS</a></li>
-                            <li><a href="<c:url value="/productList?gender=MEN&category=BOTTOM"/>">BOTTOM</a></li>
-                            <li><a href="<c:url value="/productList?gender=MEN&category=OUTER"/>">OUTER</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=MEN&category=TOPS">TOPS</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=MEN&category=BOTTOM">BOTTOM</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=MEN&category=OUTER">OUTER</a></li>
                         </ul>
                     </li>
                     <li class="gender_on">
-                        <a href="<c:url value="/productList?gender=WOMEN"/>">WOMEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="<c:url value="/product-list?gender=WOMEN"/>">WOMEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">
-                            <li><a href="<c:url value="/productList?gender=WOMEN&category=TOPS"/>">TOPS</a></li>
-                            <li><a href="<c:url value="/productList?gender=WOMEN&category=BOTTOM"/>">BOTTOM</a></li>
-                            <li><a href="<c:url value="/productList?gender=WOMEN&category=OUTER"/>">OUTER</a></li>
+                            <li><a href="<c:url value="/product-list"/>"?gender=WOMEN&category=TOPS>TOPS</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=WOMEN&category=BOTTOM">BOTTOM</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=WOMEN&category=OUTER">OUTER</a></li>
                         </ul>
                     </li>
                     <li><a href="<c:url value="/notice/list" />">SERVICE</a></li>
@@ -41,8 +41,8 @@
                     <a href="javascript:void(0);" id="open_search"><i class="fa-solid fa-magnifying-glass"></i></a>
                     <div class="search_area">
                         <button id="close_search" type="button" class="search_close"><i class="fa-solid fa-xmark"></i></button>
-                        <form method="post" action="">
-                            <input type="text" id="search" name="search" placeholder="검색어를 입력해주세요" autocomplete="off"><button id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <form method="get" action="<c:url value="/product-list"/>${empty ph ? sc.queryString : ph.sc.queryString}">
+                            <input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요" autocomplete="off"><button type="submit" id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
                 </div>

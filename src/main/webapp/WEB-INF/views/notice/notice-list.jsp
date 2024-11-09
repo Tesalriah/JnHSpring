@@ -6,8 +6,8 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/sideMenu.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/noticeList.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/side-menu.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/notice-list.css'/>">
         <title>J&H</title>
     </head>
     <body>
@@ -83,13 +83,13 @@
                         </c:if>
                         <div class="paging">
                             <c:if test="${ph.showPrev}">
-                                <a href="<c:url value='/notice/list?page=${ph.beginPage-1}&pageSize=${ph.pageSize}'/>">&lt;</a>
+                                <a href="<c:url value='/notice/list'/>?page=${ph.beginPage-1}&pageSize=${ph.pageSize}">&lt;</a>
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                                <a ${i == ph.sc.page ? "style='color:#FFAEC9'" : ""} href="<c:url value='/notice/list${ph.sc.getOptionQueryString(i)}'/>">${i}</a>
+                                <a ${i == ph.sc.page ? "style='color:#FFAEC9'" : ""} href="<c:url value='/notice/list'/>${ph.sc.getOptionQueryString(i)}">${i}</a>
                             </c:forEach>
                             <c:if test="${ph.showNext}">
-                                <a href="<c:url value='/notice/list?page=${ph.endPage+1}&pageSize=${ph.pageSize}'/>">&gt;</a>
+                                <a href="<c:url value='/notice/list'/>?page=${ph.endPage+1}&pageSize=${ph.pageSize}">&gt;</a>
                             </c:if>
                         </div>
                     </div>

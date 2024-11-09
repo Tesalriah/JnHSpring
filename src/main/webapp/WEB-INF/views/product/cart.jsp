@@ -10,7 +10,7 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/cart.css'/>">
         <script type="text/javascript" src="<c:url value='/resources/js/cart.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/wishList.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/wish-list.js'/>" defer></script>
         <title>J&H 장바구니</title>
     </head>
     <body>
@@ -32,7 +32,7 @@
                     <div style="width:4%;text-align:center;">사이즈</div>
                     <div style="width:12%; text-align:center;">수량</div>
                     <div>
-                        <input type="submit" formaction="<c:url value="/delCart"/>" value="선택삭제">
+                        <input type="submit" formaction="<c:url value="/del-cart"/>" value="선택삭제">
                     </div>
                 </div>
                 <ul class="cart_list">
@@ -71,7 +71,7 @@
                                 <button type="button" class="quantity_minus"><i class="fa-solid fa-minus"></i></button><input class="quantity" type="text" name="quantity" value="${cart.quantity}"><button type="button" class="quantity_plus"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <div class="list_button">
-                                <input type="submit" formaction="<c:url value="/delOneCart"/>?del_product_id=${cart.product_id}&del_size=${cart.size}" value="삭제">
+                                <input type="submit" formaction="<c:url value="/del-one-cart"/>?del_product_id=${cart.product_id}&del_size=${cart.size}" value="삭제">
                             </div>
                         </li>
                     </c:forEach>
@@ -86,7 +86,7 @@
                 <div class="end_button_area">
                     <div>
                         <button class="end_button" type="submit">구매하기</button>
-                        <button class="end_button" type="button" onclick="location.href='<c:url value="/productList"/>${sc.queryString}'">계속쇼핑하기</button>
+                        <button class="end_button" type="button" onclick="location.href='<c:url value="/product-list"/>${sc.queryString}'">계속쇼핑하기</button>
                     </div>
                 </div>
             </form>

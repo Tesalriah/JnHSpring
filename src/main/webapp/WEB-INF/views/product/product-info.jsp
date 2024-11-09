@@ -6,12 +6,12 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <script type="text/javascript" src="<c:url value='/resources/js/priceCalc.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/reviewNquestion.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/sizeInsert.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/scrollMove.js'/>" defer></script>
-        <link rel="stylesheet" href="<c:url value='/resources/css/productInfo.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/reviewNquestion.css'/>">
+        <script type="text/javascript" src="<c:url value='/resources/js/price-cal.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/review-question.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/size-insert.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/scroll-move.js'/>" defer></script>
+        <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
         <title>J&H</title>
     </head>
     <body>
@@ -22,14 +22,14 @@
                 <div>
                     <a href="<c:url value="/"/>">HOME</a>
                     <c:if test="${!sc.gender.equals('')}">
-                        > <a href="<c:url value="/productList?gender=${sc.gender}"/>">${sc.gender}</a>
+                        > <a href="<c:url value="/product-list?gender=${sc.gender}"/>">${sc.gender}</a>
                     </c:if>
                     <c:choose>
                         <c:when test="${!sc.category.equals('')}">
-                            > <a href="<c:url value="/productList?gender=${sc.gender}&category=${sc.category}"/>">${sc.category}</a>
+                            > <a href="<c:url value="/product-list?gender=${sc.gender}&category=${sc.category}"/>">${sc.category}</a>
                         </c:when>
                         <c:otherwise>
-                            > <a href="<c:url value="/productList?gender=${sc.gender}"/>">ALL</a>
+                            > <a href="<c:url value="/product-list?gender=${sc.gender}"/>">ALL</a>
                         </c:otherwise>
                     </c:choose>
                 </div>

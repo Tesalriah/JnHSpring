@@ -6,8 +6,8 @@
 <head>
     <%@ include file="head.jsp" %>
     <link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
-    <script type="text/javascript" src="<c:url value='/resources/js/mainMenu.js'/>" defer></script>
-    <script type="text/javascript" src="<c:url value='/resources/js/bannerSlide.js'/>" defer></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/main-menu.js'/>" defer></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/banner-slide.js'/>" defer></script>
     <title>J&H</title>
 </head>
 <body>
@@ -53,22 +53,22 @@
         </div>
         <div class="menu_nav">
             <div class="two_menu">
-                <div class="menu_img" onclick="location.href=''">
+                <div class="menu_img" onclick="location.href='<c:url value="/product-list"/>?gender=MEN'">
                     <div>MEN</div>
                     <img src="<c:url value='/resources/img/men.jpg'/>">
                 </div>
-                <div class="menu_img" onclick="location.href=''">
+                <div class="menu_img" onclick="location.href='<c:url value="/product-list"/>?gender=WOMEN'">
                     <div>WOMEN</div>
                     <img src="<c:url value='/resources/img/women.jpg'/>">
                 </div>
             </div>
             <div class="two_menu">
-                <div class="menu_img" onclick="location.href=''">
+                <div class="menu_img" onclick="location.href='<c:url value="/product-list"/>?option=rating'">
                     <div>BEST</div>
                     <img src="<c:url value='/resources/img/best.jpg'/>">
                 </div>
-                <div class="menu_img" onclick="location.href=''">
-                    <div>WEEKLY PICK</div>
+                <div class="menu_img" onclick="location.href='<c:url value="/product-list"/>?option=bought_cnt'">
+                    <div>HOT</div>
                     <img src="<c:url value='/resources/img/weekly.jpg'/>">
                 </div>
             </div>

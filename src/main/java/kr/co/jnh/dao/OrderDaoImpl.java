@@ -35,7 +35,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     public List<Order> selectOne(Map map) throws Exception{
-        return session.selectOne(nameSpace + "selectOne", map);
+        return session.selectList(nameSpace + "selectOne", map);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public int updete(Map map) throws Exception{
-        return session.update(nameSpace + "select", map);
+        return session.update(nameSpace + "update", map);
     }
 
     @Override

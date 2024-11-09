@@ -6,7 +6,7 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/sideMenu.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/side-menu.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/notice.css'/>">
         <title>J&H</title>
     </head>

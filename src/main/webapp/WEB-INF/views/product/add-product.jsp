@@ -5,9 +5,9 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/sideMenu.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/addProduct.css'/>">
-        <script type="text/javascript" src="<c:url value='/resources/js/productMNG.js'/>" defer></script>
+        <link rel="stylesheet" href="<c:url value='/resources/css/side-menu.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/add-product.css'/>">
+        <script type="text/javascript" src="<c:url value='/resources/js/product-mng.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/category.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/stock.js'/>" defer></script>
         <title>J&H 상품 추가</title>
@@ -28,7 +28,7 @@
             </div>
             <div class="nav" style="display: block;">
                 <div class="content">
-                    <form action="<c:url value="/addProduct"/>" method="post" enctype="multipart/form-data">
+                    <form action="<c:url value="/add-product"/>" method="post" enctype="multipart/form-data">
                         <div class="table_box">
                             <div class="add_table">
                                 <div class="product_name">

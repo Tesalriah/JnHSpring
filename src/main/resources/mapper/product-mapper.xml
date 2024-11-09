@@ -20,6 +20,12 @@
         WHERE product_id = #{product_id} AND size = #{size}
     </update>
 
+    <update id="updateBoughtCnt" parameterType="Product">
+        UPDATE product
+        SET bought_cnt = #{bought_cnt}
+        WHERE product_id = #{product_id};
+    </update>
+
     <delete id="delete" parameterType="Integer">
         DELETE FROM product
         WHERE product_id = #{product_id}
@@ -37,7 +43,7 @@
 
     <select id="selectSize" parameterType="String" resultType="String">
         SELECT size FROM product
-        WHERE product_id LIKE #{product_id} AND stock != 0 ORDER BY size asc
+        WHERE product_id LIKE #{product_id} AND stock > 0 ORDER BY size asc
     </select>
 
     <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
@@ -48,36 +54,34 @@
     </select>
 
     <sql id="searchCondition">
-        <if test="gender != null and !gender.equals('')">
+        AND product_name LIKE concat('%', #{keyword}, '%')
+        <if test="!gender.equals('')">
             AND gender LIKE concat(#{gender})
         </if>
-        <if test="gender != null and !gender.equals('') and (category == null and category.equals(''))">
+        <if test="!gender.equals('') and category.equals('')">
             AND gender LIKE concat(#{gender})
         </if>
-        <if test="gender != null and !gender.equals('') and (category != null and !category.equals(''))">
+        <if test="!gender.equals('') and !category.equals('')">
             AND gender LIKE concat(#{gender})
             AND category LIKE concat(#{category})
         </if>
-        <if test="gender == null and gender.equals('')">
-            AND (product_name   LIKE concat('%', #{keyword}, '%')
-            OR category LIKE concat('%', #{keyword}, '%'))
-        </if>
+        AND stock > 0
     </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="Product">
-        SELECT product_id, product_name, gender, category, color, size, stock, price, discount, image, rating, bougth_cnt, state
+        SELECT *
         FROM  product
         WHERE true
         <include refid="searchCondition"/>
         group by product_id, rating
         <if test="option == 'product_id'">
-            ORDER BY product_id asc, rating desc
+            ORDER BY product_id desc
         </if>
         <if test="option == 'rating'">
-            ORDER BY rating desc, product_id asc
+            ORDER BY rating desc
         </if>
         <if test="option == 'bought_cnt'">
-            ORDER BY bought_cnt desc, product_id asc
+            ORDER BY bought_cnt desc
         </if>
         LIMIT #{offset}, #{pageSize}
     </select>
