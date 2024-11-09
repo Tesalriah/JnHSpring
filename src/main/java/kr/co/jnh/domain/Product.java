@@ -20,7 +20,7 @@ public class Product {
     private Date reg_date;
     private Date up_date;
     private float rating;
-    private int bougth_cnt;
+    private int bought_cnt;
     private String state;
     private Integer quantity;
     private Integer total;
@@ -44,7 +44,7 @@ public class Product {
                 ", reg_date=" + reg_date +
                 ", up_date=" + up_date +
                 ", rating=" + rating +
-                ", bougth_cnt=" + bougth_cnt +
+                ", bought_cnt=" + bought_cnt +
                 ", state='" + state + '\'' +
                 ", quantity=" + quantity +
                 ", total=" + total +
@@ -53,7 +53,7 @@ public class Product {
     }
 
     public Product(String product_id, String product_name, String gender, String category, String color, String size,
-                   String stock, Integer price, Integer discount, String image, int bougth_cnt) {
+                   String stock, Integer price, Integer discount, String image, int bought_cnt) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.gender = gender;
@@ -64,7 +64,7 @@ public class Product {
         this.price = price;
         this.discount = discount;
         this.image = image;
-        this.bougth_cnt = bougth_cnt;
+        this.bought_cnt = bought_cnt;
     }
 
     public String getProduct_id() {
@@ -173,12 +173,12 @@ public class Product {
         this.rating = rating;
     }
 
-    public int getBougth_cnt() {
-        return bougth_cnt;
+    public int getBought_cnt() {
+        return bought_cnt;
     }
 
-    public void setBougth_cnt(int bougth_cnt) {
-        this.bougth_cnt = bougth_cnt;
+    public void setBought_cnt(int bought_cnt) {
+        this.bought_cnt = bought_cnt;
     }
 
     public String getState() {

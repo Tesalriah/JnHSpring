@@ -48,6 +48,7 @@ public class OrderContoller {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String today = format.format(date);
+        System.out.println("today = " + today);
         long order_no;
         try {
             // 현재날짜의 주문이 있을 시 마지막 번호 다음번호로 주문번호 생성
@@ -72,7 +73,7 @@ public class OrderContoller {
                 trigger.setQuantity(Integer.parseInt(quan[i]));
                 if(orderService.checkStock(product_id[i], quan[i], size[i])){
                     request.setAttribute("msg", "품절된 상품이 있습니다 확인 후 다시 시도해주세요.");
-                    request.setAttribute("url", "productList");
+                    request.setAttribute("url", "product-list");
                     return "alert";
                 }
 
@@ -84,11 +85,11 @@ public class OrderContoller {
                 throw new Exception("BUY_FAIL");
             }
             request.setAttribute("msg", "주문완료");
-            request.setAttribute("url", "myPage/orderList");
+            request.setAttribute("url", "mypage/order-list");
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("msg", "주문에 실패했습니다.");
-            request.setAttribute("url", "productList");
+            request.setAttribute("url", "product-list");
         }
         return "alert";
     }

@@ -9,7 +9,7 @@
     <script src="<c:url value="/resources/js/address.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/loading.js"/>" defer></script>
     <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
-    <link rel="stylesheet" href="<c:url value='/resources/css/signUp.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/signup.css'/>">
     <title>J&H 회원가입</title>
 </head>
 <body>

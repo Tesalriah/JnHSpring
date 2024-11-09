@@ -45,6 +45,7 @@
     max-width:1920px;
 }
 .banner_writing{
+    pointer-events: none;
     font-family: 'Zen Dots', sans-serif;
     position:absolute;
     text-align: center;

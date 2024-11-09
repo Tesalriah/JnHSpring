@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.jnh.dao.OrderMapper">
     <select id="select" parameterType="Map" resultType="Order">
         SELECT * FROM order_status
-        WHERE user_id = #{id} AND NOT (status = '삭제처리')
+        WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
         group by order_no
         ORDER BY order_no DESC
         LIMIT #{offset}, #{pageSize}
@@ -13,13 +13,13 @@
 
     <select id="selectEach" parameterType="Map" resultType="Order">
         SELECT * FROM order_status
-        WHERE user_id = #{id} AND order_no = #{order_no} AND NOT (status = '삭제처리')
+        WHERE user_id = #{id} AND order_no = #{order_no} AND NOT status LIKE CONCAT('%','삭제처리','%')
         ORDER BY order_no DESC
     </select>
 
     <select id="selectCnt" parameterType="Map" resultType="int">
         SELECT count(distinct order_no) FROM order_status
-        WHERE user_id = #{id} AND NOT (status = '삭제처리')
+        WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
     </select>
 
     <select id="selectOne" parameterType="Map" resultType="Order">
@@ -45,7 +45,7 @@
     <update id="update" parameterType="Map">
         UPDATE order_status
         SET status = #{status}
-        WHERE user_id = #{id}
+        WHERE order_no = #{order_no} AND user_id = #{id}
     </update>
 
     <select id="selectId" parameterType="String" resultType="String">

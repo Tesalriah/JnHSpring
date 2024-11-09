@@ -1,6 +1,5 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.SearchCondition;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -54,34 +52,33 @@ public class ProductController {
                 sizeList = list;
             }
             m.addAttribute("sizeList", sizeList);
-            return "product/productInfo";
+            return "product/product-info";
         } catch (Exception e) {
             e.printStackTrace();
-            return "product/productInfo";
+            return "product/product-info";
         }
     }
 
     @PostMapping("product")
-    public String PostProduct(@RequestParam String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request){
+    public String PostProduct(@RequestParam String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
         product_id = product_id.split(",")[0];
 
         try {
             if(size.equals("")){
-                request.setAttribute("msg", "사이즈를 선택해주세요.");
-                request.setAttribute("url", "product"+ sc.getQueryString() + "&product_id=" + product_id);
+                m.addAttribute("msg", "사이즈를 선택해주세요.");
+                m.addAttribute("url", "product"+ sc.getQueryString() + "&product_id=" + product_id);
                 throw new Exception("SIZE_IS_REQUIRED");
             }
-            System.out.println("product_id = " + product_id);
             Product product = productService.getProduct(product_id);
             product.setQuantity(quantity);
             product.setSize(size);
             User user = userService.getUser(id);
             List<Product> list = new ArrayList<>();
             list.add(product);
-            request.setAttribute("list", list);
-            request.setAttribute("total", product.getTotal());
-            request.setAttribute("user", user);
+            m.addAttribute("list", list);
+            m.addAttribute("total", product.getTotal());
+            m.addAttribute("user", user);
             return "product/payment";
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,8 +86,9 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/productList")
+    @GetMapping("/product-list")
     public String productList(SearchCondition sc, Model m){
+        System.out.println(sc.toString());
         sc.setPageSize(6);
         if(sc.getOption() == null || sc.getOption().equals("")){
             sc.setOption("product_id");
@@ -106,19 +104,19 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "product/productList";
+        return "product/product-list";
     }
 
-    @GetMapping("/addProduct")
+    @GetMapping("/add-product")
     public String getAddProduct(HttpServletRequest request){
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("id");
         try {
             if(userService.getGrade(id) == 0){
-                return "product/addProduct";
+                return "product/add-product";
             }else{
                 request.setAttribute("msg", "관리자만 접근가능합니다.");
-                request.setAttribute("url", "productList");
+                request.setAttribute("url", "product-list");
                 throw new Exception("NOT_ADMIN");
             }
         } catch (Exception e) {
@@ -127,7 +125,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/addProduct")
+    @PostMapping("/add-product")
     public String addProduct(Product product, HttpServletRequest request, @RequestParam("uploadFile")MultipartFile file){
         String msg = "";
         msg = productValidation(product, file);
@@ -137,7 +135,7 @@ public class ProductController {
             request.setAttribute("price", product.getPrice());
             request.setAttribute("discount", product.getDiscount());
             request.setAttribute("color", product.getColor());
-            return "product/addProduct";
+            return "product/add-product";
         }
         int result = -1;
         String[] sizeArr = product.getSize().split(",");
@@ -190,10 +188,10 @@ public class ProductController {
             if(result != 1){
                 throw new Exception("ADD_FAIL");
             }
-            return "redirect:/productList";
+            return "redirect:/product-list";
         } catch (Exception e) {
             e.printStackTrace();
-            return "product/addProduct";
+            return "product/add-product";
         }
     }
 

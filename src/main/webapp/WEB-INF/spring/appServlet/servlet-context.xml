@@ -48,7 +48,7 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/**"/>
-			<exclude-mapping path="/emailAuth"/>
+			<exclude-mapping path="/email-auth"/>
 			<exclude-mapping path="/login"/>
 			<exclude-mapping path="/logout"/>
 			<exclude-mapping path="/resources/**"/>
@@ -58,11 +58,15 @@
 		<interceptor>
 			<mapping path="/cart"/>
 			<mapping path="/product"/>
-			<mapping path="/addCart"/>
-			<mapping path="/delCart"/>
-			<mapping path="/delOneCart"/>
-			<mapping path="/myPage/**"/>
+			<mapping path="/add-cart"/>
+			<mapping path="/del-cart"/>
+			<mapping path="/del-one-cart"/>
+			<mapping path="/mypage/**"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/mypage/**"/>
+			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
 		</interceptor>
 	</interceptors>
 

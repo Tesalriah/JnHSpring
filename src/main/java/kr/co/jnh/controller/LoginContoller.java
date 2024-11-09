@@ -2,7 +2,6 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
-import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
@@ -40,15 +39,15 @@ public class LoginContoller {
         return "redirect:/";
     }
 
-    @GetMapping("/findId")
+    @GetMapping("/find-id")
     public String findId(HttpSession session){
         if(sessionCheck(session)){
             return "redirect:/";
         }
-        return "account/findId";
+        return "find-id";
     }
 
-    @PostMapping("/findId")
+    @PostMapping("/find-id")
     public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
         try {
             String id = userService.emailAuth(mailAuthDto);
@@ -63,13 +62,13 @@ public class LoginContoller {
             m.addAttribute("name", request.getParameter("name"));
             m.addAttribute("email", mailAuthDto.getEmail());
             m.addAttribute("msg","AUTH_FAIL");
-            return "account/findId";
+            return "account/find-id";
         }
     }
 
     @ResponseBody
-    @PostMapping("/idAuth")
-    public Map idauth(@RequestBody User user){
+    @PostMapping("/id-auth")
+    public Map idAuth(@RequestBody User user){
         String name = user.getUser_name();
         String email = user.getEmail();
         Map map = new HashMap();
@@ -95,15 +94,15 @@ public class LoginContoller {
         }
     }
 
-    @GetMapping("/findPwd")
-    public String findpwd(HttpSession session){
+    @GetMapping("/find-pwd")
+    public String findPwd(HttpSession session){
         if(sessionCheck(session)){
             return "redirect:/";
         }
-        return "account/findPwd";
+        return "account/find-pwd";
     }
 
-    @PostMapping("/findPwd")
+    @PostMapping("/find-pwd")
     public String postFindPwd(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
         String inputId = request.getParameter("id");
         try {
@@ -115,18 +114,18 @@ public class LoginContoller {
                HttpSession session = request.getSession();
                session.setAttribute("changePwdID", id);
             }
-            return "redirect:/changePwd";
+            return "redirect:/change-pwd";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("id", inputId);
             m.addAttribute("email", mailAuthDto.getEmail());
             m.addAttribute("msg", "AUTH_FAIL");
-            return "account/findPwd";
+            return "account/find-pwd";
         }
     }
 
     @ResponseBody
-    @PostMapping("/pwdAuth")
+    @PostMapping("/pwd-auth")
     public Map pwdAuth(@RequestBody User user){
         String id = user.getUser_id();
         String email = user.getEmail();
@@ -153,15 +152,15 @@ public class LoginContoller {
         }
     }
 
-    @GetMapping("/changePwd")
+    @GetMapping("/change-pwd")
     public String changePwd(HttpSession session){
         if(sessionCheck(session)){
             return "redirect:/";
         }
-        return "account/changePwd";
+        return "account/change-pwd";
     }
 
-    @PostMapping("/changePwd")
+    @PostMapping("/change-pwd")
     public String PostChangePwd(HttpServletRequest request, Model m){
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("changePwdID");
@@ -172,14 +171,14 @@ public class LoginContoller {
 
         if(!pwd.equals(checkPwd)){
             m.addAttribute("msg", "NOT_MATCH_PWD");
-            return "account/changePwd";
+            return "account/change-pwd";
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date birthToDate = formatter.parse(birth);
             if(!userService.checkBirth(id, birthToDate)){
                 m.addAttribute("msg", "NOT_MATCH_BIRTH");
-                return "account/changePwd";
+                return "account/change-pwd";
             };
             userService.changePwd(id, pwd);
             m.addAttribute("msg","CHANGED_PWD");
@@ -188,7 +187,7 @@ public class LoginContoller {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "CHANGE_FAIL");
-            return "account/changePwd";
+            return "account/change-pwd";
         }
     }
 
@@ -239,7 +238,7 @@ public class LoginContoller {
                     return "redirect:/login";
                 }if(status == 3){
                     session.setAttribute("id", id);
-                    return "redirect:/emailAuth";
+                    return "redirect:/email-auth";
                 }
             }
         } catch (Exception e) {

@@ -1,17 +1,17 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.domain.Order;
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.SearchCondition;
+import kr.co.jnh.domain.*;
 import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
+import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("myPage")
+@RequestMapping("mypage")
 public class MyPageContoller {
 
     @Autowired
@@ -30,8 +30,11 @@ public class MyPageContoller {
     @Autowired
     ProductService productService;
 
-    @GetMapping("orderList")
-    public String mypage(HttpServletRequest request, SearchCondition sc){
+    @Autowired
+    UserService userService;
+
+    @GetMapping("order-list")
+    public String mypage(HttpServletRequest request, SearchCondition sc, Model m){
         HttpSession session = request.getSession(false);
         String id = (String)session.getAttribute("id");
         sc.setPageSize(5);
@@ -60,14 +63,91 @@ public class MyPageContoller {
                 orderList.add(each);
             }
 
-            request.setAttribute("productList", productList);
-            request.setAttribute("orderList", orderList);
-            request.setAttribute("totalCnt", totalCnt);
-            request.setAttribute("ph", ph);
+            m.addAttribute("productList", productList);
+            m.addAttribute("orderList", orderList);
+            m.addAttribute("totalCnt", totalCnt);
+            m.addAttribute("ph", ph);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "myPage/orderList";
+        return "mypage/order-list";
+    }
+
+    @GetMapping("order-detail")
+    public String orderDetail(@RequestParam(required = false) String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m){
+        if(order_no == null){
+            return "redirect:/mypage/order-list?page=" + page;
+        }
+        String id = SessionIdUtil.getSessionId(request);
+        Map map = new HashMap();
+        map.put("id", id);
+        map.put("order_no", order_no);
+        List<Product> productList = new ArrayList<>();
+        int total = 0;
+
+        try {
+            List<Order> orderList = orderService.readOne(map);
+            for (int i = 0; i <  orderList.size(); i++) {
+                Product product = productService.getProduct(orderList.get(i).getProduct_id());
+                product.setQuantity(orderList.get(i).getQuantity());
+                productList.add(product);
+                total += product.getTotal();
+            }
+            m.addAttribute("orderList", orderList);
+            m.addAttribute("productList", productList);
+            m.addAttribute("total", total);
+            m.addAttribute("page",page);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "mypage/order-detail";
+    }
+
+    @PostMapping("order-del")
+    public String orderDel(@RequestParam String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+        Map map = new HashMap();
+        map.put("id", id);
+        map.put("order_no", order_no);
+        map.put("status", "삭제처리");
+
+        try {
+            orderService.updete(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg", "삭제에 실패했습니다.");
+            m.addAttribute("url", "order-list?page=" + page);
+            return "alert";
+        }
+        return "redirect:/mypage/order-list?page=" + page;
+    }
+
+    @PostMapping("repurchase")
+    public String repurchase(String product_id, String size, String quantity, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
+        String[] p_id = product_id.split(",");
+        String[] product_size = size.split(",");
+        String[] product_quantity = quantity.split(",");
+        int total = 0;
+
+        List<Product> list = new ArrayList();
+        try {
+            for(int i=0; i<p_id.length; i++){
+                Product product = productService.getProduct(p_id[i]);
+                product.setSize(product_size[i]);
+                product.setQuantity(Integer.parseInt(product_quantity[i]));
+                total += product.getTotal();
+                list.add(product);
+            }
+            User user = userService.getUser(id);
+            request.setAttribute("list", list);
+            request.setAttribute("total", total);
+            request.setAttribute("user", user);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return "product/payment";
     }
 }

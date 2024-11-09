@@ -6,8 +6,8 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/sideMenu.css'/>">
-        <link rel="stylesheet" href="<c:url value='/resources/css/productList.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/side-menu.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/product-list.css'/>">
         <title>J&H</title>
     </head>
     <body>
@@ -34,7 +34,7 @@
                 <div>
                     <a href="<c:url value="/"/>">HOME</a>
                     <c:if test="${!ph.sc.gender.equals('')}">
-                         > <a href="<c:url value="/productList?gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
+                         > <a href="<c:url value="/product-list?gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
                     </c:if>
                     <c:choose>
                         <c:when test="${!ph.sc.category.equals('')}">
@@ -46,11 +46,11 @@
                     </c:choose>
                 </div>
                 <div class="search_option">
-                    <a href="<c:url value="/productList${ph.sc.getNonOption(ph.sc.page)}&option=product_id"/>">최신순</a><a href="<c:url value="/productList${ph.sc.getNonOption(ph.sc.page)}&option=rating"/>">평점순</a><a href="<c:url value="/productList${ph.sc.getNonOption(ph.sc.page)}&option=bougth_cnt"/>">판매량순</a>
+                    <a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=product_id">최신순</a><a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=rating">평점순</a><a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=bought_cnt">판매량순</a>
                 </div>
                 <c:if test="${grade == 0}">
                     <div>
-                        <a href="<c:url value="/addProduct"/> " id="addProduct">상품추가</a>
+                        <a href="<c:url value="/add-product"/> " id="addProduct">상품추가</a>
                     </div>
                 </c:if>
             </div>
@@ -60,7 +60,7 @@
                         <div class="product_line">
                     </c:if>
                         <div class="product">
-                            <a href="<c:url value="/product${ph.sc.queryString}&product_id=${product.product_id}"/>">
+                            <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
                                 <img src="<c:url value='/resources/img/upload/${product.product_id}/${product.image}'/>">
                                 <div class="detail">
                                     <div>${product.product_name}</div>
@@ -84,13 +84,13 @@
             <div class="paging">
                 <c:if test="${totalCnt != null && totalCnt != 0}">
                     <c:if test="${ph.showPrev}">
-                        <a href="<c:url value="/productList${ph.sc.getQueryString(ph.beginPage-1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                        <a href="<c:url value="/product-list"/>${ph.sc.getQueryString(ph.beginPage-1)}"><i class="fa-solid fa-angle-left"></i></a>
                     </c:if>
                     <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                        <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/productList${ph.sc.getQueryString(i)}" />">${i}</a>
+                        <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/product-list"/>${ph.sc.getQueryString(i)}">${i}</a>
                     </c:forEach>
                     <c:if test="${ph.showNext}">
-                        <a href="<c:url value="/productList${ph.sc.getQueryString(ph.endpage+1)}"/>"><i class="fa-solid fa-angle-left"></i></a>
+                        <a href="<c:url value="/product-list"/>${ph.sc.getQueryString(ph.endpage+1)}"><i class="fa-solid fa-angle-left"></i></a>
                     </c:if>
                 </c:if>
             </div>

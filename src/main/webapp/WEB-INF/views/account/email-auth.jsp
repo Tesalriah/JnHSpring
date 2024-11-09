@@ -5,7 +5,7 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/emailAuth.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/email-auth.css'/>">
         <title>J&H 이메일 인증</title>
     </head>
     <body>
@@ -25,7 +25,7 @@
                     <div class="email">${email}</div>
                     으로 메일을 보냈습니다.
                 </div>
-                <form action="<c:url value="/emailAuth"/>" method="post">
+                <form action="<c:url value="/email-auth"/>" method="post">
                     <div class="auth_form">
                         <input type="hidden" name="email" value="${email}">
                         인증번호<input type="text" name="auth_num" autocomplete="off">

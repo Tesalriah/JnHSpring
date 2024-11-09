@@ -36,7 +36,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                     prevPage = prevPage.replace("/jnh", "");
                     session.setAttribute("prevPage", prevPage);
                 }
-                System.out.println("prevPage = " + prevPage);
                 response.sendRedirect("/jnh/login" + "?msg=NEED_LOGIN");
                 return false;
             }

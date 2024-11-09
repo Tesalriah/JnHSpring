@@ -4,7 +4,7 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
-        <link rel="stylesheet" href="<c:url value='/resources/css/changePwd.css'/>">
+        <link rel="stylesheet" href="<c:url value='/resources/css/change-pwd.css'/>">
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
         <title>J&H 비밀번호 변경</title>
     </head>
@@ -22,15 +22,15 @@
                 <div class="select_var">
                     <ul class="select_list">
                         <li>
-                            <a href="<c:url value='/findId'/>" class="select_id">아이디 찾기</a>
+                            <a href="<c:url value='/find-id'/>" class="select_id">아이디 찾기</a>
                         </li>
                         <li>
-                            <a href="<c:url value='/findPwd'/>" class="select_pwd">비밀번호 찾기</a>
+                            <a href="<c:url value='/find-pwd'/>" class="select_pwd">비밀번호 찾기</a>
                         </li>
                     </ul>
                 </div>
                 <div class="table_area">
-                    <form method="post" action="<c:url value='/changePwd'/>">
+                    <form method="post" action="<c:url value='/change-pwd'/>">
                         <table class="info">
                             <tr>
                                 <td class="table_bg_color">새 비밀번호</td>

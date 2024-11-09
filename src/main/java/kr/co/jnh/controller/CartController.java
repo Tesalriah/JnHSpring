@@ -61,19 +61,16 @@ public class CartController {
         String[] size = cart.getSize().split(",");
         String[] quan = quantity.split(",");
         String[] checkbox = check_box.split(",");
-        Product product = null;
-        System.out.println("check_box = " + check_box);
+
         List<Product> list = new ArrayList();
         try {
             for(int i=0; i<product_id.length; i++){
                 for(int j=0; j<checkbox.length; j++){
                     if( i == Integer.parseInt(checkbox[j])){
-                        product = null;
-                        product = productService.getProduct(product_id[i]);
+                        Product product = productService.getProduct(product_id[i]);
                         product.setSize(size[i]);
                         product.setQuantity(Integer.parseInt(quan[i]));
                         total += product.getTotal();
-                        System.out.println("product = " + product);
                         list.add(product);
                     }
                 }
@@ -88,7 +85,7 @@ public class CartController {
         return "product/payment";
     }
 
-    @PostMapping("addCart")
+    @PostMapping("add-cart")
     public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
 
@@ -119,7 +116,7 @@ public class CartController {
         return "alert";
     }
 
-    @PostMapping("delCart")
+    @PostMapping("del-cart")
     public String delCart(String check_box, Cart cart, HttpServletRequest request, RedirectAttributes rattr){
         String id = SessionIdUtil.getSessionId(request);
 
@@ -159,7 +156,7 @@ public class CartController {
         return "alert";
     }
 
-    @PostMapping("delOneCart")
+    @PostMapping("del-one-cart")
     public String delOneCart(String del_product_id, String del_size, HttpServletRequest request, RedirectAttributes rattr){
         String id = SessionIdUtil.getSessionId(request);
 
@@ -181,7 +178,7 @@ public class CartController {
         return "alert";
     }
 
-    @PostMapping("setQuantity")
+    @PostMapping("set-quantity")
     @ResponseBody
     public Map<String, Object> setQuantity(@RequestBody Map<String, Object> cartMap, HttpServletRequest request, RedirectAttributes rattr){
         Map<String, Object> map = new HashMap<>();

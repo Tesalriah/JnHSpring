@@ -1,26 +1,21 @@
 package kr.co.jnh.controller;
 
 
-import com.mysql.cj.Session;
-import kr.co.jnh.dao.NoticeDao;
 import kr.co.jnh.domain.NoticeDto;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.NoticeService;
 import kr.co.jnh.service.UserService;
-import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +33,7 @@ public class NoticeController {
 
     @GetMapping("/write")
     public String noticeWrite(HttpServletRequest request){
-        return "notice/noticeWrite";
+        return "notice-write";
     }
 
     @PostMapping("/write")
@@ -55,7 +50,7 @@ public class NoticeController {
             if(noticeDto.getCategory().isBlank() || noticeDto.getTitle().isBlank() || noticeDto.getContents().isBlank()){
                 request.setAttribute("msg", "NOT_BLANK");
                 request.setAttribute("noticeDto", noticeDto);
-                return "notice/noticeWrite";
+                return "notice/notice-write";
             }
 
         } catch (Exception e) {
@@ -81,7 +76,7 @@ public class NoticeController {
            e.printStackTrace();
             request.setAttribute("msg", "MUST_READ_5");
             request.setAttribute("noticeDto", noticeDto);
-            return "notice/noticeWrite";
+            return "notice/notice-write";
         }
 
     }
@@ -105,7 +100,7 @@ public class NoticeController {
             e.printStackTrace();
         }
 
-        return "notice/noticeList";
+        return "notice/notice-list";
     }
 
     @GetMapping("/read")
@@ -198,7 +193,7 @@ public class NoticeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "notice/noticeWrite";
+        return "notice/notice-write";
     }
 
     @PostMapping("/modify")

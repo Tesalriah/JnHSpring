@@ -43,8 +43,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> selectAll() throws Exception{
+    public List<Order> readAll() throws Exception{
         return orderDao.selectAll();
+    }
+
+    @Override
+    public List<Order> readOne(Map map) throws Exception{
+        return orderDao.selectOne(map);
     }
 
     @Override
@@ -73,6 +78,9 @@ public class OrderServiceImpl implements OrderService {
             Product product = productDao.select(order.getProduct_id());
             int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
             product.setStock(calStock + "");
+            product.setSize(order.getSize());
+            product.setBought_cnt(product.getBought_cnt() + order.getQuantity());
+            productDao.updateBoughtCnt(product);
             if(productDao.updateStock(product) != 1){
                 throw new Exception("STOCK_ERROR");
             }

@@ -46,13 +46,13 @@ public class RegisterController {
     }
 
     // 회원가입 Get
-    @GetMapping("/signUp")
-    public String signUp(){
-        return "account/signUp";
+    @GetMapping("/signup")
+    public String signup(){
+        return "account/signup";
     }
 
     // 이메일 인증코드 발송
-    @GetMapping("/emailAuth")
+    @GetMapping("/email-auth")
     public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
         String id = getSessionId(request);
 
@@ -71,7 +71,7 @@ public class RegisterController {
             if(prevPage != null){
                 if(prevPage.contains("emailAuth")){
                     m.addAttribute("msg", "CHECK_EMAIL");
-                    return "account/emailAuth";
+                    return "account/email-auth";
                 }
             }
             // 이메일, 인증번호 db에 저장
@@ -83,7 +83,7 @@ public class RegisterController {
             MailDto mailDto = new MailDto(email, authNumber+"");
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
             rattb.addFlashAttribute("email", email);
-            return "account/emailAuth";
+            return "account/email-auth";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("message", "SEND_FAIL"); // 이메일 발송이 실패되었다는 메시지를 출력
@@ -91,7 +91,7 @@ public class RegisterController {
         }
     }
 
-    @PostMapping("/emailAuth")
+    @PostMapping("/email-auth")
     public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
         String id = getSessionId(request);
         String email = "";
@@ -106,7 +106,7 @@ public class RegisterController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "AUTH_FAIL");
-            return "redirect:/emailAuth";
+            return "redirect:/email-auth";
         }
         rattb.addFlashAttribute("msg","REG_OK");
         return "redirect:/";
@@ -114,7 +114,7 @@ public class RegisterController {
 
 
     // 회원가입 Post
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, RedirectAttributes rattb, HttpSession session){
         // 따로 받은 주소 값 합치기
         String address = request.getParameter("address1") + request.getParameter("address2");
@@ -142,7 +142,7 @@ public class RegisterController {
             // 성공
             session.setAttribute("id", user.getUser_id());
             rattb.addFlashAttribute("email" ,user.getEmail());
-            return "account/emailAuth";
+            return "account/email-auth";
         } catch (Exception e) {
             e.printStackTrace();
             // 실패시 원래 페이지에 생년월일 값을 반환받기 위함
@@ -155,7 +155,7 @@ public class RegisterController {
             m.addAttribute("user", user);
             m.addAttribute("address1", request.getParameter("address1"));
             m.addAttribute("address2", request.getParameter("address2"));
-            return "account/signUp";
+            return "account/signup";
         }
     }
 
