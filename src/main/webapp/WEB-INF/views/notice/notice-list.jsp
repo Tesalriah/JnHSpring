@@ -15,7 +15,7 @@
     <script>
         msg = "${msg}";
        // if(msg == "WRT_OK")    alert("성공적으로 등록되었습니다.");
-        if(msg == "mod_OK")    alert("수정.");
+        if(msg == "mod_OK")    alert("수정되었습니다.");
         if(msg == "REMOVE_OK")   if(confirm('삭제하시겠습니까?') == true) alert("성공적으로 삭제되었습니다.");
     </script>
     <main>

@@ -2,6 +2,7 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.Order;
 import kr.co.jnh.service.OrderService;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,10 @@ public class OrderContoller {
     @Autowired
     OrderService orderService;
 
+    // 상품 결제 처리
     @PostMapping("buy")
     public String buy(Order order, String quantity, String address2, HttpServletRequest request, HttpServletResponse response){
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
+        String id = SessionIdUtil.getSessionId(request);
 
         // 하나이상의 주문을 각각 처리하기 위해 배열에 나눠서 저장
         String[] product_id = order.getProduct_id().split(",");
@@ -48,7 +49,6 @@ public class OrderContoller {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String today = format.format(date);
-        System.out.println("today = " + today);
         long order_no;
         try {
             // 현재날짜의 주문이 있을 시 마지막 번호 다음번호로 주문번호 생성
@@ -66,13 +66,15 @@ public class OrderContoller {
             // list에 주문 상품 순서대로 저장
             List<Order> list = new ArrayList<>();
             for (int i = 0; i < product_id.length; i++) {
-                // 공통된 항목 trigger에 저장
-                Order trigger = new Order(order.getUser_id(),order.getName(),order.getAddress(), order.getPhone(), order.getDel_request(), order.getOrder_no());
+                Order trigger = new Order(order.getUser_id(),order.getName(),order.getAddress(),
+                        order.getPhone(), order.getDel_request(), order.getOrder_no()); // 공통된 항목 trigger에 저장
+                // 하나 또는 그 이상의 주문상품 저장부분
                 trigger.setProduct_id(product_id[i]);
                 trigger.setSize(size[i]);
                 trigger.setQuantity(Integer.parseInt(quan[i]));
+                // 품절된 상품 확인
                 if(orderService.checkStock(product_id[i], quan[i], size[i])){
-                    request.setAttribute("msg", "품절된 상품이 있습니다 확인 후 다시 시도해주세요.");
+                    request.setAttribute("msg", "상품번호 : " + product_id[i] + " 상품이 품절되었거나 재고가 모자릅니다. 확인 후 다시 시도해주세요.");
                     request.setAttribute("url", "product-list");
                     return "alert";
                 }

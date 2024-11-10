@@ -13,11 +13,11 @@ public class CurrentPageInterceptor implements HandlerInterceptor{
         String currentUrl = request.getRequestURI();
 
         // "myPage"에만 적용
-        if (currentUrl.contains("/myPage")) {
+        if (currentUrl.contains("/mypage")) {
             if(currentUrl.contains("/order")){
                 currentUrl = "/order";
             }else{
-                currentUrl = currentUrl.replace("/jnh/myPage", "");
+                currentUrl = currentUrl.replace("/jnh/mypage", "");
             }
             request.setAttribute("currentUrl", currentUrl); // request에 현재 URL 저장
         }

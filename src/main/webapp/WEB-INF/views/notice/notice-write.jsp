@@ -14,8 +14,8 @@
     <script>
         msg = "${msg}";
         if(msg == "MUST_READ_5")alert("필독은 5개 이상 작성하실 수 없습니다.");
+        if(msg == "WRT_FAIL")alert("등록에 실패했습니다 다시 시도해 주세요.");
         if(msg == "NOT_BLANK")alert("모든 칸을 다 입력해주세요.");
-        if(msg == "WRT_OK")    alert("성공적으로 등록되었습니다.");
 
 
     </script>

@@ -16,10 +16,10 @@
         <div class="container">
             <div class="title">
                 <div class="image">
-                    <c:if test="${sc.ph.sc.gender.equals('')}"><c:set var="img" value="All"></c:set></c:if>
-                    <c:if test="${ph.sc.gender.equals('WOMEN')}"><c:set var="img" value="Women"></c:set></c:if>
-                    <c:if test="${ph.sc.gender.equals('MEN')}"><c:set var="img" value="Men"></c:set></c:if>
-                    <img src="<c:url value='/resources/img/list${img}.jpg'/>">
+                    <c:if test="${ph.sc.gender.equals('')}"><c:set var="img" value="all"></c:set></c:if>
+                    <c:if test="${ph.sc.gender.equals('WOMEN')}"><c:set var="img" value="women"></c:set></c:if>
+                    <c:if test="${ph.sc.gender.equals('MEN')}"><c:set var="img" value="men"></c:set></c:if>
+                    <img src="<c:url value='/resources/img/list-${img}.jpg'/>">
                 </div>
                 <div style="font-family: 'Raleway', sans-serif;">
                     <c:if test="${!ph.sc.gender.equals('')}">
@@ -46,7 +46,9 @@
                     </c:choose>
                 </div>
                 <div class="search_option">
-                    <a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=product_id">최신순</a><a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=rating">평점순</a><a href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=bought_cnt">판매량순</a>
+                    <a ${ph.sc.option.equals('') || ph.sc.option.equals('product_id') ? "style='color: #FFAEC9; font-weight: bold;'" : ""} href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=product_id">최신순</a>
+                    <a ${ph.sc.option.equals('rating') ? "style='color: #FFAEC9; font-weight: bold;'" : ""} href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=rating">평점순</a>
+                    <a ${ph.sc.option.equals('bought_cnt') ? "style='color: #FFAEC9; font-weight: bold;'" : ""} href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=bought_cnt">판매량순</a>
                 </div>
                 <c:if test="${grade == 0}">
                     <div>

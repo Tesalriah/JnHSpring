@@ -32,7 +32,7 @@ public class StatusInterceptor implements HandlerInterceptor {
                         }
                         // 이메일 미인증 유저 이메일 인증으로
                         if (status == 3) {
-                            response.sendRedirect("/jnh/emailAuth");
+                            response.sendRedirect("/jnh/email-auth");
                         }
                     }
                 }
