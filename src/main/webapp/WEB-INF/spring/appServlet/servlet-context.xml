@@ -44,6 +44,7 @@
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
+			<mapping path="/add-product"/>
 			<beans:bean id="AdminInterceptor" class="kr.co.jnh.interceptor.AdminInterceptor"/>
 		</interceptor>
 		<interceptor>

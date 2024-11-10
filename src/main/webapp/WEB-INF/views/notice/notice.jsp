@@ -30,10 +30,10 @@
                     <div class="post_box">
                         <div class="post_button">
 <%--                            <button type="button" OnClick="if(confirm('삭제하시겠습니까?') == true){alert('취소를 누르셨습니다.'); location.href = '/jnh/noticeList'; }">취소</button>--%>
-                            <form action="${grade == 0 ? "<c:url value='/notice/remove'/>" : ""}" method="post">
+                            <form action="" method="post">
                                 <c:if test="${grade == 0}">
                                     <input type="hidden" name="bno" value="${noticeDto.bno}">
-                                    <input type="submit" value="삭제">
+                                    <input type="submit" formaction="<c:url value='/notice/remove'/>" value="삭제">
                                     <button type="button" onclick="location.href='<c:url value="/notice/modify"/>${sc.optionQueryString}&bno=${noticeDto.bno}'">수정</button>
                                 </c:if>
                                 <c:if test="${!empty prevNext[0]}">
@@ -70,10 +70,10 @@
                                     <div>
                                         <span>${dto.bno}</span>
                                             <a href="<c:url value="/notice/read"/>${sc.optionQueryString}&bno=${dto.bno}">
-                                                <span>${noticeDto.category.equals('notice')? "공지":"이벤트"}</span><c:out value="${dto.title}"/>
+                                                <span>${dto.category.equals('notice')? "공지":"이벤트"}</span><c:out value="${dto.title}"/>
                                             </a>
                                     </div>
-                                    <div><fmt:formatDate value="${noticeDto.reg_date}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                    <div><fmt:formatDate value="${dto.reg_date}" pattern="yyyy-MM-dd HH:mm"/></div>
                                 </div>
                             </c:forEach>
                         </div>

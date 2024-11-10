@@ -28,10 +28,12 @@ public class LoginContoller {
     @Autowired
     EmailService emailService;
 
+    // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         // 로그아웃 세션 비우기
         session.invalidate();
+        // 이전페이지가 있을 경우 이전페이지로 리다이렉트
         String referer = request.getHeader("referer");
         if(referer != null || !referer.equals("")){
             return "redirect:"+referer;
@@ -39,25 +41,28 @@ public class LoginContoller {
         return "redirect:/";
     }
 
+    // 아이디 찾기 페이지 요청
     @GetMapping("/find-id")
-    public String findId(HttpSession session){
-        if(sessionCheck(session)){
+    public String findId(HttpServletRequest request){
+        // 로그인 했을 시 메인페이지로
+        if(SessionIdUtil.getSessionId(request) != null){
             return "redirect:/";
         }
         return "find-id";
     }
 
+    // 아이디 찾기
     @PostMapping("/find-id")
     public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
         try {
-            String id = userService.emailAuth(mailAuthDto);
-            if(id.isBlank()){
+            String id = userService.emailAuth(mailAuthDto); // 인증번호가 일치하면 해당 id값 반환
+            if(id.isBlank()){ // 반환된 id가 없으면 Exception 발생
                 throw new Exception("Wrong approach");
             }
             request.setAttribute("msg", "회원님의 ID는 " + id + " 입니다.");
             request.setAttribute("url", "/jnh/login");
             return "alert";
-        } catch (Exception e) {
+        } catch (Exception e) { // 인증 실패시 원래 페이지로 이동
             e.printStackTrace();
             m.addAttribute("name", request.getParameter("name"));
             m.addAttribute("email", mailAuthDto.getEmail());
@@ -66,6 +71,7 @@ public class LoginContoller {
         }
     }
 
+    // 아이디 찾기 전 인증번호 전송
     @ResponseBody
     @PostMapping("/id-auth")
     public Map idAuth(@RequestBody User user){
@@ -73,15 +79,16 @@ public class LoginContoller {
         String email = user.getEmail();
         Map map = new HashMap();
 
-        Integer authNumber = makeRandomNumber();
-        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
+        Integer authNumber = makeRandomNumber(); // 랜덤한 6자리 인증번호 생성
+        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+""); // 이메일인증 데이터베이스에 저장하기위해 할당
 
         try {
-            String foundName = userService.findName(email);
+            String foundName = userService.findName(email); // 이메일을 토대로 이름 가져오기
+            // 입력한 이름과 해당 이메일 사용자의 이름이 일치하면 실행
             if(foundName.equals(name)){
-                emailService.addAuth(mailAuthDto);
-                MailDto mailDto = new MailDto(email, authNumber+"");
-                emailService.sendMail(mailDto);
+                emailService.addAuth(mailAuthDto); // 데이터베이스에 인증번호와 요청 이메일을 저장
+                MailDto mailDto = new MailDto(email, authNumber+""); // 이메일 수신자, 내용(인증번호)을 할당
+                emailService.sendMail(mailDto); // 이메일 전송
                 map.put("msg", "전송완료");
                 return map;
             }
@@ -94,28 +101,34 @@ public class LoginContoller {
         }
     }
 
+    // 비밀번호 찾기 페이지 요청
     @GetMapping("/find-pwd")
-    public String findPwd(HttpSession session){
-        if(sessionCheck(session)){
+    public String findPwd(HttpServletRequest request){
+        // 로그인 했을 시 메인페이지로
+        if(SessionIdUtil.getSessionId(request) != null){
             return "redirect:/";
         }
         return "account/find-pwd";
     }
 
+    // 비밀번호 찾기
     @PostMapping("/find-pwd")
-    public String postFindPwd(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
+    public String postFindPwd(MailAuthDto mailAuthDto, HttpServletRequest request, Model m) {
         String inputId = request.getParameter("id");
         try {
-            String id = userService.emailAuth(mailAuthDto);
-            if(id.isBlank()){
+            String id = userService.emailAuth(mailAuthDto); // 인증번호가 일치하면 해당 id값 반환
+            if (id.isBlank()) { // 반환된 id가 없으면 Exception 발생
                 throw new Exception("Wrong approach");
             }
-            if(id.equals(inputId)){
-               HttpSession session = request.getSession();
-               session.setAttribute("changePwdID", id);
+            if (id.equals(inputId)) { // 입력한 id와 인증을 통해 받은 id값이 일치한 경우 실행
+                // 세션에 해당 id를 저장하여 넘겨주기 (세션에 주는 이유는 보안을 높이기 위해 )
+                HttpSession session = request.getSession();
+                session.setAttribute("changePwdID", id);
+                return "redirect:/change-pwd"; // 비밀번호 변경으로 이동
+            }else {
+                throw new Exception("AUTH_FAIL");
             }
-            return "redirect:/change-pwd";
-        } catch (Exception e) {
+        } catch (Exception e) { // 인증 실패시 원래 페이지로 이동
             e.printStackTrace();
             m.addAttribute("id", inputId);
             m.addAttribute("email", mailAuthDto.getEmail());
@@ -124,6 +137,7 @@ public class LoginContoller {
         }
     }
 
+    // 비밀번호 찾기 전 인증번호 전송
     @ResponseBody
     @PostMapping("/pwd-auth")
     public Map pwdAuth(@RequestBody User user){
@@ -131,15 +145,16 @@ public class LoginContoller {
         String email = user.getEmail();
         Map map = new HashMap();
 
-        Integer authNumber = makeRandomNumber();
-        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+"");
+        Integer authNumber = makeRandomNumber(); // 랜덤한 6자리 인증번호 생성
+        MailAuthDto mailAuthDto = new MailAuthDto(email, authNumber+""); // 이메일에 인증번호 전송하기 위해 할당
 
         try {
-            String foundId = userService.findId(email);
+            String foundId = userService.findId(email); // 이메일을 토대로 id 가져오기
+            // 입력한 id와 해당 이메일 사용자의 id가 일치하면 실행
             if(foundId.equals(id)){
-                emailService.addAuth(mailAuthDto);
-                MailDto mailDto = new MailDto(email, authNumber+"");
-                emailService.sendMail(mailDto);
+                emailService.addAuth(mailAuthDto); // 데이터베이스에 인증번호와 요청 이메일을 저장
+                MailDto mailDto = new MailDto(email, authNumber+""); // 이메일 수신자, 내용(인증번호)을 할당
+                emailService.sendMail(mailDto); // 이메일 전송
                 map.put("msg", "전송완료");
                 return map;
             }
@@ -152,37 +167,52 @@ public class LoginContoller {
         }
     }
 
+    // 비밀번호 찾기 성공 시 이동되는 비밀번호 변경 페이지
     @GetMapping("/change-pwd")
-    public String changePwd(HttpSession session){
-        if(sessionCheck(session)){
+    public String changePwd(HttpServletRequest request, Model m){
+        // 비밀번호 찾기에서 세션에 등록한 id값이 없을 시 메인페이지로 보내기
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("changePwdID");
+        if(id == null || id.equals("")){
+            m.addAttribute("msg", "잘못된 시도입니다.");
+            m.addAttribute("url", "/jnh");
+            return "alert";
+        }
+        // 로그인했을 시 메인페이지로
+        if(SessionIdUtil.getSessionId(request) != null){
             return "redirect:/";
         }
         return "account/change-pwd";
     }
 
+    // 비밀번호 변경
     @PostMapping("/change-pwd")
-    public String PostChangePwd(HttpServletRequest request, Model m){
+    public String postChangePwd(HttpServletRequest request, Model m){
+        // 비밀번호 찾기에서 저장한 changePwdID 값 가져오기
         HttpSession session = request.getSession();
         String id = (String)session.getAttribute("changePwdID");
+        session.removeAttribute("changePwdID"); // 사용 후 삭제
+        // input 받은 값들 저장
         String pwd = request.getParameter("new_pwd");
         String checkPwd = request.getParameter("check_new_pwd");
         String birth = request.getParameter("birth");
         m.addAttribute("birth",birth);
 
-        if(!pwd.equals(checkPwd)){
+        if(!pwd.equals(checkPwd)){ // 비밀번호, 비밀번호 확인 일치하는지 체크
             m.addAttribute("msg", "NOT_MATCH_PWD");
             return "account/change-pwd";
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            // 입력받은 생년월일과 해당id의 생년월일이 일치하는지 확인
             Date birthToDate = formatter.parse(birth);
             if(!userService.checkBirth(id, birthToDate)){
                 m.addAttribute("msg", "NOT_MATCH_BIRTH");
                 return "account/change-pwd";
             };
+            // 생년월일이 일치했을경우 비밀번호 변경
             userService.changePwd(id, pwd);
             m.addAttribute("msg","CHANGED_PWD");
-            session.invalidate();
             return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,16 +221,14 @@ public class LoginContoller {
         }
     }
 
+    // 로그인 페이지 요청
     @GetMapping("/login")
-    public String LoginForm(HttpServletRequest request) {
+    public String loginForm(HttpServletRequest request, Model m) {
         String id = SessionIdUtil.getSessionId(request);
-        if( id == null || id.equals("")){
-            // 이전페이지를 받아서 파라미터로 넘겨주기
+        if(id == null){ // 로그인하지 않았을때만 보여주기
+            // 이전페이지가 없을 시 받아서 파라미터로 넘겨주기
             if(request.getParameter("prevPage") == null){
                 String prevPage = request.getHeader("Referer");
-                if(request.getParameter("product_id") != null){
-                    prevPage += "&product_id=" + request.getParameter("product_id");
-                }
                 request.setAttribute("prevPage", prevPage);
             }
             return "account/login";
@@ -208,8 +236,9 @@ public class LoginContoller {
         return "redirect:/";
     }
 
+    // 로그인 처리
     @PostMapping("/login")
-    public String Login(String id, String pwd, String prevPage, boolean rememberId,
+    public String login(String id, String pwd, String prevPage, boolean rememberId,
                         HttpServletRequest request, HttpServletResponse response, RedirectAttributes rattb){
         Integer status = null;
         Map map = new HashMap();
@@ -218,7 +247,7 @@ public class LoginContoller {
         HttpSession session = request.getSession(false);
 
         try {
-            User user = userService.showUser(map);
+            User user = userService.showUser(map); // 해당 id와 pwd가 일치하는 유저 정보 가져오기
             // 로그인 실패시
             if(!loginCheck(user, map)){
                 rattb.addFlashAttribute("msg", "LOGIN_FAIL");
@@ -245,6 +274,7 @@ public class LoginContoller {
             e.printStackTrace();
         }
 
+        // 페이지에서 필요한 유저 권한 정보 세션에 할당
         try {
             Integer grade = userService.getGrade(id);
             if(grade != null){
@@ -297,9 +327,5 @@ public class LoginContoller {
         }
 
         return Integer.parseInt(randomNumber);
-    }
-
-    private boolean sessionCheck(HttpSession session){
-        return session.getAttribute("id") != null;
     }
 }

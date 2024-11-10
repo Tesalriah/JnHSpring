@@ -1,5 +1,6 @@
 package kr.co.jnh.controller;
 
+import kr.co.jnh.util.SessionIdUtil;
 import kr.co.jnh.validation.UserValidator;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
@@ -54,7 +55,7 @@ public class RegisterController {
     // 이메일 인증코드 발송
     @GetMapping("/email-auth")
     public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
-        String id = getSessionId(request);
+        String id = SessionIdUtil.getSessionId(request);
 
         // 랜덤 6자리 인증번호 발급
         Integer authNumber = makeRandomNumber();
@@ -91,17 +92,18 @@ public class RegisterController {
         }
     }
 
+    // 이메일 인증
     @PostMapping("/email-auth")
     public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
-        String id = getSessionId(request);
-        String email = "";
+        String id = SessionIdUtil.getSessionId(request);
 
         try {
-            email = userService.findEmail(id);
-            String authNumber = request.getParameter("auth_num");
+            String email = userService.findEmail(id); // 해당 유저의 이메일값 반환
+            String authNumber = request.getParameter("auth_num"); // input으로 넘어온 인증번호
 
+            // 메일과 해당하는 인증번호가 일치하는지 확인 후 서비스 내부에서 인증 완료 시 유저의 status 수정
             if(userService.emailAuth(new MailAuthDto(email, authNumber), id) != 1){
-                throw new Exception("Auth Fail");
+                throw new Exception("AUTH_FAIL");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,11 +178,6 @@ public class RegisterController {
         if(!Pattern.matches(addressPattern, user.getAddress())){
             result.rejectValue("address", "adressPattern");
         }
-    }
-
-    public String getSessionId(HttpServletRequest request){
-        HttpSession session =  request.getSession();
-        return (String)session.getAttribute("id");
     }
 
     private Integer makeRandomNumber() {

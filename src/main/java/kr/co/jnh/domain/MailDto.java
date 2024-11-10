@@ -1,11 +1,11 @@
 package kr.co.jnh.domain;
 
 public class MailDto {
-    private String senderName = "J&H";    //발신자 이름
-    private String senderMail = "ShopJnHMall@gmail.com";//발신자 이메일 주소
-    private String receiveMail;   //수신자 이메일 주소
-    private String subject = "J&H 인증번호입니다.";       //제목
-    private String message;       //본문
+    private String senderName = "J&H"; //발신자 이름
+    private String senderMail = "ShopJnHMall@gmail.com"; //발신자 이메일 주소
+    private String receiveMail; //수신자 이메일 주소
+    private String subject = "J&H 인증번호입니다."; //제목
+    private String message; //본문
 
     public MailDto() {}
 

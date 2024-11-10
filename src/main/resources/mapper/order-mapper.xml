@@ -8,7 +8,7 @@
         WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
         group by order_no
         ORDER BY order_no DESC
-        LIMIT #{offset}, #{pageSize}
+        LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 
     <select id="selectEach" parameterType="Map" resultType="Order">
