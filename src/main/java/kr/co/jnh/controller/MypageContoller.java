@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("mypage")
-public class MyPageContoller {
+public class MypageContoller {
 
     @Autowired
     OrderService orderService;
@@ -160,5 +159,17 @@ public class MyPageContoller {
             e.printStackTrace();
         }
         return "product/payment";
+    }
+
+    // 교환 또는 반품하는 상품을 선택하는 step1페이지
+    @PostMapping("return-step1")
+    public String returnStep1(@RequestParam(required = false) String order_no, int page, HttpServletRequest request){
+        if(order_no == null){ // 받아온 order_no이 없을때 list로 리다이렉트
+            return "redirect:/mypage/order-list?page=" + page;
+        }
+        String id = SessionIdUtil.getSessionId(request);
+
+
+        return "return-step1";
     }
 }
