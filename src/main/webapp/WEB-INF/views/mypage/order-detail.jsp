@@ -37,6 +37,7 @@
                                         <img src="<c:url value="/resources/img/upload/${productList[orderStatus.index].product_id}/${productList[orderStatus.index].image}"/>">
                                     </c:forEach>
                                 </div>
+                                <input type="hidden" name="order_no" value="${orderList[0].order_no}">
                                 <div class="order_status">
                                     <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
                                         <input type="hidden" name="product_id" value="${order.product_id}">
@@ -49,7 +50,7 @@
                                 </div>
                                 <div class="order_button">
                                         <div><button type="submit" formaction="<c:url value="/mypage/repurchase"/>">재구매</button></div>
-                                        <div><button type="submit" formaction="">교환, 반품신청</button></div>
+                                        <div><button type="submit" formaction="<c:url value="/mypage/return-step1"/>?page=${param.page}">교환, 반품신청</button></div>
                                         <div><button type="button">리뷰작성</button></div>
                                 </div>
                             </div>

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
@@ -12,7 +11,6 @@
     <%@ include file="../header.jsp" %>
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/return-step1.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
     <main>
         <div class="container">
             <div class="title">
@@ -27,14 +25,15 @@
                     <div class="contents">
                         <h2>교환, 반품 신청</h2>
                         <div class="outside">
-                            <form action="/return-step1" method="post">
+                            <form action="<c:url value="/mypage/return-step2"/>" method="post">
                                 <div class="subheading">상품을 선택해 주세요</div>
                                 <div class="return_product_list">
+                                    <input type="hidden" name="order_no" value="${orderList[0].order_no}">
                                     <c:forEach items="${orderList}" var="order" varStatus="status">
                                         <div class="return_product">
-                                            <div><input type="checkbox" name="check_box" value="#{status}"></div>
-                                            <div><img src="<c:url value="/resources/img/${productList[status].product_id}/${productList[status].image}"/>"></div>
-                                            <div>${order.product_name} / ${order.color} / ${order.size} / ${order.quantity}개</div>
+                                            <div><input type="checkbox" name="check_box" value="${status.index}"></div>
+                                            <div><img src="<c:url value="/resources/img/upload/${productList[status.index].product_id}/${productList[status.index].image}"/>"></div>
+                                            <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank`">${productList[status.index].product_name} / ${productList[status.index].color} / ${order.size} / ${order.quantity}개</a></div>
                                         </div>
                                     </c:forEach>
                                 </div>
