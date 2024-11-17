@@ -196,8 +196,6 @@ public class MypageContoller {
         Map map = new HashMap();
         map.put("id", id);
         map.put("order_no", order_no);
-
-
         String[] checkBox = check_box.split(",");
 
         try {

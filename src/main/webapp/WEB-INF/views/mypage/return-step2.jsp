@@ -30,8 +30,8 @@
                         <h2>교환, 반품 신청</h2>
                         <div class="return_exchange">
                             <div class="radio">
-                                <div><input id="return" type="radio" name="type" value="return" checked><label for="return">반품</label></div>
-                                <div><input id="exchange" type="radio" name="type" value="exchange"><label for="exchange">교환</label></div>
+                                <div><input class="radioBtn" id="return" type="radio" name="type" value="return" checked><label for="return">반품</label></div>
+                                <div><input class="radioBtn" id="exchange" type="radio" name="type" value="exchange"><label for="exchange">교환</label></div>
                             </div>
                             <form action="" method="post">
                                 <input name="type" type="hidden" value="return">

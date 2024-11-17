@@ -1,5 +1,5 @@
 const type = document.getElementsByName('type');
-const radioBtn = document.getElementsByName('select_type');
+const radioBtn = document.getElementsByClassName('radioBtn');
 const typeReturn = document.querySelector('#return');
 const typeExchange = document.querySelector('#exchange');
 const changeSize = document.querySelector('.change_size');
