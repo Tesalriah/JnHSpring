@@ -1,9 +1,7 @@
 package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.*;
-import kr.co.jnh.service.OrderService;
-import kr.co.jnh.service.ProductService;
-import kr.co.jnh.service.UserService;
+import kr.co.jnh.service.*;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("mypage")
+@RequestMapping("/mypage")
 public class MypageContoller {
 
     @Autowired
@@ -28,6 +26,9 @@ public class MypageContoller {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    ReturnsService returnsService;
 
     @Autowired
     UserService userService;
@@ -206,5 +207,30 @@ public class MypageContoller {
             e.printStackTrace();
         }
         return "mypage/return-step2";
+    }
+
+    @GetMapping("return-list")
+    public String returnList(SearchCondition sc, HttpServletRequest request, Model m){
+        sc.setPageSize(5);
+        String id = SessionIdUtil.getSessionId(request);
+
+        Map map = new HashMap();
+        map.put("sc", sc);
+        map.put("id", id);
+
+        try {
+            int totalCnt = returnsService.count(id);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            List<Returns> returnsList = returnsService.read(map);
+
+            m.addAttribute("returnsList" ,returnsList);
+            m.addAttribute("ph", ph);
+            m.addAttribute("totalCnt", totalCnt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "mypage/return-list";
     }
 }
