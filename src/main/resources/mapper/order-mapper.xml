@@ -11,12 +11,6 @@
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 
-    <select id="selectEach" parameterType="Map" resultType="Order">
-        SELECT * FROM order_status
-        WHERE user_id = #{id} AND order_no = #{order_no} AND NOT status LIKE CONCAT('%','삭제처리','%')
-        ORDER BY order_no DESC
-    </select>
-
     <select id="selectCnt" parameterType="Map" resultType="int">
         SELECT count(distinct order_no) FROM order_status
         WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
@@ -24,11 +18,12 @@
 
     <select id="selectOne" parameterType="Map" resultType="Order">
         SELECT * FROM order_status
-        WHERE user_id = #{id} AND order_no = #{order_no};
+        WHERE user_id = #{id} AND order_no = #{order_no}
     </select>
 
     <select id="selectAll" resultType="Order">
         SELECT * FROM order_status
+        ORDER BY order_no desc
     </select>
 
     <insert id="insert" parameterType="Order">

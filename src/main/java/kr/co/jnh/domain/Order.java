@@ -1,9 +1,11 @@
 package kr.co.jnh.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Order {
 
+    private Product product;
     private String user_id;
     private String name;
     private String address;
@@ -42,6 +44,14 @@ public class Order {
                 ", status='" + status + '\'' +
                 ", order_date=" + order_date +
                 '}';
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getUser_id() {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +34,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> readEach(Map map) throws Exception{
-        return orderDao.selectEach(map);
-    }
-
-    @Override
     public int readCnt(Map map) throws Exception{
         return orderDao.selectCnt(map);
     }
@@ -49,7 +45,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> readOne(Map map) throws Exception{
-        return orderDao.selectOne(map);
+        List<Order> orderList = orderDao.selectOne(map);
+        for(Order order : orderList){
+            Product product = productDao.select(order.getProduct_id());
+            product.setQuantity(order.getQuantity());
+            order.setProduct(product);
+        }
+        return orderList;
     }
 
     @Override

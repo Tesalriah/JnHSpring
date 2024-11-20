@@ -2,6 +2,7 @@ package kr.co.jnh.domain;
 
 public class Cart {
 
+    private Product product;
     private String user_id;
     private String product_id;
     private String size;
@@ -17,6 +18,14 @@ public class Cart {
                 ", size='" + size + '\'' +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getUser_id() {

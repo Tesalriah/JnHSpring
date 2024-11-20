@@ -25,11 +25,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> selectEach(Map map) throws Exception{
-        return session.selectList(nameSpace + "selectEach", map);
-    }
-
-    @Override
     public int selectCnt(Map map) throws Exception{
         return session.selectOne(nameSpace + "selectCnt", map);
     }

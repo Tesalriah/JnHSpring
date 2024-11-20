@@ -23,8 +23,6 @@ public class User {
 
     public User(){}
 
-
-
     public User(String user_id, String user_pwd, String user_name, String email, String phone, String address, String gender, Date birth) {
         this.user_id = user_id;
         this.user_pwd = user_pwd;

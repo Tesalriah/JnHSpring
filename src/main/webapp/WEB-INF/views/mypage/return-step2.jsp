@@ -43,13 +43,13 @@
                                         <td class="product_info">
                                             <c:forEach items="${orderList}" var="order" varStatus="status">
                                                 <input type="hidden" name="inputId" value="${order.product_id}"><input type="hidden" name="inputSize" value="${order.size}"><input type="hidden" name="input_quan" value="${order.quantity}">
-                                                <div>${productList[status.index].product_name} / ${productList[status.index].color} / ${order.size} / ${order.quantity}개</div>
+                                                <div>${order.product.product_name} / ${order.product.color} / ${order.size} / ${order.quantity}개</div>
                                             </c:forEach>
                                         </td>
                                         <td class="change_size" style="display: none;">
                                             <c:forEach items="${sizeList}" var="list">
                                                 <div>변경사이즈
-                                                    <select name="change_size">
+                                                    <select name="change_size" style="margin-top:3px">
                                                         <option value="" disabled selected>선택</option>
                                                         <c:forEach items="${list}" var="size">
                                                             <option value="${size}">${size}</option>

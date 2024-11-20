@@ -8,8 +8,6 @@ import java.util.Map;
 public interface OrderService {
     List<Order> read(Map map) throws Exception;
 
-    List<Order> readEach(Map map) throws Exception;
-
     int readCnt(Map map) throws Exception;
 
     List<Order> readAll() throws Exception;

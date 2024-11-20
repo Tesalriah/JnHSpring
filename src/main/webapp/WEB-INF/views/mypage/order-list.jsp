@@ -38,8 +38,8 @@
                                     <div class="order_contents">
                                         <form action="" method="post">
                                             <div class="order_img">
-                                                <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
-                                                    <img src="<c:url value="/resources/img/upload/${productList[OLstatus.index][orderStatus.index].product_id}/${productList[OLstatus.index][orderStatus.index].image}"/>">
+                                                <c:forEach var="order" items="${orderList}">
+                                                    <img src="<c:url value="/resources/img/upload/${order.product.product_id}/${order.product.image}"/>">
                                                 </c:forEach>
                                             </div>
                                             <input type="hidden" name="order_no" value="${orderList[0].order_no}">
@@ -49,8 +49,8 @@
                                                     <input type="hidden" name="size" value="${order.size}">
                                                     <input type="hidden" name="quantity" value="${order.quantity}">
                                                     <div>${order.status}</div>
-                                                    <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${productList[OLstatus.index][orderStatus.index].product_name} / ${productList[OLstatus.index][orderStatus.index].color} / ${order.size}</a></div>
-                                                    <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${productList[OLstatus.index][orderStatus.index].total}"/>원 / ${order.quantity}개</div>
+                                                    <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${order.product.product_name} / ${order.product.color} / ${order.size}</a></div>
+                                                    <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${order.product.total}"/>원 / ${order.quantity}개</div>
                                                 </c:forEach>
                                             </div>
                                             <div class="order_button">

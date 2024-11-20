@@ -42,30 +42,18 @@ public class MypageContoller {
         map.put("sc", sc);
 
         List<List<Order>> orderList = new ArrayList<>(); // 하나의 주문에 여러가지 상품이 있을 수도 있으므로 List<Order>를 리스트로 덮어서 분류
-        List<List<Product>> productList = new ArrayList<>(); // Order를 보여줄때 Product에 있는 갯수에 따른 가격정보와 이미지 정보를 가져오기 위해 Product도 Order와 같은 모양의 리스트로 저장
         try {
-            // 페이징 처리를 하기위해 해당 id의 총 주문의 갯수
-            int totalCnt = orderService.readCnt(map);
+            int totalCnt = orderService.readCnt(map); // 페이징 처리를 하기위해 해당 id의 총 주문의 갯수
             PageHandler ph = new PageHandler(totalCnt, sc); // 총 주문갯수를 SearchCondition에 따라 PageHandler로 페이징 처리
 
             List<Order> list = orderService.read(map); // 일단 SearchCondition에 따른 해당 아이디의 5개의 다른 주문번호의 정보 가져오기
             for (int i = 0; i < list.size(); i++) {
                 // 각 주문번호의 주문상품들을 each에 추가
                 map.put("order_no", list.get(i).getOrder_no());
-                List<Order> each = orderService.readEach(map);
-                List<Product> products = new ArrayList<>();
-                for (int j = 0; j < each.size(); j++) {  // each에 저장된 목록의 상품id를 통해 product 또한 추가
-                    Product product = productService.getProduct(each.get(j).getProduct_id());
-                    product.setQuantity(each.get(j).getQuantity());
-                    products.add(product);
-                }
+                List<Order> each = orderService.readOne(map);
                 map.remove("order_no"); // 할당된 order_no 초기화
-                // 저장된 product와 order정보를 각각의 List에 추가
-                productList.add(products);
                 orderList.add(each);
             }
-
-            m.addAttribute("productList", productList);
             m.addAttribute("orderList", orderList);
             m.addAttribute("totalCnt", totalCnt);
             m.addAttribute("ph", ph);
@@ -90,16 +78,10 @@ public class MypageContoller {
         try {
             int total = 0; // 총 상품가격
             List<Order> orderList = orderService.readOne(map); // 한 주문번호의 주문 상품들을 가져오기
-            // 갯수를 set하여 얻어온 상품 가격 총 상품가격에 더하고 주문상품들의 정보를 productList에 추가
-            List<Product> productList = new ArrayList<>();
-            for (int i = 0; i < orderList.size(); i++) {
-                Product product = productService.getProduct(orderList.get(i).getProduct_id());
-                product.setQuantity(orderList.get(i).getQuantity());
-                productList.add(product);
-                total += product.getTotal();
+            for(Order order : orderList){
+                total += order.getProduct().getTotal();
             }
             m.addAttribute("orderList", orderList);
-            m.addAttribute("productList", productList);
             m.addAttribute("total", total);
             m.addAttribute("page", page);
         } catch (Exception e) {
@@ -174,14 +156,8 @@ public class MypageContoller {
 
         try {
             List<Order> orderList = orderService.readOne(map);
-            List<Product> productList = new ArrayList<>();
-            for (int i = 0; i < orderList.size(); i++) {
-                Product product = productService.getProduct(orderList.get(i).getProduct_id());
-                productList.add(product);
-            }
 
             m.addAttribute("orderList", orderList);
-            m.addAttribute("productList", productList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,18 +178,16 @@ public class MypageContoller {
             User user = userService.getUser(id);
             List<Order> orderList = orderService.readOne(map);
             List<Order> realList = new ArrayList<>(); // 선택된 주문 목록
-            List<Product> productList = new ArrayList<>(); // 이미지를 불러오기위한 해당 주문의 상품정보
             List<List<String>> sizeList = new ArrayList<>(); // 상품이 가지고있는 정렬된 사이즈 목록
 
             for (int i = 0; i < orderList.size(); i++) {
                 for (int j = 0; j < checkBox.length; j++) {
-                    if (Integer.parseInt(checkBox[j]) == i) {
+                    if (Integer.parseInt(checkBox[j]) == i) { // 선택한 항목만 처리하여 realList에 저장
                         realList.add(orderList.get(i));
                         String product_id = orderList.get(i).getProduct_id();
-                        productList.add(productService.getProduct(product_id));
                         List<String> list =  productService.getSize(product_id);
 
-                        List<String> afterSize = new ArrayList<>();
+                        List<String> afterSize = new ArrayList<>(); // 정렬하기 이전의 사이즈
                         for(int k=0; k<sizeFrame.length; k++) {
                             for (int n = 0; n < list.size(); n++) {
                                 if (sizeFrame[k].equals(list.get(n))) {
@@ -225,10 +199,8 @@ public class MypageContoller {
                     }
                 }
             }
-            System.out.println("sizeList = " + sizeList);
             m.addAttribute("user", user);
             m.addAttribute("orderList", realList);
-            m.addAttribute("productList", productList);
             m.addAttribute("sizeList", sizeList);
         } catch (Exception e) {
             e.printStackTrace();

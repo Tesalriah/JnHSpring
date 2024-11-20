@@ -1,11 +1,14 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.dao.CartDao;
+import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.domain.Cart;
+import kr.co.jnh.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +17,22 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     CartDao cartDao;
+    @Autowired
+    ProductDao productDao;
 
     @Override
     public List<Cart> showCart(String id) throws Exception{
-        return cartDao.select(id);
+        List<Cart> cartList = cartDao.select(id);
+        for(Cart cart : cartList){
+            Map map = new HashMap();
+            map.put("product_id", cart.getProduct_id());
+            map.put("size", cart.getSize());
+
+            Product product = productDao.selectAtSize(map);
+            product.setQuantity(cart.getQuantity());
+            cart.setProduct(product);
+        }
+        return cartList;
     }
 
     @Override
