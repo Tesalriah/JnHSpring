@@ -30,8 +30,7 @@ public class ReturnsDaoImplTest {
 
     @Test
     public void insert() throws Exception{
-        Date date = new Date();
-        Returns returns = new Returns("asd123", "서울", "20241121001", "20241121001", "return", "M", 1, "신청완료", date, "마음에 들지않음", "마음에 안들어서 반품해요", "");
+        Returns returns = new Returns("20241121001","asd123", "서울", "20241121001", "20241121001", "return", "M", 1, new Date(), "마음에 들지않음", "마음에 안들어서 반품해요", "");
         for (int i = 0; i < 10; i++) {
             returnsDao.insert(returns);
         }

@@ -1,14 +1,12 @@
 package kr.co.jnh.domain;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class Returns {
 
     private Product product;
-    private String[] product_id_arr;
-    private String[] size_arr;
-    private String[] c_size_arr;
-    private Integer rno;
+    private String return_id;
     private String user_id;
     private String address;
     private String order_no;
@@ -25,7 +23,9 @@ public class Returns {
 
     public Returns(){};
 
-    public Returns(String user_id, String address, String order_no, String product_id, String type, String size, Integer quantity, String status, Date order_date, String reason, String contents, String c_size) {
+
+    public Returns(String return_id, String user_id, String address, String order_no, String product_id, String type, String size, Integer quantity, Date order_date, String reason, String contents, String c_size) {
+        this.return_id = return_id;
         this.user_id = user_id;
         this.address = address;
         this.order_no = order_no;
@@ -33,7 +33,6 @@ public class Returns {
         this.type = type;
         this.size = size;
         this.quantity = quantity;
-        this.status = status;
         this.order_date = order_date;
         this.reason = reason;
         this.contents = contents;
@@ -43,7 +42,8 @@ public class Returns {
     @Override
     public String toString() {
         return "Returns{" +
-                "rno=" + rno +
+                "product=" + product +
+                ", return_id='" + return_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", address='" + address + '\'' +
                 ", order_no='" + order_no + '\'' +
@@ -68,36 +68,12 @@ public class Returns {
         this.product = product;
     }
 
-    public String[] getProduct_id_arr() {
-        return product_id_arr;
+    public String getReturn_id() {
+        return return_id;
     }
 
-    public void setProduct_id_arr(String[] product_id_arr) {
-        this.product_id_arr = product_id_arr;
-    }
-
-    public String[] getSize_arr() {
-        return size_arr;
-    }
-
-    public void setSize_arr(String[] size_arr) {
-        this.size_arr = size_arr;
-    }
-
-    public String[] getC_size_arr() {
-        return c_size_arr;
-    }
-
-    public void setC_size_arr(String[] c_size_arr) {
-        this.c_size_arr = c_size_arr;
-    }
-
-    public Integer getRno() {
-        return rno;
-    }
-
-    public void setRno(Integer rno) {
-        this.rno = rno;
+    public void setReturn_id(String return_id) {
+        this.return_id = return_id;
     }
 
     public String getUser_id() {

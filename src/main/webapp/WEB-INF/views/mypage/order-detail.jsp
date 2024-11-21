@@ -30,7 +30,7 @@
                     <div class="order_list">
                         <div class="order">
                             <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div></div></div>
-                            <form action="" method="post">
+                            <form method="post">
                             <div class="order_contents">
                                 <div class="order_img">
                                     <c:forEach var="order" items="${orderList}">

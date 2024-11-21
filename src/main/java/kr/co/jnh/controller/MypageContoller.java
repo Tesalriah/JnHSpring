@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/mypage")
@@ -196,7 +194,7 @@ public class MypageContoller {
                                 }
                             }
                         }
-                        sizeList.add(afterSize);
+                        sizeList.add(afterSize); // 정렬된 사이즈 추가
                     }
                 }
             }
@@ -207,6 +205,26 @@ public class MypageContoller {
             e.printStackTrace();
         }
         return "mypage/return-step2";
+    }
+
+    @PostMapping("return")
+    public String returns(Returns returns, @RequestParam String quan, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
+        returns.setUser_id(id);
+        System.out.println("returns.toString() = " + returns.toString());
+        System.out.println("quan = " + quan);
+        String[] productIdArr = returns.getProduct_id().split(",");
+        String[] sizeArr = returns.getSize().split(",");
+        String[] cSizeArr = returns.getC_size().split(",");
+        String[] quanArr = quan.split(",");
+
+        // 현재날짜 + 001~999까지의 세자리 수로 return_id 만들기
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String today = format.format(date);
+        long return_id;
+
+        return "redirect:/mypage/return-list";
     }
 
     @GetMapping("return-list")

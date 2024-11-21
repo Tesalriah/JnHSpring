@@ -26,14 +26,6 @@ public class ReturnsServiceImpl implements ReturnsService {
             Product product = productDao.select(returns.getProduct_id());
             product.setQuantity(returns.getQuantity());
             returns.setProduct(product);
-
-            if(returns.getProduct_id().contains(",")){
-                returns.setProduct_id_arr(returns.getProduct_id().split(","));
-                returns.setSize_arr(returns.getSize().split(","));
-                if(!returns.getC_size().isBlank()){
-                    returns.setC_size_arr(returns.getC_size().split(","));
-                }
-            }
         }
         return returnsList;
     }

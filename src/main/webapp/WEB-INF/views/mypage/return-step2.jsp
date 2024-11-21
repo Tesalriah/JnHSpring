@@ -29,12 +29,12 @@
                     <div class="contents">
                         <h2>교환, 반품 신청</h2>
                         <div class="return_exchange">
-                            <div class="radio">
-                                <div><input class="radioBtn" id="return" type="radio" name="type" value="return" checked><label for="return">반품</label></div>
-                                <div><input class="radioBtn" id="exchange" type="radio" name="type" value="exchange"><label for="exchange">교환</label></div>
-                            </div>
-                            <form action="" method="post">
-                                <input name="type" type="hidden" value="return">
+                            <form action="<c:url value='/mypage/return'/>" method="post">
+                                <div class="radio">
+                                    <div><input class="radioBtn" id="return" type="radio" name="type" value="return" checked><label for="return">반품</label></div>
+                                    <div><input class="radioBtn" id="exchange" type="radio" name="type" value="exchange"><label for="exchange">교환</label></div>
+                                </div>
+                                <input type="hidden" name="order_no" value="${orderList[0].order_no}">
                                 <table class="info_table">
                                     <tr>
                                         <td>
@@ -42,14 +42,14 @@
                                         </td>
                                         <td class="product_info">
                                             <c:forEach items="${orderList}" var="order" varStatus="status">
-                                                <input type="hidden" name="inputId" value="${order.product_id}"><input type="hidden" name="inputSize" value="${order.size}"><input type="hidden" name="input_quan" value="${order.quantity}">
+                                                <input type="hidden" name="product_id" value="${order.product_id}"><input type="hidden" name="size" value="${order.size}"><input type="hidden" name="quan" value="${order.quantity}">
                                                 <div>${order.product.product_name} / ${order.product.color} / ${order.size} / ${order.quantity}개</div>
                                             </c:forEach>
                                         </td>
                                         <td class="change_size" style="display: none;">
                                             <c:forEach items="${sizeList}" var="list">
                                                 <div>변경사이즈
-                                                    <select name="change_size" style="margin-top:3px">
+                                                    <select name="c_size" style="margin-top:3px">
                                                         <option value="" disabled selected>선택</option>
                                                         <c:forEach items="${list}" var="size">
                                                             <option value="${size}">${size}</option>
@@ -78,7 +78,7 @@
                                             내용
                                         </td>
                                         <td style="width: 85%;" colspan="2">
-                                            <textarea name="details" rows="6" placeholder="상세한 내용을 입력해주세요."></textarea>
+                                            <textarea name="contents" rows="6" placeholder="상세한 내용을 입력해주세요."></textarea>
                                         </td>
                                     </tr>
                                     <tr>

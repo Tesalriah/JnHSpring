@@ -17,7 +17,6 @@ for(let i=0; i<radioBtn.length; i++){
             reasonReturn.style.display='block';
             reasonExchange.style.display='none';
             initOption.selected='true';
-            
         }
         if(typeExchange.checked){
             type[0].value='exchange';

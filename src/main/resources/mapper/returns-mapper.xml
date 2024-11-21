@@ -5,37 +5,37 @@
 <mapper namespace="kr.co.jnh.dao.ReturnsMapper">
     <select id="selectAll" parameterType="String" resultType="Returns">
         SELECT * FROM returns
-        ORDER BY rno desc
+        ORDER BY return_id desc
     </select>
 
     <insert id="insert" parameterType="Returns">
         INSERT INTO returns
-            (user_id, address ,order_no, product_id, type, size, quantity, status, order_date, reason, contents, c_size)
+            (return_id, user_id, address ,order_no, product_id, type, size, quantity, order_date, reason, contents, c_size)
         VALUE
-            (#{user_id}, #{address} ,#{order_no}, #{product_id}, #{type}, #{size}, #{quantity}, #{status}, #{order_date}, #{reason}, #{contents}, #{c_size})
+            (#{return_id}, #{user_id}, #{address} ,#{order_no}, #{product_id}, #{type}, #{size}, #{quantity}, #{order_date}, #{reason}, #{contents}, #{c_size})
     </insert>
 
     <delete id="delete" parameterType="Integer">
         DELETE FROM returns
-        WHERE rno = #{rno}
+        WHERE return_id = #{return_id}
     </delete>
 
     <update id="update" parameterType="Map">
         UPDATE returns
         SET status = #{status}
-        WHERE rno = #{rno}
+        WHERE return_id = #{return_id}
     </update>
 
     <select id="selectPage" parameterType="Map" resultType="Returns">
         SELECT * FROM returns
         WHERE user_id = #{id}
-        ORDER BY rno desc
+        ORDER BY return_id desc
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 
     <select id="selectPageCnt" parameterType="String" resultType="int">
         SELECT count(*) FROM returns
         WHERE user_id = #{id}
-        ORDER BY rno desc
+        ORDER BY return_id desc
     </select>
 </mapper>
