@@ -48,4 +48,8 @@ public class ReturnsDaoImpl implements ReturnsDao {
         return session.selectList(nameSpace + "selectPage", map);
     }
 
+    @Override
+    public String selectId(String return_id) throws Exception{
+        return session.selectOne( nameSpace + "selectId", return_id);
+    }
 }

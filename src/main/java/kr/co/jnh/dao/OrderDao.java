@@ -20,5 +20,7 @@ public interface OrderDao {
 
     int updete(Map map) throws Exception;
 
+    int returnUpdate(Map map) throws Exception;
+
     String selectId(String order_no) throws Exception;
 }

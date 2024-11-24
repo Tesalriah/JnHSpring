@@ -54,6 +54,12 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public int returnUpdate(Map map) throws Exception{
+        return  session.update( nameSpace + "returnUpdate", map);
+    }
+
+
+    @Override
     public String selectId(String order_no) throws Exception{
         return session.selectOne(nameSpace + "selectId", order_no);
     }

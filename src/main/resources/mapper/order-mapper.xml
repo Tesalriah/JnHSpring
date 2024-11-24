@@ -43,6 +43,12 @@
         WHERE order_no = #{order_no} AND user_id = #{id}
     </update>
 
+    <update id="returnUpdate" parameterType="Map">
+        UPDATE order_status
+        SET status = #{status}
+        WHERE order_no = #{order_no} AND user_id = #{id} AND product_id = #{product_id} AND size = #{size}
+    </update>
+
     <select id="selectId" parameterType="String" resultType="String">
         SELECT order_no FROM order_status
         WHERE order_no LIKE CONCAT(#{order_no},'%') ORDER BY order_no DESC LIMIT 1

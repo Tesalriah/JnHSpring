@@ -38,4 +38,9 @@
         WHERE user_id = #{id}
         ORDER BY return_id desc
     </select>
+
+    <select id="selectId" parameterType="String" resultType="String">
+        SELECT return_id FROM returns
+        WHERE return_id LIKE CONCAT(#{return_id}, '%') ORDER BY return_id DESC LIMIT 1
+    </select>
 </mapper>

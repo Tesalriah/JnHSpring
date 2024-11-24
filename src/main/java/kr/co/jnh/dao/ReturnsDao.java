@@ -17,4 +17,6 @@ public interface ReturnsDao {
     int getCount(String id) throws Exception;
 
     List<Returns> selectPage(Map map) throws Exception;
+
+    String selectId(String return_id) throws Exception;
 }

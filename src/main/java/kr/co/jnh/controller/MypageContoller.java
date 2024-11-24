@@ -210,13 +210,27 @@ public class MypageContoller {
     @PostMapping("return")
     public String returns(Returns returns, @RequestParam String quan, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
-        returns.setUser_id(id);
-        System.out.println("returns.toString() = " + returns.toString());
-        System.out.println("quan = " + quan);
+        Returns real_returns = returns;
+        real_returns.setUser_id(id);
+        System.out.println("returns.getProduct_id() = " + real_returns.getProduct_id());
+        String type = "";
+        if(returns.getType().equals("exchange")){
+            type = "교환";
+        }if(returns.getType().equals("return")){
+            type = "반품";
+        }
         String[] productIdArr = returns.getProduct_id().split(",");
         String[] sizeArr = returns.getSize().split(",");
         String[] cSizeArr = returns.getC_size().split(",");
         String[] quanArr = quan.split(",");
+        String address2 = request.getParameter("address2");
+        for (int i = 0; i < productIdArr.length; i++) {
+            System.out.println("productIdArr = " + productIdArr[i]);
+        }
+        // 상세주소를 입력했을 시 추가
+        if(!address2.isBlank()){
+            real_returns.setAddress( returns.getAddress() + address2);
+        }
 
         // 현재날짜 + 001~999까지의 세자리 수로 return_id 만들기
         Date date = new Date();
@@ -224,7 +238,49 @@ public class MypageContoller {
         String today = format.format(date);
         long return_id;
 
-        return "redirect:/mypage/return-list";
+        try{
+            Map map = new HashMap();
+            map.put("id", returns.getUser_id());
+            map.put("order_no", returns.getOrder_no());
+            List<Order> orderList = orderService.readOne(map);
+            real_returns.setOrder_date(orderList.get(0).getOrder_date());
+            String return_id_str = returnsService.readId(today);
+            if(return_id_str != null){
+                return_id = Long.parseLong(return_id_str);
+                return_id += 1;
+                if(return_id + "" == today + "999"){
+                    throw new Exception("RETURNS_LIMITED");
+                }
+            }else{
+                return_id = Long.parseLong(today + "001");
+            }
+            real_returns.setReturn_id(return_id + "");
+
+            // list에 반품,교환 상품 저장
+            List<Returns> list = new ArrayList<>();
+            for (int i = 0; i < productIdArr.length; i++) {
+                System.out.println("productIdArr = " + productIdArr[i]);
+                real_returns.setProduct_id(productIdArr[i]);
+                real_returns.setSize(sizeArr[i]);
+                real_returns.setQuantity(Integer.parseInt(quanArr[i]));
+                if(real_returns.getType().equals("exchange")){
+                    real_returns.setC_size(cSizeArr[i]);
+                }
+                list.add(real_returns);
+            }
+            System.out.println("list = " + list);
+
+            if(returnsService.returns(list) != 1){
+                throw new Exception("RETURN_FAIL");
+            }
+            request.setAttribute("msg", type + "신청 완료");
+            request.setAttribute("url", "return-list");
+        }catch(Exception e){
+            e.printStackTrace();
+            request.setAttribute("msg", type + "에 실패했습니다.");
+            request.setAttribute("url", "order-list");
+        }
+        return "alert";
     }
 
     @GetMapping("return-list")

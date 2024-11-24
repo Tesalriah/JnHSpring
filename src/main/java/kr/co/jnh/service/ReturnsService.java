@@ -17,4 +17,8 @@ public interface ReturnsService {
     int count(String id) throws Exception;
 
     List<Returns> readAll() throws Exception;
+
+    String readId(String return_id) throws Exception;
+
+    int returns(List<Returns> list) throws Exception;
 }

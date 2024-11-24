@@ -1,12 +1,15 @@
 package kr.co.jnh.service;
 
+import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReturnsDao;
 import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Returns;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,9 @@ public class ReturnsServiceImpl implements ReturnsService {
 
     @Autowired
     ProductDao productDao;
+
+    @Autowired
+    OrderDao orderDao;
 
     @Override
     public List<Returns> read(Map map) throws Exception{
@@ -53,5 +59,39 @@ public class ReturnsServiceImpl implements ReturnsService {
     @Override
     public List<Returns> readAll() throws Exception{
         return returnsDao.selectAll();
+    }
+
+    @Override
+    public String readId(String return_id) throws Exception{
+        return returnsDao.selectId(return_id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int returns(List<Returns> list) throws Exception{
+        int result = -1;
+        Map map = new HashMap();
+        for (int i = 0; i < list.size(); i++) {
+            Returns returns = list.get(i);
+            result = returnsDao.insert(returns);
+            if(result != 1){
+                throw new Exception("RETURNS_INSERT_FAIL");
+            }
+            if(returns.getType().equals("exchange")){
+                map.put("status", "교환중");
+            }if(returns.getType().equals("return")){
+                map.put("status", "반품중");
+            }
+            map.put("order_no", returns.getOrder_no());
+            map.put("id", returns.getUser_id());
+            map.put("product_id", returns.getProduct_id());
+            map.put("size", returns.getSize());
+            System.out.println("map = " + map);
+            if(orderDao.returnUpdate(map) == 0){
+                throw new Exception("ORDER_STATUS_UPDATE_FAIL");
+            }
+        }
+
+        return result;
     }
 }
