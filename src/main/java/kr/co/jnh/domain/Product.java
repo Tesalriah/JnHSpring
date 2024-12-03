@@ -22,6 +22,7 @@ public class Product {
     private float rating;
     private int bought_cnt;
     private String state;
+    private Integer wish_cnt;
     private Integer quantity;
     private Integer total;
     private Integer dis_price;
@@ -46,6 +47,7 @@ public class Product {
                 ", rating=" + rating +
                 ", bought_cnt=" + bought_cnt +
                 ", state='" + state + '\'' +
+                ", wish_cnt=" + wish_cnt +
                 ", quantity=" + quantity +
                 ", total=" + total +
                 ", dis_price=" + dis_price +
@@ -187,6 +189,14 @@ public class Product {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Integer getWish_cnt() {
+        return wish_cnt;
+    }
+
+    public void setWish_cnt(Integer wish_cnt) {
+        this.wish_cnt = wish_cnt;
     }
 
     public Integer getQuantity() { return quantity; }

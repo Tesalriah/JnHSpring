@@ -11,6 +11,7 @@
         <typeAlias alias="Cart" type="kr.co.jnh.domain.Cart"/>
         <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
         <typeAlias alias="Returns" type="kr.co.jnh.domain.Returns"/>
+        <typeAlias alias="Returns" type="kr.co.jnh.domain.Wish"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
     </typeAliases>
 </configuration>

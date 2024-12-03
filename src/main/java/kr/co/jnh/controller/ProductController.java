@@ -1,9 +1,7 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.SearchCondition;
-import kr.co.jnh.domain.User;
+import kr.co.jnh.domain.*;
+import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
@@ -16,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,10 +29,12 @@ public class ProductController {
     @Autowired
     ProductService productService;
     @Autowired
+    OrderService orderService;
+    @Autowired
     UserService userService;
 
     // 상품정보 읽어오기
-    @GetMapping("/product")
+    @GetMapping("product")
     public String product(@RequestParam String product_id, SearchCondition sc, Model m){
         m.addAttribute("sc", sc);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
@@ -97,7 +99,7 @@ public class ProductController {
     }
 
     // 상품목록 읽어오기
-    @GetMapping("/product-list")
+    @GetMapping("product-list")
     public String productList(SearchCondition sc, Model m){
         sc.setPageSize(6); // 한페이지에 가져오는 상품갯수 6개
         // option 기본값 product_id로 설정 (최신순 )
@@ -122,7 +124,7 @@ public class ProductController {
     }
 
     // 상품 추가 페이지 이동 (인터셉터로 관리자 확인)
-    @GetMapping("/add-product")
+    @GetMapping("add-product")
     public String getAddProduct(){
         return "product/add-product";
     }
@@ -203,6 +205,110 @@ public class ProductController {
             return "product/add-product";
         }
     }
+
+    // 상품 결제 처리
+    @PostMapping("/buy")
+    public String buy(Order order, String quantity, String address2, HttpServletRequest request, HttpServletResponse response){
+        String id = SessionIdUtil.getSessionId(request);
+
+        // 하나이상의 주문을 각각 처리하기 위해 배열에 나눠서 저장
+        String[] product_id = order.getProduct_id().split(",");
+        String[] size = order.getSize().split(",");
+        String[] quan = quantity.split(",");
+        // 선택된 주문요청사항이 없을시 이전페이지로
+        if(order.getDel_request().equals("")) {
+            String referer = request.getHeader("referer");
+            try {
+                response.sendRedirect(referer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        order.setUser_id(id);
+        // 상세주소를 입력했을 시 추가
+        if(!address2.isBlank()){
+            order.setAddress( order.getAddress() + address2);
+        }
+        // 현재날짜 + 001~999까지의 세자리 수로 주문번호 만들기
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String today = format.format(date);
+        long order_no;
+        try {
+            // 현재날짜의 주문이 있을 시 마지막 번호 다음번호로 주문번호 생성
+            if(orderService.orderIdCheck(today)){
+                String str = orderService.returnId(today);
+                order_no = Long.parseLong(str) + 1;
+                // 최대 999개의 주문번호 수용
+                if(order_no + "" == today + "999"){
+                    throw new Exception("ORDER_NO_LIMITED");
+                }
+            }else{  // 현재날짜 주문이 없을시 첫번째 주문번호 생성
+                order_no = Long.parseLong(today + "001");
+            }
+            order.setOrder_no(order_no + "");
+            // list에 주문 상품 순서대로 저장
+            List<Order> list = new ArrayList<>();
+            for (int i = 0; i < product_id.length; i++) {
+                Order trigger = new Order(order.getUser_id(),order.getName(),order.getAddress(),
+                        order.getPhone(), order.getDel_request(), order.getOrder_no()); // 공통된 항목 trigger에 저장
+                // 하나 또는 그 이상의 주문상품 저장부분
+                trigger.setProduct_id(product_id[i]);
+                trigger.setSize(size[i]);
+                trigger.setQuantity(Integer.parseInt(quan[i]));
+                // 품절된 상품 확인
+                if(orderService.checkStock(product_id[i], quan[i], size[i])){
+                    request.setAttribute("msg", "상품번호 : " + product_id[i] + " 상품이 품절되었거나 재고가 모자릅니다. 확인 후 다시 시도해주세요.");
+                    request.setAttribute("url", "product-list");
+                    return "alert";
+                }
+
+                list.add(trigger);
+            }
+
+            // 주문처리
+            if(orderService.buy(list) != 1){
+                throw new Exception("BUY_FAIL");
+            }
+            request.setAttribute("msg", "주문완료");
+            request.setAttribute("url", "mypage/order-list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("msg", "주문에 실패했습니다.");
+            request.setAttribute("url", "product-list");
+        }
+        return "alert";
+    }
+
+    // 주문했던 상품 재구매
+    @PostMapping("/repurchase")
+    public String repurchase(String product_id, String size, String quantity, HttpServletRequest request) {
+        String id = SessionIdUtil.getSessionId(request);
+        // 받아온 상품id, 사이즈, 갯수가 여러개일 수 있으므로 배열에 각각 저장
+        String[] p_id = product_id.split(",");
+        String[] product_size = size.split(",");
+        String[] product_quantity = quantity.split(",");
+        int total = 0;
+
+        try {
+            List<Product> list = new ArrayList();
+            for (int i = 0; i < p_id.length; i++) { // 받아온 정보를 토대로 객체에 할당하여 각각 list에 추가
+                Product product = productService.getProduct(p_id[i]);
+                product.setSize(product_size[i]);
+                product.setQuantity(Integer.parseInt(product_quantity[i]));
+                total += product.getTotal();
+                list.add(product);
+            }
+            User user = userService.getUser(id); // 배송지 정보를 할당하기위해 user정보 가져오기
+            request.setAttribute("list", list);
+            request.setAttribute("total", total);
+            request.setAttribute("user", user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "product/payment";
+    }
+
 
     private String productValidation(Product product, MultipartFile file){
         if(product.getProduct_name().isBlank() || product.getGender().isBlank() || product.getCategory().isBlank()

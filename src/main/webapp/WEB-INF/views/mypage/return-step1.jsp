@@ -25,7 +25,7 @@
                     <div class="contents">
                         <h2>교환, 반품 신청</h2>
                         <div class="outside">
-                            <form action="<c:url value="/mypage/return-step2"/>" method="post">
+                            <form action="<c:url value="/mypage/return/step2"/>" method="post">
                                 <div class="subheading">상품을 선택해 주세요</div>
                                 <div class="return_product_list">
                                     <input type="hidden" name="order_no" value="${orderList[0].order_no}">

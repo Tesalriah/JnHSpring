@@ -10,6 +10,7 @@
         <script type="text/javascript" src="<c:url value='/resources/js/review-question.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/size-insert.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/scroll-move.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/add-wish.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
         <title>J&H</title>
@@ -42,7 +43,7 @@
                 <div class="info" style="width:45%;">
                     <form action="" method="post">
                         <input type="hidden" name="product_id" value="${product.product_id}">
-                        <div class="name">${product.product_name}</div>
+                        <div class="name">${product.product_name}<span class="wish_btn"><i id="heart" class="fa-regular fa-heart"></i><span id="wish_cnt">100</span></span></div>
                         <div class="price">
                             <input name="price" type="hidden" value="${product.dis_price}">
                             <c:if test="${product.discount != 0}">
@@ -82,7 +83,7 @@
                             </div>
                         </div>
                         <div class="product_button">
-                            <input type="submit" formaction="<c:url value="/addCart${sc.queryString}"/>" value="Add Cart">
+                            <input type="submit" formaction="<c:url value="/add-cart${sc.queryString}"/>" value="Add Cart">
                             <input type="submit" formaction="<c:url value="/product${sc.queryString}&product_id=${product.product_id}"/>" value="Buy">
                         </div>
                     </form>

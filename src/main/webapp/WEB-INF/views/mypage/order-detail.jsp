@@ -49,8 +49,8 @@
                                     </c:forEach>
                                 </div>
                                 <div class="order_button">
-                                        <div><button type="submit" formaction="<c:url value="/mypage/repurchase"/>">재구매</button></div>
-                                        <div><button type="submit" formaction="<c:url value="/mypage/return-step1"/>?page=${param.page}">교환, 반품신청</button></div>
+                                        <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
+                                        <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${param.page}">교환, 반품신청</button></div>
                                         <div><button type="button">리뷰작성</button></div>
                                 </div>
                             </div>
@@ -98,8 +98,8 @@
                         </div>
                     </div>
                     <div class="order_detail_button">
-                        <button type="button" onclick="location.href = '<c:url value="/mypage/order-list"/>?page=${page}'">주문목록 돌아가기</button>
-                        <form action="<c:url value="/mypage/order-del"/>?page=${page}" method="post"><button type="submit" onclick="return confirm('함께 결제된 주문상품은 전체 삭제되며, 복구할 수 없습니다. 주문내역을 삭제하시겠습니까?')">주문내역 삭제</button><input type="hidden" name="order_no" value="${param.order_no}"> </form>
+                        <button type="button" onclick="location.href = '<c:url value="/mypage/order/list"/>?page=${page}'">주문목록 돌아가기</button>
+                        <form action="<c:url value="/mypage/order/del"/>?page=${page}" method="post"><button type="submit" onclick="return confirm('함께 결제된 주문상품은 전체 삭제되며, 복구할 수 없습니다. 주문내역을 삭제하시겠습니까?')">주문내역 삭제</button><input type="hidden" name="order_no" value="${param.order_no}"> </form>
                     </div>
                     <div class="guide">
                         <div>배송상품 주문상태 안내</div>

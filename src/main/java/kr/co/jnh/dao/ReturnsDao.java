@@ -8,6 +8,8 @@ import java.util.Map;
 public interface ReturnsDao {
     List<Returns> selectAll() throws Exception;
 
+    List<Returns> selectOne(String return_id) throws Exception;
+
     int insert(Returns returns) throws Exception;
 
     int delete(Integer rno) throws Exception;

@@ -43,7 +43,7 @@
                             </div>
                         </li>
                     </c:if>
-                    <c:forEach items="${cartList}" var="cart">
+                    <c:forEach items="${cartList}" var="cart" varStatus="status">
                         <li>
                             <div style="display:flex; width:16%; align-items: center">
                                 <c:choose>

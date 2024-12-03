@@ -34,7 +34,7 @@
                         <c:forEach var="orderList" items="${orderList}" varStatus="OLstatus">
                             <form method="post" action="">
                                 <div class="order">
-                                    <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div><a href="<c:url value="/mypage/order-detail"/>?order_no=${orderList[0].order_no}&page=${ph.sc.page}">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
+                                    <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div><a href="<c:url value="/mypage/order/detail"/>?order_no=${orderList[0].order_no}&page=${ph.sc.page}">주문 상세보기&nbsp;<i class="fa-solid fa-angle-right"></i></a></div></div>
                                     <div class="order_contents">
                                         <form action="" method="post">
                                             <div class="order_img">
@@ -54,8 +54,8 @@
                                                 </c:forEach>
                                             </div>
                                             <div class="order_button">
-                                                <div><button type="submit" formaction="<c:url value="/mypage/repurchase"/>">재구매</button></div>
-                                                <div><button type="submit" formaction="<c:url value="/mypage/return-step1"/>?page=${ph.sc.page}">교환, 반품신청</button></div>
+                                                <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
+                                                <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></div>
                                                 <div><button type="button">리뷰작성</button></div>
                                             </div>
                                         </form>
@@ -67,13 +67,13 @@
                     <div class="paging">
                         <c:if test="${totalCnt != null && totalCnt != 0}">
                             <c:if test="${ph.showPrev}">
-                                <a href="<c:url value="/mypage/order-list"/>?page=${ph.beginPage-1}"><i class="fa-solid fa-angle-left"></i></a>
+                                <a href="<c:url value="/mypage/order/list"/>?page=${ph.beginPage-1}"><i class="fa-solid fa-angle-left"></i></a>
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                                <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/mypage/order-list"/>?page=${i}">${i}</a>
+                                <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/mypage/order/list"/>?page=${i}">${i}</a>
                             </c:forEach>
                             <c:if test="${ph.showNext}">
-                                <a href="<c:url value="/mypage/order-list"/>?page=${ph.endPage+1}"><i class="fa-solid fa-angle-left"></i></a>
+                                <a href="<c:url value="/mypage/order/list"/>?page=${ph.endPage+1}"><i class="fa-solid fa-angle-left"></i></a>
                             </c:if>
                         </c:if>
                     </div>

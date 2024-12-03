@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReturnsService {
-    List<Returns> read(Map map) throws Exception;
+    List<List<Returns>> read(Map map) throws Exception;
 
     int create(Returns returns) throws Exception;
 

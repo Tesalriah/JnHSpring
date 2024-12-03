@@ -23,6 +23,23 @@ public class Returns {
 
     public Returns(){};
 
+    public Returns(Returns returns) {
+        this.product = returns.getProduct();
+        this.return_id = returns.getReturn_id();
+        this.user_id = returns.getUser_id();
+        this.address = returns.getAddress();
+        this.order_no = returns.getOrder_no();
+        this.product_id = returns.getProduct_id();
+        this.type = returns.getType();
+        this.size = returns.getSize();
+        this.quantity = returns.getQuantity();
+        this.status = returns.getStatus();
+        this.order_date = returns.getOrder_date();
+        this.return_date = returns.getReturn_date();
+        this.reason = returns.getReason();
+        this.contents = returns.getContents();
+        this.c_size = returns.getC_size();
+    }
 
     public Returns(String return_id, String user_id, String address, String order_no, String product_id, String type, String size, Integer quantity, Date order_date, String reason, String contents, String c_size) {
         this.return_id = return_id;

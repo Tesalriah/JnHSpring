@@ -24,6 +24,11 @@ public class ReturnsDaoImpl implements ReturnsDao {
     }
 
     @Override
+    public List<Returns> selectOne(String return_id) throws Exception{
+        return session.selectList(nameSpace + "selectOne", return_id);
+    }
+
+    @Override
     public int insert(Returns returns) throws Exception{
         return session.insert(nameSpace + "insert", returns);
     }

@@ -10,6 +10,13 @@ public class Cart {
 
     public Cart(){}
 
+    public Cart(String user_id, String product_id, String size, Integer quantity) {
+        this.user_id = user_id;
+        this.product_id = product_id;
+        this.size = size;
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +

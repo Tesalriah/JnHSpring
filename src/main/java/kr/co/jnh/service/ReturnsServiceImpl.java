@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +27,19 @@ public class ReturnsServiceImpl implements ReturnsService {
     OrderDao orderDao;
 
     @Override
-    public List<Returns> read(Map map) throws Exception{
+    public List<List<Returns>> read(Map map) throws Exception{
         List<Returns> returnsList = returnsDao.selectPage(map);
+        List<List<Returns>> returnsListList = new ArrayList<>();
         for(Returns returns : returnsList){
-            Product product = productDao.select(returns.getProduct_id());
-            product.setQuantity(returns.getQuantity());
-            returns.setProduct(product);
+            List<Returns> each = returnsDao.selectOne(returns.getReturn_id());
+            for(Returns setProduct : each){
+                Product product = productDao.select(setProduct.getProduct_id());
+                product.setQuantity(setProduct.getQuantity());
+                setProduct.setProduct(product);
+            }
+            returnsListList.add(each);
         }
-        return returnsList;
+        return returnsListList;
     }
 
     @Override
