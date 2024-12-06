@@ -1,12 +1,14 @@
 package kr.co.jnh.domain;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Wish {
 
     private String user_id;
     private String product_id;
-    private String size[];
+    private List<String> size;
+    private Product product;
 
     public Wish(){}
 
@@ -20,8 +22,17 @@ public class Wish {
         return "Wish{" +
                 "user_id='" + user_id + '\'' +
                 ", product_id='" + product_id + '\'' +
-                ", size=" + Arrays.toString(size) +
+                ", size=" + size +
+                ", product=" + product +
                 '}';
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getUser_id() {
@@ -40,11 +51,11 @@ public class Wish {
         this.product_id = product_id;
     }
 
-    public String[] getSize() {
+    public List<String> getSize() {
         return size;
     }
 
-    public void setSize(String[] size) {
+    public void setSize(List<String> size) {
         this.size = size;
     }
 }

@@ -4,11 +4,12 @@ import kr.co.jnh.domain.Wish;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WishService {
-    List<Wish> read(String id) throws Exception;
+    List<Wish> read(Map map) throws Exception;
 
-    int readOne(Wish wish) throws Exception;
+    boolean isThere(Wish wish) throws Exception;
 
     List<Wish> readAll() throws Exception;
 

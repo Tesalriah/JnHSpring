@@ -3,9 +3,10 @@ package kr.co.jnh.dao;
 import kr.co.jnh.domain.Wish;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WishDao {
-    List<Wish> select(String id) throws Exception;
+    List<Wish> select(Map map) throws Exception;
 
     Wish selectOne(Wish wish) throws Exception;
 

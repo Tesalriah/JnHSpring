@@ -9,14 +9,14 @@
 
     <select id="selectOne" parameterType="Wish" resultType="Wish">
         SELECT * FROM wish
-        WHERE user_id = #{user_id}, product_id = #{product_id}
+        WHERE user_id = #{user_id} AND product_id = #{product_id}
     </select>
 
-    <insert id="insert" parameterType="wish">
+    <insert id="insert" parameterType="Wish">
         INSERT INTO wish
             (user_id, product_id)
         VALUE
-            (#{id}, #{product_id})
+            (#{user_id}, #{product_id})
     </insert>
 
     <delete id="delete" parameterType="Wish">

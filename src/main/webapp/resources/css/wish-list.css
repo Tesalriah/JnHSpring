@@ -65,9 +65,12 @@ input[type="submit"]{
 }
 .product_info{
     padding:20px;
-    width:80%;
+    width:65%;
     font-size:15px;
     font-weight:bold;
+}
+.product_size{
+    width:15%
 }
 .list_button button:hover{
     cursor:pointer;

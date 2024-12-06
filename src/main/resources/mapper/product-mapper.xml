@@ -26,6 +26,12 @@
         WHERE product_id = #{product_id};
     </update>
 
+    <update id="updateWishtCnt" parameterType="Product">
+        UPDATE product
+        SET wish_cnt = #{wish_cnt}
+        WHERE product_id = #{product_id};
+    </update>
+
     <delete id="delete" parameterType="Integer">
         DELETE FROM product
         WHERE product_id = #{product_id}

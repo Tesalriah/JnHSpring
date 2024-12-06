@@ -40,6 +40,11 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public int updateWishCnt(Map map) throws Exception{
+        return session.update( nameSpace + "updateWishtCnt", map);
+    }
+
+    @Override
     public int delete(String product_id) throws Exception{
         return session.delete(nameSpace + "delete", product_id);
     }

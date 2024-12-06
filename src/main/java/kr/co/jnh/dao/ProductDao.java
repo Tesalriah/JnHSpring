@@ -15,6 +15,8 @@ public interface ProductDao {
 
     int updateBoughtCnt(Product product) throws Exception;
 
+    int updateWishCnt(Map map) throws Exception;
+
     int delete(String product_id) throws Exception;
 
     List<Product> selectAll(Map map) throws Exception;

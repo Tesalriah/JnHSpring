@@ -4,6 +4,7 @@ import kr.co.jnh.domain.*;
 import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.service.WishService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,13 +33,22 @@ public class ProductController {
     OrderService orderService;
     @Autowired
     UserService userService;
+    @Autowired
+    WishService wishService;
 
     // 상품정보 읽어오기
     @GetMapping("product")
-    public String product(@RequestParam String product_id, SearchCondition sc, Model m){
+    public String product(@RequestParam String product_id, SearchCondition sc, Model m, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
         m.addAttribute("sc", sc);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
         try {
+            if(id != null){
+                Wish wish = new Wish(id, product_id);
+                if(wishService.isThere(wish)){
+                    m.addAttribute("wish", true);
+                }
+            }
             // 상품 id를 통해 상품의 정보 가져오기
             Product product = productService.getProduct(product_id);
             product.setQuantity(1); // 할인된 가격 계산을위해 1개의 갯수 설정

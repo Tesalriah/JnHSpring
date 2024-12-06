@@ -4,12 +4,16 @@ import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.WishDao;
 import kr.co.jnh.domain.Cart;
+import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Wish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WishServiceImpl implements WishService {
@@ -22,17 +26,36 @@ public class WishServiceImpl implements WishService {
     CartDao cartDao;
 
     @Override
-    public List<Wish> read(String id) throws Exception{
-        return wishDao.select(id);
+    public List<Wish> read(Map map) throws Exception{
+        String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
+
+        List<Wish> wishList = new ArrayList<>();
+        for(Wish wish : wishDao.select(map)){
+            Product product = productDao.select(wish.getProduct_id());
+            product.setQuantity(1);
+            List<String> size = productDao.selectSize(wish.getProduct_id());
+            List<String> realSize = new ArrayList<>();
+            for(String frame : sizeFrame) {
+                for(String each : size){
+                    if (frame.equals(each)){
+                        realSize.add(each);
+                    }
+                }
+            }
+            wish.setSize(realSize);
+            wish.setProduct(product);
+            wishList.add(wish);
+        }
+        return wishList;
     }
 
     @Override
-    public int readOne(Wish wish) throws Exception{ // 찜이 존재하면 1 존재하지않으면 0 반환
+    public boolean isThere(Wish wish) throws Exception{ // 찜이 존재하면 1 존재하지않으면 0 반환
         Wish check = wishDao.selectOne(wish);
         if(check != null){
-            return 1;
+            return true;
         }else {
-            return 0;
+            return false;
         }
     }
 
@@ -42,13 +65,33 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int write(Wish wish) throws Exception{
-        return wishDao.insert(wish);
+        int result = -1;
+        Map map = new HashMap();
+        result = wishDao.insert(wish);
+        if(result > 0){
+            Product product = productDao.select(wish.getProduct_id());
+            map.put("wish_cnt", product.getWish_cnt() + 1);
+            map.put("product_id", wish.getProduct_id());
+            productDao.updateWishCnt(map);
+        }
+        return result;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int remove(Wish wish) throws Exception{
-        return wishDao.delete(wish);
+        int result = -1;
+        Map map = new HashMap();
+        result = wishDao.delete(wish);
+        if(result > 0){
+            Product product = productDao.select(wish.getProduct_id());
+            map.put("wish_cnt", product.getWish_cnt() - 1);
+            map.put("product_id", wish.getProduct_id());
+            productDao.updateWishCnt(map);
+        }
+        return result;
     }
 
     @Override

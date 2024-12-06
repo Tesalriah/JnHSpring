@@ -63,6 +63,8 @@
 			<mapping path="/del-cart"/>
 			<mapping path="/del-one-cart"/>
 			<mapping path="/mypage/**"/>
+			<exclude-mapping path="/mypage/wish/add"/>
+			<exclude-mapping path="/mypage/wish/del"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
 		<interceptor>

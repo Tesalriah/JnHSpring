@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class WishDaoImpl implements WishDao {
@@ -15,11 +16,11 @@ public class WishDaoImpl implements WishDao {
 
     @Autowired
     private SqlSession session;
-    private static String nameSpace = "kr.co.jnh.dao.CartMapper.";
+    private static String nameSpace = "kr.co.jnh.dao.WishMapper.";
 
     @Override
-    public List<Wish> select(String id) throws Exception{
-        return session.selectList( nameSpace + "selectPage", id);
+    public List<Wish> select(Map map) throws Exception{
+        return session.selectList( nameSpace + "selectPage", map);
     }
 
     @Override
