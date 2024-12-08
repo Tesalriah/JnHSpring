@@ -46,7 +46,16 @@
                         </form>
                     </div>
                 </div>
-                <div><a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a></div>
+                <div id="user_util">
+                    <a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a>
+                    <c:if test="${mypageLink != '/login'}">
+                        <ul class="user_menu" >
+                            <li><a href="<c:url value="/mypage/order/list"/>">주문목록</a></li>
+                            <li><a href="<c:url value="/mypage/return/list"/>">취소/반품</a></li>
+                            <li><a href="<c:url value="/mypage/wish/list"/>">찜 목록</a></li>
+                        </ul>
+                    </c:if>
+                </div>
                 <div><a href="<c:url value="/cart"/>${empty ph ? sc.queryString : ph.sc.queryString}"><i class="fa-solid fa-cart-shopping"></i></a></div>
                 <div style="font-size:20px;"><a href="<c:url value='${logOutLink}'/>">${logOut}</a></div>
             </div>

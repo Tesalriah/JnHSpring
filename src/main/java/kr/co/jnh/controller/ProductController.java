@@ -52,7 +52,7 @@ public class ProductController {
             // 상품 id를 통해 상품의 정보 가져오기
             Product product = productService.getProduct(product_id);
             product.setQuantity(1); // 할인된 가격 계산을위해 1개의 갯수 설정
-            m.addAttribute("product", product);
+            m.addAttribute( "product", product);
 
             List<String> list =  productService.getSize(product_id); // 해당 상품id가 가지고있는 사이즈를 List에 받기
             List<String> sizeList =  new ArrayList<>(); // 정렬받기 위한 List

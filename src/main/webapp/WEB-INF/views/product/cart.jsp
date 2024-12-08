@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <ul class="cart_list">
-                    <c:if test="${empty cartList}">
+                    <c:if test="${totalCnt < 0}">
                         <li>
                             <div style="text-align: center; width: 100%; padding: 60px; font-weight:bold;">
                                 장바구니에 담은 상품이 없습니다.

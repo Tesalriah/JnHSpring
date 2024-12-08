@@ -43,7 +43,7 @@
                 <div class="info" style="width:45%;">
                     <form action="" method="post">
                         <input type="hidden" name="product_id" value="${product.product_id}">
-                        <div class="name">${product.product_name}<span class="wish_btn"><i id="heart" ${wish ? "class='fa-solid fa-heart'" : "class='fa-regular fa-heart'"}></i><span id="wish_cnt">${product.wish_cnt > 999 ? "999+" : product.wish_cnt}</span></span></div>
+                        <div class="name">${product.product_name}<span class="wish_btn"><i id="heart" ${wish ? "class='fa-solid fa-heart'" : "class='fa-regular fa-heart'"}></i><span id="wish_cnt">${product.wish_cnt}</span></span></div>
                         <div class="price">
                             <input name="price" type="hidden" value="${product.dis_price}">
                             <c:if test="${product.discount != 0}">

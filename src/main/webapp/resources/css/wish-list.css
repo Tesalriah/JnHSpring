@@ -86,12 +86,14 @@ input[type="submit"]{
 }
 .paging{
     text-align:center;
-    margin-top:50px;
-    margin-bottom:100px;
-}
-.paging a:hover{
+    font-size: 18px;
     font-weight:bold;
+    margin-top:50px;
+    margin-bottom: 200px;
 }
 .paging a{
-    padding:5px;
+    padding:10px;
+}
+.paging a:hover{
+    color:#FFAEC9;
 }

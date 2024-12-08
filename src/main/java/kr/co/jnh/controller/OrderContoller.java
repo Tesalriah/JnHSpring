@@ -83,23 +83,22 @@ public class OrderContoller {
             for(Order order : orderList){
                 if(order.getStatus().equals("삭제처리")){
                     m.addAttribute("msg", "삭제된 주문입니다.");
-                    m.addAttribute("url", "order-list?page=" + page);
+                    m.addAttribute("url", "list?page=" + page);
                     return "alert";
                 }
                 total += order.getProduct().getTotal();
             }
-            System.out.println("orderList = " + orderList);
             if(orderList.isEmpty()){
                 throw new Exception("WRONG_APPROACH");
             }
             m.addAttribute("orderList", orderList);
             m.addAttribute("total", total);
             m.addAttribute("page", page);
-            return "mypage/order/detail";
+            return "mypage/order-detail";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "잘못된 접근입니다.");
-            m.addAttribute("url","order-list?page=" + page);
+            m.addAttribute("url","list?page=" + page);
             return "alert";
         }
     }
@@ -121,10 +120,10 @@ public class OrderContoller {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "삭제에 실패했습니다.");
-            m.addAttribute("url", "order/list?page=" + page);
+            m.addAttribute("url", "list?page=" + page);
             return "alert";
         }
-        return "redirect:/mypage/order-list?page=" + page;
+        return "redirect:/mypage/order/list?page=" + page;
     }
 
 }

@@ -39,7 +39,7 @@ header{
     display:flex;
     justify-content:center;
 }
-.top_menu > li > a{
+.top_menu > li > a, #user_util > .submenu_nav > a{
     line-height: 60px;
     padding: 25px 25px;
     font-size:22px;
@@ -68,7 +68,7 @@ header{
     padding:10px 35px;
     font-family: 'Raleway', sans-serif;
 }
-.gender_on:hover .submenu_nav{
+.gender_on:hover .submenu_nav, #user_util:hover .user_menu{
     display: block;
     opacity: 1;
     pointer-events: auto;
@@ -82,8 +82,27 @@ header{
     display:flex;
     justify-content:flex-end;
     font-size:22px;
+    align-items: center;
 }
-.tools a{
+#user_util > a{
+    line-height: 60px;
+}
+.user_menu{
+    position:absolute;
+    opacity: 0;
+    transition:0.5s;
+    background-color:#fff;
+    box-shadow: 0 1px 24px 0 rgba(0, 0, 0, 0.09);
+    padding:18px 0px;
+    font-size:14px;
+    pointer-events: none;
+}
+.user_menu > li > a{
+    display:block;
+    padding:10px 20px;
+    font-family: 'Raleway', sans-serif;
+}
+.tools > div > a{
     margin:30px 0px 30px 20px;
     font-family: 'Raleway', sans-serif;
 }

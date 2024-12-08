@@ -57,10 +57,8 @@
                 </c:if>
             </div>
             <div classs="product_list">
+                <div class="product_line">
                 <c:forEach var="product" items="${list}" varStatus="status">
-                    <c:if test="${status.index % 3 == 0}">
-                        <div class="product_line">
-                    </c:if>
                         <div class="product">
                             <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
                                 <img src="<c:url value='/resources/img/upload/${product.product_id}/${product.image}'/>">
@@ -75,13 +73,12 @@
                                             {product.price}
                                         </c:if>
                                     </div>
+                                    <div><span class="heart"><i class="fa-solid fa-heart"></i>&nbsp;<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.wish_cnt}"/></span>&nbsp;<span class="star"><i class="fa-solid fa-star"></i>&nbsp;${product.rating}(0)</span></div>
                                 </div>
                             </a>
                         </div>
-                    <c:if test="${ status.index != 0 && (status.index- 2) % 3 == 0}">
-                        </div>
-                    </c:if>
                 </c:forEach>
+                </div>
             </div>
             <div class="paging">
                 <c:if test="${totalCnt != null && totalCnt != 0}">
