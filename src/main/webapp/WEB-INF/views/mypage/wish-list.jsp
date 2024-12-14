@@ -45,7 +45,7 @@
                                 <fmt:formatNumber type="number" maxFractionDigits="0" value="${wish.product.dis_price}"/>원
                             </div>
                             <div class="product_size">
-                                사이즈 <select name="product_size">
+                                사이즈 <select name="${wish.product_id}_size">
                                 <option value="" style="display: none;" selected>선택</option>
                                 <c:forEach items="${wish.size}" var="size">
                                     <option value="${size}">${size}</option>
@@ -53,8 +53,8 @@
                             </select>
                             </div>
                             <div class="list_button">
-                                <button type="submit" formaction="">장바구니에 담기</button><br><br>
-                                <button type="submit" formaction="<c:url value="/mypage/wish/remove"/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}">삭제</button>
+                                <button type="submit" formaction="<c:url value='/mypage/wish/add-cart'/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}    ">장바구니에 담기</button><br><br>
+                                <button type="submit" formaction="<c:url value='/mypage/wish/remove'/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}">삭제</button>
                             </div>
                         </li>
                     </c:forEach>

@@ -1,8 +1,10 @@
 package kr.co.jnh.controller;
 
+import kr.co.jnh.domain.Cart;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.Wish;
+import kr.co.jnh.service.CartService;
 import kr.co.jnh.service.WishService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ public class WishContorller {
 
     @Autowired
     WishService wishService;
+    @Autowired
+    CartService cartService;
 
     @GetMapping("list")
     public String list(SearchCondition sc, HttpServletRequest request, Model m){
@@ -67,16 +71,7 @@ public class WishContorller {
     }
 
     @PostMapping("remove-all")
-    public String removeAll(@RequestParam(required = false) String check_box,@RequestParam(required = false) String product_id, HttpServletRequest request, Model m){
-        if(check_box == null){
-            m.addAttribute("msg","선택된 상품이 없습니다.");
-            m.addAttribute("url", "list");
-            return "alert";
-        }if(product_id == null){
-            m.addAttribute("msg","상품이 없습니다.");
-            m.addAttribute("url", "list");
-            return "alert";
-        }
+    public String removeAll(@RequestParam(required = false) String check_box,@RequestParam(required = false) String product_id, SearchCondition sc, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
         String[] checkBox = check_box.split(",");
         String[] productId = product_id.split(",");
@@ -85,9 +80,17 @@ public class WishContorller {
         wish.setUser_id(id);
 
         try {
+            if(check_box == null){
+                m.addAttribute("msg","선택된 상품이 없습니다.");
+                throw new Exception("WISH_PRODUCT_NOT_SELETED");
+            }if(product_id == null){
+                m.addAttribute("msg","상품이 없습니다.");
+                throw new Exception("WISH_PRODUCT_NULL");
+            }
             for (int i = 0; i < checkBox.length; i++) {
                 wish.setProduct_id(productId[Integer.parseInt(checkBox[i])]);
                 if(wishService.remove(wish) < 1){
+                    m.addAttribute("msg", "삭제에 실패했습니다.");
                     throw new Exception("WISH_REMOVE-ALL_FAIL");
                 }
             }
@@ -95,8 +98,7 @@ public class WishContorller {
             m.addAttribute("url", "list");
         }catch (Exception e){
             e.printStackTrace();
-            m.addAttribute("msg", "삭제에 실패했습니다.");
-            m.addAttribute("url", "list");
+            m.addAttribute("url", "list?page=" + sc.getPage() + "&pageSize=" + sc.getPageSize());
         }
         return "alert";
     }
@@ -154,5 +156,40 @@ public class WishContorller {
             map.put("msg", "삭제에 실패했습니다.");
         }
         return map;
+    }
+
+    @PostMapping("add-cart")
+    public String addCart(SearchCondition sc, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+        String product_id = request.getParameter("product_id");
+        String size = request.getParameter(product_id + "_size");
+        System.out.println("product_id = " + product_id);
+        Map map = new HashMap();
+        map.put("user_id", id);
+        map.put("product_id", product_id);
+        map.put("size", size);
+
+        Cart cart = new Cart();
+        cart.setUser_id(id);
+        cart.setProduct_id(product_id);
+        cart.setSize(size);
+        cart.setQuantity(1);
+        try{
+            if(size == null || size.equals("")){
+                m.addAttribute("msg", "사이즈를 선택해주세요.");
+                throw new Exception("WISH_SIZE_NOT_SELETED");
+            }if(cartService.checkCart(map) != null){
+                m.addAttribute("msg", "이미 등록된 상품입니다.");
+                throw new Exception("ALREADY_ADDED");
+            }if(cartService.addCart(cart) < 1){
+                m.addAttribute("msg", "장바구니 추가에 실패했습니다.");
+                throw new Exception("WISH_ADD-CART_FAIL");
+            }
+            m.addAttribute("msg", "상품을 장바구니에 추가하였습니다.");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        m.addAttribute("url", "list?page=" + sc.getPage() + "&pageSize=" + sc.getPageSize());
+        return "alert";
     }
 }

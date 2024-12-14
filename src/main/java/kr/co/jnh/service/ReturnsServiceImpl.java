@@ -92,7 +92,6 @@ public class ReturnsServiceImpl implements ReturnsService {
             map.put("id", returns.getUser_id());
             map.put("product_id", returns.getProduct_id());
             map.put("size", returns.getSize());
-            System.out.println("map = " + map);
             if(orderDao.returnUpdate(map) == 0){
                 throw new Exception("ORDER_STATUS_UPDATE_FAIL");
             }

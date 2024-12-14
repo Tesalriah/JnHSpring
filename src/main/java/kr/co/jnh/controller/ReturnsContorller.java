@@ -102,8 +102,7 @@ public class ReturnsContorller {
     public String returns(Returns returns, @RequestParam String quan, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
         returns.setUser_id(id);
-        System.out.println("returns.getProduct_id() = " + returns.getProduct_id());
-        String type = "";
+        String type = ""; // 교환인지 반품인지 타입 분류
         if(returns.getType().equals("exchange")){
             type = "교환";
         }if(returns.getType().equals("return")){
@@ -111,7 +110,13 @@ public class ReturnsContorller {
         }
         String[] productIdArr = returns.getProduct_id().split(",");
         String[] sizeArr = returns.getSize().split(",");
+        if(returns.getC_size() == null && type.equals("반품")){
+            returns.setC_size("");
+        }
         String[] cSizeArr = returns.getC_size().split(",");
+        if(quan == null && type.equals("반품")){
+            quan = "";
+        }
         String[] quanArr = quan.split(",");
         String address2 = request.getParameter("address2");
         // 상세주소를 입력했을 시 추가
@@ -160,11 +165,11 @@ public class ReturnsContorller {
                 throw new Exception("RETURN_FAIL");
             }
             request.setAttribute("msg", type + "신청 완료");
-            request.setAttribute("url", "return-list");
+            request.setAttribute("url", "return/list");
         }catch(Exception e){
             e.printStackTrace();
             request.setAttribute("msg", type + "에 실패했습니다.");
-            request.setAttribute("url", "order-list");
+            request.setAttribute("url", "order/list");
         }
         return "alert";
     }

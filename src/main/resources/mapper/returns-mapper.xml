@@ -42,7 +42,7 @@
     </select>
 
     <select id="selectPageCnt" parameterType="String" resultType="int">
-        SELECT count(*) FROM returns
+        SELECT count(distinct return_id) FROM returns
         WHERE user_id = #{id}
         ORDER BY return_id desc
     </select>
