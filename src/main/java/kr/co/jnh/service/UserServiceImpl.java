@@ -72,15 +72,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int changeAddress(String id, String address) throws Exception{
+        User user = new User();
+        user.setUser_id(id);
+        user.setAddress(address);
+        return userDao.update(user);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int changePwd(String id, String pwd) throws Exception{
         User user = userDao.selectUserById(id);
         user.setUser_pwd(pwd);
-        Map map = new HashMap();
-        map.put("id", user.getUser_id());
-        map.put("pwd", user.getUser_pwd());
+        User change = new User();
+        change.setUser_id(id);
+        change.setUser_pwd(pwd);
         emailAuthDao.deleteAuth(user.getEmail());
-        return userDao.updatePwd(map);
+        return userDao.update(change);
     }
 
     @Override
@@ -102,13 +110,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception{
        String auth_num = emailAuthDao.selectAuthNum(mailAuthDto.getEmail());
-       Map map =new HashMap();
+       User user = new User();
        if(mailAuthDto.getAuth_number().equals(auth_num)){
-           map.put("id", id);
-           map.put("status", "0");
+           user.setUser_id(id);
+           user.setStatus(0);
        }
        emailAuthDao.deleteAuth(mailAuthDto.getEmail());
-        return userDao.updateStatus(map);
+        return userDao.update(user);
     }
 
     @Override
@@ -124,9 +132,19 @@ public class UserServiceImpl implements UserService {
         return user == null ? "" : user.getUser_id();
     }
 
+    @Override
     public User getUser(String id) throws Exception{
         User user = userDao.selectUserById(id);
         user.setUser_pwd("");
         return user;
+    }
+
+    @Override
+    public boolean loginCheck(Map map) throws Exception{
+        User user = userDao.selectUser(map);
+        if(user == null){
+            return false; // user정보를 가져오질 못할시 false
+        }
+        return true; // 아이디 비밀번호 일치할시 true 반환
     }
 }

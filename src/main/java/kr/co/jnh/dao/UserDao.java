@@ -13,7 +13,6 @@ public interface UserDao {
 
     int insert(User user) throws Exception;
 
-    int updatePwd(Map map) throws Exception;
+    int update(User user) throws Exception;
 
-    int updateStatus(Map map) throws Exception;
 }

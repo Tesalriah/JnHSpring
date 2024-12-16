@@ -36,21 +36,20 @@
     border:1px solid #999999;
     padding:5px;
 }
-input[name='user_address']{
+input[name='address'], input[name='address2']{
     border:1px solid #999999;
     font-size: 18px;
     padding:5px;
     width: 70%;
-    color: #cccccc;
 }
-#change_address{
+#change_address, #change_address2{
     font-size: 18px;
     padding:6px 10px;
     margin-left:5px;
     background-color: #FFAEC9;
     color: #ffffff;
 }
-#change_address:hover{
+#change_address:hover, #change_address2:hover{
     cursor: pointer;
 }
 .right{

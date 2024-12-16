@@ -32,19 +32,11 @@
 
     <update id="update" parameterType="Map">
         UPDATE user_info
-        SET user_pwd = #{pwd}, address =  #{address}
-        WHERE user_id = #{id}
-    </update>
-
-    <update id="updatePwd" parameterType="Map">
-        UPDATE user_info
-        SET user_pwd = #{pwd}
-        WHERE user_id = #{id}
-    </update>
-
-    <update id="updateStatus" parameterType="Map">
-        UPDATE  user_info
-        SET status = #{status}
-        WHERE user_id = #{id}
+        <set>
+            <if test="user_pwd != null">user_pwd = #{user_pwd}</if>
+            <if test="address != null">address = #{address}</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        WHERE user_id = #{user_id}
     </update>
 </mapper>

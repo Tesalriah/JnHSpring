@@ -9,13 +9,13 @@
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <link rel="stylesheet" href="<c:url value="/resources/css/edit-user.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/css/user-info.css"/>">
     <main>
         <div class="container">
             <div class="contents">
                 <h2>회원 정보 확인</h2>
                 <div class="ex">개인정보 보호를 위해 비밀번호를 다시 확인합니다.</div>
-                <form action="<c:url value=""/>" method="post">
+                <form action="<c:url value="/mypage/user/check-pwd"/>" method="post">
                     <table class="user_info">
                         <tr>
                             <td>아이디</td>

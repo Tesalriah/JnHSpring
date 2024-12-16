@@ -23,6 +23,8 @@ public interface UserService {
 
     boolean checkBirth(String id, Date birth) throws Exception;
 
+    int changeAddress(String id, String address) throws Exception;
+
     int changePwd(String id, String pwd) throws Exception;
 
     boolean idDupl(String id) throws Exception;
@@ -34,4 +36,6 @@ public interface UserService {
     String emailAuth(MailAuthDto mailAuthDto) throws Exception;
 
     User getUser(String id) throws Exception;
+
+    boolean loginCheck(Map map) throws Exception;
 }
