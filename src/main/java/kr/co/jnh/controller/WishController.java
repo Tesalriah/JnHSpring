@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.modelmbean.XMLParseException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/mypage/wish")
-public class WishContorller {
+public class WishController {
 
     @Autowired
     WishService wishService;
@@ -29,7 +28,7 @@ public class WishContorller {
 
     @GetMapping("list")
     public String list(SearchCondition sc, HttpServletRequest request, Model m){
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         String id = SessionIdUtil.getSessionId(request);
         map.put("id", id);
         map.put("sc", sc);
@@ -87,8 +86,8 @@ public class WishContorller {
                 m.addAttribute("msg","상품이 없습니다.");
                 throw new Exception("WISH_PRODUCT_NULL");
             }
-            for (int i = 0; i < checkBox.length; i++) {
-                wish.setProduct_id(productId[Integer.parseInt(checkBox[i])]);
+            for (String box : checkBox) {
+                wish.setProduct_id(productId[Integer.parseInt(box)]);
                 if(wishService.remove(wish) < 1){
                     m.addAttribute("msg", "삭제에 실패했습니다.");
                     throw new Exception("WISH_REMOVE-ALL_FAIL");
@@ -164,7 +163,7 @@ public class WishContorller {
         String product_id = request.getParameter("product_id");
         String size = request.getParameter(product_id + "_size");
         System.out.println("product_id = " + product_id);
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("user_id", id);
         map.put("product_id", product_id);
         map.put("size", size);

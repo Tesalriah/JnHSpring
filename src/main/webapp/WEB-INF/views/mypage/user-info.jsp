@@ -58,14 +58,25 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="right">회원탈퇴를 원하시면 우측의 회원탈퇴 버튼을 눌러주세요<button id="withdrawal" type="button">회원탈퇴</button></div>
+                    <div class="right">회원탈퇴를 원하시면 우측의 회원탈퇴 버튼을 눌러주세요<button id="withdrawal" type="submit" formaction="<c:url value="/mypage/user/del-account"/>">회원탈퇴</button></div>
                     <div class="edit_button">
-                        <button type="submit">수정</button>
+                        <button type="submit" formaction="<c:url value="/mypage/user/change-pwd"/>">수정</button>
                     </div>
                 </form>
             </div>
         </div>
     </main>
     <%@ include file="../footer.jsp" %>
+    <script>
+        const withdrawal = document.getElementById('withdrawal');
+
+        withdrawal.addEventListener("click", function(e){
+            const isConfirmed = confirm("정말로 탈퇴하시겠습니까?");
+
+            if(!isConfirmed){
+                e.preventDefault();
+            }
+        })
+    </script>
 </body>
 </html>

@@ -25,6 +25,10 @@ public interface UserService {
 
     int changeAddress(String id, String address) throws Exception;
 
+    int changePassword(String id, String pwd) throws Exception;
+
+    int changeStatus(String id, int status) throws Exception;
+
     int changePwd(String id, String pwd) throws Exception;
 
     boolean idDupl(String id) throws Exception;

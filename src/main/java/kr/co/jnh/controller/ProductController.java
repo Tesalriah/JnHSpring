@@ -90,6 +90,11 @@ public class ProductController {
                 throw new Exception("SIZE_IS_REQUIRED");
             }
             Product product = productService.getProduct(product_id); // 해당 상품정보 가져오기
+            if(product == null){
+                m.addAttribute("msg", "상품을 읽어오는데 실패했습니다.");
+                m.addAttribute("url", "/product" + sc.getQueryString());
+                throw new Exception("BRING_PRODUCT_FAIL");
+            }
             product.setQuantity(quantity); // 가격 계산을위해 갯수 지정
             product.setSize(size); // 구매하는 사이즈
             User user = userService.getUser(id); // 배송지 정보를 받기위해 유저정보 가져오기
@@ -102,8 +107,6 @@ public class ProductController {
             return "product/payment";
         } catch (Exception e) {
             e.printStackTrace();
-            m.addAttribute("msg", "상품을 읽어오는데 실패했습니다.");
-            m.addAttribute("url", "/product" + sc.getQueryString());
             return "alert";
         }
     }

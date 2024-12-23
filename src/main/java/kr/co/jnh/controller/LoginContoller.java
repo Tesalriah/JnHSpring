@@ -5,6 +5,7 @@ import kr.co.jnh.domain.MailDto;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
+import kr.co.jnh.util.CacheControlUtil;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -223,7 +224,9 @@ public class LoginContoller {
 
     // 로그인 페이지 요청
     @GetMapping("/login")
-    public String loginForm(HttpServletRequest request, Model m) {
+    public String loginForm(HttpServletRequest request, HttpServletResponse response) {
+        CacheControlUtil.setNoCacheHeaders(response);
+
         String id = SessionIdUtil.getSessionId(request);
         if(id == null){ // 로그인하지 않았을때만 보여주기
             // 이전페이지가 없을 시 받아서 파라미터로 넘겨주기

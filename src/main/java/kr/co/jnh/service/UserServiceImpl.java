@@ -80,6 +80,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int changePassword(String id, String pwd) throws Exception{
+        User user = new User();
+        user.setUser_id(id);
+        user.setUser_pwd(pwd);
+        return userDao.update(user);
+    }
+
+    @Override
+    public int changeStatus(String id, int status) throws Exception{
+        User user = new User();
+        user.setUser_id(id);
+        user.setStatus(status);
+        return userDao.update(user);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int changePwd(String id, String pwd) throws Exception{
         User user = userDao.selectUserById(id);
