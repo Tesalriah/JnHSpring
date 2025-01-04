@@ -53,7 +53,7 @@
                             </select>
                             </div>
                             <div class="list_button">
-                                <button type="submit" formaction="<c:url value='/mypage/wish/add-cart'/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}    ">장바구니에 담기</button><br><br>
+                                <button type="submit" formaction="<c:url value='/mypage/wish/add-cart'/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}">장바구니에 담기</button><br><br>
                                 <button type="submit" formaction="<c:url value='/mypage/wish/remove'/>?product_id=${wish.product_id}&page=${ph.sc.page}&pageSize=${ph.sc.pageSize}">삭제</button>
                             </div>
                         </li>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.ReviewMapper">
+    <select id="selectAll" resultType="Review">
+        SELECT * FROM review
+        ORDER BY report_cnt desc
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="Review">
+        SELECT * FROM review
+        WHERE image = #{image};
+    </select>
+
+    <insert id="insert" parameterType="Review">
+        INSERT INTO review
+            (order_no, user_id, product_id)
+        VALUE
+            (#{order_no}, #{user_id}, #{product_id})
+    </insert>
+
+    <update id="update" parameterType="Review">
+        UPDATE INTO
+        SET contents = #{contents}
+        , rating = #{reting}
+        , up_date = #{up_date}
+        , whether = #{whether}
+        WHERE image = #{image}
+    </update>
+
+    <update id="delete" parameterType="int">
+        UPDATE INTO WHERE
+        SET whether = #{whether}
+        WHERE image = #{image}
+    </update>
+    
+    <select id="selectPageCnt" parameterType="Map" resultType="int">
+        SELECT count(*) FROM review
+        WHERE user_id = #{id} AND whether = #{whether}
+    </select>
+
+    <select id="selectPage" parameterType="Map" resultType="Review">
+        SELECT * FROM review
+        WHERE user_id = #{id} AND whether = #{whether}
+        ORDER BY reg_date desc, image desc
+        LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+</mapper>

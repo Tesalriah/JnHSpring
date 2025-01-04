@@ -3,9 +3,11 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
+import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.Cart;
 import kr.co.jnh.domain.Order;
 import kr.co.jnh.domain.Product;
+import kr.co.jnh.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     ProductDao productDao;
+
+    @Autowired
+    ReviewDao reviewDao;
 
 
     @Override
@@ -91,6 +96,10 @@ public class OrderServiceImpl implements OrderService {
                 if(cartDao.delete(map) != 1){
                     throw new Exception("CART_DELETE_FAIL");
                 }
+            }
+            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id());
+            if(reviewDao.insert(review) != 1){
+                throw new Exception("REVIEW_REG_ERROR");
             }
         }
         return result;

@@ -12,6 +12,7 @@
         <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
         <typeAlias alias="Returns" type="kr.co.jnh.domain.Returns"/>
         <typeAlias alias="Wish" type="kr.co.jnh.domain.Wish"/>
+        <typeAlias alias="Review" type="kr.co.jnh.domain.Review"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
     </typeAliases>
 </configuration>

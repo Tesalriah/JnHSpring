@@ -32,6 +32,7 @@
     <select id="selectPage" parameterType="Map" resultType="Wish">
         SELECT * FROM wish
         WHERE user_id = #{id}
+        ORDER BY no desc
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 </mapper>

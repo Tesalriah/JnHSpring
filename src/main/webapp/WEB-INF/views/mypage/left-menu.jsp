@@ -2,7 +2,7 @@
 <div class="left_menu">
     <div><a ${currentUrl == "/order" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/order/list"/>">주문목록</a></div>
     <div><a ${currentUrl == "/return" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/return/list"/>">취소/반품/교환</a></div>
-    <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/wish/list"/>">찜리스트</a></div>
+    <div><a ${currentUrl == "/review" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/wish/list"/>">찜리스트</a></div>
     <br>
     <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/user"/> ">개인정보 확인/수정</a></div>
     <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="">신고내역확인</a></div>

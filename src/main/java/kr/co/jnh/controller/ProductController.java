@@ -284,7 +284,7 @@ public class ProductController {
                 throw new Exception("BUY_FAIL");
             }
             request.setAttribute("msg", "주문완료");
-            request.setAttribute("url", "mypage/order-list");
+            request.setAttribute("url", "mypage/order/list");
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("msg", "주문에 실패했습니다.");
