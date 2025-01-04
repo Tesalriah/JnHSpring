@@ -25,9 +25,9 @@
 
     <insert id="insert" parameterType="NoticeDto">
         INSERT INTO notice
-            (id, must_read, category, title, contents)
+            (user_id, must_read, category, title, contents)
         VALUES
-            (#{id} ,#{must_read}, #{category}, #{title}, #{contents})
+            (#{user_id} ,#{must_read}, #{category}, #{title}, #{contents})
     </insert>
 
     <select id="selectAll" resultType="NoticeDto">
@@ -36,7 +36,7 @@
     </select>
 
     <sql id="selectFromNotice">
-        SELECT bno, id, must_read, category, title, contents, reg_date, up_date,row_number() over (order by bno) as number
+        SELECT bno, user_id, must_read, category, title, contents, reg_date, up_date,row_number() over (order by bno) as number
         FROM notice
     </sql>
 

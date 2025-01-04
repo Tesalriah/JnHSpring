@@ -161,4 +161,12 @@ public class MyPageContoller {
         }
         return "product/payment";
     }
+
+    @GetMapping("askingList")
+    public String askingList(){
+       /* int bno = askingService.getLastBno(); //3
+        bno = bno++;
+        asking.setBno(bno);*/
+        return "myPage/askingList";
+    }
 }
