@@ -66,7 +66,7 @@
                         <h2>전체글</h2>
                         <div class="post_list">
                             <c:forEach items="${list}" var="dto">
-                                <div class="post_each" ${dto.bno == noticeDto.bno ? "style='background-color:#f5f5f5;'" : ""}}>
+                                <div class="post_each" ${dto.bno == noticeDto.bno ? "style='background-color:#f5f5f5;'" : ""}>
                                     <div>
                                         <span>${dto.bno}</span>
                                             <a href="<c:url value="/notice/read"/>${sc.optionQueryString}&bno=${dto.bno}">

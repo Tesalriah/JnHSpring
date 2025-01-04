@@ -9,6 +9,6 @@
     <br>
     <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="">리뷰관리</a></div>
     <br>
-    <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="">문의하기</a></div>
-    <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="">문의내역확인</a></div>
+    <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/asking/write"/>">문의하기</a></div>
+    <div><a ${currentUrl == "/" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/asking/list"/>">문의내역확인</a></div>
 </div>

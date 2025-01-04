@@ -10,6 +10,7 @@
         <typeAlias alias="NoticeDto" type="kr.co.jnh.domain.NoticeDto"/>
         <typeAlias alias="Cart" type="kr.co.jnh.domain.Cart"/>
         <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
+        <typeAlias alias="AskingDto" type="kr.co.jnh.domain.AskingDto"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
     </typeAliases>
 </configuration>

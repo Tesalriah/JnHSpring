@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.AskingMapper">
+    <select id="count" resultType="int">
+        SELECT count(*) FROM asking
+    </select>
+
+    <select id="idCount" resultType="int" parameterType="String">
+        SELECT count(*) FROM asking
+        where user_id = #{user_id} AND cno=1
+    </select>
+
+    <select id="lastBno" resultType="int">
+        select no from asking order by no desc LIMIT 1;
+    </select>
+
+    <insert id="insert" parameterType="AskingDto">
+        INSERT INTO asking
+            (no, cno, user_id, title, contents, state)
+        VALUES
+            (#{no}, #{cno}, #{user_id}, #{title}, #{contents}, #{state})
+    </insert>
+
+    <sql id="selectFromAsking">
+        SELECT * FROM asking
+    </sql>
+
+    <select id="selectAll" resultType="AskingDto">
+        <include refid="selectFromAsking"/>
+        ORDER BY state asc, no desc
+    </select>
+
+
+    <select id="selectId" resultType="AskingDto" parameterType="Map">
+        <include refid="selectFromAsking"/>
+        WHERE user_id = #{id} AND cno=1
+        ORDER BY state asc, no desc
+        LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+
+    <select id="select" parameterType="int" resultType="AskingDto">
+        <include refid="selectFromAsking"/>
+        WHERE no = #{no}
+        ORDER BY cno asc
+    </select>
+
+    <update id="update" parameterType="AskingDto">
+        update asking
+        set   title = #{title}
+            , contents = #{contents}
+        where no = #{no}
+    </update>
+
+    <update id="updateState" parameterType="AskingDto">
+        update asking
+        set   state = #{state}
+        where no = #{no} AND state = 0
+    </update>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM asking
+        WHERE no = #{no} AND user_id = #{user_id}
+    </delete>
+
+    <select id="prevNext" parameterType="map" resultType="map">
+        select * from(
+             select
+                 LEAD(no,2) over (order by no) as arr0,
+                 LEAD(no,1) over (order by no) as arr1,
+                 no as arr2,
+                 LAG(no,1) over (order by no) as arr3,
+                 LAG(no,2) over (order by no) as arr4
+             from asking where user_id=#{user_id} group by no
+             order by no desc)abc
+        where arr2=#{no};
+    </select>
+
+</mapper>

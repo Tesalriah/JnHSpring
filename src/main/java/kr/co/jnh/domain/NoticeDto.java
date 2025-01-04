@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class NoticeDto {
     private Integer bno;
-    private String id;
+    private String user_id;
     private Integer must_read;
     private String category;
     private String title;
@@ -20,9 +20,9 @@ public class NoticeDto {
     private Integer number;
 
 
-    public NoticeDto(Integer bno, String id, Integer must_read, String category, String title, String contents) {
+    public NoticeDto(Integer bno, String user_id, Integer must_read, String category, String title, String contents) {
         this.bno = bno;
-        this.id = id;
+        this.user_id = user_id;
         this.must_read = must_read;
         this.category = category;
         this.title = title;
