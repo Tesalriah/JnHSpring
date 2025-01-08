@@ -52,16 +52,21 @@
                 </div>
                 <c:if test="${grade == 0}">
                     <div>
-                        <a href="<c:url value="/add-product"/> " id="addProduct">상품추가</a>
+                        <a href="<c:url value="/product-add"/> " id="addProduct">상품추가</a>
                     </div>
                 </c:if>
             </div>
             <div classs="product_list">
+                <c:if test="${empty list}">
+                    <div id="empty_list">
+                        해당하는 상품이 없습니다.
+                    </div>
+                </c:if>
                 <div class="product_line">
                 <c:forEach var="product" items="${list}" varStatus="status">
                         <div class="product">
                             <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
-                                <img src="<c:url value='/resources/img/upload/${product.product_id}/${product.image}'/>">
+                                <img src="<c:url value='/resources/img/upload/product-img/${product.product_id}/${product.image}'/>">
                                 <div class="detail">
                                     <div>${product.product_name}</div>
                                     <div>

@@ -38,7 +38,7 @@
             <!-- 상품정보 -->
             <div class="product_info">
                 <div class="product_img">
-                    <img src="<c:url value="/resources/img/upload/${product.product_id}/${product.image}"/>">
+                    <img src="<c:url value="/resources/img/upload/product-img/${product.product_id}/${product.image}"/>">
                 </div>
                 <div class="info" style="width:45%;">
                     <form action="" method="post">

@@ -15,6 +15,8 @@ public class Order {
     private String product_id;
     private String size;
     private Integer quantity;
+
+    private String color;
     private String status;
     private Date order_date;
 
@@ -124,6 +126,14 @@ public class Order {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getStatus() {

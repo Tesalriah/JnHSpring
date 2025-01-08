@@ -27,7 +27,7 @@
                     <h2>주문목록</h2>
                     <div class="order_list">
                         <c:if test="${empty orderList}">
-                            <div class="empty_list">
+                            <div id="empty_list">
                                 주문하신 내역이 없습니다.
                             </div>
                         </c:if>
@@ -39,7 +39,7 @@
                                         <form action="" method="post">
                                             <div class="order_img">
                                                 <c:forEach var="order" items="${orderList}">
-                                                    <img src="<c:url value="/resources/img/upload/${order.product.product_id}/${order.product.image}"/>">
+                                                    <img src="<c:url value="/resources/img/upload/product-img/${order.product.product_id}/${order.product.image}"/>">
                                                 </c:forEach>
                                             </div>
                                             <input type="hidden" name="order_no" value="${orderList[0].order_no}">

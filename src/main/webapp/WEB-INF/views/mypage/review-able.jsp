@@ -29,11 +29,16 @@
                         <div><a href="wroteReviews.html">작성한 리뷰</a></div>
                     </div>
                     <div class="able_list">
+                        <c:if test="${empty list}">
+                            <div id="empty_list">
+                                작성 가능한 구매후기가 없습니다.
+                            </div>
+                        </c:if>
                         <c:forEach items="${list}" var="list">
                             <div class="able">
                                 <div><img src='<c:url value="/resources/img/upload/${list.product_id}/${list.order.product.image}"/>'></div>
                                 <div>
-                                    <div>${list.order.product.product_name}</div>
+                                    <div>${list.order.product.product_name} / ${list.order.color} / ${list.order.size} / ${list.order.quantity}개</div>
                                     <div>구매일자 : <fmt:formatDate value="${list.order.order_date}" pattern="yyyy/MM/dd"/></div>
                                 </div>
                                 <div>
@@ -42,61 +47,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-                        <div class="able">
-                            <div><img src='<c:url value="/resources/img/women.jpg"/>'></div>
-                            <div>
-                                <div>상품명</div>
-                                <div>구매일자 : 2024/01/01</div>
-                            </div>
-                            <div>
-                                <div><button type="button">리뷰작성하기</button></div>
-                                <div><a href="">삭제하기</a></div>
-                            </div>
-                        </div>
-                        <div class="able">
-                            <div><img src='<c:url value="/resources/img/best.jpg"/>'></div>
-                            <div>
-                                <div>상품명</div>
-                                <div>구매일자 : 2024/01/01</div>
-                            </div>
-                            <div>
-                                <div><button type="button">리뷰작성하기</button></div>
-                                <div><a href="">삭제하기</a></div>
-                            </div>
-                        </div>
-                        <div class="able">
-                            <div><img src='<c:url value="/resources/img/weekly.jpg"/>'></div>
-                            <div>
-                                <div>상품명</div>
-                                <div>구매일자 : 2024/01/01</div>
-                            </div>
-                            <div>
-                                <div><button type="button">리뷰작성하기</button></div>
-                                <div><a href="">삭제하기</a></div>
-                            </div>
-                        </div>
-                        <div class="able">
-                            <div><img src='<c:url value="/resources/img/men.jpg"/>'></div>
-                            <div>
-                                <div>상품명</div>
-                                <div>구매일자 : 2024/01/01</div>
-                            </div>
-                            <div>
-                                <div><button type="button">리뷰작성하기</button></div>
-                                <div><a href="">삭제하기</a></div>
-                            </div>
-                        </div>
-                        <div class="able">
-                            <div><img src='<c:url value="/resources/img/women.jpg"/>'></div>
-                            <div>
-                                <div>상품명</div>
-                                <div>구매일자 : 2024/01/01</div>
-                            </div>
-                            <div>
-                                <div><button type="button">리뷰작성하기</button></div>
-                                <div><a href="">삭제하기</a></div>
-                            </div>
-                        </div>
                     </div>
                     <div class="paging">
                         <c:if test="${totalCnt != null && totalCnt != 0}">

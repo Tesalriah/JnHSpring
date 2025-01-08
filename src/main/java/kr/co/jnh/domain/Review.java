@@ -3,6 +3,8 @@ package kr.co.jnh.domain;
 import java.util.Date;
 
 public class Review {
+
+    private int rno;
     private String order_no;
     private String user_id;
     private String product_id;
@@ -10,7 +12,7 @@ public class Review {
     private float reting;
     private Date reg_date;
     private Date up_date;
-    private int image;
+    private String image;
     private int whether;
     private int report_cnt;
     private Order order;
@@ -26,17 +28,26 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" +
-                "order_no='" + order_no + '\'' +
+                "rno=" + rno +
+                ", order_no='" + order_no + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", product_id='" + product_id + '\'' +
                 ", Contents='" + Contents + '\'' +
                 ", reting=" + reting +
                 ", reg_date=" + reg_date +
                 ", up_date=" + up_date +
-                ", image=" + image +
+                ", image='" + image + '\'' +
                 ", whether=" + whether +
                 ", report_cnt=" + report_cnt +
                 '}';
+    }
+
+    public int getRno() {
+        return rno;
+    }
+
+    public void setRno(int rno) {
+        this.rno = rno;
     }
 
     public String getOrder_no() {
@@ -87,11 +98,11 @@ public class Review {
         this.up_date = up_date;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

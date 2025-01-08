@@ -25,6 +25,11 @@
                 <div class="contents">
                     <h2>취소/반품/교환 내역</h2>
                     <div class="return_list">
+                        <c:if test="${empty returnsList}">
+                            <div id="empty_list">
+                                신청하신 내역이 없습니다.
+                            </div>
+                        </c:if>
                         <c:forEach var="list" items="${returnsList}">
                             <div class="return_top">
                                 <div><c:choose><c:when test="${list[0].type eq 'return'}">반품</c:when><c:when test="${list[0].type eq 'exchange'}">교환</c:when><c:otherwise>취소</c:otherwise></c:choose>접수일 : <fmt:formatDate value="${list[0].return_date}" pattern="yyyy/MM/dd"/></div>

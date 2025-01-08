@@ -10,7 +10,7 @@
 
     <select id="selectOne" parameterType="int" resultType="Review">
         SELECT * FROM review
-        WHERE image = #{image};
+        WHERE rno = #{rno};
     </select>
 
     <insert id="insert" parameterType="Review">
@@ -26,13 +26,14 @@
         , rating = #{reting}
         , up_date = #{up_date}
         , whether = #{whether}
-        WHERE image = #{image}
+        , image = #{image}
+        WHERE rno = #{rno}
     </update>
 
     <update id="delete" parameterType="int">
         UPDATE INTO WHERE
         SET whether = #{whether}
-        WHERE image = #{image}
+        WHERE rno = #{rno}
     </update>
     
     <select id="selectPageCnt" parameterType="Map" resultType="int">
@@ -43,7 +44,7 @@
     <select id="selectPage" parameterType="Map" resultType="Review">
         SELECT * FROM review
         WHERE user_id = #{id} AND whether = #{whether}
-        ORDER BY reg_date desc, image desc
+        ORDER BY reg_date desc, rno desc
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 </mapper>

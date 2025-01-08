@@ -28,8 +28,8 @@
 
     <insert id="insert" parameterType="Order">
         INSERT INTO order_status
-        (user_id, name, address, phone, del_request, order_no, product_id, size, quantity)
-        VALUES (#{user_id}, #{name}, #{address}, #{phone}, #{del_request}, #{order_no}, #{product_id}, #{size}, #{quantity})
+        (user_id, name, address, phone, del_request, order_no, product_id, size, quantity, color)
+        VALUES (#{user_id}, #{name}, #{address}, #{phone}, #{del_request}, #{order_no}, #{product_id}, #{size}, #{quantity}, #{color})
     </insert>
 
     <delete id="delete" parameterType="Order">

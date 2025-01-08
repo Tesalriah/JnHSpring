@@ -49,6 +49,13 @@ input[type="submit"]{
     border-radius: 2px;
     padding:5px 10px;
 }
+#empty_list{
+    text-align: center;
+    width: 100%;
+    padding: 67px 0;
+    font-weight:bold;
+    font-size: 18px;
+}
 .wish_list li{
     display:flex;
     padding:10px 5px;

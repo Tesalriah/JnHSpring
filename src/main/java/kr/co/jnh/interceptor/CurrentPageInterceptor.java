@@ -11,18 +11,17 @@ public class CurrentPageInterceptor implements HandlerInterceptor{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         // 현재 요청 URI를 추출
         String currentUrl = request.getRequestURI();
+        String current = "";
 
-        // "myPage"에만 적용
-        if (currentUrl.contains("/mypage")) {
-            if(currentUrl.contains("/order")){
-                currentUrl = "/order";
-            }if(currentUrl.contains("/return")){
-                currentUrl = "/return";
-            }else{
-                currentUrl = currentUrl.replace("/jnh/mypage", "");
-            }
-            request.setAttribute("currentUrl", currentUrl); // request에 현재 URL 저장
+        if(currentUrl.contains("/order")){
+            current = "order";
+        }if(currentUrl.contains("/return")){
+            current = "return";
+        }if(currentUrl.contains("/review")) {
+            current = "review";
         }
+
+        request.setAttribute("current", current); // request에 현재 요청 타입 저장
 
         return true;
     }

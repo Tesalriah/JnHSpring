@@ -32,7 +32,7 @@
                                     <c:forEach items="${orderList}" var="order" varStatus="status">
                                         <div class="return_product">
                                             <div><input type="checkbox" name="check_box" value="${status.index}"></div>
-                                            <div><img src="<c:url value="/resources/img/upload/${order.product.product_id}/${order.product.image}"/>"></div>
+                                            <div><img src="<c:url value="/resources/img/upload/product-img/${order.product.product_id}/${order.product.image}"/>"></div>
                                             <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank`">${order.product.product_name} / ${order.product.color} / ${order.size} / ${order.quantity}개</a></div>
                                         </div>
                                     </c:forEach>

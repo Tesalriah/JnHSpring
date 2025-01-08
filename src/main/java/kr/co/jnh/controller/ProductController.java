@@ -16,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -137,9 +135,9 @@ public class ProductController {
     }
 
     // 상품 추가 페이지 이동 (인터셉터로 관리자 확인)
-    @GetMapping("add-product")
+    @GetMapping("product-add")
     public String getAddProduct(){
-        return "product/add-product";
+        return "product/product-add";
     }
 
     // 상품 추가
@@ -153,7 +151,7 @@ public class ProductController {
             m.addAttribute("price", product.getPrice());
             m.addAttribute("discount", product.getDiscount());
             m.addAttribute("color", product.getColor());
-            return "product/add-product";
+            return "product/product-add";
         }
         int result = -1;
         // 사이즈, 갯수가 여러개일 경우 각각의 배열에 저장
@@ -181,7 +179,7 @@ public class ProductController {
             product.setState("판매");
 
             // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
-            String savePath = request.getServletContext().getRealPath("resources/img/upload/");
+            String savePath = request.getServletContext().getRealPath("resources/img/upload/product-img/");
             savePath += product_id + "/";
             Path directory = Paths.get(savePath);
             Files.createDirectories(directory);
@@ -215,7 +213,7 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "상품 등록에 실패했습니다.");
-            return "product/add-product";
+            return "product/product-add";
         }
     }
 
@@ -228,7 +226,7 @@ public class ProductController {
         String[] product_id = order.getProduct_id().split(",");
         String[] size = order.getSize().split(",");
         String[] quan = quantity.split(",");
-        // 선택된 주문요청사항이 없을시 이전페이지로
+        /*// 선택된 주문요청사항이 없을시 이전페이지로
         if(order.getDel_request().equals("")) {
             String referer = request.getHeader("referer");
             try {
@@ -236,11 +234,11 @@ public class ProductController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         order.setUser_id(id);
         // 상세주소를 입력했을 시 추가
         if(!address2.isBlank()){
-            order.setAddress( order.getAddress() + address2);
+            order.setAddress(order.getAddress() + address2);
         }
         // 현재날짜 + 001~999까지의 세자리 수로 주문번호 만들기
         Date date = new Date();
@@ -266,9 +264,11 @@ public class ProductController {
                 Order trigger = new Order(order.getUser_id(),order.getName(),order.getAddress(),
                         order.getPhone(), order.getDel_request(), order.getOrder_no()); // 공통된 항목 trigger에 저장
                 // 하나 또는 그 이상의 주문상품 저장부분
+                Product product = productService.getProduct(product_id[i]);
                 trigger.setProduct_id(product_id[i]);
                 trigger.setSize(size[i]);
                 trigger.setQuantity(Integer.parseInt(quan[i]));
+                trigger.setColor(product.getColor());
                 // 품절된 상품 확인
                 if(orderService.checkStock(product_id[i], quan[i], size[i])){
                     request.setAttribute("msg", "상품번호 : " + product_id[i] + " 상품이 품절되었거나 재고가 모자릅니다. 확인 후 다시 시도해주세요.");

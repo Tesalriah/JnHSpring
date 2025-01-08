@@ -40,6 +40,12 @@
     padding:20px;
     }
 }
+#empty_list{
+    text-align: center;
+    padding: 110px 0;
+    font-size: 20px;
+    border-bottom: 1px solid #dddddd;
+}
 .able > div:nth-child(2){
     width:66%;
     display: flex;
