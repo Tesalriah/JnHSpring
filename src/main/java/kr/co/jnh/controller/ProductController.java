@@ -179,7 +179,7 @@ public class ProductController {
             product.setState("판매");
 
             // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
-            String savePath = request.getServletContext().getRealPath("resources/img/upload/product-img/");
+            String savePath = request.getServletContext().getRealPath("webapp/resources/img/upload/product-img/");
             savePath += product_id + "/";
             Path directory = Paths.get(savePath);
             Files.createDirectories(directory);

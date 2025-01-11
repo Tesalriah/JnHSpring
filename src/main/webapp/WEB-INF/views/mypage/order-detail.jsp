@@ -51,7 +51,7 @@
                                 <div class="order_button">
                                         <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
                                         <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${param.page}">교환, 반품신청</button></div>
-                                        <div><button type="button">리뷰작성</button></div>
+                                        <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/able"/>'">리뷰작성</button></div>
                                 </div>
                             </div>
                             </form>

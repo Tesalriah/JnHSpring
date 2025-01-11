@@ -65,6 +65,9 @@ public class ReviewController {
             if(review == null){
                 throw new Exception("FAIL");
             }
+            if(review.getWhether() != 0){
+                throw new Exception("ALREADY_WRITTEN");
+            }
             if(!id.equals(review.getUser_id())){
                 throw new Exception("WRONG_APPROACH");
             }
@@ -75,7 +78,11 @@ public class ReviewController {
             if(e.getMessage().equals("WRONG_APPROACH")){
                 m.addAttribute("msg", "잘못된 접근입니다.");
                 m.addAttribute("url", "/jnh");
-            }else {
+            }if(e.getMessage().equals("ALREADY_WRITTEN")){
+                m.addAttribute("msg", "이미 작성된 리뷰입니다.");
+                m.addAttribute("url", "able");
+            }
+            else {
                 m.addAttribute("msg", "페이지 접근에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
                 m.addAttribute("url", "able");
             }
@@ -89,11 +96,11 @@ public class ReviewController {
 
         try{
             String rId = reviewService.selectOne(review.getRno()).getUser_id();
-            if(id.equals(rId)){
+            if(!id.equals(rId)){
                 throw new Exception("WRONG_APPROACH");
             }
             // 이미지를 폴더에 저장하기 위해 경로생성
-            String savePath = request.getServletContext().getRealPath("resources/img/upload/review-img");
+            String savePath = request.getServletContext().getRealPath("webapp/resources/img/upload/review-img");
             savePath += review.getProduct_id() + "/";
             Path directory = Paths.get(savePath);
             Files.createDirectories(directory);
@@ -104,6 +111,7 @@ public class ReviewController {
             originalFileName = fileNameArr[0] + "." + fileNameArr[1];
             File newFile = new File(savePath + originalFileName);
             file.transferTo(newFile);
+            System.out.println(savePath + originalFileName);
 
             review.setImage(originalFileName);
 
@@ -112,6 +120,6 @@ public class ReviewController {
             e.printStackTrace();
         }
 
-        return "";
+        return "redirect:/";
     }
 }

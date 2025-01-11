@@ -8,7 +8,7 @@ public class Review {
     private String order_no;
     private String user_id;
     private String product_id;
-    private String Contents;
+    private String contents;
     private float reting;
     private Date reg_date;
     private Date up_date;
@@ -32,7 +32,7 @@ public class Review {
                 ", order_no='" + order_no + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", product_id='" + product_id + '\'' +
-                ", Contents='" + Contents + '\'' +
+                ", contents='" + contents + '\'' +
                 ", reting=" + reting +
                 ", reg_date=" + reg_date +
                 ", up_date=" + up_date +
@@ -75,11 +75,11 @@ public class Review {
     }
 
     public String getContents() {
-        return Contents;
+        return contents;
     }
 
     public void setContents(String contents) {
-        Contents = contents;
+        contents = contents;
     }
 
     public float getReting() {

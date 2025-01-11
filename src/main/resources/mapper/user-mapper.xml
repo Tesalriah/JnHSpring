@@ -4,34 +4,34 @@
 
 <mapper namespace="kr.co.jnh.dao.UserMapper">
     <select id="selectUser" parameterType="map" resultType="User">
-        SELECT * FROM user_info
+        SELECT * FROM user
         WHERE user_id = #{id} and user_pwd = #{pwd}
     </select>
 
     <select id="selectUserById" parameterType="String" resultType="User">
-        SELECT * FROM user_info
+        SELECT * FROM user
         WHERE user_id = #{id}
     </select>
 
     <select id="selectId" parameterType="String" resultType="String">
-        SELECT user_id FROM user_info
+        SELECT user_id FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="insert" parameterType="User">
-        INSERT INTO user_info
+        INSERT INTO user
             (user_id, user_pwd, user_name, email, phone, address, gender, birth)
         VALUE
             (#{user_id}, #{user_pwd}, #{user_name}, #{email}, #{phone}, #{address}, #{gender}, #{birth})
     </insert>
 
     <delete id="delete" parameterType="Map">
-        DELETE FROM user_info
+        DELETE FROM user
         WHERE user_id = #{id} and user_pwd = #{pwd}
     </delete>
 
     <update id="update" parameterType="Map">
-        UPDATE user_info
+        UPDATE user
         <set>
             <if test="user_pwd != null">user_pwd = #{user_pwd}</if>
             <if test="address != null">address = #{address}</if>

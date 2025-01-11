@@ -15,7 +15,6 @@ public class Order {
     private String product_id;
     private String size;
     private Integer quantity;
-
     private String color;
     private String status;
     private Date order_date;
