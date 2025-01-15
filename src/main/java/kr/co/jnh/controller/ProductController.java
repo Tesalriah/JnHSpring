@@ -5,6 +5,7 @@ import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.service.WishService;
+import kr.co.jnh.util.FileMultiSave;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -178,21 +179,11 @@ public class ProductController {
             product.setProduct_id(product_id + "");
             product.setState("판매");
 
-            // 이미지를 폴더에 저장하기 위해 경로 위에 폴더 생성
-            String savePath = request.getServletContext().getRealPath("webapp/resources/img/upload/product-img/");
-            savePath += product_id + "/";
-            Path directory = Paths.get(savePath);
-            Files.createDirectories(directory);
-            // 이미지 파일의 확장자를 나누고 이름을 product_id로 바꾸어 확장자와 함께 저장
-            String originalFileName = file.getOriginalFilename();
-            String[] fileNameArr = originalFileName.split("\\.");
-            fileNameArr[0] = product_id + "";
-            originalFileName = fileNameArr[0] + "." + fileNameArr[1];
-            File newFile = new File(savePath + originalFileName);
-            file.transferTo(newFile);
+            // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
+            String fileName = FileMultiSave.uploadImg(file, request, "product-img", product_id + "");
 
             // 바꾼 이미지이름+확장자를 product.image에 set
-            product.setImage(originalFileName);
+            product.setImage(fileName);
 
             // 사이즈가 하나가 아닐때 모든 정보 데이터베이스에 추가
             if(sizeArr.length > 1 || stockArr.length > 1){

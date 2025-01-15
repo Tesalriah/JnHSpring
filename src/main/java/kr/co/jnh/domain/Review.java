@@ -9,11 +9,11 @@ public class Review {
     private String user_id;
     private String product_id;
     private String contents;
-    private float reting;
+    private Float reting;
     private Date reg_date;
     private Date up_date;
     private String image;
-    private int whether;
+    private Integer whether;
     private int report_cnt;
     private Order order;
 

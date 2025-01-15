@@ -5,6 +5,7 @@ import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Review;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.ReviewService;
+import kr.co.jnh.util.FileMultiSave;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,21 +102,14 @@ public class ReviewController {
             if(!id.equals(rId)){
                 throw new Exception("WRONG_APPROACH");
             }
-            // 이미지를 폴더에 저장하기 위해 경로생성
-            String savePath = request.getServletContext().getRealPath("webapp/resources/img/upload/review-img");
-            savePath += review.getProduct_id() + "/";
-            Path directory = Paths.get(savePath);
-            Files.createDirectories(directory);
-            // 이미지 파일의 확장자를 나누고 이름을 rno으로 바꾸어 확장자와 함께 저장
-            String originalFileName = file.getOriginalFilename();
-            String[] fileNameArr = originalFileName.split("\\.");
-            fileNameArr[0] = review.getRno() + "";
-            originalFileName = fileNameArr[0] + "." + fileNameArr[1];
-            File newFile = new File(savePath + originalFileName);
-            file.transferTo(newFile);
-            System.out.println(savePath + originalFileName);
+            // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
+            String filename = FileMultiSave.uploadImg(file, request, "review-img", review.getRno() + "");
 
-            review.setImage(originalFileName);
+            review.setImage(filename);
+            review.setUp_date(new Date());
+            review.setWhether(1);
+            
+            // Float 설정중이었음.
 
             System.out.println("review = " + review);
         }catch (Exception e){
