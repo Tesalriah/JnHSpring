@@ -41,6 +41,11 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
+    public float reviewAvg(String product_id) throws Exception{
+        return session.selectOne( nameSpace + "ratingAvg", product_id);
+    }
+
+    @Override
     public int delete(int no) throws Exception{
         return session.update( nameSpace + "delete", no);
     }

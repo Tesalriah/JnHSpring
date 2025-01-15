@@ -5,7 +5,7 @@ import kr.co.jnh.service.OrderService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.service.WishService;
-import kr.co.jnh.util.FileMultiSave;
+import kr.co.jnh.util.FileMultiSaveUtil;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -180,7 +176,7 @@ public class ProductController {
             product.setState("판매");
 
             // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
-            String fileName = FileMultiSave.uploadImg(file, request, "product-img", product_id + "");
+            String fileName = FileMultiSaveUtil.uploadImg(file, request, "product-img", product_id + "");
 
             // 바꾼 이미지이름+확장자를 product.image에 set
             product.setImage(fileName);

@@ -5,9 +5,11 @@ import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.Order;
 import kr.co.jnh.domain.PageHandler;
+import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +40,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int update(Review review) throws Exception{
-        return reviewDao.update(review);
+        int result = reviewDao.update(review);
+        Review get = reviewDao.selectOne(review.getRno());
+        Product product = new Product();
+        product.setProduct_id(get.getProduct_id());
+        product.setRating(reviewDao.reviewAvg(get.getProduct_id()));
+        Map<String, Object> map = new HashMap<>();
+        map.put("product_id", get.getProduct_id());
+        map.put("whether", 1);
+        product.setReview_cnt(reviewDao.selectPageCnt(map));
+        productDao.update(product);
+        return result;
     }
 
     @Override
@@ -65,6 +78,8 @@ public class ReviewServiceImpl implements ReviewService {
         Map<String, Object> map = new HashMap<>();
         map.put("id", review.getUser_id());
         map.put("order_no", review.getOrder_no());
+        map.put("product_id", review.getProduct_id());
+        map.put("size", review.getSize());
         Order order = orderDao.selectOne(map).get(0);
         order.setProduct(productDao.select(review.getProduct_id()));
         review.setOrder(order);

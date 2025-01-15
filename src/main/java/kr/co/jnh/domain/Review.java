@@ -8,8 +8,9 @@ public class Review {
     private String order_no;
     private String user_id;
     private String product_id;
+    private String size;
     private String contents;
-    private Float reting;
+    private float rating;
     private Date reg_date;
     private Date up_date;
     private String image;
@@ -19,10 +20,11 @@ public class Review {
 
     public Review(){}
 
-    public Review(String order_no, String user_id, String product_id) {
+    public Review(String order_no, String user_id, String product_id, String size) {
         this.order_no = order_no;
         this.user_id = user_id;
         this.product_id = product_id;
+        this.size = size;
     }
 
     @Override
@@ -32,13 +34,15 @@ public class Review {
                 ", order_no='" + order_no + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", product_id='" + product_id + '\'' +
+                ", size='" + size + '\'' +
                 ", contents='" + contents + '\'' +
-                ", reting=" + reting +
+                ", rating=" + rating +
                 ", reg_date=" + reg_date +
                 ", up_date=" + up_date +
                 ", image='" + image + '\'' +
                 ", whether=" + whether +
                 ", report_cnt=" + report_cnt +
+                ", order=" + order +
                 '}';
     }
 
@@ -74,20 +78,28 @@ public class Review {
         this.product_id = product_id;
     }
 
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     public String getContents() {
         return contents;
     }
 
     public void setContents(String contents) {
-        contents = contents;
+        this.contents = contents;
     }
 
-    public float getReting() {
-        return reting;
+    public float getRating() {
+        return rating;
     }
 
-    public void setReting(float reting) {
-        this.reting = reting;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public Date getUp_date() {
@@ -106,11 +118,11 @@ public class Review {
         this.image = image;
     }
 
-    public int getWhether() {
+    public Integer getWhether() {
         return whether;
     }
 
-    public void setWhether(int whether) {
+    public void setWhether(Integer whether) {
         this.whether = whether;
     }
 

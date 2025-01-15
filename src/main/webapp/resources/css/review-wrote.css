@@ -72,6 +72,12 @@
     background-color:#eeeeee;
     cursor: pointer;
 }
+#empty_list{
+    text-align: center;
+    padding: 110px 0;
+    font-size: 20px;
+    border-bottom: 1px solid #dddddd;
+}
 .reviews_each{
     padding:20px 0;   
     border-bottom:1px solid #999999;
@@ -122,7 +128,6 @@
     position: absolute;
     top:0;
     left: 0;
-    width:91%;
     white-space: nowrap;
     overflow: hidden;
     color:#FFAEC9;

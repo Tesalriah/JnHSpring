@@ -19,6 +19,8 @@
     <select id="selectOne" parameterType="Map" resultType="Order">
         SELECT * FROM orders
         WHERE user_id = #{id} AND order_no = #{order_no}
+        <if test="product_id != null">AND product_id = #{product_id}</if>
+        <if test="size != null">AND size = #{size}</if>
     </select>
 
     <select id="selectAll" resultType="Order">

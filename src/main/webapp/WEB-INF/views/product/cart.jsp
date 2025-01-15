@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <ul class="cart_list">
-                    <c:if test="${totalCnt < 0}">
+                    <c:if test="${empty cartList}">
                         <li>
                             <div style="text-align: center; width: 100%; padding: 60px; font-weight:bold;">
                                 장바구니에 담은 상품이 없습니다.
@@ -54,7 +54,7 @@
                                         <input type="checkbox" disabled name="check_box">
                                     </c:otherwise>
                                 </c:choose>
-                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/${cart.product.product_id}/${cart.product.image}"/>"></a>
+                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/product-img/${cart.product.product_id}/${cart.product.image}"/>"></a>
                                 <input type="hidden" name="product_id" value="${cart.product_id}">
                             </div>
                             <div class="product_info" ${cart.product.stock <= 0 ? "style='color:#dddddd'" : ""}>

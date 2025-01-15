@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileMultiSave {
+public class FileMultiSaveUtil {
     public static String uploadImg(MultipartFile file, HttpServletRequest request, String path, String id) throws Exception{
         String[] savePathArr = {request.getServletContext().getRealPath("resources/img/upload/" + path + "/"), request.getServletContext().getRealPath("webapp/resources/img/upload/" + path + "/")};
 

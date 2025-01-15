@@ -13,9 +13,7 @@ public interface ProductDao {
 
     int updateStock(Product product) throws Exception;
 
-    int updateBoughtCnt(Product product) throws Exception;
-
-    int updateWishCnt(Map map) throws Exception;
+    int update(Product product) throws Exception;
 
     int delete(String product_id) throws Exception;
 

@@ -72,9 +72,11 @@ public class WishServiceImpl implements WishService {
         result = wishDao.insert(wish);
         if(result > 0){
             Product product = productDao.select(wish.getProduct_id());
-            map.put("wish_cnt", product.getWish_cnt() + 1);
-            map.put("product_id", wish.getProduct_id());
-            productDao.updateWishCnt(map);
+
+            Product set = new Product();
+            set.setWish_cnt(product.getWish_cnt() + 1);
+            set.setProduct_id(wish.getProduct_id());
+            productDao.update(set);
         }
         return result;
     }
@@ -87,9 +89,11 @@ public class WishServiceImpl implements WishService {
         result = wishDao.delete(wish);
         if(result > 0){
             Product product = productDao.select(wish.getProduct_id());
-            map.put("wish_cnt", product.getWish_cnt() - 1);
-            map.put("product_id", wish.getProduct_id());
-            productDao.updateWishCnt(map);
+
+            Product set = new Product();
+            set.setWish_cnt(product.getWish_cnt() - 1);
+            set.setProduct_id(wish.getProduct_id());
+            productDao.update(set);
         }
         return result;
     }

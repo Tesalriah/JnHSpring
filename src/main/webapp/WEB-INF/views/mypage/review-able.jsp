@@ -25,8 +25,8 @@
                 <div class="contents">
                     <h2>리뷰 관리</h2>
                     <div class="top_nav">
-                        <div style=" border-bottom: none;"><a href="#">리뷰 작성</a></div>
-                        <div><a href="wroteReviews.html">작성한 리뷰</a></div>
+                        <div style=" border-bottom: none;"><a href="<c:url value="/mypage/review/able"/>">리뷰 작성</a></div>
+                        <div><a href="<c:url value="/mypage/review/wrote"/>">작성한 리뷰</a></div>
                     </div>
                     <div class="able_list">
                         <c:if test="${empty list}">
@@ -38,7 +38,7 @@
                             <div class="able">
                                 <div><img src='<c:url value="/resources/img/upload/product-img/${list.product_id}/${list.order.product.image}"/>'></div>
                                 <div>
-                                    <div>${list.order.product.product_name} / ${list.order.color} / ${list.order.size} / ${list.order.quantity}개</div>
+                                    <div>${list.order.product.product_name} / ${list.order.product.color} / ${list.order.size} / ${list.order.quantity}개</div>
                                     <div>구매일자 : <fmt:formatDate value="${list.order.order_date}" pattern="yyyy/MM/dd"/></div>
                                 </div>
                                 <div>
@@ -49,7 +49,7 @@
                         </c:forEach>
                     </div>
                     <div class="paging">
-                        <c:if test="${totalCnt != null && totalCnt != 0}">
+                        <c:if test="${ph.totalPage != null && ph.totalPage != 0 && ph.totalPage > 1}">
                             <c:if test="${ph.showPrev}">
                                 <a href="<c:url value="/mypage/review/able"/>?page=${ph.beginPage-1}"><i class="fa-solid fa-angle-left"></i></a>
                             </c:if>

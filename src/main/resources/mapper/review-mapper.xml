@@ -15,21 +15,21 @@
 
     <insert id="insert" parameterType="Review">
         INSERT INTO review
-            (order_no, user_id, product_id)
+            (order_no, user_id, product_id, size)
         VALUE
-            (#{order_no}, #{user_id}, #{product_id})
+            (#{order_no}, #{user_id}, #{product_id}, #{size})
     </insert>
 
     <update id="update" parameterType="Review">
-        UPDATE INTO
+        UPDATE review
         <set>
-            <if test="contents != null">contents = #{contents}</if>
-            <if test="rating != null">rating = #{rating}</if>
-            <if test="up_date != null">up_date = #{up_date}</if>
-            <if test="whether != null">whether = #{whether}</if>
-            <if test="image != null">image = #{image}</if>
+            <if test="contents != null">contents = #{contents},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="reg_date != null">reg_date = #{reg_date},</if>
+            <if test="whether != null">whether = #{whether},</if>
+            <if test="image != null">image = #{image},</if>
         </set>
-        WHERE rno = #{rno}
+        WHERE rno = #{rno} AND user_id = #{user_id}
     </update>
 
     <update id="delete" parameterType="int">
@@ -37,15 +37,27 @@
         SET whether = #{whether}
         WHERE rno = #{rno}
     </update>
+
+    <select id="ratingAvg" parameterType="String" resultType="float">
+        SELECT AVG(rating) AS average_value
+        FROM review
+        where whether = 1 AND product_id = #{product_id}
+    </select>
     
     <select id="selectPageCnt" parameterType="Map" resultType="int">
         SELECT count(*) FROM review
-        WHERE user_id = #{id} AND whether = #{whether}
+        WHERE
+        <if test="id != null"> user_id = #{id}</if>
+        <if test="product_id != null">product_id = #{product_id}</if>
+            AND whether = #{whether}
     </select>
 
     <select id="selectPage" parameterType="Map" resultType="Review">
         SELECT * FROM review
-        WHERE user_id = #{id} AND whether = #{whether}
+        WHERE
+        <if test="id != null"> user_id = #{id}</if>
+        <if test="product_id != null">product_id = #{product_id}</if>
+            AND whether = #{whether}
         ORDER BY reg_date desc, rno desc
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>

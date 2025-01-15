@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
             product.setStock(calStock + "");
             product.setSize(order.getSize());
             product.setBought_cnt(product.getBought_cnt() + order.getQuantity());
-            productDao.updateBoughtCnt(product);
+            productDao.update(product);
             if(productDao.updateStock(product) != 1){
                 throw new Exception("STOCK_ERROR");
             }
@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new Exception("CART_DELETE_FAIL");
                 }
             }
-            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id());
+            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id(), order.getSize());
             if(reviewDao.insert(review) != 1){
                 throw new Exception("REVIEW_REG_ERROR");
             }

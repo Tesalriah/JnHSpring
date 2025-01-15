@@ -14,6 +14,8 @@ public interface ReviewDao {
 
     int update(Review review) throws Exception;
 
+    float reviewAvg(String product_id) throws Exception;
+
     int delete(int no) throws Exception;
 
     int selectPageCnt(Map map);

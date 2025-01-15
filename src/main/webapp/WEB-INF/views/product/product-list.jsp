@@ -78,7 +78,7 @@
                                             {product.price}
                                         </c:if>
                                     </div>
-                                    <div><span class="heart"><i class="fa-solid fa-heart"></i>&nbsp;<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.wish_cnt}"/></span>&nbsp;<span class="star"><i class="fa-solid fa-star"></i>&nbsp;${product.rating}(0)</span></div>
+                                    <div><span class="heart"><i class="fa-solid fa-heart"></i>&nbsp;<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.wish_cnt}"/></span>&nbsp;<span class="star"><i class="fa-solid fa-star"></i>&nbsp;${product.rating}(${product.review_cnt})</span></div>
                                 </div>
                             </a>
                         </div>

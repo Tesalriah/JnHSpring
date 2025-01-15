@@ -23,6 +23,7 @@ public class Product {
     private int bought_cnt;
     private String state;
     private Integer wish_cnt;
+    private Integer review_cnt;
     private Integer quantity;
     private Integer total;
     private Integer dis_price;
@@ -183,6 +184,7 @@ public class Product {
         this.bought_cnt = bought_cnt;
     }
 
+
     public String getState() {
         return state;
     }
@@ -197,6 +199,14 @@ public class Product {
 
     public void setWish_cnt(Integer wish_cnt) {
         this.wish_cnt = wish_cnt;
+    }
+
+    public Integer getReview_cnt() {
+        return review_cnt;
+    }
+
+    public void setReview_cnt(Integer review_cnt) {
+        this.review_cnt = review_cnt;
     }
 
     public Integer getQuantity() { return quantity; }

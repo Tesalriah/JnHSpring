@@ -1,27 +1,20 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Review;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.ReviewService;
-import kr.co.jnh.util.FileMultiSave;
+import kr.co.jnh.util.CacheControlUtil;
+import kr.co.jnh.util.FileMultiSaveUtil;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,28 +87,66 @@ public class ReviewController {
     }
     
     @PostMapping("write")
-    public String writeReview(Review review, HttpServletRequest request, @RequestParam("uploadFile") MultipartFile file){
-            String id = SessionIdUtil.getSessionId(request);
+    public String writeReview(Review review, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "uploadFile", required = false) MultipartFile file, Model m){
+        CacheControlUtil.setNoCacheHeaders(response);
+        String id = SessionIdUtil.getSessionId(request);
 
         try{
             String rId = reviewService.selectOne(review.getRno()).getUser_id();
+            // 리뷰 작성권한이 없는 아이디는 접근못하게 차단
             if(!id.equals(rId)){
                 throw new Exception("WRONG_APPROACH");
             }
-            // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
-            String filename = FileMultiSave.uploadImg(file, request, "review-img", review.getRno() + "");
-
-            review.setImage(filename);
-            review.setUp_date(new Date());
+            // 업로드 할 이미지가 있을시에만 처리
+            if(!file.isEmpty()){
+                // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
+                String filename = FileMultiSaveUtil.uploadImg(file, request, "review-img", review.getRno() + "");
+                review.setImage(filename);
+            }
+            review.setUser_id(id);
+            review.setReg_date(new Date());
             review.setWhether(1);
-            
-            // Float 설정중이었음.
 
             System.out.println("review = " + review);
+
+            if(reviewService.update(review) != 1){
+                throw new Exception("REVIEW_WRITE_FAIL");
+            }
+
+            m.addAttribute("msg", "등록되었습니다.");
+            m.addAttribute("url", "wrote");
+        }catch (Exception e){
+            e.printStackTrace();
+            if(e.getMessage().equals("WRONG_APPOACH")) {
+                m.addAttribute("msg", "잘못된 접근입니다.");
+            }else{
+                m.addAttribute("msg", "작성에 실패했습니다.");
+            }
+            m.addAttribute("url", "list");
+        }
+
+        return "alert";
+    }
+
+    @GetMapping("wrote")
+    public String wroteReview(SearchCondition sc, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("whether", 1);
+        map.put("sc", sc);
+
+        try{
+            int totalCnt = reviewService.selectPageCnt(map);
+            List<Review> list = reviewService.selectPage(map);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        return "redirect:/";
+        return "mypage/review-wrote";
     }
 }

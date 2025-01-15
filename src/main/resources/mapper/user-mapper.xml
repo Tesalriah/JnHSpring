@@ -33,9 +33,9 @@
     <update id="update" parameterType="Map">
         UPDATE user
         <set>
-            <if test="user_pwd != null">user_pwd = #{user_pwd}</if>
-            <if test="address != null">address = #{address}</if>
-            <if test="status != null">status = #{status}</if>
+            <if test="user_pwd != null">user_pwd = #{user_pwd},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="status != null">status = #{status},</if>
         </set>
         WHERE user_id = #{user_id}
     </update>
