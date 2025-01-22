@@ -9,4 +9,5 @@ range.addEventListener("input", function(){
         width = 100;
     }
     star.style.width = width+"%";
-})
+});
+

@@ -15,7 +15,8 @@ public class FileMultiSaveUtil {
         // 파일이름 설정 (파일형식 확장자 유지)
         String originalFileName = file.getOriginalFilename();
         String[] fileNameArr = originalFileName.split("\\.");
-        fileNameArr[0] = id + "";
+        // 중복방지 + 캐싱 이미지 로드를 방지하기 위해 고유값 설정
+        fileNameArr[0] = id + "-" + System.currentTimeMillis();
         String fileName = fileNameArr[0] + "." + fileNameArr[1];
 
         for (String savePath : savePathArr) {

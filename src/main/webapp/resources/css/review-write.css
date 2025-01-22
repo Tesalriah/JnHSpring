@@ -67,6 +67,11 @@ input[type=range]{
     width: 100%;
     padding:10px;
 }
+#review_img{
+    height: 180px;
+    width: 160px;
+    object-fit: cover;
+}
 .review_image input[type=file]{
     width:50%;
     padding:5px;

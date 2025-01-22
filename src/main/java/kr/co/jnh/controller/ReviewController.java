@@ -50,22 +50,22 @@ public class ReviewController {
     }
 
     @GetMapping("write")
-    public String writeReview(@RequestParam(required = false) Integer no, HttpServletRequest request, Model m){
+    public String writeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
 
         try{
-            if(no == null){
+            if(rno == null){
                 throw new Exception("WRONG_APPROACH");
             }
-            Review review = reviewService.selectOne(no);
+            Review review = reviewService.selectOne(rno);
             if(review == null){
                 throw new Exception("FAIL");
             }
-            if(review.getWhether() != 0){
-                throw new Exception("ALREADY_WRITTEN");
-            }
             if(!id.equals(review.getUser_id())){
                 throw new Exception("WRONG_APPROACH");
+            }
+            if(review.getWhether() == 2){
+                throw new Exception("ALREADY_REMOVED");
             }
             m.addAttribute("review", review);
             return "mypage/review-write";
@@ -74,8 +74,8 @@ public class ReviewController {
             if(e.getMessage().equals("WRONG_APPROACH")){
                 m.addAttribute("msg", "잘못된 접근입니다.");
                 m.addAttribute("url", "/jnh");
-            }if(e.getMessage().equals("ALREADY_WRITTEN")){
-                m.addAttribute("msg", "이미 작성된 리뷰입니다.");
+            }else if(e.getMessage().equals("ALREADY_REMOVED")){
+                m.addAttribute("msg", "삭제된 리뷰입니다.");
                 m.addAttribute("url", "able");
             }
             else {
@@ -85,11 +85,12 @@ public class ReviewController {
             return "alert";
         }
     }
-    
+
     @PostMapping("write")
     public String writeReview(Review review, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "uploadFile", required = false) MultipartFile file, Model m){
         CacheControlUtil.setNoCacheHeaders(response);
         String id = SessionIdUtil.getSessionId(request);
+        String not_change = request.getParameter("not_change");
 
         try{
             String rId = reviewService.selectOne(review.getRno()).getUser_id();
@@ -97,17 +98,18 @@ public class ReviewController {
             if(!id.equals(rId)){
                 throw new Exception("WRONG_APPROACH");
             }
-            // 업로드 할 이미지가 있을시에만 처리
-            if(!file.isEmpty()){
-                // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
-                String filename = FileMultiSaveUtil.uploadImg(file, request, "review-img", review.getRno() + "");
-                review.setImage(filename);
+            // 사진 변경 요청이없을시 이미지 파일 새로 저장
+            if(not_change == null){
+                // 업로드 할 이미지가 있을시에만 처리
+                if(!file.isEmpty()){
+                    // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
+                    String filename = FileMultiSaveUtil.uploadImg(file, request, "review-img", review.getRno() + "");
+                    review.setImage(filename);
+                }
             }
             review.setUser_id(id);
             review.setReg_date(new Date());
             review.setWhether(1);
-
-            System.out.println("review = " + review);
 
             if(reviewService.update(review) != 1){
                 throw new Exception("REVIEW_WRITE_FAIL");
@@ -129,7 +131,7 @@ public class ReviewController {
     }
 
     @GetMapping("wrote")
-    public String wroteReview(SearchCondition sc, HttpServletRequest request, Model m){
+    public String wroteReview(SearchCondition sc, HttpServletRequest request, HttpServletResponse response, Model m){
         String id = SessionIdUtil.getSessionId(request);
 
         Map<String, Object> map = new HashMap<>();
@@ -148,5 +150,67 @@ public class ReviewController {
             e.printStackTrace();
         }
         return "mypage/review-wrote";
+    }
+
+    @GetMapping("modify")
+    public String modifyReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+
+        try{
+            Review review =  reviewService.selectOne(rno);
+            if(!review.getUser_id().equals(id)){
+                throw new Exception("LONG_APPROACH");
+            }
+            m.addAttribute("review", review);
+            m.addAttribute("modify", "modify");
+
+            return "mypage/review-write";
+        }catch (Exception e){
+            e.printStackTrace();
+            if(e.getMessage().equals("LONG_APPROACH")){
+                m.addAttribute("msg","잘못된 접근입니다.");
+                m.addAttribute("url", "/jnh");
+            }else{
+                m.addAttribute("msg","페이지 접근에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
+                m.addAttribute("url", "wrote");
+            }
+
+            return "alert";
+        }
+    }
+
+    @PostMapping("remove")
+    public String removeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
+        String id = SessionIdUtil.getSessionId(request);
+
+        try{
+            if(rno == null){
+                throw new Exception("WRONG_APPROACH");
+            }
+            Review review = reviewService.selectOne(rno);
+            if(review == null){
+                throw new Exception("FAIL");
+            }
+            if(!id.equals(review.getUser_id())){
+                throw new Exception("WRONG_APPROACH");
+            }
+            if(review.getWhether() != 0){
+                throw new Exception("ALREADY_WRITTEN");
+            }
+            m.addAttribute("review", review);
+            return "mypage/review-write";
+        }catch (Exception e){
+            e.printStackTrace();
+            if(e.getMessage().equals("WRONG_APPROACH")){
+                m.addAttribute("msg", "잘못된 접근입니다.");
+                m.addAttribute("url", "/jnh");
+            }
+            else {
+                m.addAttribute("msg", "페이지 접근에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
+                m.addAttribute("url", "able");
+            }
+            return "alert";
+        }
+
     }
 }
