@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReviewService {
-    List<Review> selectAll() throws Exception;
+    List<Review> readAll() throws Exception;
 
-    Review selectOne(int no) throws Exception;
+    Review readOne(int no) throws Exception;
 
-    int update(Review review) throws Exception;
+    int modify(Review review) throws Exception;
 
-    int delete(int no) throws Exception;
+    int remove(int no) throws Exception;
 
     int selectPageCnt(Map map) throws Exception;
 

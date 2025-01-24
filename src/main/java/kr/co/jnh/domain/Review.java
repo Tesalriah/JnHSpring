@@ -1,5 +1,7 @@
 package kr.co.jnh.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Review {
@@ -11,6 +13,7 @@ public class Review {
     private String size;
     private String contents;
     private float rating;
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date reg_date;
     private Date up_date;
     private String image;

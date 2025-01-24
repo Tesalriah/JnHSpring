@@ -25,12 +25,12 @@ public class ReviewServiceImpl implements ReviewService {
     OrderDao orderDao;
 
     @Override
-    public List<Review> selectAll() throws Exception{
+    public List<Review> readAll() throws Exception{
         return reviewDao.selectAll();
     }
     
     @Override
-    public Review selectOne(int no) throws Exception{
+    public Review readOne(int no) throws Exception{
         Review review = reviewDao.selectOne(no);
         if(review == null){
             return null;
@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int update(Review review) throws Exception{
+    public int modify(Review review) throws Exception{
         int result = reviewDao.update(review);
         Review get = reviewDao.selectOne(review.getRno());
         Product product = new Product();
@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public int delete(int no) throws Exception{
+    public int remove(int no) throws Exception{
         return reviewDao.delete(no);
     }
 
