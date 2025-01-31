@@ -40,22 +40,28 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int modify(Review review) throws Exception{
+    @Transactional(rollbackFor = {Exception.class})
+    public int modify(Review review) throws Exception {
         int result = reviewDao.update(review);
         Review get = reviewDao.selectOne(review.getRno());
         Product product = new Product();
         product.setProduct_id(get.getProduct_id());
-        product.setRating(reviewDao.reviewAvg(get.getProduct_id()));
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", get.getProduct_id());
         map.put("whether", 1);
-        product.setReview_cnt(reviewDao.selectPageCnt(map));
+        int cnt = reviewDao.selectPageCnt(map);
+        if(cnt > 0){
+            product.setRating(reviewDao.reviewAvg(get.getProduct_id()));
+        }else{
+            product.setRating(0);
+        }
+        product.setReview_cnt(cnt);
         productDao.update(product);
         return result;
     }
 
     @Override
+    @Transactional
     public int remove(int no) throws Exception{
         return reviewDao.delete(no);
     }

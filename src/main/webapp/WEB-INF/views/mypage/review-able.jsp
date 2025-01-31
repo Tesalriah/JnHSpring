@@ -42,8 +42,8 @@
                                     <div>구매일자 : <fmt:formatDate value="${list.order.order_date}" pattern="yyyy/MM/dd"/></div>
                                 </div>
                                 <div>
-                                    <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/write"/>?no=${list.rno}'">리뷰작성하기</button></div>
-                                    <div><a href="">삭제하기</a></div>
+                                    <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/write"/>?rno=${list.rno}'">리뷰작성하기</button></div>
+                                    <div><form style="display: inline;" method="post" action="<c:url value="/mypage/review/remove"/>?rno=${list.rno}"><button type="submit" onclick="return confirm('삭제하시겠습니까?');">삭제하기</button></form></div>
                                 </div>
                             </div>
                         </c:forEach>

@@ -24,7 +24,7 @@ import java.util.Map;
 @RequestMapping("/mypage/review")
 public class ReviewController {
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     @GetMapping("able") // 리뷰 작성가능 목록 리스트
     public String reviewAble(SearchCondition sc, HttpServletRequest request, Model m){
@@ -198,27 +198,32 @@ public class ReviewController {
     public String removeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
 
+        String referer = request.getHeader("referer");
+        String url = "able";
+        if(referer.contains("wrote")){
+            url = "wrote";
+        }if(referer.contains("able")){
+            url = "able";
+        }
+
         try{
             Review review = reviewService.readOne(rno);
 
             if(!id.equals(review.getUser_id())){
                 throw new Exception("WRONG_APPROACH");
             }
-            if(review.getWhether() != 1){
+            if(review.getWhether() == 2){
                 throw new Exception("WRONG_APPROACH");
             }
             Review remove = new Review();
             remove.setUser_id(id);
             remove.setRno(rno);
             remove.setWhether(2);
-            System.out.println("remove = " + remove);
-            // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 지정
+            // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 수정
             review.setWhether(2);
-            if(reviewService.modify(review) != 1){
-                throw new Exception();
-            }
+            reviewService.modify(review);
             m.addAttribute("msg", "삭제되었습니다.");
-            m.addAttribute("url", "wrote");
+            m.addAttribute("url", url);
         }catch (Exception e){
             e.printStackTrace();
             if(e.getMessage() != null){
@@ -228,7 +233,7 @@ public class ReviewController {
                 }
             }else{
                 m.addAttribute("msg", "삭제에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
-                m.addAttribute("url", "wrote");
+                m.addAttribute("url", url);
             }
         }
         return "alert";
