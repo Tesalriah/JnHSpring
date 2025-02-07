@@ -19,6 +19,8 @@ public class CurrentPageInterceptor implements HandlerInterceptor{
             current = "return";
         }if(currentUrl.contains("/review")) {
             current = "review";
+        }if(currentUrl.contains("/product")){
+            current = "product";
         }
 
         request.setAttribute("current", current); // request에 현재 요청 타입 저장

@@ -41,6 +41,7 @@
 			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"/>
 		</interceptor>
 		<interceptor>
+			<mapping path="/admin/**"/>
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
@@ -69,6 +70,7 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/mypage/**"/>
+			<mapping path="/admin/**"/>
 			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
 		</interceptor>
 	</interceptors>

@@ -107,6 +107,7 @@
     background-color:#ffffff;
     font-size: 14px;
     font-weight:bold;
+    color: inherit;
 }
 .reviews_each button:hover{
     cursor: pointer;
