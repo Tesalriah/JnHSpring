@@ -35,6 +35,7 @@
 }
 .return_product > div:last-child{
     width: 65%;
+    margin-left:20px;
 }
 .next_button{
     margin-top: 30px;
@@ -42,7 +43,6 @@
     margin-bottom:100px;
 }
 .next_button button{
-    width: 15%;
     border-radius: 5px;
     font-size:20px;
     color: #ffffff;

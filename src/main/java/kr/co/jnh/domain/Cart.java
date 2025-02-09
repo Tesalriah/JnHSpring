@@ -2,12 +2,20 @@ package kr.co.jnh.domain;
 
 public class Cart {
 
+    private Product product;
     private String user_id;
     private String product_id;
     private String size;
     private Integer quantity;
 
     public Cart(){}
+
+    public Cart(String user_id, String product_id, String size, Integer quantity) {
+        this.user_id = user_id;
+        this.product_id = product_id;
+        this.size = size;
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {
@@ -17,6 +25,14 @@ public class Cart {
                 ", size='" + size + '\'' +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getUser_id() {

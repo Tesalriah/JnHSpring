@@ -4,52 +4,55 @@
 
 <mapper namespace="kr.co.jnh.dao.OrderMapper">
     <select id="select" parameterType="Map" resultType="Order">
-        SELECT * FROM order_status
+        SELECT * FROM orders
         WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
         group by order_no
         ORDER BY order_no DESC
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 
-    <select id="selectEach" parameterType="Map" resultType="Order">
-        SELECT * FROM order_status
-        WHERE user_id = #{id} AND order_no = #{order_no} AND NOT status LIKE CONCAT('%','삭제처리','%')
-        ORDER BY order_no DESC
-    </select>
-
     <select id="selectCnt" parameterType="Map" resultType="int">
-        SELECT count(distinct order_no) FROM order_status
+        SELECT count(distinct order_no) FROM orders
         WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
     </select>
 
     <select id="selectOne" parameterType="Map" resultType="Order">
-        SELECT * FROM order_status
-        WHERE user_id = #{id} AND order_no = #{order_no};
+        SELECT * FROM orders
+        WHERE user_id = #{id} AND order_no = #{order_no}
+        <if test="product_id != null">AND product_id = #{product_id}</if>
+        <if test="size != null">AND size = #{size}</if>
     </select>
 
     <select id="selectAll" resultType="Order">
-        SELECT * FROM order_status
+        SELECT * FROM orders
+        ORDER BY order_no desc
     </select>
 
     <insert id="insert" parameterType="Order">
-        INSERT INTO order_status
-        (user_id, name, address, phone, del_request, order_no, product_id, size, quantity)
-        VALUES (#{user_id}, #{name}, #{address}, #{phone}, #{del_request}, #{order_no}, #{product_id}, #{size}, #{quantity})
+        INSERT INTO orders
+        (user_id, name, address, phone, del_request, order_no, product_id, size, quantity, color)
+        VALUES (#{user_id}, #{name}, #{address}, #{phone}, #{del_request}, #{order_no}, #{product_id}, #{size}, #{quantity}, #{color})
     </insert>
 
     <delete id="delete" parameterType="Order">
-        DELETE FROM order_status
+        DELETE FROM orders
         WHERE order_no = #{order_no}
     </delete>
 
     <update id="update" parameterType="Map">
-        UPDATE order_status
+        UPDATE orders
         SET status = #{status}
         WHERE order_no = #{order_no} AND user_id = #{id}
     </update>
 
+    <update id="returnUpdate" parameterType="Map">
+        UPDATE orders
+        SET status = #{status}
+        WHERE order_no = #{order_no} AND user_id = #{id} AND product_id = #{product_id} AND size = #{size}
+    </update>
+
     <select id="selectId" parameterType="String" resultType="String">
-        SELECT order_no FROM order_status
+        SELECT order_no FROM orders
         WHERE order_no LIKE CONCAT(#{order_no},'%') ORDER BY order_no DESC LIMIT 1
     </select>
 </mapper>

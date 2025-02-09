@@ -3,13 +3,16 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
+import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.Cart;
 import kr.co.jnh.domain.Order;
 import kr.co.jnh.domain.Product;
+import kr.co.jnh.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,15 +29,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ProductDao productDao;
 
+    @Autowired
+    ReviewDao reviewDao;
+
 
     @Override
     public List<Order> read(Map map) throws Exception{
         return orderDao.select(map);
-    }
-
-    @Override
-    public List<Order> readEach(Map map) throws Exception{
-        return orderDao.selectEach(map);
     }
 
     @Override
@@ -49,7 +50,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> readOne(Map map) throws Exception{
-        return orderDao.selectOne(map);
+        List<Order> orderList = orderDao.selectOne(map);
+        for(Order order : orderList){
+            Product product = productDao.select(order.getProduct_id());
+            product.setQuantity(order.getQuantity());
+            order.setProduct(product);
+        }
+        return orderList;
     }
 
     @Override
@@ -80,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
             product.setStock(calStock + "");
             product.setSize(order.getSize());
             product.setBought_cnt(product.getBought_cnt() + order.getQuantity());
-            productDao.updateBoughtCnt(product);
+            productDao.update(product);
             if(productDao.updateStock(product) != 1){
                 throw new Exception("STOCK_ERROR");
             }
@@ -89,6 +96,10 @@ public class OrderServiceImpl implements OrderService {
                 if(cartDao.delete(map) != 1){
                     throw new Exception("CART_DELETE_FAIL");
                 }
+            }
+            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id(), order.getSize());
+            if(reviewDao.insert(review) != 1){
+                throw new Exception("REVIEW_REG_ERROR");
             }
         }
         return result;

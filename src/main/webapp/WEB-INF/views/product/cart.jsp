@@ -47,21 +47,21 @@
                         <li>
                             <div style="display:flex; width:16%; align-items: center">
                                 <c:choose>
-                                    <c:when test="${productList[status.index].stock > 0}">
+                                    <c:when test="${cart.product.stock > 0}">
                                         <input type="checkbox" class="delete_check" value="${status.index}" name="check_box">
                                     </c:when>
                                     <c:otherwise>
                                         <input type="checkbox" disabled name="check_box">
                                     </c:otherwise>
                                 </c:choose>
-                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/${productList[status.index].product_id}/${productList[status.index].image}"/>"></a>
+                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/product-img/${cart.product.product_id}/${cart.product.image}"/>"></a>
                                 <input type="hidden" name="product_id" value="${cart.product_id}">
                             </div>
-                            <div class="product_info" ${productList[status.index].stock <= 0 ? "style='color:#dddddd'" : ""}>
-                                    ${productList[status.index].stock <= 0 ? "<span style='color:#999999;'>일시품절</span><br><br>" : ""}
-                                <a href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank">${productList[status.index].product_name}</a> / ${productList[status.index].color}<br><br>
-                                <span class="price"><fmt:formatNumber type="number" value="${productList[status.index].dis_price}"/></span>원
-                                <input type="hidden" name="price" value="${productList[status.index].dis_price}">
+                            <div class="product_info" ${cart.product.stock <= 0 ? "style='color:#dddddd'" : ""}>
+                                    ${cart.product.stock <= 0 ? "<span style='color:#999999;'>일시품절</span><br><br>" : ""}
+                                <a href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank">${cart.product.product_name}</a> / ${cart.product.color}<br><br>
+                                <span class="price"><fmt:formatNumber type="number" value="${cart.product.dis_price}"/></span>원
+                                <input type="hidden" name="price" value="${cart.product.dis_price}">
                                 <input type="hidden" name="size" value="${cart.size}">
                             </div>
                             <div style="width: 4%; text-align:center;">

@@ -129,7 +129,7 @@ for(let i=0; i<del_check.length; i++){
             }
         };
         /* Post 방식으로 요청 */
-        httpRequest.open('POST', '/jnh/setQuantity', true);
+        httpRequest.open('POST', '/jnh/set-quantity', true);
         /* Response Type을 Json으로 사전 정의 */
         httpRequest.responseType = "json";
         /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */

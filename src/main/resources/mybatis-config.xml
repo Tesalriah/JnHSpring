@@ -11,6 +11,9 @@
         <typeAlias alias="Cart" type="kr.co.jnh.domain.Cart"/>
         <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
         <typeAlias alias="AskingDto" type="kr.co.jnh.domain.AskingDto"/>
+        <typeAlias alias="Returns" type="kr.co.jnh.domain.Returns"/>
+        <typeAlias alias="Wish" type="kr.co.jnh.domain.Wish"/>
+        <typeAlias alias="Review" type="kr.co.jnh.domain.Review"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
         <typeAlias alias="Question" type="kr.co.jnh.domain.Question"/>
     </typeAliases>

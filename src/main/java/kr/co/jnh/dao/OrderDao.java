@@ -8,8 +8,6 @@ import java.util.Map;
 public interface OrderDao {
     List<Order> select(Map map) throws Exception;
 
-    List<Order> selectEach(Map map) throws Exception;
-
     int selectCnt(Map map) throws Exception;
 
     List<Order> selectAll() throws Exception;
@@ -21,6 +19,8 @@ public interface OrderDao {
     int delete(String order_no) throws Exception;
 
     int updete(Map map) throws Exception;
+
+    int returnUpdate(Map map) throws Exception;
 
     String selectId(String order_no) throws Exception;
 }

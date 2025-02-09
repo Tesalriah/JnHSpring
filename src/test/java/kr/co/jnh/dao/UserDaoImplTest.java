@@ -26,7 +26,8 @@ public class UserDaoImplTest {
         map.put("id", "asdf");
         map.put("pwd", "1234");
 
-        userdao.selectUser(map);
+        User user = userdao.selectUser(map);
+        System.out.println("user.toString() = " + user.toString());
     }
 
     @Test

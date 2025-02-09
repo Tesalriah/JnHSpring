@@ -1,5 +1,5 @@
 const type = document.getElementsByName('type');
-const radioBtn = document.getElementsByName('select_type');
+const radioBtn = document.getElementsByClassName('radioBtn');
 const typeReturn = document.querySelector('#return');
 const typeExchange = document.querySelector('#exchange');
 const changeSize = document.querySelector('.change_size');
@@ -17,7 +17,6 @@ for(let i=0; i<radioBtn.length; i++){
             reasonReturn.style.display='block';
             reasonExchange.style.display='none';
             initOption.selected='true';
-            
         }
         if(typeExchange.checked){
             type[0].value='exchange';

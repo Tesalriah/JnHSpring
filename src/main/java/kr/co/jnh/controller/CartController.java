@@ -29,17 +29,7 @@ public class CartController {
 
         try {
             List<Cart> cartList = cartService.showCart(id); // 해당 id의 장바구니 모두 가져오기
-            List<Product> productList = new ArrayList<>();
-            for(int i=0; i<cartList.size(); i++){ // 장바구니에 추가된 상품들의 정보 또한 가져오기
-                HashMap map = new HashMap();
-                map.put("product_id", cartList.get(i).getProduct_id());
-                map.put("size", cartList.get(i).getSize());
-                Product product = productService.getProductAtSize(map);
-                product.setQuantity(cartList.get(i).getQuantity());
-                productList.add(product);
-            }
             request.setAttribute("cartList", cartList);
-            request.setAttribute("productList", productList);
             request.setAttribute("sc", sc);
         } catch (Exception e) {
             e.printStackTrace();

@@ -41,6 +41,7 @@
 			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"/>
 		</interceptor>
 		<interceptor>
+			<mapping path="/admin/**"/>
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
@@ -63,10 +64,13 @@
 			<mapping path="/del-cart"/>
 			<mapping path="/del-one-cart"/>
 			<mapping path="/mypage/**"/>
+			<exclude-mapping path="/mypage/wish/add"/>
+			<exclude-mapping path="/mypage/wish/del"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
 		<interceptor>
 			<mapping path="/mypage/**"/>
+			<mapping path="/admin/**"/>
 			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
 		</interceptor>
 	</interceptors>
