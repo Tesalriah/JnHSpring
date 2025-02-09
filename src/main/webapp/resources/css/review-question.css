@@ -194,16 +194,19 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     cursor: pointer;
 }
 .review_paging, .question_paging{
+    margin: 50px 0;
     width: 100%;
     text-align:center;
-    margin-top:50px;
+    display: flex;
+    justify-content: center;
 }
-.review_paging a, .question_paging a{
+.review_paging div, .question_paging div{
     padding:5px;
 }
-.review_paging a:hover, .question_paging a:hover{
+.review_paging div:hover, .question_paging div:hover{
     font-weight:bold;
     color: #FFAEC9;
+    cursor: pointer;
 }
 #questions{
     margin-top: 30px;
@@ -233,4 +236,9 @@ textarea[name='report_contents'], textarea[name='question_contents']{
 }
 .answer_span{
     background-color:#FFAEC9;
+}
+.empty_list{
+    text-align: center;
+    padding: 100px 0;
+    font-size: 24px;
 }

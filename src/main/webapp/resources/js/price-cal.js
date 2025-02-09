@@ -5,13 +5,12 @@ const price = document.getElementsByName('price');
 const total = document.querySelector('#total');
 const tInput = document.getElementsByName('total');
 
+totalPrice = price[0].value * quantity[0].value + 3000;
+totalSet(totalPrice);
+
 function totalSet(result){
     tInput[0].value = result;
     total.innerHTML = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-window.onload = function(){
-    totalPrice = price[0].value * quantity[0].value + 3000;
-    totalSet(totalPrice);
 }
 
 for(let i=0; i<quantity.length; i++){

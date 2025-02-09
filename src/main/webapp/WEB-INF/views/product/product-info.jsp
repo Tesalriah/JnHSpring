@@ -10,6 +10,7 @@
         <script type="text/javascript" src="<c:url value='/resources/js/review-question.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/size-insert.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/scroll-move.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/question.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/add-wish.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
@@ -141,39 +142,6 @@
                         <button type="button">Write</button>
                     </div>
                 </div>
-                <script>
-                    /* 입력된 데이터 Json 형식으로 변경 */
-                    var reqJson = new Object();
-                    reqJson.product_id = product_id[i].value;
-                    reqJson.size = size[i].value;
-                    reqJson.quantity = Number(quantity[i].value) + 1;
-                    /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
-                    var httpRequest = new XMLHttpRequest();
-                    /* httpRequest의 readyState가 변화했을때 함수 실행 */
-                    httpRequest.onreadystatechange = () => {
-                        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                            if (httpRequest.status === 200) {
-                                var result = httpRequest.response;
-                                if(!!result.msg){
-                                    alert(result.msg);
-                                    return false;
-                                }
-                                quantity[i].value = result.quantity;
-                                each_price[i].innerText = (price[i].value * quantity[i].value).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                            } else {
-                                alert(httpRequest.status +  ' Error');
-                            }
-                        }
-                    };
-                    /* Post 방식으로 요청 */
-                    httpRequest.open('POST', '/jnh/set-quantity', true);
-                    /* Response Type을 Json으로 사전 정의 */
-                    httpRequest.responseType = "json";
-                    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
-                    httpRequest.setRequestHeader('Content-Type', 'application/json');
-                    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
-                    httpRequest.send(JSON.stringify(reqJson));
-                </script>
                 <div class="reviews_contents">
                     <div class="reviews_each">
                         <div class="review_top">
@@ -276,19 +244,17 @@
                     <div class="question_modal">
                         <div class="question_title"><div>상품문의</div><div><button id="question_x"><i class="fa-solid fa-xmark"></i></button></div></div>
                         <div class="question_contents">
-                            <form action="" method="post">
-                                <input type="hidden" name="qeustion_id" value="">
-                                <div class="question_product_name">
-                                    <div style="font-weight:bold;">상품명<span style="font-weight:100; margin-left:5px;">상품명</span></div>
-                                </div>
-                                <div style="margin:10px 0;">
-                                    <div style="font-weight:bold;">내용</div>
-                                    <textarea name="question_contents" placeholder="문의사항을 작성해주세요."></textarea>
-                                </div>
-                                <div class="question_button">
-                                    <button type="submit">문의하기</button>
-                                </div>
-                            </form>
+                            <input type="hidden" name="qeustion_id" value="">
+                            <div class="question_product_name">
+                                <div style="font-weight:bold;">상품명<span style="font-weight:100; margin-left:5px;">${product.product_name}</span></div>
+                            </div>
+                            <div style="margin:10px 0;">
+                                <div style="font-weight:bold;">내용</div>
+                                <textarea name="question_contents" placeholder="문의사항을 작성해주세요."></textarea>
+                            </div>
+                            <div class="question_button">
+                                <button type="button" id="write">문의하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -298,81 +264,8 @@
                         <button id="open_question" type="button">Write</button>
                     </div>
                 </div>
-                <div class="questions_contents">
-                    <div class="questions_each">
-                        <div class="question_top">
-                            <span class="question_span">질문</span>asd123<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            질문내용
-                        </div>
-                    </div>
-                    <div class="answer_each">
-                        <div class="question_top">
-                            <span class="answer_span">답변</span>판매자<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            답변내용
-                        </div>
-                    </div>
-                    <div class="questions_each">
-                        <div class="question_top">
-                            <span class="question_span">질문</span>asd123<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            질문내용
-                        </div>
-                    </div>
-                    <div class="answer_each">
-                        <div class="question_top">
-                            <span class="answer_span">답변</span>판매자<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            답변내용
-                        </div>
-                    </div>
-                    <div class="questions_each">
-                        <div class="question_top">
-                            <span class="question_span">질문</span>asd123<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            질문내용
-                        </div>
-                    </div>
-                    <div class="answer_each">
-                        <div class="question_top">
-                            <span class="answer_span">답변</span>판매자<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            답변내용
-                        </div>
-                    </div>
-                    <div class="questions_each">
-                        <div class="question_top">
-                            <span class="question_span">질문</span>asd123<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            질문내용
-                        </div>
-                    </div>
-                    <div class="answer_each">
-                        <div class="question_top">
-                            <span class="answer_span">답변</span>판매자<div style="float: right; font-weight:100;">2024-01-01</div>
-                        </div>
-                        <div class="question_bottom">
-                            답변내용
-                        </div>
-                    </div>
-                </div>
-                <div class="question_paging">
-                    <a href=""><i class="fa-solid fa-angle-left"></i></a>
-                    <a href="">1</a>
-                    <a href="">2</a>
-                    <a href="">3</a>
-                    <a href="">4</a>
-                    <a href="">5</a>
-                    <a href=""><i class="fa-solid fa-angle-right"></i></a>
-                </div>
+                <div class="questions_contents"></div>
+                <div class="question_paging"></div>
             </div>
         </div>
         </div>

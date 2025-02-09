@@ -78,7 +78,6 @@ public class AskingController {
             // 현재 no를 기준으로 앞뒤 2개의 게시물 bno 확인
             // Map형태로 arr0(이후후) arr1(이후) arr2(현재) arr3(이전) arr4(이전전) 게시물을의 bno 반환
             Map<String, Object> getBno=askingService.getPrevNext(map);
-            System.out.println("getBno = " + getBno);
             // 게시물 리스트와 이전/다음 게시물 번호 초기화
             List<AskingDto> list = new ArrayList<>();
             ArrayList<Integer> arr = new ArrayList<>();
@@ -103,7 +102,6 @@ public class AskingController {
             } if (getBno.get("arr1") != null) {
                 prevNext[1]=Integer.parseInt(getBno.get("arr1").toString());
             }
-            System.out.println("list = " + list);
             m.addAttribute("list", list);
             m.addAttribute("prevNext",prevNext);
             m.addAttribute("sc", sc);
@@ -155,7 +153,7 @@ public class AskingController {
             // 필수값을 다 넣어주기 위해 작성
             int no = askingService.readNo();
             askingDto.setNo(no+1);  //마지막 숫자+1 해서 no지정
-            askingDto.setCno(1);    // 문의글 작성 시 기본값 0(대기중)
+            askingDto.setCno(1);    // 문의글 작성 시 기본값 1(대기중)
             askingDto.setUser_id(id);
             askingDto.setState(0);  // 문의글 작성 시 기본값 0(대기중)
 
