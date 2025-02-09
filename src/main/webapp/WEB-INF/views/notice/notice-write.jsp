@@ -64,7 +64,7 @@
                                         <button type="submit" onclick="confirm('등록하시겠습니까?')">등록</button>
                                     </c:otherwise>
                                 </c:choose>
-                                <button type="button" OnClick="if(confirm('취소하시겠습니까?') == true){ location.href = '+ <c:url value="/notice/list"/> +'; }">취소</button>
+                                <button type="button" OnClick="if(confirm('취소하시겠습니까?') == true){ location.href ='<c:url value="/notice/list"/>${sc.optionQueryString}';}">취소</button>
                             </div>
                         </form>
                     </div>

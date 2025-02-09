@@ -51,10 +51,10 @@ public class NoticeController {
             e.printStackTrace();
         }
 
-        // 필독이 체크됐을때 0이라는 값을 할당 아닐 시 1
+        // 필독이 체크됐을때 0이라는 값을 할당, 아닐 시 1
         String mustread = request.getParameter("mustread");
         int mRead = mustread != null ? 0 : 1;
-        noticeDto.setId(id);
+        noticeDto.setUser_id(id);
         noticeDto.setMust_read(mRead);
         try {
             // 필수 값이 비어있는지 확인 비어있을 시 작성페이지로 이동
@@ -63,7 +63,7 @@ public class NoticeController {
             }
             // 필독은 최대 5개까지 가능 5개 초과시 Exception발생
             int mcount = noticeService.Mcount();
-            if(mcount >= 5){
+            if(mRead==0 && mcount >= 5){
                 throw new Exception("MUST_READ_5");
             }
             if(noticeService.write(noticeDto) == 1){
@@ -85,6 +85,7 @@ public class NoticeController {
                    m.addAttribute("msg", e.getMessage());
                }else {
                    m.addAttribute("msg", "WRT_FAIL");
+
                }
                if(noticeDto.getMust_read() == 0){ // 필독 체크상태 전송
                    m.addAttribute("checkBox", "1");
