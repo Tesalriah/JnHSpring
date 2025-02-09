@@ -27,10 +27,10 @@
                     <li><a href="<c:url value="/notice/list" />">SERVICE</a></li>
                     <c:if test="${grade == 0}">
                         <li class="gender_on">
-                            <a href="">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                            <a href="<c:url value="/admin/product"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                             <ul class="submenu_nav" >
                                 <li><a href="">유저관리</a></li>
-                                <li><a href="">상품관리</a></li>
+                                <li><a href="<c:url value="/admin/product"/>">상품관리</a></li>
                             </ul>
                         </li>
                     </c:if>
@@ -46,7 +46,16 @@
                         </form>
                     </div>
                 </div>
-                <div><a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a></div>
+                <div id="user_util">
+                    <a href="<c:url value='${mypageLink}'/>"><i class="fa-solid fa-user"></i></a>
+                    <c:if test="${mypageLink != '/login'}">
+                        <ul class="user_menu" >
+                            <li><a href="<c:url value="/mypage/order/list"/>">주문목록</a></li>
+                            <li><a href="<c:url value="/mypage/return/list"/>">취소/반품</a></li>
+                            <li><a href="<c:url value="/mypage/wish/list"/>">찜 목록</a></li>
+                        </ul>
+                    </c:if>
+                </div>
                 <div><a href="<c:url value="/cart"/>${empty ph ? sc.queryString : ph.sc.queryString}"><i class="fa-solid fa-cart-shopping"></i></a></div>
                 <div style="font-size:20px;"><a href="<c:url value='${logOutLink}'/>">${logOut}</a></div>
             </div>

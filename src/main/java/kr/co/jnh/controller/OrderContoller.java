@@ -1,99 +1,129 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.domain.Order;
+import kr.co.jnh.domain.*;
 import kr.co.jnh.service.OrderService;
+import kr.co.jnh.service.ProductService;
+import kr.co.jnh.service.ReturnsService;
+import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
+@RequestMapping("/mypage/order")
 public class OrderContoller {
 
     @Autowired
     OrderService orderService;
 
-    // 상품 결제 처리
-    @PostMapping("buy")
-    public String buy(Order order, String quantity, String address2, HttpServletRequest request, HttpServletResponse response){
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    ReturnsService returnsService;
+
+    @Autowired
+    UserService userService;
+
+    // 주문목록 가져오기
+    @GetMapping("list")
+    public String mypage(HttpServletRequest request, SearchCondition sc, Model m) {
         String id = SessionIdUtil.getSessionId(request);
+        sc.setPageSize(5); // 한 페이지에 5개의 주문
+        HashMap map = new HashMap();
+        map.put("id", id);
+        map.put("sc", sc);
 
-        // 하나이상의 주문을 각각 처리하기 위해 배열에 나눠서 저장
-        String[] product_id = order.getProduct_id().split(",");
-        String[] size = order.getSize().split(",");
-        String[] quan = quantity.split(",");
-        // 선택된 주문요청사항이 없을시 이전페이지로
-        if(order.getDel_request().equals("")) {
-            String referer = request.getHeader("referer");
-            try {
-                response.sendRedirect(referer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        order.setUser_id(id);
-        // 상세주소를 입력했을 시 추가
-        if(!address2.isBlank()){
-            order.setAddress( order.getAddress() + address2);
-        }
-        // 현재날짜 + 001~999까지의 세자리 수로 주문번호 만들기
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String today = format.format(date);
-        long order_no;
+        List<List<Order>> orderList = new ArrayList<>(); // 하나의 주문에 여러가지 상품이 있을 수도 있으므로 List<Order>를 리스트로 덮어서 분류
         try {
-            // 현재날짜의 주문이 있을 시 마지막 번호 다음번호로 주문번호 생성
-            if(orderService.orderIdCheck(today)){
-                String str = orderService.returnId(today);
-                order_no = Long.parseLong(str) + 1;
-                // 최대 999개의 주문번호 수용
-                if(order_no + "" == today + "999"){
-                    throw new Exception("ORDER_NO_LIMITED");
-                }
-            }else{  // 현재날짜 주문이 없을시 첫번째 주문번호 생성
-                order_no = Long.parseLong(today + "001");
-            }
-            order.setOrder_no(order_no + "");
-            // list에 주문 상품 순서대로 저장
-            List<Order> list = new ArrayList<>();
-            for (int i = 0; i < product_id.length; i++) {
-                Order trigger = new Order(order.getUser_id(),order.getName(),order.getAddress(),
-                        order.getPhone(), order.getDel_request(), order.getOrder_no()); // 공통된 항목 trigger에 저장
-                // 하나 또는 그 이상의 주문상품 저장부분
-                trigger.setProduct_id(product_id[i]);
-                trigger.setSize(size[i]);
-                trigger.setQuantity(Integer.parseInt(quan[i]));
-                // 품절된 상품 확인
-                if(orderService.checkStock(product_id[i], quan[i], size[i])){
-                    request.setAttribute("msg", "상품번호 : " + product_id[i] + " 상품이 품절되었거나 재고가 모자릅니다. 확인 후 다시 시도해주세요.");
-                    request.setAttribute("url", "product-list");
-                    return "alert";
-                }
+            int totalCnt = orderService.readCnt(map); // 페이징 처리를 하기위해 해당 id의 총 주문의 갯수
+            PageHandler ph = new PageHandler(totalCnt, sc); // 총 주문갯수를 SearchCondition에 따라 PageHandler로 페이징 처리
 
-                list.add(trigger);
+            List<Order> list = orderService.read(map); // 일단 SearchCondition에 따른 해당 아이디의 5개의 다른 주문번호의 정보 가져오기
+            for (int i = 0; i < list.size(); i++) {
+                // 각 주문번호의 주문상품들을 each에 추가
+                map.put("order_no", list.get(i).getOrder_no());
+                List<Order> each = orderService.readOne(map);
+                map.remove("order_no"); // 할당된 order_no 초기화
+                orderList.add(each);
             }
+            m.addAttribute("orderList", orderList);
+            m.addAttribute("totalCnt", totalCnt);
+            m.addAttribute("ph", ph);
 
-            // 주문처리
-            if(orderService.buy(list) != 1){
-                throw new Exception("BUY_FAIL");
-            }
-            request.setAttribute("msg", "주문완료");
-            request.setAttribute("url", "mypage/order-list");
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("msg", "주문에 실패했습니다.");
-            request.setAttribute("url", "product-list");
         }
-        return "alert";
+        return "mypage/order-list";
+    }
+
+    // 해당 주문정보 가져오기
+    @GetMapping("detail")
+    public String orderDetail(@RequestParam(required = false) String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m) {
+        if (order_no == null) { // 받아온 order_no이 없을때 list로 리다이렉트
+            return "redirect:/mypage/order/list?page=" + page;
+        }
+        String id = SessionIdUtil.getSessionId(request);
+        Map map = new HashMap();
+        map.put("id", id);
+        map.put("order_no", order_no);
+
+        try {
+            int total = 0; // 총 상품가격
+            List<Order> orderList = orderService.readOne(map); // 한 주문번호의 주문 상품들을 가져오기
+            for(Order order : orderList){
+                if(order.getStatus().equals("삭제처리")){
+                    m.addAttribute("msg", "삭제된 주문입니다.");
+                    m.addAttribute("url", "list?page=" + page);
+                    return "alert";
+                }
+                total += order.getProduct().getTotal();
+            }
+            if(orderList.isEmpty()){
+                throw new Exception("WRONG_APPROACH");
+            }
+            m.addAttribute("orderList", orderList);
+            m.addAttribute("total", total);
+            m.addAttribute("page", page);
+            return "mypage/order-detail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg", "잘못된 접근입니다.");
+            m.addAttribute("url","list?page=" + page);
+            return "alert";
+        }
+    }
+
+    // 주문 삭제처리
+    @PostMapping("del")
+    public String orderDel(@RequestParam String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m) {
+        String id = SessionIdUtil.getSessionId(request);
+        Map map = new HashMap();
+        map.put("id", id);
+        map.put("order_no", order_no);
+        map.put("status", "삭제처리");
+
+        // 해당 주문번호의 status를 모두 삭체처리로 update
+        try {
+            if (orderService.updete(map) <= 0) { // update 실패 시 Exception 발생
+                throw new Exception("ORDER_DEL_FAIL");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg", "삭제에 실패했습니다.");
+            m.addAttribute("url", "list?page=" + page);
+            return "alert";
+        }
+        return "redirect:/mypage/order/list?page=" + page;
     }
 
 }

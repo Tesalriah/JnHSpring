@@ -49,6 +49,13 @@ input[type="submit"]{
     border-radius: 2px;
     padding:5px 10px;
 }
+#empty_list{
+    text-align: center;
+    width: 100%;
+    padding: 67px 0;
+    font-weight:bold;
+    font-size: 18px;
+}
 .wish_list li{
     display:flex;
     padding:10px 5px;
@@ -65,9 +72,12 @@ input[type="submit"]{
 }
 .product_info{
     padding:20px;
-    width:80%;
+    width:65%;
     font-size:15px;
     font-weight:bold;
+}
+.product_size{
+    width:15%
 }
 .list_button button:hover{
     cursor:pointer;
@@ -83,12 +93,14 @@ input[type="submit"]{
 }
 .paging{
     text-align:center;
-    margin-top:50px;
-    margin-bottom:100px;
-}
-.paging a:hover{
+    font-size: 18px;
     font-weight:bold;
+    margin-top:50px;
+    margin-bottom: 200px;
 }
 .paging a{
-    padding:5px;
+    padding:10px;
+}
+.paging a:hover{
+    color:#FFAEC9;
 }

@@ -30,27 +30,28 @@
                     <div class="order_list">
                         <div class="order">
                             <div class="order_top"><div><fmt:formatDate value="${orderList[0].order_date}" pattern="yyyy.MM.dd"/> 주문</div><div></div></div>
-                            <form action="" method="post">
+                            <form method="post">
                             <div class="order_contents">
                                 <div class="order_img">
-                                    <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
-                                        <img src="<c:url value="/resources/img/upload/${productList[orderStatus.index].product_id}/${productList[orderStatus.index].image}"/>">
+                                    <c:forEach var="order" items="${orderList}">
+                                        <img src="<c:url value="/resources/img/upload/product-img/${order.product.product_id}/${order.product.image}"/>">
                                     </c:forEach>
                                 </div>
+                                <input type="hidden" name="order_no" value="${orderList[0].order_no}">
                                 <div class="order_status">
-                                    <c:forEach var="order" items="${orderList}" varStatus="orderStatus">
+                                    <c:forEach var="order" items="${orderList}">
                                         <input type="hidden" name="product_id" value="${order.product_id}">
                                         <input type="hidden" name="size" value="${order.size}">
                                         <input type="hidden" name="quantity" value="${order.quantity}">
                                         <div>${order.status}</div>
-                                        <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${productList[orderStatus.index].product_name} / ${productList[orderStatus.index].color} / ${order.size}</a></div>
-                                        <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${productList[orderStatus.index].total}"/>원 / ${order.quantity}개</div>
+                                        <div><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${order.product.product_name} / ${order.product.color} / ${order.size}</a></div>
+                                        <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${order.product.total}"/>원 / ${order.quantity}개</div>
                                     </c:forEach>
                                 </div>
                                 <div class="order_button">
-                                        <div><button type="submit" formaction="<c:url value="/mypage/repurchase"/>">재구매</button></div>
-                                        <div><button type="submit" formaction="">교환, 반품신청</button></div>
-                                        <div><button type="button">리뷰작성</button></div>
+                                        <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
+                                        <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${param.page}">교환, 반품신청</button></div>
+                                        <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/able"/>'">리뷰작성</button></div>
                                 </div>
                             </div>
                             </form>
@@ -97,8 +98,8 @@
                         </div>
                     </div>
                     <div class="order_detail_button">
-                        <button type="button" onclick="location.href = '<c:url value="/mypage/order-list"/>?page=${page}'">주문목록 돌아가기</button>
-                        <form action="<c:url value="/mypage/order-del"/>?page=${page}" method="post"><button type="submit" onclick="return confirm('함께 결제된 주문상품은 전체 삭제되며, 복구할 수 없습니다. 주문내역을 삭제하시겠습니까?')">주문내역 삭제</button><input type="hidden" name="order_no" value="${param.order_no}"> </form>
+                        <button type="button" onclick="location.href = '<c:url value="/mypage/order/list"/>?page=${page}'">주문목록 돌아가기</button>
+                        <form action="<c:url value="/mypage/order/del"/>?page=${page}" method="post"><button type="submit" onclick="return confirm('함께 결제된 주문상품은 전체 삭제되며, 복구할 수 없습니다. 주문내역을 삭제하시겠습니까?')">주문내역 삭제</button><input type="hidden" name="order_no" value="${param.order_no}"> </form>
                     </div>
                     <div class="guide">
                         <div>배송상품 주문상태 안내</div>

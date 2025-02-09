@@ -21,6 +21,36 @@
 .name, .price{
     font-size:24px;
 }
+.name{
+    display: flex;
+    justify-content: space-between;
+}
+#heart:hover{
+    cursor: pointer;
+}
+.wish_btn{
+    position: relative;
+    margin-right:30px;
+    color: red;
+}
+.wish_btn:hover{
+    cursor: pointer;
+}
+#heart{
+    position: absolute;
+    z-index: 0;
+}
+#wish_cnt{
+    position: absolute;
+    font-size: 9px;
+    top: 7px;
+    left: -0.5px;
+    width: 25px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    pointer-events: none;
+}
 .price{
     padding-bottom:40px;
     padding-top:25px;

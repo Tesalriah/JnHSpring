@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.ReturnsMapper">
+    <select id="selectAll" parameterType="String" resultType="Returns">
+        SELECT * FROM returns
+        GROUP BY return_id
+        ORDER BY return_id desc
+    </select>
+
+    <select id="selectOne" parameterType="String" resultType="Returns">
+        SELECT * FROM returns
+        WHERE return_id = #{return_id}
+        ORDER BY product_id asc
+    </select>
+
+    <insert id="insert" parameterType="Returns">
+        INSERT INTO returns
+            (return_id, user_id, address ,order_no, product_id, type, size, quantity, order_date, reason, contents, c_size)
+        VALUE
+            (#{return_id}, #{user_id}, #{address} ,#{order_no}, #{product_id}, #{type}, #{size}, #{quantity}, #{order_date}, #{reason}, #{contents}, #{c_size})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM returns
+        WHERE return_id = #{return_id}
+    </delete>
+
+    <update id="update" parameterType="Map">
+        UPDATE returns
+        SET status = #{status}
+        WHERE return_id = #{return_id}
+    </update>
+
+    <select id="selectPage" parameterType="Map" resultType="Returns">
+        SELECT * FROM returns
+        WHERE user_id = #{id}
+        GROUP BY return_id
+        ORDER BY return_id desc
+        LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+
+    <select id="selectPageCnt" parameterType="String" resultType="int">
+        SELECT count(distinct return_id) FROM returns
+        WHERE user_id = #{id}
+        ORDER BY return_id desc
+    </select>
+
+    <select id="selectId" parameterType="String" resultType="String">
+        SELECT return_id FROM returns
+        WHERE return_id LIKE CONCAT(#{return_id}, '%') ORDER BY return_id DESC LIMIT 1
+    </select>
+</mapper>

@@ -46,14 +46,18 @@
 .search_option > a:not(.search_option > a:last-child){
     border-right: 1px solid #999999;
 }
-.product_line{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:10px;
+#empty_list{
+    text-align: center;
+    padding: 90px 0;
+    font-size: 24px;
 }
-.product_line > div{
-    width:31%;
+.product_line{
+    width: 100%;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom:10px;
 }
 .product{
     transition: 0.2s;
@@ -78,13 +82,23 @@
 }
 .detail div:first-child{
     font-size:22px;
-    margin-top:25px;
+    margin-top:20px;
 }
-.detail div:last-child{
+.detail div:nth-child(2){
     font-size:18px;
     color: #FFAEC9;
     font-weight:bold;
-    margin-top:18px;
+    margin-top:10px;
+}
+.detail > div:last-child{
+    font-size:18px;
+    margin-top:10px;
+}
+.star{
+    color:rgb(250, 146, 0);
+}
+.heart{
+    color:rgb(243, 17, 16);
 }
 del{
     color:#cccccc;

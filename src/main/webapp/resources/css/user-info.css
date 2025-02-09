@@ -36,21 +36,20 @@
     border:1px solid #999999;
     padding:5px;
 }
-input[name='user_address']{
+input[name='address'], input[name='address2']{
     border:1px solid #999999;
     font-size: 18px;
     padding:5px;
     width: 70%;
-    color: #cccccc;
 }
-#change_address{
+#change_address, #change_address2{
     font-size: 18px;
     padding:6px 10px;
     margin-left:5px;
     background-color: #FFAEC9;
     color: #ffffff;
 }
-#change_address:hover{
+#change_address:hover, #change_address2:hover{
     cursor: pointer;
 }
 .right{
@@ -71,13 +70,14 @@ input[name='user_address']{
     font-weight: bold;
     color: #ffffff;
     background-color: #FFAEC9;
+    border: 1px solid #FFAEC9;
     padding:5px 15px;
 }
 .edit_button button:hover, #withdrawal:hover{
     cursor: pointer;
 }
 #user_pwd{
-    border:1px solid #999999;
+    border:1px solid #cccccc;
     padding:5px;
     width: 30%;
 }
@@ -94,11 +94,12 @@ input[name='user_address']{
 }
 .check_pwd button[type='submit']{
     color: #ffffff;
+    border: 1px solid #FFAEC9;
     background-color: #FFAEC9;
     padding:5px 15px;
 }
 .check_pwd button[type='button']{
-    border:1px solid #999999;
+    border:1px solid #cccccc;
     background-color: #ffffff;
     padding:4px 14px;
 }

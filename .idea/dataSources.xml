@@ -16,6 +16,7 @@
     <data-source source="LOCAL" name="jnh@localhost [2]" uuid="b2229ee2-3379-4dce-9791-d2254d33e268">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
+      <isolation>4</isolation>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/jnh</jdbc-url>
       <jdbc-additional-properties>

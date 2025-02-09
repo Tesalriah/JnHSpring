@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.WishMapper">
+    <select id="selectAll" resultType="Wish">
+        SELECT * FROM wish
+    </select>
+
+    <select id="selectOne" parameterType="Wish" resultType="Wish">
+        SELECT * FROM wish
+        WHERE user_id = #{user_id} AND product_id = #{product_id}
+    </select>
+
+    <insert id="insert" parameterType="Wish">
+        INSERT INTO wish
+            (user_id, product_id)
+        VALUE
+            (#{user_id}, #{product_id})
+    </insert>
+
+    <delete id="delete" parameterType="Wish">
+        DELETE FROM wish
+        WHERE user_id = #{user_id} AND product_id = #{product_id};
+    </delete>
+    
+    <select id="selectPageCnt" parameterType="String" resultType="int">
+        SELECT count(*) FROM wish
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="selectPage" parameterType="Map" resultType="Wish">
+        SELECT * FROM wish
+        WHERE user_id = #{id}
+        ORDER BY no desc
+        LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+</mapper>

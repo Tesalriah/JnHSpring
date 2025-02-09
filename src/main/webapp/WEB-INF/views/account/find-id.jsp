@@ -84,7 +84,7 @@
 
         $.ajax({
             type:'POST',       // 요청 메서드
-            url: '/jnh/idAuth',  // 요청 URI
+            url: '/jnh/id-auth',  // 요청 URI
             headers : { "content-type": "application/json"}, // 요청 헤더
             data : JSON.stringify({"user_name":nameVal, "email":emailVal}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
             success : function(data){
