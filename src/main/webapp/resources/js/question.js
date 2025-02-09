@@ -33,44 +33,47 @@ function sendReqeust(page){
                 var result = httpRequest.response;
                 var list = result.list;
                 var ph = result.ph;
-
-                contents.innerHTML = '';
-                // 리스트를 가져오는 function
-                for(let i=0; i<list.length; i++) {
-                    if (list[i].ano != 2) {
-                        contents.innerHTML += '<div class="questions_each">'
-                            + '<div class="question_top">'
-                            + '<span class="question_span">질문</span>' + list[i].user_id + '<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
-                            + '</div>'
-                            + '<div class="question_bottom">'
-                            + list[i].contents
-                            + '</div>'
-                            + '</div>';
-                    } else {
-                        contents.innerHTML += '<div class="answer_each">'
-                            + '<div class="question_top">'
-                            + '<span class="answer_span">답변</span>관리자<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
-                            + '</div>'
-                            + '<div class="question_bottom">'
-                            + list[i].contents
-                            + '</div>'
-                            + '</div>';
-                    }
-                }
-                if(ph.totalPage > 0){
-                    paging.innerHTML = '';
-                    if(ph.showPrev){
-                        paging.innerHTML += '<div data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></div>';
-                    }
-                    for(let i=ph.beginPage; i<=ph.endPage; i++){
-                        if(i == currentPage){
-                            paging.innerHTML += '<div onclick="sendReqeust(' + i +')" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</div>';
-                        }else {
-                            paging.innerHTML += '<div onclick="sendReqeust(' + i +')">' + i +'</div>';
+                if(ph.totalCnt <= 0){
+                    contents.innerHTML += '<div class="empty_list">작성된 문의가 없습니다.</div>';
+                }else{
+                    contents.innerHTML = '';
+                    // 리스트를 가져오는 function
+                    for(let i=0; i<list.length; i++) {
+                        if (list[i].ano != 2) {
+                            contents.innerHTML += '<div class="questions_each">'
+                                + '<div class="question_top">'
+                                + '<span class="question_span">질문</span>' + list[i].user_id + '<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
+                                + '</div>'
+                                + '<div class="question_bottom">'
+                                + list[i].contents
+                                + '</div>'
+                                + '</div>';
+                        } else {
+                            contents.innerHTML += '<div class="answer_each">'
+                                + '<div class="question_top">'
+                                + '<span class="answer_span">답변</span>관리자<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
+                                + '</div>'
+                                + '<div class="question_bottom">'
+                                + list[i].contents
+                                + '</div>'
+                                + '</div>';
                         }
                     }
-                    if(ph.showNext){
-                        paging.innerHTML += '<div data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></div>';
+                    if(ph.totalPage > 0){
+                        paging.innerHTML = '';
+                        if(ph.showPrev){
+                            paging.innerHTML += '<div data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></div>';
+                        }
+                        for(let i=ph.beginPage; i<=ph.endPage; i++){
+                            if(i == currentPage){
+                                paging.innerHTML += '<div onclick="sendReqeust(' + i +')" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</div>';
+                            }else {
+                                paging.innerHTML += '<div onclick="sendReqeust(' + i +')">' + i +'</div>';
+                            }
+                        }
+                        if(ph.showNext){
+                            paging.innerHTML += '<div data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></div>';
+                        }
                     }
                 }
             } else {
@@ -120,6 +123,7 @@ write_btn.addEventListener('click', function (){
                     qModal.style.display='none';
                     q_contents.value = '';
                     sendReqeust(1);
+                    body.style.overflow='visible';
                 }
             } else {
                 alert(httpRequest.status +  ' Error');

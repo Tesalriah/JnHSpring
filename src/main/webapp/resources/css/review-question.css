@@ -237,3 +237,8 @@ textarea[name='report_contents'], textarea[name='question_contents']{
 .answer_span{
     background-color:#FFAEC9;
 }
+.empty_list{
+    text-align: center;
+    padding: 100px 0;
+    font-size: 24px;
+}

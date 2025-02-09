@@ -1,6 +1,5 @@
 const heart = document.getElementById('heart');
 const wishBtn = document.querySelector('.wish_btn');
-const product_id = document.querySelector('[name="product_id"]');
 const wishCnt = document.getElementById('wish_cnt');
 
 wishBtn.addEventListener('click', function(){
@@ -17,6 +16,7 @@ var reqJson = new Object();
 reqJson.product_id = product_id.value;
 
 function setWish(type){
+    console.log("asdasd");
     /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
     var httpRequest = new XMLHttpRequest();
     /* httpRequest의 readyState가 변화했을때 함수 실행 */
