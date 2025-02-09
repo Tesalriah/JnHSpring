@@ -12,5 +12,6 @@
         <typeAlias alias="Order" type="kr.co.jnh.domain.Order"/>
         <typeAlias alias="AskingDto" type="kr.co.jnh.domain.AskingDto"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
+        <typeAlias alias="Question" type="kr.co.jnh.domain.Question"/>
     </typeAliases>
 </configuration>

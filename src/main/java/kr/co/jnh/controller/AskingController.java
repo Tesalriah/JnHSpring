@@ -155,7 +155,7 @@ public class AskingController {
             // 필수값을 다 넣어주기 위해 작성
             int no = askingService.readNo();
             askingDto.setNo(no+1);  //마지막 숫자+1 해서 no지정
-            askingDto.setCno(1);    // 문의글 작성 시 기본값 0(대기중)
+            askingDto.setCno(1);    // 문의글 작성 시 기본값 1(대기중)
             askingDto.setUser_id(id);
             askingDto.setState(0);  // 문의글 작성 시 기본값 0(대기중)
 
