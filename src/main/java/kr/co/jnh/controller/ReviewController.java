@@ -238,4 +238,12 @@ public class ReviewController {
         }
         return "alert";
     }
+
+    @GetMapping("list")
+    public Map<String, Object> productReviewList(Map<String, Object> map, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
+        map.put("whether", 1);
+
+        return map;
+    }
 }
