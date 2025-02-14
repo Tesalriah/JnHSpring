@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/mypage/review")
+@RequestMapping("mypage/review")
 public class ReviewController {
     @Autowired
     private ReviewService reviewService;
@@ -239,10 +239,27 @@ public class ReviewController {
         return "alert";
     }
 
-    @GetMapping("list")
-    public Map<String, Object> productReviewList(Map<String, Object> map, HttpServletRequest request){
+    @PostMapping("list")
+    @ResponseBody
+    public Map<String, Object> list(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
+        // map에 product_id가 담겨있음
+        sc.setPageSize(5); // 한 페이지에 보여주는 리뷰 5개
+        sc.setPage((int)map.get("page")); // 현재 요청 page 대입
+        map.put("sc",sc);
         map.put("whether", 1);
+
+        try {
+            int totalCnt = reviewService.selectPageCnt(map);
+            List<Review> list = reviewService.selectPage(map);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            map.put("list", list);
+            map.put("ph", ph);
+            map.put("id", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return map;
     }

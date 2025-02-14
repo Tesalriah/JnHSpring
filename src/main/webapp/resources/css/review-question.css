@@ -169,7 +169,6 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     position: absolute;
     top:0;
     left: 0;
-    width:91%;
     white-space: nowrap;
     overflow: hidden;
     color:#FFAEC9;

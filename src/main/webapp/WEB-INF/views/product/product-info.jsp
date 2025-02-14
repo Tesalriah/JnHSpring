@@ -11,6 +11,7 @@
         <script type="text/javascript" src="<c:url value='/resources/js/size-insert.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/scroll-move.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/question.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/review.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/add-wish.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
@@ -142,99 +143,8 @@
                         <button type="button">Write</button>
                     </div>
                 </div>
-                <div class="reviews_contents">
-                    <div class="reviews_each">
-                        <div class="review_top">
-                            <div class="id">asd123<input name='review_id' type="hidden" value="asd123"></div>
-                            <div class="reviews_tools"><div class="edit_del" style="font-size: 14px;"><a href="#">수정</a>|<a href="#">삭제</a></div><button style="display:none;" class="report_open_btn" type="button">신고하기</button></div>
-                        </div>
-                        <div class="review_middle" style="display:flex; align-items: center;">
-                            <div class="rating">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            </div>
-                            <div class="reviews_date">2024/01/01</div>
-                        </div>
-                        <div class="review_bottom">
-                            <div>
-                                <div class="review_img"><img class="each_img" src="img/best.jpg"></div>
-                                리뷰내용
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reviews_each">
-                        <div class="review_top"><div class="id">zxc123<input name='review_id' type="hidden" value="zxc123"></div><div class="reviews_tools"><button class="report_open_btn" type="button">신고하기</button></div></div>
-                        <div class="review_middle" style="display:flex; align-items: center;">
-                            <div class="rating">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            </div>
-                            <div class="reviews_date">2024/01/01</div>
-                        </div>
-                        <div class="review_bottom">
-                            <div>
-                                <div class="review_img"><img class="each_img" src="img/weekly.jpg"></div>
-                                리뷰내용
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reviews_each">
-                        <div class="review_top"><div class="id">qeqe111<input name='review_id' type="hidden" value="qeqe111"></div><div class="reviews_tools"><button class="report_open_btn" type="button">신고하기</button></div></div>
-                        <div class="review_middle" style="display:flex; align-items: center;">
-                            <div class="rating">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            </div>
-                            <div class="reviews_date">2024/01/01</div>
-                        </div>
-                        <div class="review_bottom">
-                            <div>
-                                <div class="review_img"><img class="each_img" src="img/main1.jpg"></div>
-                                리뷰내용
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reviews_each">
-                        <div class="review_top"><div class="id">asd123<input name='review_id' type="hidden" value="asd123"></div><div class="reviews_tools"><button class="report_open_btn" type="button">신고하기</button></div></div>
-                        <div class="review_middle" style="display:flex; align-items: center;">
-                            <div class="rating">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            </div>
-                            <div class="reviews_date">2024/01/01</div>
-                        </div>
-                        <div class="review_bottom">
-                            <div>
-                                리뷰내용
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reviews_each">
-                        <div class="review_top"><div class="id">qeqe111<input name='review_id' type="hidden" value="qeqe111"></div><div class="reviews_tools"><button class="report_open_btn" type="button">신고하기</button></div></div>
-                        <div class="review_middle" style="display:flex; align-items: center;">
-                            <div class="rating">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            </div>
-                            <div class="reviews_date">2024/01/01</div>
-                        </div>
-                        <div class="review_bottom">
-                            <div>
-                                <div class="review_img"><img class="each_img" src="img/men.jpg"></div>
-                                리뷰내용
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review_paging">
-                    <a href=""><i class="fa-solid fa-angle-left"></i></a>
-                    <a href="">1</a>
-                    <a href="">2</a>
-                    <a href="">3</a>
-                    <a href="">4</a>
-                    <a href="">5</a>
-                    <a href=""><i class="fa-solid fa-angle-right"></i></a>
-                </div>
+                <div class="reviews_contents"></div>
+                <div class="review_paging"></div>
             </div>
             <!-- 문의 -->
             <div id="questions">

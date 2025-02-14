@@ -2,21 +2,16 @@ package kr.co.jnh.controller;
 
 
 import kr.co.jnh.dao.AskingDao;
-import kr.co.jnh.domain.AskingDto;
-import kr.co.jnh.domain.NoticeDto;
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.SearchCondition;
+import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
 import kr.co.jnh.service.NoticeService;
+import kr.co.jnh.service.QuestionService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -235,10 +230,58 @@ public class AskingController {
         }
     }
 
+    /*@Autowired
+    QuestionService questionService;
+    @GetMapping("question")
+    public String questionList(){
+//        String id = SessionIdUtil.getSessionId(request);
+//        Map<String, Object> map = new HashMap();
+//
+//        // page = 1, pageSize = 10
+//
+//        map.put("user_id", id);
+//        map.put("sc", sc);
+//        try {
+//            int totalCnt = questionService.getCount(map);
+//            List<Question> list = questionService.readInfo(map);
+//            PageHandler ph = new PageHandler(totalCnt, sc);
+//
+//            m.addAttribute("list", list);
+//            m.addAttribute("ph", ph);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+
+        return "question-list";
+    }*/
+
+    /*@PostMapping("question/list")
+    @ResponseBody
+    public Map<String, Object> questionList(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
+
+        sc.setPage((int)map.get("page"));
+        map.put("sc", sc);
+        map.put("user_id", id);
+
+        try{
+            int cnt = questionService.getCount(map);
+            List<Question> list = questionService.readInfo(map);
+
+            PageHandler ph = new PageHandler(cnt, sc);
+
+            map.put("list", list);
+            map.put("ph", ph);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return map;
+    }*/
+
     private boolean askingRequired(AskingDto askingDto) {
         return askingDto.getTitle() == null || askingDto.getTitle().isBlank()
                 || askingDto.getContents() == null || askingDto.getContents().isBlank();
     }
-
 
 }

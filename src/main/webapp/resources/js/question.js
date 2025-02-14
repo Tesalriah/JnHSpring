@@ -60,20 +60,20 @@ function sendReqeust(page){
                         }
                     }
                     if(ph.totalPage > 0){
-                        paging.innerHTML = '';
-                        if(ph.showPrev){
-                            paging.innerHTML += '<div data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></div>';
-                        }
-                        for(let i=ph.beginPage; i<=ph.endPage; i++){
-                            if(i == currentPage){
-                                paging.innerHTML += '<div onclick="sendReqeust(' + i +')" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</div>';
-                            }else {
-                                paging.innerHTML += '<div onclick="sendReqeust(' + i +')">' + i +'</div>';
+                            paging.innerHTML = '';
+                            if(ph.showPrev){
+                                paging.innerHTML += '<div data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></div>';
                             }
-                        }
-                        if(ph.showNext){
-                            paging.innerHTML += '<div data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></div>';
-                        }
+                            for(let i=ph.beginPage; i<=ph.endPage; i++){
+                                if(i == currentPage){
+                                    paging.innerHTML += '<div onclick="sendReqeust(' + i +')" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</div>';
+                                }else {
+                                    paging.innerHTML += '<div onclick="sendReqeust(' + i +')">' + i +'</div>';
+                                }
+                            }
+                            if(ph.showNext){
+                                paging.innerHTML += '<div data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></div>';
+                            }
                     }
                 }
             } else {

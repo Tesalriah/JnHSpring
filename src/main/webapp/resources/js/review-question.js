@@ -35,18 +35,27 @@ qBg.addEventListener('click',function(){
     questionClose();
 })
 
-const eachImg = document.getElementsByClassName('each_img');
+
+// const eachImg = document.getElementsByClassName('each_img');
 const imgBg = document.querySelector('.reviews_bg');
 const reviewImg = document.querySelector('#reviews_img');
 const reviewImgX = document.querySelector('#review_img_x');
 const enlargeImg = document.querySelector('#enlarge_img');
 
-for(let i=0; i<eachImg.length; i++){
+/*for(let i=0; i<eachImg.length; i++){
     eachImg[i].addEventListener('click',function(){
         openImg();
         enlargeImg.src = eachImg[i].src;
     })
-}
+}*/
+
+// 이벤트 위임 방식으로 동적으로 추가된 요소에도 이벤트 적용
+document.querySelector(".reviews_contents").addEventListener("click", function(event) {
+    if (event.target.classList.contains("each_img")) {
+        openImg();
+        enlargeImg.src = event.target.src;
+    }
+});
 reviewImgX.addEventListener('click',function(){
     closeImg();
 })
