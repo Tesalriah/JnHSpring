@@ -68,15 +68,14 @@ public class WishServiceImpl implements WishService {
     @Transactional(rollbackFor = Exception.class)
     public int write(Wish wish) throws Exception{
         int result = -1;
-        Map map = new HashMap();
         result = wishDao.insert(wish);
         if(result > 0){
             Product product = productDao.select(wish.getProduct_id());
 
-            Product set = new Product();
-            set.setWish_cnt(product.getWish_cnt() + 1);
-            set.setProduct_id(wish.getProduct_id());
-            productDao.update(set);
+            Map map = new HashMap();
+            map.put("product_id", wish.getProduct_id());
+            map.put("wish_cnt", product.getWish_cnt() + 1);
+            productDao.update(map);
         }
         return result;
     }
@@ -85,15 +84,15 @@ public class WishServiceImpl implements WishService {
     @Transactional(rollbackFor = Exception.class)
     public int remove(Wish wish) throws Exception{
         int result = -1;
-        Map map = new HashMap();
+
         result = wishDao.delete(wish);
         if(result > 0){
             Product product = productDao.select(wish.getProduct_id());
 
-            Product set = new Product();
-            set.setWish_cnt(product.getWish_cnt() - 1);
-            set.setProduct_id(wish.getProduct_id());
-            productDao.update(set);
+            Map map = new HashMap();
+            map.put("product_id", wish.getProduct_id());
+            map.put("wish_cnt", product.getWish_cnt() - 1);
+            productDao.update(map);
         }
         return result;
     }

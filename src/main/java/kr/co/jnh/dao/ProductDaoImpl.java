@@ -35,8 +35,8 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public int update(Product product) throws Exception{
-        return session.update( nameSpace + "update", product);
+    public int update(Map map) throws Exception{
+        return session.update( nameSpace + "update", map);
     }
 
     @Override

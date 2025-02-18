@@ -28,28 +28,18 @@
 #heart:hover{
     cursor: pointer;
 }
+.wish_rating{
+    font-size: 22px;
+}
 .wish_btn{
-    position: relative;
-    margin-right:30px;
-    color: red;
+    color: rgb(243, 17, 16);
+    margin-right:10px;
 }
 .wish_btn:hover{
     cursor: pointer;
 }
-#heart{
-    position: absolute;
-    z-index: 0;
-}
-#wish_cnt{
-    position: absolute;
-    font-size: 9px;
-    top: 7px;
-    left: -0.5px;
-    width: 25px;
-    text-align: center;
-    color: black;
-    font-weight: bold;
-    pointer-events: none;
+.wish_rating > span:last-child{
+    color: rgb(250, 146, 0);
 }
 .price{
     padding-bottom:40px;

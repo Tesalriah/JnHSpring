@@ -8,15 +8,23 @@ function dateFormatter(date){
     return formattedDate;
 }
 
+function smoothScroll(contents){
+    // 부드럽게 특정 위치로 스크롤
+    window.scrollTo({
+        top: contents.offsetTop - 150, // r_contents 요소 위치에서 150px 위로 스크롤
+        behavior: 'smooth'  // 부드러운 스크롤
+    });
+}
+
 const product_id = document.querySelector('[name="product_id"]');
 const contents = document.querySelector('.questions_contents'); //class
 const paging = document.querySelector('.question_paging');
 let currentPage = 0;
 
 function sendReqeust(page){
+    // 처음 페이지가 로딩될때는 스크롤 이동하지않음
     if(currentPage != 0){
-        contents.scrollIntoView();
-        window.scrollBy(0, -150);
+        smoothScroll(contents);
     }
     currentPage = page;
 
@@ -62,17 +70,17 @@ function sendReqeust(page){
                     if(ph.totalPage > 0){
                             paging.innerHTML = '';
                             if(ph.showPrev){
-                                paging.innerHTML += '<div data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></div>';
+                                paging.innerHTML += '<button type="button" class="page_event" data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></button>';
                             }
                             for(let i=ph.beginPage; i<=ph.endPage; i++){
                                 if(i == currentPage){
-                                    paging.innerHTML += '<div onclick="sendReqeust(' + i +')" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</div>';
+                                    paging.innerHTML += '<button type="button" class="page_event" data-page="' + i +'" style="color:#FFAEC9; font-weight:bold;" data-page="'+ i +'">' + i +'</button>';
                                 }else {
-                                    paging.innerHTML += '<div onclick="sendReqeust(' + i +')">' + i +'</div>';
+                                    paging.innerHTML += '<button type="button" class="page_event" data-page="' + i +'">' + i +'</button>';
                                 }
                             }
                             if(ph.showNext){
-                                paging.innerHTML += '<div data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></div>';
+                                paging.innerHTML += '<button type="button" class="page_event" data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></button>';
                             }
                     }
                 }
@@ -92,6 +100,13 @@ function sendReqeust(page){
 }
 
 sendReqeust(1);
+
+paging.addEventListener("click", function(event) {
+    if (event.target.classList.contains("page_event")) {
+        const page = event.target.dataset.page;
+        sendReqeust(parseInt(page));
+    }
+});
 
 // const 로 선언하기
 const write_btn = document.getElementById('write');

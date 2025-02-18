@@ -20,7 +20,7 @@
         WHERE product_id = #{product_id} AND size = #{size}
     </update>
 
-    <update id="update" parameterType="Product">
+    <update id="update" parameterType="map">
         UPDATE product
         <set>
             <if test="bought_cnt != null">bought_cnt = #{bought_cnt},</if>

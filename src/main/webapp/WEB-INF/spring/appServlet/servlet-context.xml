@@ -67,6 +67,7 @@
 			<exclude-mapping path="/mypage/wish/add"/>
 			<exclude-mapping path="/mypage/wish/del"/>
 			<exclude-mapping path="/mypage/review/list"/>
+			<exclude-mapping path="/mypage/review/removeAjax"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
 		<interceptor>

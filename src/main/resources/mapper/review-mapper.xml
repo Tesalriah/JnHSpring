@@ -26,6 +26,7 @@
             <if test="contents != null">contents = #{contents},</if>
             <if test="rating != null">rating = #{rating},</if>
             <if test="reg_date != null">reg_date = #{reg_date},</if>
+            <if test="up_date != null">up_date = #{up_date},</if>
             <if test="whether != null">whether = #{whether},</if>
             <if test="image != null">image = #{image},</if>
         </set>
@@ -38,6 +39,7 @@
         WHERE rno = #{rno}
     </update>
 
+    <!--  해당 product_id의 작성된(whether=1) 리뷰들의 점수 평균 반환  -->
     <select id="ratingAvg" parameterType="String" resultType="float">
         SELECT AVG(rating) AS average_value
         FROM review

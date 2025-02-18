@@ -45,7 +45,7 @@
                 <div class="info" style="width:45%;">
                     <form action="" method="post">
                         <input type="hidden" name="product_id" value="${product.product_id}">
-                        <div class="name">${product.product_name}<span class="wish_btn"><i id="heart" ${wish ? "class='fa-solid fa-heart'" : "class='fa-regular fa-heart'"}></i><span id="wish_cnt">${product.wish_cnt}</span></span></div>
+                        <div class="name">${product.product_name}<span class="wish_rating"><span class="wish_btn"><i id="heart" ${wish ? "class='fa-solid fa-heart'" : "class='fa-regular fa-heart'"}></i><span id="wish_cnt">&nbsp;<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.wish_cnt}"/></span></span><span><i class="fa-solid fa-star"></i>&nbsp;${product.rating}</span></span></div>
                         <div class="price">
                             <input name="price" type="hidden" value="${product.dis_price}">
                             <c:if test="${product.discount != 0}">
@@ -108,8 +108,8 @@
                         <div class="report_contents">
                             <form action="" method="post">
                                 <div>
-                                    <input name="user_id" type="hidden" value="">
                                     <input name="report_id" type="hidden" value="">
+                                    <input name="rno" type="hidden" value="">
                                     <div style="font-weight:bold;">신고사유</div>
                                     <select name="reason" style="width: 100%;">
                                         <option value="" style="display:none;" selected>사유를 선택하세요.</option>
@@ -134,7 +134,7 @@
                 <div id="reviews_img" style="display:none;">
                     <button id="review_img_x" type="button"><i class="fa-solid fa-xmark"></i></button>
                     <div class="img_modal">
-                        <img id="enlarge_img" src="img/best.jpg">
+                        <img id="enlarge_img" src="">
                     </div>
                 </div>
                 <div class="reviews_title">

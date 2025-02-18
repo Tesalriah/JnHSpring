@@ -16,7 +16,6 @@ var reqJson = new Object();
 reqJson.product_id = product_id.value;
 
 function setWish(type){
-    console.log("asdasd");
     /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
     var httpRequest = new XMLHttpRequest();
     /* httpRequest의 readyState가 변화했을때 함수 실행 */
@@ -26,16 +25,17 @@ function setWish(type){
                 var result = httpRequest.response;
                 if(!!result.msg){
                     if(result.result != "fail"){
+                        wishCnt.innerText =wishCnt.innerText.replace(/,/g, "")
                         if(type == 'add'){
+                            wishCnt.innerHTML = "&nbsp;" + (Number(wishCnt.innerText) + 1).toLocaleString();
                             heart.className = 'fa-solid fa-heart';
-                            wishCnt.innerHTML = Number(wishCnt.innerText) + 1;
                         }else{
+                            wishCnt.innerHTML = "&nbsp;" + (Number(wishCnt.innerText) - 1).toLocaleString();
                             heart.className = 'fa-regular fa-heart';
-                            wishCnt.innerHTML = Number(wishCnt.innerText) - 1;
                         }
                     }
                     alert(result.msg);
-                    return false;
+                    return;
                 }
             } else {
                 alert(httpRequest.status +  ' Error');

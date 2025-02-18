@@ -199,10 +199,11 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     display: flex;
     justify-content: center;
 }
-.review_paging div, .question_paging div{
+.review_paging button, .question_paging button{
     padding:5px;
+    background: none;
 }
-.review_paging div:hover, .question_paging div:hover{
+.review_paging button:hover, .question_paging button:hover{
     font-weight:bold;
     color: #FFAEC9;
     cursor: pointer;

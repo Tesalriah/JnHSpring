@@ -5,14 +5,25 @@ const rBg = document.querySelector('.review_bg');
 const rModal = document.querySelector('.review_report');
 const reviewX = document.querySelector('#review_x');
 const getId = document.getElementsByName('review_id');
-const reportId = document.getElementsByName('report_id');
+const reportId = document.querySelector('[name="report_id"]');
+const reportRno = document.querySelector('[name="rno"]');
 
-for(let i=0; i<reportBtn.length; i++ ){
+/*for(let i=0; i<reportBtn.length; i++ ){
     reportBtn[i].addEventListener('click',function(){
         reportOpen();
         reportId[0].value =  getId[i].value;
     })
-}
+}*/
+
+// 이벤트 위임 방식으로 동적으로 추가된 요소에도 이벤트 적용
+document.querySelector(".reviews_contents").addEventListener("click", function(event) {
+    if (event.target.classList.contains("report_open_btn")) {
+        reportOpen();
+        reportId.value =  event.target.dataset.id;
+        reportRno.value = event.target.dataset.rno;
+    }
+});
+
 reviewX.addEventListener('click',function(){
     reportClose();
 })

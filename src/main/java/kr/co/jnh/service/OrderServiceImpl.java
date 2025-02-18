@@ -77,17 +77,17 @@ public class OrderServiceImpl implements OrderService {
             if(result != 1){
                 throw new Exception("ORDER_FAIL");
             }
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap();
             map.put("user_id", order.getUser_id());
             map.put("product_id", order.getProduct_id());
             map.put("size", order.getSize());
 
             Product product = productDao.select(order.getProduct_id());
             int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
-            product.setStock(calStock + "");
-            product.setSize(order.getSize());
-            product.setBought_cnt(product.getBought_cnt() + order.getQuantity());
-            productDao.update(product);
+            map.put("stock", calStock);
+            map.put("size", order.getSize());
+            map.put("bought_cnt", product.getBought_cnt() + order.getQuantity());
+            productDao.update(map);
             if(productDao.updateStock(product) != 1){
                 throw new Exception("STOCK_ERROR");
             }
