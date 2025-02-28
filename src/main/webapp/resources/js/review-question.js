@@ -21,6 +21,8 @@ document.querySelector(".reviews_contents").addEventListener("click", function(e
         reportOpen();
         reportId.value =  event.target.dataset.id;
         reportRno.value = event.target.dataset.rno;
+        document.querySelector('[name="report_contents"]').value = '';
+        document.querySelector("select[name=reason] option:c")
     }
 });
 

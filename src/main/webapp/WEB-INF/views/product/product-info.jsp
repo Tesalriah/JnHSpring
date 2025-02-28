@@ -12,6 +12,7 @@
         <script type="text/javascript" src="<c:url value='/resources/js/scroll-move.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/question.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/review.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/report.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/add-wish.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
@@ -113,9 +114,10 @@
                                     <div style="font-weight:bold;">신고사유</div>
                                     <select name="reason" style="width: 100%;">
                                         <option value="" style="display:none;" selected>사유를 선택하세요.</option>
-                                        <option value="부적절한 닉네임">부적절한 닉네임</option>
-                                        <option value="욕설">욕설</option>
-                                        <option value="부적절한 이미지 게시">부적절한 이미지</option>
+                                        <option value="1">상품과 관련없는 내용</option>
+                                        <option value="2">욕설</option>
+                                        <option value="3">부적절한 이미지 게시</option>
+                                        <option value="4">기타</option>
                                     </select>
                                 </div>
                                 <div style="margin:10px 0;">
@@ -123,7 +125,7 @@
                                     <textarea name="report_contents" placeholder="상세내용을 작성해주세요."></textarea>
                                 </div>
                                 <div class="report_button">
-                                    <button type="submit">신고</button>
+                                    <button type="button" id="report_btn">신고</button>
                                 </div>
                             </form>
                         </div>

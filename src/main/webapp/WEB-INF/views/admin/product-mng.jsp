@@ -21,22 +21,27 @@
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <h2>상품관리</h2>
-                    <div class="MNG_nav">
-                        <div class="nav_each">
-                            <a href="">MEN</a>
-                            <div class="sub_MNG_nav">
-                                <div><a href="">TOPS</a></div>
-                                <div><a href="">BOTTOM</a></div>
-                                <div><a href="">OUTER</a></div>
+                    <div style="display: flex; justify-content: space-between; margin-top:15px; align-items: center">
+                        <div class="MNG_nav">
+                            <div class="nav_each">
+                                <a href="">MEN</a>
+                                <div class="sub_MNG_nav">
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=MEN&category=TOPS">TOPS</a></div>
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=MEN&category=BOTTOM">BOTTOM</a></div>
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=MEN&category=OUTER">OUTER</a></div>
+                                </div>
+                            </div>
+                            <div class="nav_each">
+                                <a href="">WOMEN</a>
+                                <div class="sub_MNG_nav">
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=WOMEN&category=TOPS">TOPS</a></div>
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=WOMEN&category=BOTTOM">BOTTOM</a></div>
+                                    <div><a href="<c:url value="/admin/product-mng"/>?gender=WOMEN&category=OUTER">OUTER</a></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="nav_each">
-                            <a href="">WOMEN</a>
-                            <div class="sub_MNG_nav">
-                                <div><a href="">TOPS</a></div>
-                                <div><a href="">BOTTOM</a></div>
-                                <div><a href="">OUTER</a></div>
-                            </div>
+                        <div>
+                            <form method="get" action="<c:url value="/admin/product-mng"/>"><input type="text" name="admin_keyword" placeholder="품번 또는 상품명"><input id="admin_search" type="submit" value="검색"></form>
                         </div>
                     </div>
                     <div class="point">MEN <i class="fa-solid fa-angle-right"></i> TOPS</div>
@@ -50,6 +55,16 @@
                                 <td style="width: 15%;">재고</td>
                                 <td style="width: 8%;">상세수정</td>
                             </tr>
+                            <c:forEach items="${list}" var="list">
+                                <tr>
+                                    <td>${list.product_id}</td>
+                                    <td>${list.product_name}</td>
+                                    <td><input type="text" name="product_price" value="${list.price}"><button type="button">OK</button></td>
+                                    <td><input type="text" name="product_discount" value="${list.discount}"><button type="button">OK</button></td>
+                                    <td><input type="text" name="product_stock" value="${list.stock}"><button type="button">OK</button></td>
+                                    <td><a href="">이동</a></td>
+                                </tr>
+                            </c:forEach>
                             <tr>
                                 <td>1</td>
                                 <td>PRODUCT NAME</td>

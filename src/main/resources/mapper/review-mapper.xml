@@ -34,7 +34,7 @@
     </update>
 
     <update id="delete" parameterType="int">
-        UPDATE INTO WHERE
+        UPDATE review
         SET whether = #{whether}
         WHERE rno = #{rno}
     </update>

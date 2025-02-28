@@ -3,12 +3,6 @@ const r_paging = document.querySelector('.review_paging');
 let r_currentPage = 0;
 
 function reviewList(page){
-    // 처음 페이지가 로딩될때는 스크롤 이동하지않음
-    if(r_currentPage != 0) {
-        smoothScroll(r_contents);
-    }
-
-    r_currentPage = page;
     /* 입력된 데이터 Json 형식으로 변경 */
     var reqJson = new Object();
     reqJson.product_id = product_id.value;
@@ -70,7 +64,7 @@ function reviewList(page){
                         html += '<button type="button" class="page_event" data-page="' + ph.beginPage-1 +'"><i class="fa-solid fa-angle-left"></i></button>';
                     }
                     for(let i=ph.beginPage; i<=ph.endPage; i++){
-                        if(i == r_currentPage){
+                        if(i == page){
                             html += '<button type="button" style="color:#FFAEC9; font-weight:bold;" class="page_event" data-page="'+ i +'">' + i +'</button>';
                         }else {
                             html += '<button type="button" class="page_event" data-page="'+ i +'">' + i +'</button>';
@@ -80,6 +74,13 @@ function reviewList(page){
                         html += '<button type="button" class="page_event" data-page="' + ph.endPage+1 +'"><i class="fa-solid fa-angle-right"></i></button>';
                     }
                     r_paging.innerHTML = html;
+
+                    // 처음 페이지가 로딩될때는 스크롤 이동하지않음
+                    if(r_currentPage != 0) {
+                        smoothScroll(r_contents);
+                    }
+
+                    r_currentPage = page;
                 }
             } else {
                 alert(httpRequest.status + ' Error');

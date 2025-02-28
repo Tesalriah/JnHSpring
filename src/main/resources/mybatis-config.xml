@@ -14,6 +14,7 @@
         <typeAlias alias="Returns" type="kr.co.jnh.domain.Returns"/>
         <typeAlias alias="Wish" type="kr.co.jnh.domain.Wish"/>
         <typeAlias alias="Review" type="kr.co.jnh.domain.Review"/>
+        <typeAlias alias="ReportReview" type="kr.co.jnh.domain.ReportReview"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
         <typeAlias alias="Question" type="kr.co.jnh.domain.Question"/>
     </typeAliases>
