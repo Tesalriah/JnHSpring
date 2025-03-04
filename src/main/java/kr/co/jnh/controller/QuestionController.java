@@ -112,10 +112,6 @@ public class QuestionController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-
-
         return map;
     }
 

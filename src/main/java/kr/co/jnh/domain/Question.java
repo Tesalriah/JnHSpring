@@ -16,6 +16,7 @@ public class Question {
     private String product_id;
     private String contents;
     private Date reg_date;
+    private Product product;
 
     public Question(Integer qno, Integer ano, String user_id, String product_id, String contents, Date reg_date) {
         this.qno = qno;

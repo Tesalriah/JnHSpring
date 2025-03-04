@@ -7,9 +7,11 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/header.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/loginForm.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/mypage/question-list.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/mypage" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/mypage/review-wrote.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/mypage" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/notice/noticeList.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/notice" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/notice/noticeWrite.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/notice" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/product/product-info.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/product" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/product/productInfo.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/product" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/signUp.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
       </map>
