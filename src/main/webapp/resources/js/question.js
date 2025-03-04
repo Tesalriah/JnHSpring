@@ -93,6 +93,7 @@ function sendReqeust(page){
 
 sendReqeust(1);
 
+ 
 // const 로 선언하기
 const write_btn = document.getElementById('write');
 const q_contents = document.querySelector('[name="question_contents"]');
@@ -142,59 +143,6 @@ write_btn.addEventListener('click', function (){
 
 
 
-
-/*const pid1=document.getElementsByName('product_id');
-const wrt1 = document.getElementById('write');
-const cnt1 = document.getElementsByName('question_contents');
-
-wrt1.addEventListener('click', function (){
-    var j = new Object();
-    j.pid1 = pid1.value;
-    j.cnt1 = cnt1.value;
-
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = () => {
-        if(httpRequest.readyState === )
-    }
-
-
-})*/
-
-
-
-
-
-
 const wrt = document.getElementById('write');
 const cnt = document.getElementsByName('question_contents');
 const pid = document.getElementsByName('product_id')
-wrt.addEventListener('click', function () {
-    /* HTML에 입력된 데이터를 Json 형식으로 변경 */
-    var reqJson = new Object();
-    reqJson.pid = pid.value;
-    reqJson.cnt= cnt.value;
-
-    /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
-    var httpRequest = new XMLHttpRequest();
-
-    /* httpRequest의 readyState가 변화했을때 함수 실행 */
-    httpRequest.onreadystatechange = () => {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                // 컨트롤러 리턴값 -> httpRequest.response == "바보";
-
-            } else {
-            }
-        }
-    };
-
-    /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/question/write1', true);
-    /* Response Type을 Json으로 사전 정의 */
-    httpRequest.responseType = "json";
-    /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
-    httpRequest.setRequestHeader('Content-Type', 'application/json');
-    /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
-    httpRequest.send(JSON.stringify(reqJson));
-
-})

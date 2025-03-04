@@ -2,12 +2,10 @@ package kr.co.jnh.controller;
 
 
 import kr.co.jnh.dao.AskingDao;
-import kr.co.jnh.domain.AskingDto;
-import kr.co.jnh.domain.NoticeDto;
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.SearchCondition;
+import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
 import kr.co.jnh.service.NoticeService;
+import kr.co.jnh.service.QuestionService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,8 @@ public class AskingController {
     AskingService askingService;
     @Autowired
     UserService userService;
+    @Autowired
+    QuestionService questionService;
 
     // 문의목록 가져오기
     @GetMapping("/list")
@@ -61,6 +62,37 @@ public class AskingController {
 
         return "/mypage/asking-list";
     }
+
+
+    // 문의내역확인 - 상품문의
+    @GetMapping("/question/list")
+    public String qList(HttpServletRequest request,SearchCondition sc, Model m){
+
+        String user_id = SessionIdUtil.getSessionId(request);
+
+        Map map=new HashMap();
+        map.put("user_id",user_id);
+        map.put("sc",sc);
+
+        try {
+            // 해당 id의 글 갯수(문의글, 답변 포함)
+            int idCount = questionService.getCount(map);
+            System.out.println("idCount = " + idCount);
+
+            // 해당 id 목록 가져오기
+            List<Question> list = questionService.readInfo(map);
+            m.addAttribute("qList", list);
+
+            // 전체 게시물 갯수를 통해 PageHandler를 이용한 페이징 처리
+            PageHandler ph = new PageHandler(idCount,sc);
+            m.addAttribute("ph",ph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/mypage/question-list";
+    }
+
 
     // 하나의 게시물 읽기
     @GetMapping("/read")
