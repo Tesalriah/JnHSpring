@@ -3,7 +3,7 @@
     display: flex;
     padding: 13px 0;
 }
-input[name="admin_keyword"]{
+#admin_keyword{
     border:1px solid #dddddd;
     padding: 8px;
     font-size: 18px;

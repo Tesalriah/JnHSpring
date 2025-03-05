@@ -22,4 +22,8 @@ public interface ProductService {
     List<String> getSize(String product_id) throws Exception;
 
     Product getProductAtSize(Map map) throws Exception;
+
+    List<Product> getProductAdmin(SearchCondition sc) throws Exception;
+
+    int getProductAdminCnt(SearchCondition sc) throws Exception;
 }

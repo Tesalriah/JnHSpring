@@ -9,7 +9,7 @@
     </select>
 
     <select id="selectUserById" parameterType="String" resultType="User">
-        SELECT * FROM user
+        SELECT grade, user_id, user_name, email, phone, address, gender, birth, status, cumulative_report, member_since FROM user
         WHERE user_id = #{id}
     </select>
 
@@ -36,6 +36,7 @@
             <if test="user_pwd != null">user_pwd = #{user_pwd},</if>
             <if test="address != null">address = #{address},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="cumulative_report != null">cumulative_report = #{cumulative_report},</if>
         </set>
         WHERE user_id = #{user_id}
     </update>

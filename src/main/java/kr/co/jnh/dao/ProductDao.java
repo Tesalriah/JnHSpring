@@ -28,4 +28,8 @@ public interface ProductDao {
     List<String> selectSize(String product_id) throws Exception;
 
     Product selectAtSize(Map map) throws Exception;
+
+    List<Product> selectProductAdmin(SearchCondition sc) throws Exception;
+
+    int selectProductAdminCnt(SearchCondition sc) throws Exception;
 }

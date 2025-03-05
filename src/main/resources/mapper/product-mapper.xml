@@ -70,7 +70,6 @@
             AND gender LIKE concat(#{gender})
             AND category LIKE concat(#{category})
         </if>
-        AND stock > 0
     </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="Product">
@@ -94,5 +93,22 @@
     <select id="selectAtSize" parameterType="map" resultType="Product">
         SELECT * FROM product
         WHERE product_id LIKE CONCAT(#{product_id},'%') AND size = #{size}
+    </select>
+
+    <select id="selectProductAdmin" parameterType="SearchCondition" resultType="Product">
+        SELECT *
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+        ORDER BY product_id desc
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectProductAdminCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+        ORDER BY product_id desc
     </select>
 </mapper>

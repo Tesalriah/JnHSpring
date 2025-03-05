@@ -32,25 +32,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getGrade(String id) throws Exception{
-        if(id == null || id.equals("")){
-            return -1;
-        }
-        User user = userDao.selectUserById(id);
-        return user.getGrade();
+    public User getUser(String id) throws Exception{
+        return userDao.selectUserById(id);
     }
 
-    @Override
-    public int getStatus(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        return user.getStatus();
-    }
-
-    @Override
-    public String findEmail(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        return user.getEmail();
-    }
 
     @Override
     public String findId(String email) throws Exception{
@@ -73,26 +58,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int changeAddress(String id, String address) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setAddress(address);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("address", address);
+        return userDao.update(map);
     }
 
     @Override
     public int changePassword(String id, String pwd) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setUser_pwd(pwd);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("user_pwd", pwd);
+        return userDao.update(map);
     }
 
     @Override
     public int changeStatus(String id, int status) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setStatus(status);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("status", status);
+        return userDao.update(map);
     }
 
     @Override
@@ -100,11 +85,11 @@ public class UserServiceImpl implements UserService {
     public int changePwd(String id, String pwd) throws Exception{
         User user = userDao.selectUserById(id);
         user.setUser_pwd(pwd);
-        User change = new User();
-        change.setUser_id(id);
-        change.setUser_pwd(pwd);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("user_pwd", pwd);
         emailAuthDao.deleteAuth(user.getEmail());
-        return userDao.update(change);
+        return userDao.update(map);
     }
 
     @Override
@@ -126,13 +111,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception{
        String auth_num = emailAuthDao.selectAuthNum(mailAuthDto.getEmail());
-       User user = new User();
-       if(mailAuthDto.getAuth_number().equals(auth_num)){
-           user.setUser_id(id);
-           user.setStatus(0);
+        Map<String, Object> map = new HashMap<>();
+        if(mailAuthDto.getAuth_number().equals(auth_num)){
+           map.put("user_id", id);
+           map.put("status", 0);
        }
        emailAuthDao.deleteAuth(mailAuthDto.getEmail());
-        return userDao.update(user);
+        return userDao.update(map);
     }
 
     @Override
@@ -146,13 +131,6 @@ public class UserServiceImpl implements UserService {
         }
         emailAuthDao.deleteAuth(mailAuthDto.getEmail());
         return user == null ? "" : user.getUser_id();
-    }
-
-    @Override
-    public User getUser(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        user.setUser_pwd("");
-        return user;
     }
 
     @Override

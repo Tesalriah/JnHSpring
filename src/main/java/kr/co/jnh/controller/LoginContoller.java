@@ -279,7 +279,7 @@ public class LoginContoller {
 
         // 페이지에서 필요한 유저 권한 정보 세션에 할당
         try {
-            Integer grade = userService.getGrade(id);
+            Integer grade = userService.getUser(id).getGrade();
             if(grade != null){
                 session.setAttribute("grade", grade);
             }

@@ -11,11 +11,7 @@ public interface UserService {
 
     User showUser(Map map) throws Exception;
 
-    int getGrade(String id) throws Exception;
-
-    int getStatus(String id) throws Exception;
-
-    String findEmail(String id) throws Exception;
+    User getUser(String id) throws Exception;
 
     String findId(String email) throws Exception;
 
@@ -38,8 +34,6 @@ public interface UserService {
     int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception;
 
     String emailAuth(MailAuthDto mailAuthDto) throws Exception;
-
-    User getUser(String id) throws Exception;
 
     boolean loginCheck(Map map) throws Exception;
 }

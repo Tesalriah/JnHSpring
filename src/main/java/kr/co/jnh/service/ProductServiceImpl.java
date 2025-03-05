@@ -60,4 +60,14 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductAtSize(Map map) throws Exception{
         return productDao.selectAtSize(map);
     }
+
+    @Override
+    public List<Product> getProductAdmin(SearchCondition sc) throws Exception{
+        return productDao.selectProductAdmin(sc);
+    }
+
+    @Override
+    public int getProductAdminCnt(SearchCondition sc) throws Exception{
+        return productDao.selectProductAdminCnt(sc);
+    }
 }

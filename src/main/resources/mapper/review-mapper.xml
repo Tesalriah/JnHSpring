@@ -29,6 +29,7 @@
             <if test="up_date != null">up_date = #{up_date},</if>
             <if test="whether != null">whether = #{whether},</if>
             <if test="image != null">image = #{image},</if>
+            <if test="report_cnt != null">report_cnt = #{report_cnt},</if>
         </set>
         WHERE rno = #{rno} AND user_id = #{user_id}
     </update>

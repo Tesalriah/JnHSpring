@@ -1,8 +1,9 @@
 const report_rno = document.querySelector('[name="rno"]');
 const report_id = document.querySelector('[name="report_id"]');
 const report_reason = document.querySelector('[name="reason"]');
-const report_contents = document.querySelector('[name="report_contents"]')
+const report_contents = document.querySelector('[name="report_contents"]');
 const report_btn = document.querySelector('#report_btn');
+const reason = document.querySelector('[name="reason"]');
 
 function report(){
     console.log(report_rno.value + report_id.value + report_reason.value + report_contents.value);
@@ -24,6 +25,7 @@ function report(){
                     reportClose();
                     reportId.value =  '';
                     reportRno.value = '';
+                    reason.value = '';
                 }
             } else {
                 alert(httpRequest.status + ' Error');

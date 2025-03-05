@@ -42,7 +42,7 @@ public class NoticeController {
     public String postNoticeWrite(SearchCondition sc, NoticeDto noticeDto, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
         try {
-            if(userService.getGrade(id) != 0){ // 현재 유저가 관리자인지 확인 아닐 시 목록으로 이동
+            if(userService.getUser(id).getGrade() != 0){ // 현재 유저가 관리자인지 확인 아닐 시 목록으로 이동
                 m.addAttribute("msg","관리자만 작성 가능합니다.");
                 m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
                 return "alert";
@@ -176,7 +176,7 @@ public class NoticeController {
         Map map = new HashMap();
         map.put("bno", bno);
         try {
-            if(userService.getGrade(id) != 0){ // 관리자인지 확인
+            if(userService.getUser(id).getGrade() != 0){ // 관리자인지 확인
                 m.addAttribute("msg","관리자만 삭제가 가능합니다.");
                 m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
                 return "alert";
@@ -219,7 +219,7 @@ public class NoticeController {
     public String modify(NoticeDto noticeDto,SearchCondition sc , HttpServletRequest request, RedirectAttributes rattr, Model m){
         String id= SessionIdUtil.getSessionId(request);
         try {
-            if(userService.getGrade(id) != 0){ // 관리자 확인
+            if(userService.getUser(id).getGrade() != 0){ // 관리자 확인
                 m.addAttribute("msg","관리자만 수정 가능합니다.");
                 m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
                 return "alert";

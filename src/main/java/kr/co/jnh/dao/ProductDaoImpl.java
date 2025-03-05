@@ -74,4 +74,13 @@ public class ProductDaoImpl implements ProductDao {
         return session.selectOne(nameSpace + "selectAtSize", map);
     }
 
+    @Override
+    public List<Product> selectProductAdmin(SearchCondition sc) throws Exception{
+        return session.selectList(nameSpace + "selectProductAdmin", sc);
+    }
+
+    @Override
+    public int selectProductAdminCnt(SearchCondition sc) throws Exception{
+        return session.selectOne(nameSpace + "selectProductAdminCnt", sc);
+    }
 }

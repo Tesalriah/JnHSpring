@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div>
-                            <form method="get" action="<c:url value="/admin/product-mng"/>"><input type="text" name="admin_keyword" placeholder="품번 또는 상품명"><input id="admin_search" type="submit" value="검색"></form>
+                            <form method="post" action="<c:url value="/admin/product-mng"/>"><input id="admin_keyword" type="text" name="keyword" placeholder="품번 또는 상품명"><input id="admin_search" type="submit" value="검색"></form>
                         </div>
                     </div>
                     <div class="point">MEN <i class="fa-solid fa-angle-right"></i> TOPS</div>
@@ -65,180 +65,19 @@
                                     <td><a href="">이동</a></td>
                                 </tr>
                             </c:forEach>
-                            <tr>
-                                <td>1</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>11</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>12</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>13</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>14</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>15</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>16</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>17</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>18</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>19</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
-                            <tr>
-                                <td>20</td>
-                                <td>PRODUCT NAME</td>
-                                <td><input type="text" name="product_price" value="160000"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_discount" value="30"><button type="button">OK</button></td>
-                                <td><input type="text" name="product_stock" value="100"><button type="button">OK</button></td>
-                                <td><a href="">이동</a></td>
-                            </tr>
                         </table>
                         <div class="paging">
-                            <a href=""><i class="fa-solid fa-angle-left"></i></a>
-                            <a href="">1</a>
-                            <a href="">2</a>
-                            <a href="">3</a>
-                            <a href="">4</a>
-                            <a href="">5</a>
-                            <a href="">6</a>
-                            <a href="">7</a>
-                            <a href="">8</a>
-                            <a href="">9</a>
-                            <a href="">10</a>
-                            <a href=""><i class="fa-solid fa-angle-right"></i></a>
+                            <c:if test="${ph.totalCnt != null && ph.totalCnt != 0}">
+                                <c:if test="${ph.showPrev}">
+                                    <a href="<c:url value="/admin/product-mng"/>?page=${ph.beginPage-1}${ph.sc.keyword != "" ? "keyword=" + ph.sc.keyword : ""}"><i class="fa-solid fa-angle-left"></i></a>
+                                </c:if>
+                                <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+                                    <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/admin/product-mng"/>${ph.sc.getQueryString(i)}">${i}</a>
+                                </c:forEach>
+                                <c:if test="${ph.showNext}">
+                                    <a href="<c:url value="/admin/product-mng"/>?page=${ph.endPage+1}"><i class="fa-solid fa-angle-left"></i></a>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
                 </div>

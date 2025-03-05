@@ -64,7 +64,7 @@ public class RegisterController {
         try {
             // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
             if(email != null || email.isEmpty()){
-                email = userService.findEmail(id);
+                email = userService.getUser(id).getEmail();
                 m.addAttribute("email", email);
             }
             // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
@@ -98,7 +98,7 @@ public class RegisterController {
         String id = SessionIdUtil.getSessionId(request);
 
         try {
-            String email = userService.findEmail(id); // 해당 유저의 이메일값 반환
+            String email = userService.getUser(id).getEmail(); // 해당 유저의 이메일값 반환
             String authNumber = request.getParameter("auth_num"); // input으로 넘어온 인증번호
 
             // 메일과 해당하는 인증번호가 일치하는지 확인 후 서비스 내부에서 인증 완료 시 유저의 status 수정

@@ -38,8 +38,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int update(User user) throws Exception{
-        return session.update( namespace + "update", user);
+    public int update(Map map) throws Exception{
+        return session.update( namespace + "update", map);
     }
 
 }

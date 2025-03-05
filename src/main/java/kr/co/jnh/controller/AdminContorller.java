@@ -25,7 +25,7 @@ public class AdminContorller {
     @GetMapping("product-mng")
     public String productMNG(HttpServletRequest request, SearchCondition sc, Model m){
         sc.setPageSize(20); // 한페이지에 가져오는 상품갯수 6개
-        String keyword = request.getParameter("admin_keyword");
+        String keyword = request.getParameter("keyword");
         if(keyword != null){
             sc.setKeyword(keyword);
         }
@@ -35,13 +35,13 @@ public class AdminContorller {
         }
         try {
             // SearchCondition 정보에 따른 총 상품갯수 가져오기
-            int totalCnt = productService.getSearchResultCnt(sc);
+            int totalCnt = productService.getProductAdminCnt(sc);
             m.addAttribute("totalCnt", totalCnt);
             // SearchCondition과 총 상품갯수를 PageHandler에 할당하여 페이징처리 계산
             PageHandler ph = new PageHandler(totalCnt, sc);
 
             // SearchCondition 정보에 따른 상품 list에 저장(20개)
-            List<Product> list = productService.getSearchSelectPage(sc);
+            List<Product> list = productService.getProductAdmin(sc);
             m.addAttribute("list", list);
             m.addAttribute("ph", ph);
         }catch (Exception e){
