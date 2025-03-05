@@ -27,8 +27,12 @@
             <if test="wish_cnt != null">wish_cnt = #{wish_cnt},</if>
             <if test="rating != null">rating = #{rating},</if>
             <if test="review_cnt != null">review_cnt = #{review_cnt},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="review_cnt != null">discount = #{discount},</if>
+            <if test="review_cnt != null">price = #{price},</if>
         </set>
-        WHERE product_id = #{product_id};
+        WHERE product_id = #{product_id}
+        <if test="size != null" >AND size=#{size}</if>
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -70,6 +74,17 @@
             AND gender LIKE concat(#{gender})
             AND category LIKE concat(#{category})
         </if>
+        OR product_id LIKE concat('%', #{keyword}, '%')
+        <if test="!gender.equals('')">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="!gender.equals('') and category.equals('')">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="!gender.equals('') and !category.equals('')">
+            AND gender LIKE concat(#{gender})
+            AND category LIKE concat(#{category})
+        </if>
     </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="Product">
@@ -100,7 +115,6 @@
         FROM  product
         WHERE true
         <include refid="searchCondition"/>
-        ORDER BY product_id desc
         LIMIT #{offset}, #{pageSize}
     </select>
 
@@ -109,6 +123,6 @@
         FROM  product
         WHERE true
         <include refid="searchCondition"/>
-        ORDER BY product_id desc
+        ORDER BY rating desc
     </select>
 </mapper>
