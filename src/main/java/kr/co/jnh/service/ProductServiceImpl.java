@@ -70,4 +70,9 @@ public class ProductServiceImpl implements ProductService {
     public int getProductAdminCnt(SearchCondition sc) throws Exception{
         return productDao.selectProductAdminCnt(sc);
     }
+
+    @Override
+    public int updateProduct(Map map) throws Exception{
+        return productDao.update(map);
+    }
 }

@@ -5,6 +5,7 @@ import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +22,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailAuthDao emailAuthDao;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public int addUser(User user) throws Exception{
         return userDao.insert(user);
-    }
-
-    @Override
-    public User showUser(Map map) throws Exception{
-        return userDao.selectUser(map);
     }
 
     @Override
@@ -135,10 +134,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean loginCheck(Map map) throws Exception{
-        User user = userDao.selectUser(map);
-        if(user == null){
-            return false; // user정보를 가져오질 못할시 false
+        String pwd = userDao.selectUser((String)map.get("id")).getUser_pwd();
+        String enteredPwd = (String)map.get("pwd");
+        if(enteredPwd != null && passwordEncoder.matches(enteredPwd, pwd)){
+            return true; // 비밀번호가 일치할시 true 반환
         }
-        return true; // 아이디 비밀번호 일치할시 true 반환
+        return false;
     }
 }

@@ -247,16 +247,16 @@ public class LoginContoller {
         Map map = new HashMap();
         map.put("id",id);
         map.put("pwd",pwd);
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
+
+        User user = null;
 
         try {
-            User user = userService.showUser(map); // 해당 id와 pwd가 일치하는 유저 정보 가져오기
             // 로그인 실패시
-            if(!loginCheck(user, map)){
-                rattb.addFlashAttribute("msg", "LOGIN_FAIL");
-                rattb.addFlashAttribute("prevPage", prevPage);
-                return "redirect:/login";
+            if(!userService.loginCheck(map)){
+                throw new Exception("LOGIN_FAIL");
             }
+            user = userService.getUser(id); // pwd가 일치하는 유저 정보 가져오기
             status = user.getStatus();
             // 정지된 유저, 탈퇴 유저, 이메일 미인증 유저 확인
             if (status != null) {
@@ -275,19 +275,13 @@ public class LoginContoller {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            rattb.addFlashAttribute("msg", "LOGIN_FAIL");
+            rattb.addFlashAttribute("prevPage", prevPage);
+            return "redirect:/login";
         }
 
-        // 페이지에서 필요한 유저 권한 정보 세션에 할당
-        try {
-            Integer grade = userService.getUser(id).getGrade();
-            if(grade != null){
-                session.setAttribute("grade", grade);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // 로그인 처리
-        session.setAttribute("id", id);
+        // 페이지에서 필요한 유저 정보 세션에 할당 (로그인 처리)
+        session.setAttribute("user", user);
         // 아이디 저장 체크시 아이디를 쿠키에 저장
         if(rememberId) {
             // 쿠키를 생성
@@ -306,16 +300,9 @@ public class LoginContoller {
             prevPage = (String)session.getAttribute("prevPage");
             session.removeAttribute("prevPage");
         }
-        if(status != 0 || status != null){
-            session.setAttribute("status", status);
-        }
         // 파라미터로 넘겨받은 이전페이지가 있을시 이전페이지로 리다이렉트
         prevPage = prevPage.equals("") || prevPage == null ? "/" : prevPage;
         return "redirect:"+prevPage;
-    }
-
-    private boolean loginCheck(User user, Map map) {
-        return user!=null && user.getUser_pwd().equals(map.get("pwd"));
     }
 
     private Integer makeRandomNumber() {

@@ -25,7 +25,7 @@
                         </ul>
                     </li>
                     <li><a href="<c:url value="/notice/list" />">SERVICE</a></li>
-                    <c:if test="${grade == 0}">
+                    <c:if test="${sessionScope.user.grade == 0}">
                         <li class="gender_on">
                             <a href="<c:url value="/admin/product-mng"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                             <ul class="submenu_nav" >

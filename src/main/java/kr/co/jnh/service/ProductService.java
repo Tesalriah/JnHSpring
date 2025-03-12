@@ -26,4 +26,6 @@ public interface ProductService {
     List<Product> getProductAdmin(SearchCondition sc) throws Exception;
 
     int getProductAdminCnt(SearchCondition sc) throws Exception;
+
+    int updateProduct(Map map) throws Exception;
 }

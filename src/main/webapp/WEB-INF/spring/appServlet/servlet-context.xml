@@ -35,11 +35,11 @@
 	</beans:bean>
 
 	<interceptors>
-		<interceptor>
+		<!--<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/resources/**"/>
 			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"/>
-		</interceptor>
+		</interceptor>-->
 		<interceptor>
 			<mapping path="/admin/**"/>
 			<mapping path="/notice/remove"/>

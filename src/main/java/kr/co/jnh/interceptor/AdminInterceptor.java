@@ -1,5 +1,6 @@
 package kr.co.jnh.interceptor;
 
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,8 @@ public class AdminInterceptor implements HandlerInterceptor {
         String id = SessionIdUtil.getSessionId(request);
 
         if (session != null && id != null && !id.equals("")) {
-            Integer grade = (Integer) session.getAttribute("grade");
+            User user = (User) session.getAttribute("user");
+            Integer grade = user.getGrade();
 
             if (grade != null && grade == 0) {
                 return true;

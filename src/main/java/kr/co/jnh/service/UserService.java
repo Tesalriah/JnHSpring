@@ -9,8 +9,6 @@ import java.util.Map;
 public interface UserService {
     int addUser(User user) throws Exception;
 
-    User showUser(Map map) throws Exception;
-
     User getUser(String id) throws Exception;
 
     String findId(String email) throws Exception;

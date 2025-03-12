@@ -65,9 +65,9 @@
                                 <tr>
                                     <td>${productList.product_id}</td>
                                     <td>${productList.product_name} / ${productList.size}</td>
-                                    <td><input type="text" class="product_price" value="${productList.price}" data-product_id="${productList.product_id}"><button type="button" class="send-btn" data-action="<c:url value="/admin/setPrice"/>" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="price">OK</button></td>
-                                    <td><input type="text" class="product_discount" value="${productList.discount}"><button type="button" class="send-btn" data-action="<c:url value=""/>" data-product_id="${productList.product_id}}" data-size="${productList.size}" data-type="discount">OK</button></td>
-                                    <td><input type="text" class="product_stock" value="${productList.stock}"><button type="button" class="send-btn" data-action="<c:url value=""/>" data-product_id="${productList.product_id}}" data-size="${productList.size}" data-type="stock">OK</button></td>
+                                    <td><input type="text" class="product_price" value="${productList.price}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="price">OK</button></td>
+                                    <td><input type="text" class="product_discount" value="${productList.discount}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="discount">OK</button></td>
+                                    <td><input type="text" class="product_stock" value="${productList.stock}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="stock">OK</button></td>
                                     <td><a href="">이동</a></td>
                                 </tr>
                             </c:forEach>

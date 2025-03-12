@@ -1,5 +1,6 @@
 package kr.co.jnh.interceptor;
 
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class GradeInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        String id = null;
+        HttpSession session = request.getSession(false);
+        String id = SessionIdUtil.getSessionId(request);
 
-        HttpSession session = request.getSession();
-        id = SessionIdUtil.getSessionId(request);
-        if(session != null || id != null || !id.equals("")){
+        if(session != null && id != null && !id.isEmpty()){
             // 인터셉터 전처리, 로그인 했을 시 유저등급을 파라미터에 저장
-            Integer grade  = (Integer)session.getAttribute("grade");
+            User user = (User)session.getAttribute("user");
+            Integer grade = user.getGrade();
             if(grade != null){
                 request.setAttribute("grade", grade);
             }

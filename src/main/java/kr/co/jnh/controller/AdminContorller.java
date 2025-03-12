@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,6 @@ public class AdminContorller {
 
             // SearchCondition 정보에 따른 상품 list에 저장(20개)
             List<Product> list = productService.getProductAdmin(sc);
-            System.out.println("list = " + list);
-            System.out.println(totalCnt);
             m.addAttribute("list", list);
             m.addAttribute("ph", ph);
         }catch (Exception e){
@@ -53,18 +52,29 @@ public class AdminContorller {
         return "/admin/product-mng";
     }
 
-    @PostMapping("setPrice")
+    @PostMapping("update")
     @ResponseBody
-    public Map<String, Object> setPrice(@RequestBody Map<String, Object> map){
-        String product_id = (String)map.get("product_id");
-        String size = (String)map.get("size");
+    public Map<String, Object> update(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        // 상품을 구별하는 product_id와 size는 map에 이미 할당되어있으므로 type에 따른 동적값을 map에 저장
         String dynamic_value = (String)map.get("dynamic_value");
         String type = (String)map.get("type");
+        map.put(type, dynamic_value);
 
-        System.out.println("dynamic_value = " + dynamic_value);
-        System.out.println("size = " + size);
-        System.out.println("product_id = " + product_id);
-        System.out.println("type = " + type);
+        map.forEach((key, value) -> System.out.println(key + ": " + value));
+
+        if(!type.equals("stock")){ // stock(재고)를 특정사이즈가 아닌 해당 product_id의 모든 값을 변경
+            map.remove("size");
+        }
+
+        try {
+            if(productService.updateProduct(map) <= 0){
+                throw new Exception("PRODUCT_UPDATE_FAIL");
+            }
+            map.put("msg", "값이 변경되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("msg", "변경에 실패했습니다.");
+        }
 
         return map;
     }

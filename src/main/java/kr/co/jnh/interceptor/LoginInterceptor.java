@@ -1,5 +1,6 @@
 package kr.co.jnh.interceptor;
 
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession(false);
         if(session != null){
-            id = (String)session.getAttribute("id");
+            User user = (User)session.getAttribute("user");
+            if(user != null){
+                id = user.getUser_id();
+            }
             String requestURI = request.getRequestURI(); // 요청 URI 가져오기
             String method = request.getMethod();
             if(requestURI.equals("/jnh/product") && "GET".equalsIgnoreCase(method)){
@@ -29,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             String prevPage = null;
 
-            if(session == null || id == null || id.equals("")){
+            if(id == null || id.isEmpty()){
                 if("POST".equalsIgnoreCase(method)){
                     prevPage = request.getHeader("referer");
                     session.setAttribute("prevPage", prevPage);

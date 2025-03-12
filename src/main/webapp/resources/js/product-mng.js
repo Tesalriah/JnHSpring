@@ -17,7 +17,7 @@ mngTable.addEventListener("input", function(event) {
 });
 
 mngTable.addEventListener("click", function(event) {
-    if (event.target.matches(".send-btn")) {
+    if (event.target.classList.contains("send-btn")) {
         let btn = event.target; // 클릭된 버튼
         let dynamicValue = btn.previousElementSibling; // 버튼 바로 앞의 input 가져오기
 
@@ -26,25 +26,31 @@ mngTable.addEventListener("click", function(event) {
         reqJson.dynamic_value = dynamicValue.value;
         reqJson.product_id = btn.dataset.product_id;
         reqJson.size = btn.dataset.size;
+        reqJson.type = btn.dataset.type;
         /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
         var httpRequest = new XMLHttpRequest();
         /* httpRequest의 readyState가 변화했을때 함수 실행 */
         httpRequest.onreadystatechange = () => {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
-                    alert("성공");
-                    document.querySelectorAll(".product_price").forEach(input => {
-                        if (input.dataset.product_id === reqJson.product_id) { // 특정 data-product_id 확인
-                            input.value = reqJson.dynamic_value; // 값 변경
+                    var result = httpRequest.response;
+                    // price와 discount는 해당 product_id에 값이 동일해야하기 때문에 다른 칸의 값들도 변경 값으로 변경
+                    document.querySelectorAll(".send-btn").forEach(e => {
+                        if (String(e.dataset.product_id) === String(reqJson.product_id)) { // 특정 data-product_id 확인
+                            if(String(btn.dataset.type) !== "stock" && String(e.dataset.type) === String(btn.dataset.type)) { // type 확인
+                                e.previousElementSibling.value = dynamicValue.value;
+                            }
                         }
                     });
+                    // 결과 메세지 출력
+                    alert(result.msg);
                 } else {
                     alert(httpRequest.status + ' Error');
                 }
             }
         };
         /* Post 방식으로 요청 */
-        httpRequest.open('POST', btn.dataset.action, true);
+        httpRequest.open('POST', "/jnh/admin/update", true);
         /* Response Type을 Json으로 사전 정의 */
         httpRequest.responseType = "json";
         /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
