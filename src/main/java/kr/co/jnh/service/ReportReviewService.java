@@ -1,6 +1,7 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.domain.ReportReview;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,9 @@ public interface ReportReviewService {
 
     int remove(Integer no) throws Exception;
 
-    int readPageCnt(Map map) throws Exception;
+    int checkDup(Map map) throws Exception;
 
-    List<ReportReview> readPage(Map map) throws Exception;
+    int readPageCnt(SearchCondition sc) throws Exception;
+
+    List<ReportReview> readPage(SearchCondition sc) throws Exception;
 }

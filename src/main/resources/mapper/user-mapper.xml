@@ -41,6 +41,11 @@
         WHERE user_id = #{user_id}
     </update>
 
+    <select id="searchSelectUserCnt" resultType="int" parameterType="SearchCondition">
+        SELECT count(*) FROM user
+        WHERE grade = 1 AND user_id LIKE concat('%', #{keyword}, '%')
+    </select>
+
     <select id="searchSelectUser" resultType="User" parameterType="SearchCondition">
         SELECT grade, user_id, user_name, email, phone, address, gender, birth, status, cumulative_report, member_since FROM user
         WHERE grade = 1 AND user_id LIKE concat('%', #{keyword}, '%')

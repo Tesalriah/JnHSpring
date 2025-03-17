@@ -101,3 +101,29 @@
 .order_search button:hover{
     cursor: pointer;
 }
+.search_user{
+    text-align: center;
+    margin-bottom: 50px;
+}
+.search_user select{
+    border:1px solid #dddddd;
+    padding: 4.5px;
+    font-size: 16px;
+}
+.search_user input{
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    padding: 5px;
+    width:20%;
+    font-size: 16px;
+}
+.search_user button{
+    padding:6px 15px;
+    background-color: #FFAEC9;
+    color: #ffffff;
+    font-size: 16px;
+}
+.search_user button:hover{
+    cursor: pointer;
+}

@@ -15,6 +15,7 @@ public class PageHandler {
     private int endPage;   // 내비게이션의 마지막 페이지
     private boolean showPrev; // 이전 페이지로 이동하는 링크를 보여줄 것인지의 여부
     private boolean showNext; // 다음 페이지로 이동하는 링크를 보여줄 것인지의 여부
+
     public PageHandler(int totalCnt, SearchCondition sc){
         this.totalCnt = totalCnt;
         this.sc = sc;

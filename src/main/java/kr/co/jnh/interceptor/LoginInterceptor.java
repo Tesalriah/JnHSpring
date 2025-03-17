@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         String id = null;
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if(session != null){
             User user = (User)session.getAttribute("user");
             if(user != null){
@@ -27,6 +27,9 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             String requestURI = request.getRequestURI(); // 요청 URI 가져오기
             String method = request.getMethod();
+
+
+            // product의 get요청은 로그인을 하지않았어도 보여주기
             if(requestURI.equals("/jnh/product") && "GET".equalsIgnoreCase(method)){
                 return true;
             }
@@ -42,7 +45,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                     prevPage = prevPage.replace("/jnh", "");
                     session.setAttribute("prevPage", prevPage);
                 }
-                response.sendRedirect("/jnh/login" + "?msg=NEED_LOGIN");
+                session.setAttribute("msg", "로그인을 해주세요.");
+                response.sendRedirect("/jnh/login");
                 return false;
             }
         }

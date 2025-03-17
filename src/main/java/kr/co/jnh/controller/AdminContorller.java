@@ -1,9 +1,8 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.SearchCondition;
-import kr.co.jnh.service.ProductService;
+import kr.co.jnh.domain.*;
+import kr.co.jnh.service.*;
+import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,15 +26,28 @@ public class AdminContorller {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    ReportReviewService reportReviewService;
+
+    @Autowired
+    ReviewService reviewService;
+
+    // 상품리스트
     @GetMapping("product-mng")
-    public String productMNG(HttpServletRequest request, SearchCondition sc, Model m){
-        sc.setPageSize(20); // 한페이지에 가져오는 상품갯수 6개
+    public String productMng(SearchCondition sc, Model m){
+        sc.setPageSize(20); // 한페이지에 가져오는 상품갯수 20개
 
         // option 기본값 product_id로 설정 (최신순 )
         if(sc.getOption() == null || sc.getOption().equals("")){
             sc.setOption("product_id");
         }
-        System.out.println(sc.toString());
+
         try {
             // SearchCondition 정보에 따른 총 상품갯수 가져오기
             int totalCnt = productService.getProductAdminCnt(sc);
@@ -52,9 +65,10 @@ public class AdminContorller {
         return "/admin/product-mng";
     }
 
-    @PostMapping("update")
+    // 상품정보 업데이트
+    @PostMapping("update-product")
     @ResponseBody
-    public Map<String, Object> update(@RequestBody Map<String, Object> map, HttpServletRequest request){
+    public Map<String, Object> updateProduct(@RequestBody Map<String, Object> map){
         // 상품을 구별하는 product_id와 size는 map에 이미 할당되어있으므로 type에 따른 동적값을 map에 저장
         String dynamic_value = (String)map.get("dynamic_value");
         String type = (String)map.get("type");
@@ -79,4 +93,170 @@ public class AdminContorller {
         return map;
     }
 
+    // 유저 리스트
+    @GetMapping("user-mng")
+    public String userMng(HttpServletRequest request, SearchCondition sc, Model m){
+        sc.setPageSize(20); // 한페이지에 가져오는 유저정보 20개
+
+        try {
+            int totalCnt = userService.getSearchUserCnt(sc);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            List<User> list = userService.getSearchUser(sc);
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return "/admin/user-mng";
+    }
+
+    // 유저 상태 변경
+    @PostMapping("change-status")
+    @ResponseBody
+    public Map<String, Object> changeStatus(@RequestBody Map<String,Object> map){
+        String id = (String)map.get("user_id");
+        int status = (int)map.get("status");
+
+        try {
+            if(userService.changeStatus(id, status) != 1){
+                throw new Exception("STATUS_CHANGE_FAIL");
+            }
+            map.put("msg", "상태를 변경하였습니다.");
+            map.put("result", "success");
+        } catch (Exception e){
+            e.printStackTrace();
+            map.put("msg", "상태 변경에 실패했습니다.");
+        }
+
+        return map;
+    }
+
+    // 리뷰 신고 리스트
+    @GetMapping("report-mng")
+    public String reportMng(SearchCondition sc, Model m){
+        try {
+            int totalPage = reportReviewService.readPageCnt(sc);
+            PageHandler ph = new PageHandler(totalPage, sc);
+
+            List<ReportReview> list = reportReviewService.readPage(sc);
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/admin/report-mng";
+    }
+
+    // 리뷰 리스트
+    @GetMapping("review-mng")
+    public String reviewMng(SearchCondition sc, Model m){
+        try {
+            int totalCnt = reviewService.readPageByReportCnt(sc);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+            ph.setNaviSize(5);
+            ph.doPaging(totalCnt, sc);
+            List<Review> list =  reviewService.readPageByReport(sc);
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/admin/review-mng";
+    }
+
+    // 리뷰 삭제 처리
+    @PostMapping("blind-review")
+    @ResponseBody
+    public Map<String, Object> blindReview(@RequestBody Map<String,Object> map){
+        String user_id = (String)map.get("user_id");
+        String rno = (String)map.get("rno");
+
+        Review review = new Review();
+        review.setUser_id(user_id);
+        review.setRno(Integer.parseInt(rno));
+        review.setWhether(2);
+
+        try {
+            Review pointReview = reviewService.readOne(Integer.parseInt(rno));
+            if(pointReview.getWhether() == 2){
+                map.put("msg", "이미 삭제되었습니다.");
+                throw new Exception("ALREADY_BLINDED");
+            }
+            if(reviewService.modify(review) != 1){
+                map.put("msg", "실패했습니다.");
+                throw new Exception("BLIND_REVIEW_FAIL");
+            }
+            map.put("msg", "삭제처리 되었습니다.");
+            map.put("result", "success");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
+    String[] category = {"주문완료", "배송중", "배송완료"};
+
+    // 주문 리스트
+    @GetMapping("order-mng")
+    public String orderMng(SearchCondition sc, Model m){
+        if(sc.getCategory() == ""){
+            sc.setCategory(category[0]);
+        }
+        try {
+            // 페이징 처리
+            sc.setGender("order_no의 중복제거를 위함");
+            int totalCnt = orderService.readMngCnt(sc);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+            sc.setGender(""); // 다시 초기화
+            ph.setNaviSize(5);
+            ph.doPaging(totalCnt, sc);
+
+            List<Order> list =  orderService.readMng(sc);
+
+            // 각 옵션의 count map에 저장
+            Map<String,Integer> map = new HashMap<>();
+            for (int i = 0; i < category.length; i++) {
+                SearchCondition sc2 = new SearchCondition();
+                sc2.setCategory(category[i]);
+                int cnt = orderService.readMngCnt(sc2);
+                map.put(category[i], cnt);
+            }
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
+            m.addAttribute("cntMap", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/admin/order-mng";
+    }
+
+    // 주문 리스트
+    @PostMapping("order-status")
+    public String orderStatus(@ModelAttribute OrderList orderList, @RequestParam String[] check_each, SearchCondition sc, Model m){
+        List<Order> orders = orderList.getOrderList();
+        List<Order> useOrder = new ArrayList<>();
+        for (String checkEach : check_each) {
+            useOrder.add(orders.get(Integer.parseInt(checkEach)));
+        }
+        System.out.println("useOrder = " + useOrder);
+
+//        try {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        return "/admin/order-mng";
+    }
 }

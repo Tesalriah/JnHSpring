@@ -2,6 +2,7 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.ReportReason;
 import kr.co.jnh.domain.ReportReview;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.ReportReviewService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class ReportReviewController {
             if(reporter == null || reporter.equals("")){
                 throw new Exception("NEED_LOGIN");
             }
-            ReportReview reportReview = new ReportReview(id, reporter, reportReason.getDescription(), rno, contents, 1);
+            ReportReview reportReview = new ReportReview(id, reporter, reportReason.getDescription(), rno, contents);
 
             if(reportValidator(reportReview)){
                 throw new Exception("WRONG_APPROACH");
             }
 
-            int cnt = reportReviewService.readPageCnt(map);
+            int cnt = reportReviewService.checkDup(map);
             if(cnt > 0){
                 map.put("msg", "이미 신고한 리뷰입니다.");
             }else{

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -48,10 +47,17 @@
                                         <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${order.product.total}"/>원 / ${order.quantity}개</div>
                                     </c:forEach>
                                 </div>
-                                <div class="order_button">
-                                        <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
-                                        <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${param.page}">교환, 반품신청</button></div>
-                                        <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/able"/>'">리뷰작성</button></div>
+                                <div class="order_button"> <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
+                                    <div>
+                                        <c:choose>
+                                            <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" formaction="<c:url value="/mypage/return/cancel"/>?page=${ph.sc.page}">주문취소</button></c:when>
+                                            <c:when test="${orderList[0].status == '취소완료'}"><button type="button" class="moveLink" data-link="<c:url value="/mypage/asking/write"/>">문의하기</button></c:when>
+                                            <c:otherwise><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <c:if test="${orderList[0].status == '배송완료'}">
+                                        <div><button type="button" class="moveLink" data-link="<c:url value="/mypage/review/able"/>">리뷰작성</button></div>
+                                    </c:if>
                                 </div>
                             </div>
                             </form>

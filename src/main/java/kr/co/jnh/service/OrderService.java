@@ -1,6 +1,7 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.domain.Order;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,7 @@ public interface OrderService {
 
     boolean checkStock(String product_id, String quantity, String size) throws Exception;
 
+    List<Order> readMng(SearchCondition sc) throws Exception;
+
+    int readMngCnt(SearchCondition sc) throws Exception;
 }

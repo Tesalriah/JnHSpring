@@ -5,6 +5,7 @@ import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.ReportReview;
 import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,12 +69,23 @@ public class ReportReviewServiceImpl implements ReportReviewService {
     }
 
     @Override
-    public int readPageCnt(Map map) throws Exception{
-        return reportReviewDao.selectPageCnt(map);
+    public int checkDup(Map map) throws Exception{
+        return reportReviewDao.selectDup(map);
     }
 
     @Override
-    public List<ReportReview> readPage(Map map) throws Exception{
-        return reportReviewDao.selectPage(map);
+    public int readPageCnt(SearchCondition sc) throws Exception{
+        return reportReviewDao.selectPageCnt(sc);
+    }
+
+    @Override
+    public List<ReportReview> readPage(SearchCondition sc) throws Exception{
+        List<ReportReview> reportReviews = reportReviewDao.selectPage(sc);
+        for (ReportReview reportReview : reportReviews) {
+            String contents = reportReview.getContents();
+            contents = contents.replace("\n", "<br>");
+            reportReview.setContents(contents);
+        }
+        return reportReviews;
     }
 }

@@ -32,7 +32,16 @@
                         </tr>
                         <tr>
                             <td>휴대폰 번호</td>
-                            <td>${fn:substring(user.phone,0,3)}-${fn:substring(user.phone,3,7)}-${fn:substring(user.phone,7,11)}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${fn:length(user.phone) == 11}">
+                                        ${fn:substring(user.phone,0,3)}-${fn:substring(user.phone,3,7)}-${fn:substring(user.phone,7,11)}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${fn:substring(user.phone,0,3)}-${fn:substring(user.phone,3,6)}-${fn:substring(user.phone,6,10)}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </table>
                     <div class="subheading" style="margin-top:25px;">받는사람 정보</div>

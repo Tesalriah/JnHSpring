@@ -243,6 +243,7 @@ public class ReviewController {
 
         sc.setPageSize(5); // 한 페이지에 보여주는 리뷰 5개
         sc.setPage((int)map.get("page")); // 현재 요청 page 대입
+        sc.setOption((String)map.get("option"));
         map.put("sc",sc);
         // whether가 1이면 작성한 리뷰
         map.put("whether", 1);

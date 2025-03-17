@@ -1,12 +1,14 @@
 const r_contents = document.querySelector('.reviews_contents');
 const r_paging = document.querySelector('.review_paging');
 let r_currentPage = 0;
+let option = 'rating';
 
 function reviewList(page){
     /* 입력된 데이터 Json 형식으로 변경 */
     var reqJson = new Object();
     reqJson.product_id = product_id.value;
     reqJson.page = page;
+    reqJson.option = option;
     /* 통신에 사용 될 XMLHttpRequest 객체 정의 */
     var httpRequest = new XMLHttpRequest();
     /* httpRequest의 readyState가 변화했을때 함수 실행 */
@@ -97,6 +99,21 @@ function reviewList(page){
     httpRequest.send(JSON.stringify(reqJson));
 }
 
+reviewList(1);
+
+document.querySelector('#rating').addEventListener('click', function (event){
+    event.target.style.fontWeight = 'bold';
+    document.querySelector('#reg_date').style.fontWeight = 'normal';
+    option = 'rating';
+    reviewList(1);
+})
+document.querySelector('#reg_date').addEventListener('click', function (event){
+    event.target.style.fontWeight = 'bold';
+    document.querySelector('#rating').style.fontWeight = 'normal';
+    option = 'reg_date';
+    reviewList(1);
+})
+
 function remove(rno){
     /* 입력된 데이터 Json 형식으로 변경 */
     var reqJson = new Object();
@@ -126,8 +143,6 @@ function remove(rno){
     /* 정의된 서버에 Json 형식의 요청 Data를 포함하여 요청을 전송 */
     httpRequest.send(JSON.stringify(reqJson));
 }
-
-reviewList(1);
 
 // 이벤트 위임 방식으로 동적으로 추가된 요소에도 이벤트 적용
 r_paging.addEventListener("click", function(event) {

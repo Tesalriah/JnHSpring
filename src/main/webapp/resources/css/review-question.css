@@ -118,14 +118,17 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     justify-content: space-between;
     align-items:center;
 }
-.reviews_title button, .questions_title button{
+.reviews_title button:hover{
+    cursor: pointer;
+}
+.questions_title button{
     font-size:24px;
     font-weight:bold;
     padding:5px 40px;
     border:1px solid #cccccc;
     background-color:#ffffff;
 }
-.reviews_title button:hover, .questions_title button:hover{
+.questions_title button:hover{
     background-color:#eeeeee;
     cursor: pointer;
 }

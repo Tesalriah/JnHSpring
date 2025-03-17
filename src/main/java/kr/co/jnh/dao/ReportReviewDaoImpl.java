@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.ReportReview;
+import kr.co.jnh.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,12 +40,17 @@ public class ReportReviewDaoImpl implements ReportReviewDao {
     }
 
     @Override
-    public int selectPageCnt(Map map) throws Exception{
-        return session.selectOne(nameSpace + "selectPageCnt", map);
+    public int selectDup(Map map) throws Exception{
+        return session.selectOne(nameSpace + "selectDup", map);
     }
 
     @Override
-    public List<ReportReview> selectPage(Map map) throws Exception{
-        return session.selectList(nameSpace + "selectPage", map);
+    public int selectPageCnt(SearchCondition sc) throws Exception{
+        return session.selectOne(nameSpace + "selectPageCnt", sc);
+    }
+
+    @Override
+    public List<ReportReview> selectPage(SearchCondition sc) throws Exception{
+        return session.selectList(nameSpace + "selectPage", sc);
     }
 }

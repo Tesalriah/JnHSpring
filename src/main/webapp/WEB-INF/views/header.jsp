@@ -29,7 +29,7 @@
                         <li class="gender_on">
                             <a href="<c:url value="/admin/product-mng"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                             <ul class="submenu_nav" >
-                                <li><a href="">유저관리</a></li>
+                                <li><a href="<c:url value="/admin/user-mng"/>">유저관리</a></li>
                                 <li><a href="<c:url value="/admin/product-mng"/>">상품관리</a></li>
                             </ul>
                         </li>

@@ -10,9 +10,9 @@
 
     <insert id="insert" parameterType="ReportReview">
         INSERT INTO report_review
-            (user_id, reporter_id, reason, rno, contents, state)
+            (user_id, reporter_id, reason, rno, contents)
         VALUE
-            (#{user_id}, #{reporter_id}, #{reason}, #{rno}, #{contents}, #{state})
+            (#{user_id}, #{reporter_id}, #{reason}, #{rno}, #{contents})
     </insert>
 
     <update id="update" parameterType="int">
@@ -25,26 +25,28 @@
         DELETE FROM report_review
         WHERE no = #{no}
     </delete>
-    
-    <select id="selectPageCnt" parameterType="Map" resultType="int">
+
+    <select id="selectDup" parameterType="Map" resultType="int">
         SELECT count(*) FROM report_review
         <where>
-            <if test="state != null"> state = #{state}</if>
-            <if test="id != null"> AND user_id = #{id}</if>
             <if test="reoporter != null"> AND reporter_id =  #{reporter}</if>
             <if test="rno != null"> AND rno =  #{rno}</if>
         </where>
     </select>
+    
+    <select id="selectPageCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*) FROM report_review
+        <if test="keyword != ''">
+            WHERE user_id LIKE concat('%', #{keyword}, '%')
+        </if>
+    </select>
 
-    <select id="selectPage" parameterType="Map" resultType="Review">
+    <select id="selectPage" parameterType="SearchCondition" resultType="ReportReview">
         SELECT * FROM report_review
-        <where>
-            <if test="state != null"> state = #{state}</if>
-            <if test="id != null"> AND user_id = #{id}</if>
-            <if test="reoporter != null"> AND reporter_id =  #{reporter}</if>
-            <if test="rno != null"> AND rno =  #{rno}</if>
-        </where>
+        <if test="keyword != ''">
+            WHERE user_id LIKE concat('%', #{keyword}, '%')
+        </if>
         ORDER BY no desc
-        LIMIT #{sc.offset}, #{sc.pageSize}
+        LIMIT #{offset}, #{pageSize}
     </select>
 </mapper>

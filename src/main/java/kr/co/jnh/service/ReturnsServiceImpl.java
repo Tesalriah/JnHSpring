@@ -84,15 +84,17 @@ public class ReturnsServiceImpl implements ReturnsService {
                 throw new Exception("RETURNS_INSERT_FAIL");
             }
             if(returns.getType().equals("exchange")){
-                map.put("status", "교환중");
+                map.put("status", "교환접수");
             }if(returns.getType().equals("return")){
-                map.put("status", "반품중");
+                map.put("status", "반품접수");
+            }if(returns.getType().equals("cancel")){
+                map.put("status", "취소완료");
             }
             map.put("order_no", returns.getOrder_no());
             map.put("id", returns.getUser_id());
             map.put("product_id", returns.getProduct_id());
             map.put("size", returns.getSize());
-            if(orderDao.returnUpdate(map) == 0){
+            if(orderDao.returnUpdate(map) <= 0){
                 throw new Exception("ORDER_STATUS_UPDATE_FAIL");
             }
         }

@@ -12,13 +12,13 @@ public class Review {
     private String product_id;
     private String size;
     private String contents;
-    private float rating;
+    private Float rating;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date reg_date;
     private Date up_date;
     private String image;
     private Integer whether;
-    private int report_cnt;
+    private Integer report_cnt;
     private Order order;
 
     public Review(){}
@@ -97,11 +97,11 @@ public class Review {
         this.contents = contents;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
@@ -129,11 +129,11 @@ public class Review {
         this.whether = whether;
     }
 
-    public int getReport_cnt() {
+    public Integer getReport_cnt() {
         return report_cnt;
     }
 
-    public void setReport_cnt(int report_cnt) {
+    public void setReport_cnt(Integer report_cnt) {
         this.report_cnt = report_cnt;
     }
 

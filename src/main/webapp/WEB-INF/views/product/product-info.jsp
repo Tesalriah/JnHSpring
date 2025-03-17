@@ -141,8 +141,8 @@
                 </div>
                 <div class="reviews_title">
                     <div>Reviews</div>
-                    <div>
-                        <button type="button">Write</button>
+                    <div style="font-size: 15px;font-weight: normal;">
+                        <button type="button" id="rating" style="font-weight:bold;">평점순</button>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<button type="button" id="reg_date">최신순</button>
                     </div>
                 </div>
                 <div class="reviews_contents"></div>

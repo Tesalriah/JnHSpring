@@ -10,7 +10,6 @@ public class ReportReview {
     private Integer rno;
     private String contents;
     private Date reg_date;
-    private int state;
 
     @Override
     public String toString() {
@@ -22,19 +21,17 @@ public class ReportReview {
                 ", rno=" + rno +
                 ", contents='" + contents + '\'' +
                 ", reg_date=" + reg_date +
-                ", state=" + state +
                 '}';
     }
 
     public ReportReview(){}
 
-    public ReportReview(String user_id, String reporter_id, String reason, Integer rno, String contents, int state) {
+    public ReportReview(String user_id, String reporter_id, String reason, Integer rno, String contents) {
         this.user_id = user_id;
         this.reporter_id = reporter_id;
         this.reason = reason;
         this.rno = rno;
         this.contents = contents;
-        this.state = state;
     }
 
     public Integer getNo() {
@@ -91,13 +88,5 @@ public class ReportReview {
 
     public void setReg_date(Date reg_date) {
         this.reg_date = reg_date;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 }

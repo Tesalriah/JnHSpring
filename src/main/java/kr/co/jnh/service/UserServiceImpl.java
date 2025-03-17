@@ -3,6 +3,7 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.EmailAuthDao;
 import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.MailAuthDto;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -140,5 +142,15 @@ public class UserServiceImpl implements UserService {
             return true; // 비밀번호가 일치할시 true 반환
         }
         return false;
+    }
+
+    @Override
+    public int getSearchUserCnt(SearchCondition sc) throws Exception{
+        return userDao.searchSelectUserCnt(sc);
+    }
+
+    @Override
+    public List<User> getSearchUser(SearchCondition sc) throws Exception{
+        return userDao.searchSelectUser(sc);
     }
 }

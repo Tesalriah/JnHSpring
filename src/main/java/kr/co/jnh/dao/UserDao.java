@@ -1,7 +1,9 @@
 package kr.co.jnh.dao;
 
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserDao {
@@ -15,4 +17,7 @@ public interface UserDao {
 
     int update(Map map) throws Exception;
 
+    int searchSelectUserCnt(SearchCondition sc) throws Exception;
+
+    List<User> searchSelectUser(SearchCondition sc) throws Exception;
 }

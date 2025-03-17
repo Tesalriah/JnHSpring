@@ -1,9 +1,11 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.domain.MailAuthDto;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -34,4 +36,8 @@ public interface UserService {
     String emailAuth(MailAuthDto mailAuthDto) throws Exception;
 
     boolean loginCheck(Map map) throws Exception;
+
+    int getSearchUserCnt(SearchCondition sc) throws Exception;
+
+    List<User> getSearchUser(SearchCondition sc) throws Exception;
 }

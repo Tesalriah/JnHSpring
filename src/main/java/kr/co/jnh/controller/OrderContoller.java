@@ -110,7 +110,7 @@ public class OrderContoller {
         Map map = new HashMap();
         map.put("id", id);
         map.put("order_no", order_no);
-        map.put("status", "삭제처리");
+        map.put("is_deleted", "1");
 
         // 해당 주문번호의 status를 모두 삭체처리로 update
         try {

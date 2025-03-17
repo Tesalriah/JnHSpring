@@ -1,6 +1,7 @@
 package kr.co.jnh.controller;
 
 import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.mailAuthUtil;
 import kr.co.jnh.validation.UserValidator;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
@@ -54,8 +55,14 @@ public class RegisterController {
 
     // 이메일 인증코드 발송
     @GetMapping("/email-auth")
-    public String mailAuth(@ModelAttribute("email") String email, HttpServletRequest request, Model m, RedirectAttributes rattb){
-        String id = SessionIdUtil.getSessionId(request);
+    public String mailAuth(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        String id = user.getUser_id();
+        if(user.getStatus() != 3){
+            session.setAttribute("msg", "잘못된 접근입니다.");
+            return "redirect:/";
+        }
 
         // 랜덤 6자리 인증번호 발급
         Integer authNumber = makeRandomNumber();
@@ -63,15 +70,12 @@ public class RegisterController {
 
         try {
             // post로 받아온 이메일 값이 없을때 (회원가입을 통해 경로로 들어오지 않았을떄 ) 세션 아이디에서 이메일값 받아오기
-            if(email != null || email.isEmpty()){
-                email = userService.getUser(id).getEmail();
-                m.addAttribute("email", email);
-            }
+            String email = user.getEmail();
             // 현재 페이지에서 재요청시 이메일을 다시 발송하지 않게 처리
             String prevPage = request.getHeader("Referer");
             if(prevPage != null){
-                if(prevPage.contains("emailAuth")){
-                    m.addAttribute("msg", "CHECK_EMAIL");
+                if(prevPage.contains("email-auth")){
+                    session.setAttribute("msg", "이메일을 확인해주세요.");
                     return "account/email-auth";
                 }
             }
@@ -81,20 +85,20 @@ public class RegisterController {
                 throw new Exception("AUTH_ADD_FAIL");
             }
             // 이메일 전송
-            MailDto mailDto = new MailDto(email, authNumber+"");
+            MailDto mailDto = new MailDto(email, mailAuthUtil.customMsg(authNumber));
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
-            rattb.addFlashAttribute("email", email);
             return "account/email-auth";
         } catch (Exception e) {
             e.printStackTrace();
-            m.addAttribute("message", "SEND_FAIL"); // 이메일 발송이 실패되었다는 메시지를 출력
+            session.removeAttribute("user");
+            session.setAttribute("msg", "이메일 발송에 실패했습니다."); // 이메일 발송이 실패되었다는 메시지를 출력
             return "redirect:/";
         }
     }
 
     // 이메일 인증
     @PostMapping("/email-auth")
-    public String auth(HttpServletRequest request, Model m, RedirectAttributes rattb){
+    public String auth(HttpServletRequest request, HttpSession session){
         String id = SessionIdUtil.getSessionId(request);
 
         try {
@@ -107,10 +111,11 @@ public class RegisterController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            m.addAttribute("msg", "AUTH_FAIL");
+            session.setAttribute("msg", "메일 인증에 실패했습니다.");
             return "redirect:/email-auth";
         }
-        rattb.addFlashAttribute("msg","REG_OK");
+        session.removeAttribute("user");
+        session.setAttribute("msg", "이메일이 인증되었습니다. 다시 로그인해주세요.");
         return "redirect:/";
     }
 

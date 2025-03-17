@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Order;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -23,4 +24,8 @@ public interface OrderDao {
     int returnUpdate(Map map) throws Exception;
 
     String selectId(String order_no) throws Exception;
+
+    List<Order> selectMng(SearchCondition sc) throws Exception;
+
+    int selectMngCnt(SearchCondition sc) throws Exception;
 }

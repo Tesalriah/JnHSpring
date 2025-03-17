@@ -50,7 +50,19 @@
                             </form>
                         </div>
                     </div>
-                    <div class="point">MEN <i class="fa-solid fa-angle-right"></i> TOPS</div>
+                    <div class="point">
+                        <c:choose>
+                            <c:when test="${empty param.gender && empty param.category}">
+                                ALL
+                            </c:when>
+                            <c:when test="${empty param.category}">
+                                ${param.gender}
+                            </c:when>
+                            <c:otherwise>
+                                ${param.gender} <i class="fa-solid fa-angle-right"></i> ${param.category}
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                     <div class="MNG_box">
                         <table class="MNG_table">
                             <tr>
@@ -61,6 +73,11 @@
                                 <td style="width: 15%;">재고</td>
                                 <td style="width: 8%;">상세수정</td>
                             </tr>
+                            <c:if test="${ph.totalCnt < 1}">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 70px 0;">상품이 존재하지 않습니다.</td>
+                                </tr>
+                            </c:if>
                             <c:forEach items="${list}" var="productList">
                                 <tr>
                                     <td>${productList.product_id}</td>
@@ -73,7 +90,7 @@
                             </c:forEach>
                         </table>
                         <div class="paging">
-                            <c:if test="${ph.totalCnt != null && ph.totalCnt != 0}">
+                            <c:if test="${ph.totalPage != null && ph.totalPage != 0}">
                                 <c:if test="${ph.showPrev}">
                                     <a href="<c:url value="/admin/product-mng"/>${ph.sc.getQueryString(ph.beginPage-1)}"><i class="fa-solid fa-angle-left"></i></a>
                                 </c:if>

@@ -4,10 +4,7 @@ import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReviewDao;
-import kr.co.jnh.domain.Cart;
-import kr.co.jnh.domain.Order;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,5 +133,15 @@ public class OrderServiceImpl implements OrderService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Order> readMng(SearchCondition sc) throws Exception{
+        return orderDao.selectMng(sc);
+    }
+
+    @Override
+    public int readMngCnt(SearchCondition sc) throws Exception{
+        return orderDao.selectMngCnt(sc);
     }
 }

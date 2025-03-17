@@ -5,7 +5,6 @@
     <div><a ${current == "" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/wish/list"/>">찜리스트</a></div>
     <br>
     <div><a ${current == "" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/user"/> ">개인정보 확인/수정</a></div>
-    <div><a ${current == "" ? "style='color:#FFAEC9;'" : ""} href="">신고내역확인</a></div>
     <br>
     <div><a ${current == "review" ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/review/able"/>">리뷰관리</a></div>
     <br>

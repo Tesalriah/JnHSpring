@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Order;
+import kr.co.jnh.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -62,5 +63,15 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public String selectId(String order_no) throws Exception{
         return session.selectOne(nameSpace + "selectId", order_no);
+    }
+
+    @Override
+    public List<Order> selectMng(SearchCondition sc) throws Exception{
+        return session.selectList(nameSpace + "selectMng", sc);
+    }
+
+    @Override
+    public int selectMngCnt(SearchCondition sc) throws Exception{
+        return session.selectOne(nameSpace + "selectMngCnt", sc);
     }
 }
