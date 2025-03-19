@@ -31,7 +31,7 @@
                         </c:if>
                         <c:forEach var="list" items="${returnsList}">
                             <div class="return_top">
-                                <div><c:choose><c:when test="${list[0].type eq 'return'}">반품</c:when><c:when test="${list[0].type eq 'exchange'}">교환</c:when><c:otherwise>취소</c:otherwise></c:choose>접수일 : <fmt:formatDate value="${list[0].return_date}" pattern="yyyy/MM/dd"/></div>
+                                <div><c:choose><c:when test="${list[0].type eq 'return'}">반품접수</c:when><c:when test="${list[0].type eq 'exchange'}">교환접수</c:when><c:otherwise>취소</c:otherwise></c:choose>일 : <fmt:formatDate value="${list[0].return_date}" pattern="yyyy/MM/dd"/></div>
                                 <div>주문일 : <fmt:formatDate value="${list[0].order_date}" pattern="yyyy/MM/dd"/></div>
                             </div>
                             <div class="return">

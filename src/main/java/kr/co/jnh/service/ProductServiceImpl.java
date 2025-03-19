@@ -1,9 +1,7 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.dao.ProductDao;
-import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.Review;
 import kr.co.jnh.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +14,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductDao productDao;
-
-    @Autowired
-    ReviewDao reviewDao;
 
     public Product getProduct(String product_id) throws Exception{
         return productDao.select(product_id);

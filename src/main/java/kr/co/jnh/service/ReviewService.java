@@ -13,8 +13,6 @@ public interface ReviewService {
 
     int modify(Review review) throws Exception;
 
-    int remove(int no) throws Exception;
-
     int selectPageCnt(Map map) throws Exception;
 
     List<Review> selectPage(Map map) throws Exception;

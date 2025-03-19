@@ -297,9 +297,6 @@ public class ReviewController {
     // if문에서 이 검증 메서드를 사용하여 true면 접근불가능하게 Exception 발생예정
     private boolean reviewValidator(Review review, String id){
         // rno를 통해 가져온 Review에 할당된 아이디값과 세션에 로그인된 아이디값이 같지 않을경우 접근불가
-        if(review.getRating() > 5 || review.getRating() < 0){
-            return true;
-        }
         // 삭제 처리된(whether=2) 리뷰일경우 접근불가
         if(review.getWhether() == 2){
             return true;

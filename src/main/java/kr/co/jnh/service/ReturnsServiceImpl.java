@@ -3,6 +3,7 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReturnsDao;
+import kr.co.jnh.dao.ReviewDao;
 import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Returns;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ReturnsServiceImpl implements ReturnsService {
 
     @Autowired
     OrderDao orderDao;
+
+    @Autowired
+    ReviewDao reviewDao;
 
     @Override
     public List<List<Returns>> read(Map map) throws Exception{
@@ -77,8 +81,8 @@ public class ReturnsServiceImpl implements ReturnsService {
     public int returns(List<Returns> list) throws Exception{
         int result = -1;
         Map map = new HashMap();
-        for (int i = 0; i < list.size(); i++) {
-            Returns returns = list.get(i);
+
+        for (Returns returns : list) {
             result = returnsDao.insert(returns);
             if(result != 1){
                 throw new Exception("RETURNS_INSERT_FAIL");
@@ -89,11 +93,16 @@ public class ReturnsServiceImpl implements ReturnsService {
                 map.put("status", "반품접수");
             }if(returns.getType().equals("cancel")){
                 map.put("status", "취소완료");
+                map.put("return_id", returns.getReturn_id());
+                returnsDao.update(map);
             }
             map.put("order_no", returns.getOrder_no());
             map.put("id", returns.getUser_id());
             map.put("product_id", returns.getProduct_id());
             map.put("size", returns.getSize());
+            if(reviewDao.cancelDelete(map) <= 0){
+                throw new Exception("CANCEL_REVIEW_DELETE_FAIL");
+            }
             if(orderDao.returnUpdate(map) <= 0){
                 throw new Exception("ORDER_STATUS_UPDATE_FAIL");
             }

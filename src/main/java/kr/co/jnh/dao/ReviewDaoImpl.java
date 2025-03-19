@@ -47,8 +47,8 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int delete(int no) throws Exception{
-        return session.update( nameSpace + "delete", no);
+    public int cancelDelete(Map map) throws Exception{
+        return session.update( nameSpace + "cancelDelete", map);
     }
 
     @Override

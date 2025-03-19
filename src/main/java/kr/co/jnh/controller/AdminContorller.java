@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -243,20 +243,49 @@ public class AdminContorller {
 
     // 주문 리스트
     @PostMapping("order-status")
-    public String orderStatus(@ModelAttribute OrderList orderList, @RequestParam String[] check_each, SearchCondition sc, Model m){
+    public String orderStatus(@ModelAttribute OrderList orderList, @RequestParam String[] check_each, SearchCondition sc, RedirectAttributes rattr, HttpSession session){
+
+        // 페이지의 주문리스트를 모두받기
         List<Order> orders = orderList.getOrderList();
         List<Order> useOrder = new ArrayList<>();
+        // 주문완료일시 배송중으로 배송중일시 배송완료
+        int index = Arrays.asList(category).indexOf(sc.getCategory());
+        if(index != 2){
+            index++;
+        }
+
+        // checkBox에서 넘겨받은 index값의 주문만 userOrder에 저장
         for (String checkEach : check_each) {
             useOrder.add(orders.get(Integer.parseInt(checkEach)));
         }
-        System.out.println("useOrder = " + useOrder);
+        Map map = new HashMap();
+        map.put("status", category[index]);
 
-//        try {
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try{
 
-        return "/admin/order-mng";
+            for (Order order : useOrder) {
+                map.put("order_no", order.getOrder_no());
+                map.put("id", order.getUser_id());
+                map.put("product_id", order.getProduct_id());
+                map.put("size", order.getSize());
+
+                if(orderService.statusModify(map) != 1){
+                    throw new Exception("ORDER_STATUS_MODIFY_FAIL");
+                }
+            }
+
+            session.setAttribute("msg", category[index] + "(으)로 처리되었습니다.");
+        }catch (Exception e){
+            e.printStackTrace();
+            session.setAttribute("msg", "실패했습니다. 다시 시도해주세요.");
+        }
+
+        rattr.addAttribute("category", sc.getCategory());
+        if(!sc.getOption().equals("")){
+            rattr.addAttribute("option", sc.getOption());
+        }if(!sc.getKeyword().equals("")){
+            rattr.addAttribute("keyword", sc.getKeyword());
+        }
+        return "redirect:/admin/order-mng";
     }
 }

@@ -23,6 +23,8 @@ public interface OrderService {
 
     int updete(Map map) throws Exception;
 
+    int statusModify(Map map) throws Exception;
+
     boolean orderIdCheck(String date) throws Exception;
 
     boolean checkStock(String product_id, String quantity, String size) throws Exception;

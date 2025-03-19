@@ -47,23 +47,20 @@ public class ReviewServiceImpl implements ReviewService {
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", get.getProduct_id());
         map.put("whether", 1);
-        System.out.println("reviewDao.reviewAvg(get.getProduct_id()) = " + reviewDao.reviewAvg(get.getProduct_id()));
-        int cnt = reviewDao.selectPageCnt(map);
-        if(cnt > 0){
+        int cnt = 0;
+        try{
+            cnt = reviewDao.selectPageCnt(map);
+            if(cnt <= 0){
+                throw new Exception();
+            }
             double rating = Math.round(reviewDao.reviewAvg(get.getProduct_id()) * 10) / 10.0;
             map.put("rating",(float)rating);
-        }else{
+        }catch(Exception e){
             map.put("rating", 0);
         }
         product.setReview_cnt(cnt);
         productDao.update(map);
         return result;
-    }
-
-    @Override
-    @Transactional
-    public int remove(int no) throws Exception{
-        return reviewDao.delete(no);
     }
 
     @Override

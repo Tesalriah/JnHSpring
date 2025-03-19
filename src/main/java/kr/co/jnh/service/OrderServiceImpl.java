@@ -94,10 +94,6 @@ public class OrderServiceImpl implements OrderService {
                     throw new Exception("CART_DELETE_FAIL");
                 }
             }
-            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id(), order.getSize());
-            if(reviewDao.insert(review) != 1){
-                throw new Exception("REVIEW_REG_ERROR");
-            }
         }
         return result;
     }
@@ -110,6 +106,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int updete(Map map) throws Exception {
         return orderDao.updete(map);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int statusModify(Map map) throws Exception{
+        if(map.get("status").equals("배송중")){
+            Review review = new Review((String)map.get("order_no"), (String)map.get("id"),(String)map.get("product_id"),(String)map.get("size"));
+            reviewDao.insert(review);
+        }
+        return orderDao.returnUpdate(map);
     }
 
     @Override

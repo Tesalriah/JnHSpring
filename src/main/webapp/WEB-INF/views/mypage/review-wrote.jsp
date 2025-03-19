@@ -33,7 +33,7 @@
                     <div id="reviews_img" style="display:none;">
                         <button id="review_img_x" type="button"><i class="fa-solid fa-xmark"></i></button>
                         <div class="img_modal">
-                            <img id="enlarge_img" src="img/best.jpg">
+                            <img id="enlarge_img" src="">
                         </div>
                     </div>
                     <div class="reviews_contents">

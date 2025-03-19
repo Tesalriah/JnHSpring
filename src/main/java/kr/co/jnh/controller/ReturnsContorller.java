@@ -49,17 +49,17 @@ public class ReturnsContorller {
             List<Returns> returnsList = new ArrayList<>();
 
             // 현재날짜 + 001~999까지의 세자리 수로 return_id를 만드는 메서드
-            Returns returns = new Returns();
             long return_id = makeReturnsNo();
-            returns.setReturn_id(return_id + "");
-            returns.setUser_id(id);
-            returns.setOrder_no(order_no);
-            returns.setType("cancel");
 
             for (int i = 0; i < orderList.size(); i++) {
                 if(!orderList.get(i).getStatus().equals("주문완료")){
                     throw new Exception("WRONG_APPROACH");
                 }
+                Returns returns = new Returns();
+                returns.setReturn_id(return_id + "");
+                returns.setUser_id(id);
+                returns.setOrder_no(order_no);
+                returns.setType("cancel");
                 returns.setOrder_date(orderList.get(i).getOrder_date());
                 returns.setProduct_id(orderList.get(i).getProduct_id());
                 returns.setQuantity(orderList.get(i).getQuantity());
@@ -72,12 +72,11 @@ public class ReturnsContorller {
             }
 
             m.addAttribute("msg", "주문이 취소되었습니다.");
-            m.addAttribute("orderList", orderList);
+            m.addAttribute("url", "list");
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "잘못된 접근입니다.");
-        }
-        m.addAttribute("url", "/mypage/order/list?page="+page);
+            m.addAttribute("url", "../order/list?page="+page);        }
         return "alert";
     }
 

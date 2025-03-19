@@ -40,6 +40,11 @@
         WHERE rno = #{rno}
     </update>
 
+<update id="cancelDelete" parameterType="Map">
+        DELETE FROM review
+        WHERE order_no = #{order_no} AND product_id = #{product_id} AND user_id = #{id} AND size = #{size}
+    </update>
+
     <!--  해당 product_id의 작성된(whether=1) 리뷰들의 점수 평균 반환  -->
     <select id="ratingAvg" parameterType="String" resultType="float">
         SELECT AVG(rating) AS average_value

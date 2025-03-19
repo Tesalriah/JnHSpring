@@ -1,15 +1,22 @@
-const checkAll = document.getElementsByName('check_all');
+const checkAll = document.querySelector('input[name="check_all"]');
 const checkEach = document.getElementsByName('check_each');
 
-checkAll[0].addEventListener('click', function(){
-    console.log(checkAll[0].checked == true)
-    if(checkAll[0].checked == true){
-        for(let i=0; i<checkEach.length; i++){
-            checkEach[i].checked = true;
+checkAll.addEventListener('click', function(){
+    checkEach.forEach(checkbox => checkbox.checked = checkAll.checked);
+});
+
+
+checkEach.forEach(checkbox => {
+    checkbox.addEventListener('click', function (){
+        for(let i=0; i<checkEach.length; i++) {
+            if (checkEach[i].checked == true) {
+                if (i == checkEach.length - 1) {
+                    checkAll.checked = true;
+                }
+            } else {
+                checkAll.checked = false;
+                return;
+            }
         }
-    }else{
-        for(let i=0; i<checkEach.length; i++){
-            checkEach[i].checked = false;
-        }
-    }
-})
+    });
+});

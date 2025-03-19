@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/order-mng.css"/>">
     <script type="text/javascript" src="<c:url value='/resources/js/checkbox-ctrl.js'/>" defer></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
     <title>J&H</title>
 </head>
 <style>
@@ -26,32 +27,36 @@
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <h2>주문 관리</h2>
+                    <c:if test="${not empty sessionScope.msg}">
+                        <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
+                        <c:remove var="msg" scope="session"/>
+                    </c:if>
                     <div class="order_MNG">
                         <div class="status_menu">
-                            <div style="${ph.sc.category eq "주문완료" ? "border-color:black;" : ""}">
-                                <a href="<c:url value="/admin/order-mng"/>?category=주문완료">주문완료</a>
-                                <a href="<c:url value="/admin/order-mng"/>?category=주문완료">${cntMap["주문완료"]}</a>
+                            <div style="${ph.sc.category eq "주문완료" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=주문완료">
+                                <div href="<c:url value="/admin/order-mng"/>?category=주문완료">주문완료</div>
+                                <div href="<c:url value="/admin/order-mng"/>?category=주문완료">${cntMap["주문완료"]}</div>
                             </div>
-                            <div style="${ph.sc.category eq "배송중" ? "border-color:black;" : ""}">
-                                <a href="<c:url value="/admin/order-mng"/>?category=배송중">배송중</a>
-                                <a href="<c:url value="/admin/order-mng"/>?category=배송중">${cntMap["배송중"]}</a>
+                            <div style="${ph.sc.category eq "배송중" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=배송중">
+                                <div href="<c:url value="/admin/order-mng"/>?category=배송중">배송중</div>
+                                <div href="<c:url value="/admin/order-mng"/>?category=배송중">${cntMap["배송중"]}</div>
                             </div>
-                            <div style="${ph.sc.category eq "배송완료" ? "border-color:black;" : ""}">
-                                <a href="<c:url value="/admin/order-mng"/>?category=배송완료">배송완료</a>
-                                <a href="<c:url value="/admin/order-mng"/>?category=배송완료">${cntMap["배송완료"]}</a>
-                            </div>
-                        </div>
-                        <div class="modal_bg" style="display: none;"></div>
-                        <div class="contents_modal" style="display: none;">
-                            <div class="modal_title"><div>사유/내용</div><div><button id="modal_x"><i class="fa-solid fa-xmark"></i></button></div></div>
-                            <div class="modal_main">
-                                <div><div>사유</div><div id="modal_reason">상품이 마음에 들지 않음</div></div>
-                                <div><div>내용</div><div id="modal_content">반품하고싶어요</div></div>
+                            <div style="${ph.sc.category eq "배송완료" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=배송완료">
+                                <div>배송완료</div>
+                                <div>${cntMap["배송완료"]}</div>
                             </div>
                         </div>
-                        <form method="post" action="<c:url value="/admin/order-status"/>">
+                        <form method="post" action="<c:url value="/admin/order-status"/>?page=${ph.sc.page}&category=${ph.sc.category}${not empty ph.sc.option ? "&option=" : ""}${ph.sc.option}${not empty ph.sc.keyword ? "&keyword=" : ""}${ph.sc.keyword}">
                             <div class="checked_tools">
-                                <button type="submit">${ph.sc.category}</button>
+                                <c:choose>
+                                    <c:when test="${ph.sc.category =='주문완료'}">
+                                        <button type="submit">배송</button>
+                                    </c:when>
+                                    <c:when test="${ph.sc.category =='배송중'}">
+                                        <button type="submit">배송완료</button>
+                                    </c:when>
+                                    <c:otherwise></c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="table_box">
                                 <table class="order_table" border="1">
@@ -62,7 +67,7 @@
                                         <td style="width:10%;">색상/사이즈</td>
                                         <td style="width:5%;">수량</td>
                                         <td style="width:8%">주문자명</td>
-                                        <td style="width:25%;">주소</td>
+                                        <td style="width:25%;">주소 / 요청사항</td>
                                         <td style="width:10%;">연락처</td>
                                         <td style="width:15%;">주문일시</td>
                                         <td style="width:7%;">상태</td>
@@ -75,7 +80,7 @@
                                             <td>${order.color} / ${order.size} <input name="orderList[${order_status.index}].size" type="hidden" value="${order.size}"></td>
                                             <td>${order.quantity}</td>
                                             <td>${order.name}<input name="orderList[${order_status.index}].user_id" type="hidden" value="${order.user_id}"></td>
-                                            <td>${order.address}</td>
+                                            <td>${order.address} / ${order.del_request}</td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${fn:length(user.phone) == 11}">
@@ -123,5 +128,13 @@
         </div>
     </main>
     <%@ include file="../footer.jsp" %>
+<script>
+    document.querySelectorAll(".status_menu > div").forEach(div => {
+        div.addEventListener('click', function (){
+            location.href = div.dataset.link;
+        })
+    });
+
+</script>
 </body>
 </html>
