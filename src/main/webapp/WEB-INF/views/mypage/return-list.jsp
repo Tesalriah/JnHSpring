@@ -30,24 +30,30 @@
                             </div>
                         </c:if>
                         <c:forEach var="list" items="${returnsList}">
-                            <div class="return_top">
-                                <div><c:choose><c:when test="${list[0].type eq 'return'}">반품접수</c:when><c:when test="${list[0].type eq 'exchange'}">교환접수</c:when><c:otherwise>취소</c:otherwise></c:choose>일 : <fmt:formatDate value="${list[0].return_date}" pattern="yyyy/MM/dd"/></div>
-                                <div>주문일 : <fmt:formatDate value="${list[0].order_date}" pattern="yyyy/MM/dd"/></div>
-                            </div>
                             <div class="return">
+                                <div class="return_top">
+                                    <div><c:choose><c:when test="${list[0].type eq 'return'}">반품접수</c:when><c:when test="${list[0].type eq 'exchange'}">교환접수</c:when><c:otherwise>취소</c:otherwise></c:choose>일 : <fmt:formatDate value="${list[0].return_date}" pattern="yyyy/MM/dd"/></div>
+                                    <div>주문일 : <fmt:formatDate value="${list[0].order_date}" pattern="yyyy/MM/dd"/></div>
+                                </div>
                                 <div class="return_bottom">
                                     <div class="product_name">
                                         <c:forEach var="returns" items="${list}">
                                             <div>
-                                                    ${returns.product.product_name} / ${returns.size} <c:if test="${not empty returns.c_size}">/ 변경 사이즈 : ${returns.c_size}</c:if>
+                                                    ${returns.product.product_name} / ${returns.size} <c:if test="${returns.type ne 'exchange'}">/ ${returns.quantity}개</c:if> <c:if test="${not empty returns.c_size}">/ 변경 사이즈 : ${returns.c_size}</c:if>
                                             </div>
                                         </c:forEach>
                                     </div>
                                     <div class="info">
                                         <c:forEach var="returns" items="${list}">
                                             <div>
-                                                <div>${returns.quantity}개</div>
-                                                <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${returns.product.total}"/>원</div>
+                                                <c:choose>
+                                                    <c:when test="${returns.type eq 'exchange'}">
+                                                        <div>${returns.quantity}개</div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${returns.product.total}"/>원</div>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                         </c:forEach>
                                     </div>

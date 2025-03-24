@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Returns;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,15 @@ public interface ReturnsDao {
 
     int update(Map map) throws Exception;
 
+    int mngUpdate(Map map) throws Exception;
+
     int getCount(String id) throws Exception;
 
     List<Returns> selectPage(Map map) throws Exception;
 
     String selectId(String return_id) throws Exception;
+
+    int selectMngCnt(SearchCondition sc) throws Exception;
+
+    List<Returns> selectMng(SearchCondition sc) throws Exception;
 }

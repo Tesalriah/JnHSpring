@@ -4,8 +4,10 @@ import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReturnsDao;
 import kr.co.jnh.dao.ReviewDao;
+import kr.co.jnh.domain.Order;
 import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Returns;
+import kr.co.jnh.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,8 +59,31 @@ public class ReturnsServiceImpl implements ReturnsService {
     }
 
     @Override
-    public int update(Map map) throws Exception{
+    public int modify(Map map) throws Exception{
         return returnsDao.update(map);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int mngModify(Map map) throws Exception{
+        int result = returnsDao.mngUpdate(map);
+        String type = (String)map.get("type");
+        String status = (String)map.get("status");
+        if(type.equals("exchange")){
+            type = "교환";
+        }if(type.equals("return")){
+            type = "반품";
+        }if(type.equals("cancel")){
+            type = "취소";
+        }
+
+        Map<String,Object> orderMap = new HashMap<>();
+        map.forEach((key,value) -> orderMap.put((String)key, value));
+        orderMap.put("status", type+status);
+        if(orderDao.returnUpdate(orderMap) != 1){
+            throw new Exception("ORDER_STATUS_UPDATE_FAIL");
+        }
+        return result;
     }
 
     @Override
@@ -88,13 +113,15 @@ public class ReturnsServiceImpl implements ReturnsService {
                 throw new Exception("RETURNS_INSERT_FAIL");
             }
             if(returns.getType().equals("exchange")){
-                map.put("status", "교환접수");
+                map.put("status", "대기중");
             }if(returns.getType().equals("return")){
-                map.put("status", "반품접수");
+                map.put("status", "대기중");
             }if(returns.getType().equals("cancel")){
-                map.put("status", "취소완료");
+                map.put("status", "완료");
                 map.put("return_id", returns.getReturn_id());
-                returnsDao.update(map);
+                if(returnsDao.update(map) == 0){
+                    throw new Exception("RETURNS_UPDATE_FAIL");
+                }
             }
             map.put("order_no", returns.getOrder_no());
             map.put("id", returns.getUser_id());
@@ -109,5 +136,26 @@ public class ReturnsServiceImpl implements ReturnsService {
         }
 
         return result;
+    }
+
+    @Override
+    public int readMngCnt(SearchCondition sc) throws Exception{
+        return returnsDao.selectMngCnt(sc);
+    }
+
+    @Override
+    public List<Returns> readMng(SearchCondition sc) throws Exception{
+        List<Returns> returnsList = returnsDao.selectMng(sc);
+        for (Returns returns : returnsList) {
+            Map map = new HashMap();
+            map.put("product_id", returns.getProduct_id());
+            map.put("order_no", returns.getOrder_no());
+            map.put("id", returns.getUser_id());
+            map.put("size", returns.getSize());
+            Order order = orderDao.selectOne(map).get(0);
+
+            returns.setOrder(order);
+        }
+        return returnsList;
     }
 }

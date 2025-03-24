@@ -35,14 +35,14 @@
 	</beans:bean>
 
 	<interceptors>
-		<interceptor>
+		<!--<interceptor>
 			<mapping path="/admin/**"/>
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
 			<mapping path="/add-product"/>
 			<beans:bean id="AdminInterceptor" class="kr.co.jnh.interceptor.AdminInterceptor"/>
-		</interceptor>
+		</interceptor>-->
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/email-auth"/>
@@ -66,11 +66,11 @@
 			<exclude-mapping path="/mypage/review/removeAjax"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
 		</interceptor>
-		<interceptor>
+		<!--<interceptor>
 			<mapping path="/mypage/**"/>
 			<mapping path="/admin/**"/>
 			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
-		</interceptor>
+		</interceptor>-->
 	</interceptors>
 
 </beans:beans>

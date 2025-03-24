@@ -1,10 +1,8 @@
 const body = document.querySelector('body');
 
-const reportBtn = document.querySelectorAll('.report_open_btn');
 const rBg = document.querySelector('.review_bg');
 const rModal = document.querySelector('.review_report');
 const reviewX = document.querySelector('#review_x');
-const getId = document.getElementsByName('review_id');
 const reportId = document.querySelector('[name="report_id"]');
 const reportRno = document.querySelector('[name="rno"]');
 
@@ -80,29 +78,35 @@ function openImg(){
     imgBg.style.display = 'block';
     reviewImg.style.display = 'block';
     body.style.overflow='hidden';
+    body.style.marginRight = '15px';
 }
 function closeImg(){
     imgBg.style.display = 'none';
     reviewImg.style.display = 'none';
     body.style.overflow='visible';
+    body.style.marginRight = '0px';
 }
 function reportOpen(){
     rBg.style.display='block';
     rModal.style.display='block';
     body.style.overflow='hidden';
+    body.style.marginRight = '15px';
 }
 function reportClose(){
     rBg.style.display='none';
     rModal.style.display='none';
     body.style.overflow='visible';
+    body.style.marginRight = '0px';
 }
 function questionOpen(){
     qBg.style.display='block';
     qModal.style.display='block';
     body.style.overflow='hidden';
+    body.style.marginRight = '15px';
 }
 function questionClose(){
     qBg.style.display='none';
     qModal.style.display='none';
     body.style.overflow='visible';
+    body.style.marginRight = '0px';
 }

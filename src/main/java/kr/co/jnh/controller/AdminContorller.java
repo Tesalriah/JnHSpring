@@ -38,6 +38,8 @@ public class AdminContorller {
     @Autowired
     ReviewService reviewService;
 
+    @Autowired
+    ReturnsService returnsService;
     // 상품리스트
     @GetMapping("product-mng")
     public String productMng(SearchCondition sc, Model m){
@@ -95,7 +97,7 @@ public class AdminContorller {
 
     // 유저 리스트
     @GetMapping("user-mng")
-    public String userMng(HttpServletRequest request, SearchCondition sc, Model m){
+    public String userMng(SearchCondition sc, Model m){
         sc.setPageSize(20); // 한페이지에 가져오는 유저정보 20개
 
         try {
@@ -208,7 +210,7 @@ public class AdminContorller {
     // 주문 리스트
     @GetMapping("order-mng")
     public String orderMng(SearchCondition sc, Model m){
-        if(sc.getCategory() == ""){
+        if(sc.getCategory().equals("")){
             sc.setCategory(category[0]);
         }
         try {
@@ -224,11 +226,11 @@ public class AdminContorller {
 
             // 각 옵션의 count map에 저장
             Map<String,Integer> map = new HashMap<>();
-            for (int i = 0; i < category.length; i++) {
+            for(String categoryStr : category){
                 SearchCondition sc2 = new SearchCondition();
-                sc2.setCategory(category[i]);
+                sc2.setCategory(categoryStr);
                 int cnt = orderService.readMngCnt(sc2);
-                map.put(category[i], cnt);
+                map.put(categoryStr, cnt);
             }
 
             m.addAttribute("list", list);
@@ -241,7 +243,7 @@ public class AdminContorller {
         return "/admin/order-mng";
     }
 
-    // 주문 리스트
+    // 주문 status 변경
     @PostMapping("order-status")
     public String orderStatus(@ModelAttribute OrderList orderList, @RequestParam String[] check_each, SearchCondition sc, RedirectAttributes rattr, HttpSession session){
 
@@ -258,7 +260,7 @@ public class AdminContorller {
         for (String checkEach : check_each) {
             useOrder.add(orders.get(Integer.parseInt(checkEach)));
         }
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("status", category[index]);
 
         try{
@@ -287,5 +289,92 @@ public class AdminContorller {
             rattr.addAttribute("keyword", sc.getKeyword());
         }
         return "redirect:/admin/order-mng";
+    }
+
+    String[] r_category = {"대기중", "처리중", "완료"};
+
+    @GetMapping("return-mng")
+    public String returnMng(SearchCondition sc, Model m){
+        if(sc.getCategory().equals("")){
+            sc.setCategory(r_category[0]);
+        }
+
+        try{
+            // 페이징 처리
+            sc.setGender("return_id의 중복제거를 위함");
+            int totalCnt = returnsService.readMngCnt(sc);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+            sc.setGender(""); // 다시 초기화
+            ph.setNaviSize(5);
+            ph.doPaging(totalCnt, sc);
+
+            // 각 옵션의 count map에 저장
+            Map<String, Object> map = new HashMap<>();
+            for (String categoryStr : r_category) {
+                SearchCondition sc2 = new SearchCondition();
+                sc2.setCategory(categoryStr);
+                int cnt = returnsService.readMngCnt(sc2);
+                map.put(categoryStr, cnt);
+            }
+
+            List<Returns> list = returnsService.readMng(sc);
+
+            m.addAttribute("list", list);
+            m.addAttribute("ph", ph);
+            m.addAttribute("cntMap", map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "/admin/return-mng";
+    }
+
+    // 주문 리스트
+    @PostMapping("return-status")
+    public String returnStatus(@ModelAttribute ReturnsList returnsList, @RequestParam String[] check_each, SearchCondition sc, RedirectAttributes rattr, HttpSession session){
+
+        // 페이지의 주문리스트를 모두받기
+        List<Returns> returns = returnsList.getReturnsList();
+        List<Returns> useReturns = new ArrayList<>();
+        // 주문완료일시 배송중으로 배송중일시 배송완료
+        int index = Arrays.asList(r_category).indexOf(sc.getCategory());
+        if(index != 2){
+            index++;
+        }
+
+        // checkBox에서 넘겨받은 index값의 주문만 userReturns에 저장
+        for (String checkEach : check_each) {
+            useReturns.add(returns.get(Integer.parseInt(checkEach)));
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", r_category[index]);
+
+        try{
+
+            for (Returns setReturns : useReturns) {
+                map.put("return_id", setReturns.getReturn_id());
+                map.put("id", setReturns.getUser_id());
+                map.put("product_id", setReturns.getProduct_id());
+                map.put("size", setReturns.getSize());
+                map.put("type", setReturns.getType());
+                map.put("order_no", setReturns.getOrder_no());
+
+                if(returnsService.mngModify(map) != 1){
+                    throw new Exception("ORDER_STATUS_MODIFY_FAIL");
+                }
+            }
+
+            session.setAttribute("msg", r_category[index] + "(으)로 처리되었습니다.");
+        }catch (Exception e){
+            e.printStackTrace();
+            session.setAttribute("msg", "실패했습니다. 다시 시도해주세요.");
+        }
+
+        rattr.addAttribute("category", sc.getCategory());
+        if(!sc.getOption().equals("")){
+            rattr.addAttribute("option", sc.getOption());
+        }if(!sc.getKeyword().equals("")){
+            rattr.addAttribute("keyword", sc.getKeyword());
+        }
+        return "redirect:/admin/return-mng";
     }
 }

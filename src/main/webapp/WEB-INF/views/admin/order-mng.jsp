@@ -34,12 +34,12 @@
                     <div class="order_MNG">
                         <div class="status_menu">
                             <div style="${ph.sc.category eq "주문완료" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=주문완료">
-                                <div href="<c:url value="/admin/order-mng"/>?category=주문완료">주문완료</div>
-                                <div href="<c:url value="/admin/order-mng"/>?category=주문완료">${cntMap["주문완료"]}</div>
+                                <div>주문완료</div>
+                                <div>${cntMap["주문완료"]}</div>
                             </div>
                             <div style="${ph.sc.category eq "배송중" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=배송중">
-                                <div href="<c:url value="/admin/order-mng"/>?category=배송중">배송중</div>
-                                <div href="<c:url value="/admin/order-mng"/>?category=배송중">${cntMap["배송중"]}</div>
+                                <div>배송중</div>
+                                <div>${cntMap["배송중"]}</div>
                             </div>
                             <div style="${ph.sc.category eq "배송완료" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/order-mng"/>?category=배송완료">
                                 <div>배송완료</div>
@@ -63,7 +63,7 @@
                                     <tr>
                                         <td style="width:10px;"><input type="checkbox" name="check_all"></td>
                                         <td style="width:10%;">주문번호</td>
-                                        <td style="width:10%;">상품명</td>
+                                        <td style="width:10%;">상품ID</td>
                                         <td style="width:10%;">색상/사이즈</td>
                                         <td style="width:5%;">수량</td>
                                         <td style="width:8%">주문자명</td>
@@ -72,22 +72,25 @@
                                         <td style="width:15%;">주문일시</td>
                                         <td style="width:7%;">상태</td>
                                     </tr>
+                                    <c:if test="${ph.totalCnt <= 0}">
+                                        <tr><td style="padding:150px 0; font-size:24px" colspan="11">데이터가 존재하지 않습니다.</td></tr>
+                                    </c:if>
                                     <c:forEach items="${list}" var="order" varStatus="order_status">
                                         <tr>
                                             <td><input type="checkbox" name="check_each" value="${order_status.index}"></td>
                                             <td>${order.order_no}<input name="orderList[${order_status.index}].order_no" type="hidden" value="${order.order_no}"> </td>
-                                            <td>${order.product_id}<input name="orderList[${order_status.index}].product_id" type="hidden" value="${order.product_id}"></td>
+                                            <td><a href="<c:url value="/product"/>?product_id=${order.product_id}" target="_blank">${order.product_id}</a><input name="orderList[${order_status.index}].product_id" type="hidden" value="${order.product_id}"></td>
                                             <td>${order.color} / ${order.size} <input name="orderList[${order_status.index}].size" type="hidden" value="${order.size}"></td>
                                             <td>${order.quantity}</td>
                                             <td>${order.name}<input name="orderList[${order_status.index}].user_id" type="hidden" value="${order.user_id}"></td>
                                             <td>${order.address} / ${order.del_request}</td>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${fn:length(user.phone) == 11}">
-                                                        ${fn:substring(user.phone,0,3)}-${fn:substring(user.phone,3,7)}-${fn:substring(user.phone,7,11)}
+                                                    <c:when test="${fn:length(order.phone) == 11}">
+                                                        ${fn:substring(order.phone,0,3)}-${fn:substring(order.phone,3,7)}-${fn:substring(order.phone,7,11)}
                                                     </c:when>
                                                     <c:otherwise>
-                                                        ${fn:substring(user.phone,0,3)}-${fn:substring(user.phone,3,6)}-${fn:substring(user.phone,6,10)}
+                                                        ${fn:substring(order.phone,0,3)}-${fn:substring(order.phone,3,6)}-${fn:substring(order.phone,6,10)}
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -128,13 +131,5 @@
         </div>
     </main>
     <%@ include file="../footer.jsp" %>
-<script>
-    document.querySelectorAll(".status_menu > div").forEach(div => {
-        div.addEventListener('click', function (){
-            location.href = div.dataset.link;
-        })
-    });
-
-</script>
 </body>
 </html>
