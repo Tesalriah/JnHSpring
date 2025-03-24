@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.FaqMapper">
+
+
+    <insert id="insert" parameterType="Faq">
+        INSERT INTO faq
+            (question_type, question, answer)
+        VALUES
+            (#{question_type}, #{question}, #{answer})
+    </insert>
+
+    <select id="count" resultType="int" parameterType="SearchCondition">
+        SELECT count(*) FROM faq
+        <if test="option != ''">
+            WHERE question_type  = #{option}
+        </if>
+    </select>
+
+    <select id="selectAll" resultType="Faq" parameterType="SearchCondition" >
+        SELECT * FROM faq
+        <if test="option != ''">
+            WHERE question_type  = #{option}
+        </if>
+        ORDER BY no desc
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectNo" parameterType="int" resultType="Faq">
+        SELECT * FROM faq
+        WHERE no = #{no}
+    </select>
+
+    <update id="update" parameterType="Faq">
+        UPDATE faq
+        SET question_type = #{question_type}
+          , question = #{question}
+          , answer = #{answer}
+        WHERE no = #{no}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM faq WHERE no = #{no}
+    </delete>
+</mapper>

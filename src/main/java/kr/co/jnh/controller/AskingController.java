@@ -1,10 +1,8 @@
 package kr.co.jnh.controller;
 
 
-import kr.co.jnh.dao.AskingDao;
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
-import kr.co.jnh.service.NoticeService;
 import kr.co.jnh.service.QuestionService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
@@ -15,10 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +36,7 @@ public class AskingController {
 
         String user_id =SessionIdUtil.getSessionId(request);
 
-        Map map=new HashMap();
+        Map map=new HashMap<>();
         map.put("id",user_id);
         map.put("sc",sc);
 
@@ -81,6 +76,7 @@ public class AskingController {
 
             // 해당 id 목록 가져오기
             List<Question> list = questionService.readInfo(map);
+            System.out.println("list = " + list);
             m.addAttribute("qList", list);
 
             // 전체 게시물 갯수를 통해 PageHandler를 이용한 페이징 처리
@@ -169,6 +165,36 @@ public class AskingController {
         }
         return "alert";
     }
+
+    @PostMapping("/question/remove")
+    public String qRemove(HttpServletRequest request, Integer qno, Model m,SearchCondition sc){
+        String user_id=SessionIdUtil.getSessionId(request);
+
+        Map map = new HashMap();
+        map.put("qno",qno);
+        map.put("user_id",user_id);
+
+        try {
+           /* int result = questionService.remove(map);
+            System.out.println("삭제 결과: " + result);*/
+            System.out.println("삭제 시도 - qno: " + qno + ", user_id: " + user_id);
+
+            if (questionService.remove(map)>0) {
+                m.addAttribute("msg","삭제되었습니다.");
+                m.addAttribute("url","/jnh/mypage/asking/question/list");
+            }else{
+                throw new Exception("Question_REMOVE_FAIL");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg","삭제에 실패했습니다.");
+            m.addAttribute("url","/jnh/mypage/asking/question/list");
+        }
+
+        return "alert";
+    }
+
 
     // 게시물작성 페이지불러오기
     @GetMapping("/write")

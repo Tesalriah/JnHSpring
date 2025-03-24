@@ -49,6 +49,7 @@
                                 <button type="submit" formaction="<c:url value="/mypage/asking/remove"/>?page=${sc.page}" onclick="return deleteConfirm()">삭제</button>
                             </form>
                         </div>
+
                         <c:if test="${not empty askingDto[1]}">
                             <div class="ask_post">
                                 <div class="ask_title">

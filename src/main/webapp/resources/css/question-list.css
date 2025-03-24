@@ -1,3 +1,21 @@
+.post_button{
+    text-align: right;
+}
+
+.post_button:last-child{
+    margin-top:15px;
+}
+.post_button button{
+    font-size: 16px;
+    padding:5px 15px;
+    border:1px solid #dddddd;
+    background-color: #ffffff;
+    margin-left:10px;
+}
+.post_button button:hover{
+    cursor:pointer;
+}
+
 .top_nav{
     display:flex;
     border-bottom: 1px solid #dddddd;

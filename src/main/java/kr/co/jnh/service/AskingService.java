@@ -1,6 +1,7 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.domain.AskingDto;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,9 @@ public interface AskingService {
     // 글 작성
     int write(AskingDto askingDto) throws Exception;
 
+
     // 최신순, 대기중-답변완료 순으로 글 정렬
-    List<AskingDto> readAll() throws Exception;
+    List<AskingDto> readAll(SearchCondition sc) throws Exception;
 
     // No순으로 desc
     int readNo() throws Exception;
@@ -34,8 +36,11 @@ public interface AskingService {
     int modifyState(AskingDto askingDto) throws Exception;
 
     // 삭제
-    int remove(Map map) throws Exception;
+    int remove(Map<String, Integer> map) throws Exception;
+
+    AskingDto getAnswer(int no) throws Exception;
 
     // 현재 no 를 기준으로 앞뒤 2개의 게시물의 no 확인
     Map getPrevNext(Map map) throws Exception;
+
 }

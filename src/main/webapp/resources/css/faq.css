@@ -32,12 +32,30 @@
 }
 .question_type{
     width:10%;
+
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 10%;
+
+
 }
+
+.question_contents{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%
+}
+
 .answer_contents{
-    padding:10px 0;
+    padding:10px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
 }
 .answer p{
-    margin-bottom:10px;
+    /*margin-bottom:10px;*/
+    line-height: normal;
+    white-space: pre-wrap; /* 줄바꿈하는 방법 */
 }
 .paging{
     margin-top: 50px;
@@ -51,4 +69,21 @@
 }
 .paging a:hover{
     color:#FFAEC9;
+}
+.post_button{
+    text-align: right;
+    margin-top: 15px;
+}
+.post_button:last-child{
+    margin-top:15px;
+}
+.post_button button{
+    font-size: 16px;
+    padding:5px 15px;
+    border:1px solid #dddddd;
+    background-color: #ffffff;
+    margin-left:10px;
+}
+.post_button button:hover{
+    cursor:pointer;
 }
