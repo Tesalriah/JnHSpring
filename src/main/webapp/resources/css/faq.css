@@ -57,6 +57,13 @@
     line-height: normal;
     white-space: pre-wrap; /* 줄바꿈하는 방법 */
 }
+.admin_btn button, .admin_btn input{
+    background: #dddddd;
+    border-radius: 3px;
+}
+.admin_btn button:hover, .admin_btn input:hover{
+    cursor: pointer;
+}
 .paging{
     margin-top: 50px;
     text-align:center;

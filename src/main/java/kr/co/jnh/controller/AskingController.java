@@ -4,7 +4,6 @@ package kr.co.jnh.controller;
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
 import kr.co.jnh.service.QuestionService;
-import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +21,6 @@ public class AskingController {
 
     @Autowired
     AskingService askingService;
-    @Autowired
-    UserService userService;
     @Autowired
     QuestionService questionService;
 
@@ -69,11 +66,9 @@ public class AskingController {
         try {
             // 해당 id의 글 갯수(문의글, 답변 포함)
             int idCount = questionService.getCount(map);
-            System.out.println("idCount = " + idCount);
 
             // 해당 id 목록 가져오기
             List<Question> list = questionService.readInfo(map);
-            System.out.println("list = " + list);
             m.addAttribute("qList", list);
 
             // 전체 게시물 갯수를 통해 PageHandler를 이용한 페이징 처리
@@ -172,10 +167,6 @@ public class AskingController {
         map.put("user_id",user_id);
 
         try {
-           /* int result = questionService.remove(map);
-            System.out.println("삭제 결과: " + result);*/
-            System.out.println("삭제 시도 - qno: " + qno + ", user_id: " + user_id);
-
             if (questionService.remove(map)>0) {
                 m.addAttribute("msg","삭제되었습니다.");
                 m.addAttribute("url","/jnh/mypage/asking/question/list");
@@ -243,7 +234,6 @@ public class AskingController {
         String id= SessionIdUtil.getSessionId(request);
         try {
             AskingDto askingDto = askingService.read(no).get(0);
-            System.out.println("askingDto.getContents() = " + askingDto.getContents());
             //작성자 id와 로그인id가 동일한 지 확인
             if (!id.equals(askingDto.getUser_id())) {
                 m.addAttribute("msg","작성자만 수정 가능합니다.");

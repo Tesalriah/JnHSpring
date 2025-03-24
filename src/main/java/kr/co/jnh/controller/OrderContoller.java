@@ -6,16 +6,12 @@ import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.ReturnsService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -39,7 +35,7 @@ public class OrderContoller {
     public String mypage(HttpServletRequest request, SearchCondition sc, Model m) {
         String id = SessionIdUtil.getSessionId(request);
         sc.setPageSize(5); // 한 페이지에 5개의 주문
-        HashMap map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("sc", sc);
 

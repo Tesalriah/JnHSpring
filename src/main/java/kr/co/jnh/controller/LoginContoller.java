@@ -80,7 +80,7 @@ public class LoginContoller {
     // 아이디 찾기 전 인증번호 전송
     @ResponseBody
     @PostMapping("/id-auth")
-    public Map idAuth(@RequestBody Map<String,Object> map){
+    public Map<String,Object> idAuth(@RequestBody Map<String,Object> map){
         String name = (String)map.get("user_name");
         String email = (String)map.get("email");
 
@@ -144,7 +144,7 @@ public class LoginContoller {
     // 비밀번호 찾기 전 인증번호 전송
     @ResponseBody
     @PostMapping("/pwd-auth")
-    public Map pwdAuth(@RequestBody Map<String, Object> map){
+    public Map<String,Object> pwdAuth(@RequestBody Map<String, Object> map){
         String id = (String)map.get("user_id");
         String email = (String)map.get("email");
 
@@ -242,7 +242,7 @@ public class LoginContoller {
     @PostMapping("/login")
     public String login(String id, String pwd,@SessionAttribute(name = "prevPage", required = false) String prevPage, boolean rememberId,
                         HttpServletRequest request, HttpServletResponse response, RedirectAttributes rattb){
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("id",id);
         map.put("pwd",pwd);
         HttpSession session = request.getSession();

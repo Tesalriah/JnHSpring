@@ -2,7 +2,6 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.ReportReason;
 import kr.co.jnh.domain.ReportReview;
-import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.ReportReviewService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;

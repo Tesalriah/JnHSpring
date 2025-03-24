@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,8 +47,8 @@ public class RegisterController {
     }
 
     // 회원가입 Get
-    @GetMapping("/signup")
-    public String signup(){
+    @PostMapping("/register")
+    public String signUp(){
         return "account/signup";
     }
 
@@ -58,8 +57,7 @@ public class RegisterController {
     public String mailAuth(HttpServletRequest request){
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
-        String id = user.getUser_id();
-        if(user.getStatus() != 3){
+        if(user == null || user.getStatus() != 3){
             session.setAttribute("msg", "잘못된 접근입니다.");
             return "redirect:/";
         }

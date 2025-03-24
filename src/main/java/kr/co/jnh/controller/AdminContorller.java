@@ -8,8 +8,6 @@ import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.*;
-import kr.co.jnh.util.SessionIdUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -427,9 +425,7 @@ public class AdminContorller {
     }
 
     @PostMapping("/remove")
-    public String remove(Model m, AskingDto askingDto,
-                         @RequestParam("no") Integer no,
-                         @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
+    public String remove(Model m, @RequestParam("no") Integer no, @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
         try {
             // no 값이 없으면 오류 처리
             if (no == null) {
@@ -438,7 +434,7 @@ public class AdminContorller {
                 return "alert";
             }
 
-            Map<String, Integer> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("no", no);
             map.put("cno", cno);
 

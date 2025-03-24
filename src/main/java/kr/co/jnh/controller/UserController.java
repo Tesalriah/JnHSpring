@@ -41,7 +41,7 @@ public class UserController {
     public String checkPwd(@RequestParam String user_pwd, HttpServletRequest request, Model m) {
         String id = SessionIdUtil.getSessionId(request);
 
-        Map<String, String> map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("pwd", user_pwd);
         try {

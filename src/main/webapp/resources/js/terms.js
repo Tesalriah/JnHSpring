@@ -6,7 +6,11 @@ okBtn.addEventListener("click",function(){
     if(allBtn.checked == false)
         alert('J&H 이용약관과 개인정보 수집 및 이용에 대한 안내 모두 동의해주세요.');
     if(allBtn.checked == true)
-        location.href='signup';
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "register";
+        document.body.appendChild(form);
+        form.submit();
 })
 
 cancelBtn.addEventListener('click', function (){
