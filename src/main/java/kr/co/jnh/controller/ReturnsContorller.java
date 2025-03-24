@@ -33,6 +33,53 @@ public class ReturnsContorller {
     @Autowired
     ProductService productService;
 
+    // 주문목록에서 주문취소 클릭시 주문취소와 동시에 취소/반품/교환 리스트에 취소된 항목 갱신
+    @PostMapping("cancel")
+    public String cancel(@RequestParam(required = false) String order_no, @RequestParam(required = false) int page, HttpServletRequest request, Model m) {
+        if (order_no == null) { // 받아온 order_no이 없을때 list로 리다이렉트
+            return "redirect:/mypage/order-list?page=" + page;
+        }
+        String id = SessionIdUtil.getSessionId(request);
+        Map<String,Object>map = new HashMap<>();
+        map.put("id", id);
+        map.put("order_no", order_no);
+
+        try {
+            List<Order> orderList = orderService.readOne(map);
+            List<Returns> returnsList = new ArrayList<>();
+
+            // 현재날짜 + 001~999까지의 세자리 수로 return_id를 만드는 메서드
+            long return_id = makeReturnsNo();
+
+            for (int i = 0; i < orderList.size(); i++) {
+                if(!orderList.get(i).getStatus().equals("주문완료")){
+                    throw new Exception("WRONG_APPROACH");
+                }
+                Returns returns = new Returns();
+                returns.setReturn_id(return_id + "");
+                returns.setUser_id(id);
+                returns.setOrder_no(order_no);
+                returns.setType("cancel");
+                returns.setOrder_date(orderList.get(i).getOrder_date());
+                returns.setProduct_id(orderList.get(i).getProduct_id());
+                returns.setQuantity(orderList.get(i).getQuantity());
+                returns.setSize(orderList.get(i).getSize());
+
+                returnsList.add(returns);
+            }
+            if(returnsService.returns(returnsList) != 1){
+                throw new Exception("cancel_FAIL");
+            }
+
+            m.addAttribute("msg", "주문이 취소되었습니다.");
+            m.addAttribute("url", "list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg", "잘못된 접근입니다.");
+            m.addAttribute("url", "../order/list?page="+page);        }
+        return "alert";
+    }
+
     // 교환 또는 반품하는 상품을 선택하는 step1페이지
     @PostMapping("step1")
     public String returnStep1(@RequestParam(required = false) String order_no, @RequestParam(required = false) int page, HttpServletRequest request, Model m) {
@@ -40,9 +87,10 @@ public class ReturnsContorller {
             return "redirect:/mypage/order-list?page=" + page;
         }
         String id = SessionIdUtil.getSessionId(request);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("id", id);
         map.put("order_no", order_no);
+        map.put("exception", "1");
 
         try {
             List<Order> orderList = orderService.readOne(map);
@@ -59,7 +107,7 @@ public class ReturnsContorller {
     public String returnStep2(@RequestParam(required = false) String order_no, @RequestParam(required = false) String check_box, HttpServletRequest request, Model m) {
         String id = SessionIdUtil.getSessionId(request);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("id", id);
         map.put("order_no", order_no);
         String[] checkBox = check_box.split(",");
@@ -124,28 +172,14 @@ public class ReturnsContorller {
             returns.setAddress( returns.getAddress() + address2);
         }
 
-        // 현재날짜 + 001~999까지의 세자리 수로 return_id 만들기
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String today = format.format(date);
-        long return_id;
-
         try{
-            Map map = new HashMap();
+            Map<String,Object> map = new HashMap<>();
             map.put("id", returns.getUser_id());
             map.put("order_no", returns.getOrder_no());
             List<Order> orderList = orderService.readOne(map);
             returns.setOrder_date(orderList.get(0).getOrder_date());
-            String return_id_str = returnsService.readId(today);
-            if(return_id_str != null){
-                return_id = Long.parseLong(return_id_str);
-                return_id += 1;
-                if(return_id + "" == today + "999"){
-                    throw new Exception("RETURNS_LIMITED");
-                }
-            }else{
-                return_id = Long.parseLong(today + "001");
-            }
+            // 현재날짜 + 001~999까지의 세자리 수로 return_id를 만드는 메서드
+            long return_id = makeReturnsNo();
             returns.setReturn_id(return_id + "");
 
             // list에 반품,교환 상품 저장
@@ -179,7 +213,7 @@ public class ReturnsContorller {
         sc.setPageSize(5);
         String id = SessionIdUtil.getSessionId(request);
 
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("sc", sc);
         map.put("id", id);
 
@@ -197,5 +231,25 @@ public class ReturnsContorller {
         }
 
         return "mypage/return-list";
+    }
+
+    private Long makeReturnsNo() throws Exception{
+        // 현재날짜 + 001~999까지의 세자리 수로 return_id 만들기
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String today = format.format(date);
+        long return_id = 0;
+
+        String return_id_str = returnsService.readId(today);
+        if(return_id_str != null){
+            return_id = Long.parseLong(return_id_str);
+            return_id += 1;
+            if(return_id + "" == today + "999"){
+                throw new Exception("RETURNS_LIMITED");
+            }
+        }else{
+            return_id = Long.parseLong(today + "001");
+        }
+        return return_id;
     }
 }

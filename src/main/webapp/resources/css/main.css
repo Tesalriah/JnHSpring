@@ -72,6 +72,7 @@
     font-size:20px;
     opacity:0.3;
     transition: opacity 0.3s;
+    background-color: #dddddd;
 }
 .banner_left:hover, .banner_right:hover{
     opacity: 1;

@@ -3,13 +3,16 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.EmailAuthDao;
 import kr.co.jnh.dao.UserDao;
 import kr.co.jnh.domain.MailAuthDto;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,36 +24,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailAuthDao emailAuthDao;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public int addUser(User user) throws Exception{
         return userDao.insert(user);
     }
 
     @Override
-    public User showUser(Map map) throws Exception{
-        return userDao.selectUser(map);
+    public User getUser(String id) throws Exception{
+        return userDao.selectUserById(id);
     }
 
-    @Override
-    public int getGrade(String id) throws Exception{
-        if(id == null || id.equals("")){
-            return -1;
-        }
-        User user = userDao.selectUserById(id);
-        return user.getGrade();
-    }
-
-    @Override
-    public int getStatus(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        return user.getStatus();
-    }
-
-    @Override
-    public String findEmail(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        return user.getEmail();
-    }
 
     @Override
     public String findId(String email) throws Exception{
@@ -73,26 +59,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int changeAddress(String id, String address) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setAddress(address);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("address", address);
+        return userDao.update(map);
     }
 
     @Override
     public int changePassword(String id, String pwd) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setUser_pwd(pwd);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("user_pwd", pwd);
+        return userDao.update(map);
     }
 
     @Override
     public int changeStatus(String id, int status) throws Exception{
-        User user = new User();
-        user.setUser_id(id);
-        user.setStatus(status);
-        return userDao.update(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("status", status);
+        return userDao.update(map);
     }
 
     @Override
@@ -100,11 +86,11 @@ public class UserServiceImpl implements UserService {
     public int changePwd(String id, String pwd) throws Exception{
         User user = userDao.selectUserById(id);
         user.setUser_pwd(pwd);
-        User change = new User();
-        change.setUser_id(id);
-        change.setUser_pwd(pwd);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", id);
+        map.put("user_pwd", pwd);
         emailAuthDao.deleteAuth(user.getEmail());
-        return userDao.update(change);
+        return userDao.update(map);
     }
 
     @Override
@@ -126,13 +112,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public int emailAuth(MailAuthDto mailAuthDto, String id) throws Exception{
        String auth_num = emailAuthDao.selectAuthNum(mailAuthDto.getEmail());
-       User user = new User();
-       if(mailAuthDto.getAuth_number().equals(auth_num)){
-           user.setUser_id(id);
-           user.setStatus(0);
+        Map<String, Object> map = new HashMap<>();
+        if(mailAuthDto.getAuth_number().equals(auth_num)){
+           map.put("user_id", id);
+           map.put("status", 0);
        }
        emailAuthDao.deleteAuth(mailAuthDto.getEmail());
-        return userDao.update(user);
+        return userDao.update(map);
     }
 
     @Override
@@ -149,18 +135,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String id) throws Exception{
-        User user = userDao.selectUserById(id);
-        user.setUser_pwd("");
-        return user;
+    public boolean loginCheck(Map map) throws Exception{
+        String pwd = userDao.selectUser((String)map.get("id")).getUser_pwd();
+        String enteredPwd = (String)map.get("pwd");
+        if(enteredPwd != null && passwordEncoder.matches(enteredPwd, pwd)){
+            return true; // 비밀번호가 일치할시 true 반환
+        }
+        return false;
     }
 
     @Override
-    public boolean loginCheck(Map map) throws Exception{
-        User user = userDao.selectUser(map);
-        if(user == null){
-            return false; // user정보를 가져오질 못할시 false
-        }
-        return true; // 아이디 비밀번호 일치할시 true 반환
+    public int getSearchUserCnt(SearchCondition sc) throws Exception{
+        return userDao.searchSelectUserCnt(sc);
+    }
+
+    @Override
+    public List<User> getSearchUser(SearchCondition sc) throws Exception{
+        return userDao.searchSelectUser(sc);
     }
 }

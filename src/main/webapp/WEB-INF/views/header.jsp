@@ -25,12 +25,12 @@
                         </ul>
                     </li>
                     <li><a href="<c:url value="/notice/list" />">SERVICE</a></li>
-                    <c:if test="${grade == 0}">
+                    <c:if test="${sessionScope.user.grade == 0}">
                         <li class="gender_on">
-                            <a href="<c:url value="/admin/product"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                            <a href="<c:url value="/admin/product-mng"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                             <ul class="submenu_nav" >
-                                <li><a href="">유저관리</a></li>
-                                <li><a href="<c:url value="/admin/product"/>">상품관리</a></li>
+                                <li><a href="<c:url value="/admin/user-mng"/>">유저관리</a></li>
+                                <li><a href="<c:url value="/admin/product-mng"/>">상품관리</a></li>
                             </ul>
                         </li>
                     </c:if>
@@ -42,7 +42,9 @@
                     <div class="search_area">
                         <button id="close_search" type="button" class="search_close"><i class="fa-solid fa-xmark"></i></button>
                         <form method="get" action="<c:url value="/product-list"/>${empty ph ? sc.queryString : ph.sc.queryString}">
-                            <input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요" autocomplete="off"><button type="submit" id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="hidden" name="gender" value="${ph.sc.gender}">
+                            <input type="hidden" name="category" value="${ph.sc.category}">
+                            <input type="text" id="search" name="keyword" value="${ph.sc.keyword}" placeholder="검색어를 입력해주세요" autocomplete="off"><button type="submit" id="search_button"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
                 </div>

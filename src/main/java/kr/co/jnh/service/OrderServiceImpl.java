@@ -4,10 +4,7 @@ import kr.co.jnh.dao.CartDao;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReviewDao;
-import kr.co.jnh.domain.Cart;
-import kr.co.jnh.domain.Order;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,17 +74,17 @@ public class OrderServiceImpl implements OrderService {
             if(result != 1){
                 throw new Exception("ORDER_FAIL");
             }
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap();
             map.put("user_id", order.getUser_id());
             map.put("product_id", order.getProduct_id());
             map.put("size", order.getSize());
 
             Product product = productDao.select(order.getProduct_id());
             int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
-            product.setStock(calStock + "");
-            product.setSize(order.getSize());
-            product.setBought_cnt(product.getBought_cnt() + order.getQuantity());
-            productDao.update(product);
+            map.put("stock", calStock);
+            map.put("size", order.getSize());
+            map.put("bought_cnt", product.getBought_cnt() + order.getQuantity());
+            productDao.update(map);
             if(productDao.updateStock(product) != 1){
                 throw new Exception("STOCK_ERROR");
             }
@@ -96,10 +93,6 @@ public class OrderServiceImpl implements OrderService {
                 if(cartDao.delete(map) != 1){
                     throw new Exception("CART_DELETE_FAIL");
                 }
-            }
-            Review review = new Review(order.getOrder_no(), order.getUser_id(), order.getProduct_id(), order.getSize());
-            if(reviewDao.insert(review) != 1){
-                throw new Exception("REVIEW_REG_ERROR");
             }
         }
         return result;
@@ -113,6 +106,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int updete(Map map) throws Exception {
         return orderDao.updete(map);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int statusModify(Map map) throws Exception{
+        if(map.get("status").equals("배송중")){
+            Review review = new Review((String)map.get("order_no"), (String)map.get("id"),(String)map.get("product_id"),(String)map.get("size"));
+            reviewDao.insert(review);
+        }
+        return orderDao.returnUpdate(map);
     }
 
     @Override
@@ -136,5 +139,15 @@ public class OrderServiceImpl implements OrderService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Order> readMng(SearchCondition sc) throws Exception{
+        return orderDao.selectMng(sc);
+    }
+
+    @Override
+    public int readMngCnt(SearchCondition sc) throws Exception{
+        return orderDao.selectMngCnt(sc);
     }
 }

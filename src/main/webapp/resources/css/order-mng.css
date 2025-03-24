@@ -5,6 +5,9 @@
     display: flex;
     width:70%;
 }
+.status_menu:hover{
+    cursor: pointer;
+}
 .status_menu > div{
     width:20%;
     border:1px solid #dddddd;
@@ -16,10 +19,10 @@
 .status_menu > div:not(.status_menu > div:last-child){
     margin-right: 10px;
 }
-.status_menu > div > a:first-child{
+.status_menu > div > div:first-child{
     margin-bottom: 10px;
 }
-.status_menu > div > a:last-child{
+.status_menu > div > div:last-child{
     margin-left: 5px;
     font-weight: bold;
 }
@@ -99,5 +102,31 @@
     font-size: 16px;
 }
 .order_search button:hover{
+    cursor: pointer;
+}
+.search_user{
+    text-align: center;
+    margin-bottom: 50px;
+}
+.search_user select{
+    border:1px solid #dddddd;
+    padding: 4.5px;
+    font-size: 16px;
+}
+.search_user input{
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    padding: 5px;
+    width:20%;
+    font-size: 16px;
+}
+.search_user button{
+    padding:6px 15px;
+    background-color: #FFAEC9;
+    color: #ffffff;
+    font-size: 16px;
+}
+.search_user button:hover{
     cursor: pointer;
 }

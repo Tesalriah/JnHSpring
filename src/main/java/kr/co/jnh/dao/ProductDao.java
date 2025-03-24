@@ -13,7 +13,7 @@ public interface ProductDao {
 
     int updateStock(Product product) throws Exception;
 
-    int update(Product product) throws Exception;
+    int update(Map map) throws Exception;
 
     int delete(String product_id) throws Exception;
 
@@ -28,4 +28,8 @@ public interface ProductDao {
     List<String> selectSize(String product_id) throws Exception;
 
     Product selectAtSize(Map map) throws Exception;
+
+    List<Product> selectProductAdmin(SearchCondition sc) throws Exception;
+
+    int selectProductAdminCnt(SearchCondition sc) throws Exception;
 }

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -30,7 +29,6 @@
                     <h2>리뷰 ${empty modify ? "작성" : "수정"}</h2>
                     <form action="<c:url value="/mypage/review/write"/>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="rno" value="${review.rno}">
-                        <input type="hidden" name="reg_date" value="<fmt:formatDate value="${review.reg_date}" pattern="yyyy/MM/dd"/>">
                         <div class="write_review">
                             <div class="review_product">
                                 <div class="review_product_img">

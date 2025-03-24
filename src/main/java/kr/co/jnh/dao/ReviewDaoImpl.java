@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,8 +47,8 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int delete(int no) throws Exception{
-        return session.update( nameSpace + "delete", no);
+    public int cancelDelete(Map map) throws Exception{
+        return session.update( nameSpace + "cancelDelete", map);
     }
 
     @Override
@@ -58,5 +59,15 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public List<Review> selectPage(Map map){
         return session.selectList( nameSpace + "selectPage", map);
+    }
+
+    @Override
+    public int SelectPageByReportCnt(SearchCondition sc){
+        return session.selectOne( nameSpace + "SelectPageByReportCnt", sc);
+    }
+
+    @Override
+    public List<Review> SelectPageByReport(SearchCondition sc){
+        return session.selectList( nameSpace + "SelectPageByReport", sc);
     }
 }

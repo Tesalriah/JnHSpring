@@ -61,6 +61,7 @@
     display:flex;
     justify-content:space-between;
     padding:30px;
+    align-items: center;
 }
 .report_title button, .question_title button{
     background-color:#ffffff;
@@ -118,14 +119,17 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     justify-content: space-between;
     align-items:center;
 }
-.reviews_title button, .questions_title button{
+.reviews_title button:hover{
+    cursor: pointer;
+}
+.questions_title button{
     font-size:24px;
     font-weight:bold;
     padding:5px 40px;
     border:1px solid #cccccc;
     background-color:#ffffff;
 }
-.reviews_title button:hover, .questions_title button:hover{
+.questions_title button:hover{
     background-color:#eeeeee;
     cursor: pointer;
 }
@@ -169,7 +173,6 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     position: absolute;
     top:0;
     left: 0;
-    width:91%;
     white-space: nowrap;
     overflow: hidden;
     color:#FFAEC9;
@@ -200,10 +203,11 @@ textarea[name='report_contents'], textarea[name='question_contents']{
     display: flex;
     justify-content: center;
 }
-.review_paging div, .question_paging div{
+.review_paging button, .question_paging button{
     padding:5px;
+    background: none;
 }
-.review_paging div:hover, .question_paging div:hover{
+.review_paging button:hover, .question_paging button:hover{
     font-weight:bold;
     color: #FFAEC9;
     cursor: pointer;

@@ -4,15 +4,11 @@ package kr.co.jnh.controller;
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
 import kr.co.jnh.service.QuestionService;
-import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +22,6 @@ public class AskingController {
     @Autowired
     AskingService askingService;
     @Autowired
-    UserService userService;
-    @Autowired
     QuestionService questionService;
 
     // 문의목록 가져오기
@@ -36,7 +30,7 @@ public class AskingController {
 
         String user_id =SessionIdUtil.getSessionId(request);
 
-        Map map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
         map.put("id",user_id);
         map.put("sc",sc);
 
@@ -65,18 +59,16 @@ public class AskingController {
 
         String user_id = SessionIdUtil.getSessionId(request);
 
-        Map map=new HashMap();
+        Map<String,Object> map=new HashMap<>();
         map.put("user_id",user_id);
         map.put("sc",sc);
 
         try {
             // 해당 id의 글 갯수(문의글, 답변 포함)
             int idCount = questionService.getCount(map);
-            System.out.println("idCount = " + idCount);
 
             // 해당 id 목록 가져오기
             List<Question> list = questionService.readInfo(map);
-            System.out.println("list = " + list);
             m.addAttribute("qList", list);
 
             // 전체 게시물 갯수를 통해 PageHandler를 이용한 페이징 처리
@@ -147,7 +139,7 @@ public class AskingController {
         // 아이디 확인
         String user_id = SessionIdUtil.getSessionId(request);
 
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("no",no);
         map.put("user_id", user_id);
 
@@ -170,15 +162,11 @@ public class AskingController {
     public String qRemove(HttpServletRequest request, Integer qno, Model m,SearchCondition sc){
         String user_id=SessionIdUtil.getSessionId(request);
 
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("qno",qno);
         map.put("user_id",user_id);
 
         try {
-           /* int result = questionService.remove(map);
-            System.out.println("삭제 결과: " + result);*/
-            System.out.println("삭제 시도 - qno: " + qno + ", user_id: " + user_id);
-
             if (questionService.remove(map)>0) {
                 m.addAttribute("msg","삭제되었습니다.");
                 m.addAttribute("url","/jnh/mypage/asking/question/list");
@@ -215,9 +203,8 @@ public class AskingController {
             askingDto.setUser_id(id);
             askingDto.setState(0);  // 문의글 작성 시 기본값 0(대기중)
 
-            System.out.println("askingDto = " + askingDto.toString());
             // 제목, 내용이 비었을 경우 알림창
-            if (askingDto.getTitle().isBlank() || askingDto.getContents().isBlank()) {
+            if (askingRequired(askingDto)) {
                 throw new Exception("NOT_BLANK");
             }
             // 작성에 실패할 경우
@@ -247,7 +234,6 @@ public class AskingController {
         String id= SessionIdUtil.getSessionId(request);
         try {
             AskingDto askingDto = askingService.read(no).get(0);
-            System.out.println("askingDto.getContents() = " + askingDto.getContents());
             //작성자 id와 로그인id가 동일한 지 확인
             if (!id.equals(askingDto.getUser_id())) {
                 m.addAttribute("msg","작성자만 수정 가능합니다.");
@@ -297,6 +283,4 @@ public class AskingController {
         return askingDto.getTitle() == null || askingDto.getTitle().isBlank()
                 || askingDto.getContents() == null || askingDto.getContents().isBlank();
     }
-
-
 }

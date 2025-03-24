@@ -5,15 +5,21 @@
     <head>
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/find-id.css'/>">
+        <script type="text/javascript" src="<c:url value='/resources/js/find-id.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
         <title>J&H 아이디 찾기</title>
     </head>
     <body>
         <%@ include file="../header.jsp" %>
-        <script>
+        <c:if test="${not empty sessionScope.msg}">
+            <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
+            <c:remove var="msg" scope="session"/>
+        </c:if>
+        <%--<script>
             msg = "${msg}";
             if(msg == "AUTH_FAIL")alert("잘못된 인증번호입니다. 다시 입력해주세요.");
-        </script>
+        </script>--%>
         <main>
             <div class="container">
                 <div class="title">계정정보 찾기</div>
@@ -54,44 +60,3 @@
         <%@ include file="../footer.jsp" %>
     </body>
 </html>
-<script>
-    let sendMail = document.querySelector(".send_email");
-    let name = document.getElementsByName("name");
-    let email = document.getElementsByName("email");
-    const eventless = document.querySelector(".table_area");
-    const loading = document.querySelector(".loading_fix");
-
-    function resetCircle(){
-        eventless.style.pointerEvents = "auto";
-        loading.style.display = "none";
-    }
-
-    sendMail.addEventListener("click", function(){
-        eventless.style.pointerEvents = "none";
-        loading.style.display = "block";
-        if(!name[0].value){
-            alert("이름을 입력해주세요.")
-            resetCircle();
-            return;
-        }
-        if(!email[0].value){
-            alert("이메일을 입력해주세요.")
-            resetCircle();
-            return;
-        }
-        let nameVal = name[0].value;
-        let emailVal = email[0].value;
-
-        $.ajax({
-            type:'POST',       // 요청 메서드
-            url: '/jnh/id-auth',  // 요청 URI
-            headers : { "content-type": "application/json"}, // 요청 헤더
-            data : JSON.stringify({"user_name":nameVal, "email":emailVal}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
-            success : function(data){
-                alert(data.msg);
-                resetCircle();
-            },
-            error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
-        }); // $.ajax()\
-    });
-</script>

@@ -1,21 +1,17 @@
 package kr.co.jnh.service;
 
 import kr.co.jnh.domain.MailAuthDto;
+import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.User;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
     int addUser(User user) throws Exception;
 
-    User showUser(Map map) throws Exception;
-
-    int getGrade(String id) throws Exception;
-
-    int getStatus(String id) throws Exception;
-
-    String findEmail(String id) throws Exception;
+    User getUser(String id) throws Exception;
 
     String findId(String email) throws Exception;
 
@@ -39,7 +35,9 @@ public interface UserService {
 
     String emailAuth(MailAuthDto mailAuthDto) throws Exception;
 
-    User getUser(String id) throws Exception;
-
     boolean loginCheck(Map map) throws Exception;
+
+    int getSearchUserCnt(SearchCondition sc) throws Exception;
+
+    List<User> getSearchUser(SearchCondition sc) throws Exception;
 }

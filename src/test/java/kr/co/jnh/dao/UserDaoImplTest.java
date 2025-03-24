@@ -22,12 +22,22 @@ public class UserDaoImplTest {
 
     @Test
     public void selectUser() throws Exception{
-        Map map = new HashMap();
-        map.put("id", "asdf");
-        map.put("pwd", "1234");
+//        Map map = new HashMap();
+//        map.put("id", "asdf");
+//        map.put("pwd", "1234");
 
-        User user = userdao.selectUser(map);
+        User user = userdao.selectUser("asdf");
         System.out.println("user.toString() = " + user.toString());
+    }
+
+    @Test
+    public void updateUser() throws Exception{
+        Map map = new HashMap();
+        map.put("user_id", "zxcv");
+        map.put("user_pwd", "1234");
+
+        int result = userdao.update(map);
+        System.out.println(result);
     }
 
     @Test

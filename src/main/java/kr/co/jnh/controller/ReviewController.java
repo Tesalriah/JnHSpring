@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/mypage/review")
+@RequestMapping("mypage/review")
 public class ReviewController {
     @Autowired
     private ReviewService reviewService;
@@ -33,6 +33,7 @@ public class ReviewController {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("id", id);
+            // whether가 0이면 리뷰가 작성가능한 상태
             map.put("whether", 0);
             map.put("sc", sc);
 
@@ -59,13 +60,9 @@ public class ReviewController {
                 throw new Exception("WRONG_APPROACH");
             }
             Review review = reviewService.readOne(rno);
-            // 아이디가 일치하지 않을때
-            if(!id.equals(review.getUser_id())){
+            // review 데이터 검증
+            if(reviewValidator(review, id)){
                 throw new Exception("WRONG_APPROACH");
-            }
-            // 이미 삭제된 리뷰일때
-            if(review.getWhether() == 2){
-                throw new Exception("ALREADY_REMOVED");
             }
             m.addAttribute("review", review);
             return "mypage/review-write";
@@ -87,7 +84,7 @@ public class ReviewController {
         }
     }
 
-    @PostMapping("write") // 작성가능한 리뷰를 작성하고 수정하는 메서드
+    @PostMapping("write") // 작성가능한 리뷰를 작성하고 수정에서 또한 작동하는 메서드
     public String writeReview(Review review, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "uploadFile", required = false) MultipartFile file, Model m){
         CacheControlUtil.setNoCacheHeaders(response);
         String id = SessionIdUtil.getSessionId(request);
@@ -95,30 +92,32 @@ public class ReviewController {
         String not_change = request.getParameter("not_change");
 
         try{
-            String rId = reviewService.readOne(review.getRno()).getUser_id();
-            // 리뷰 작성권한이 없는 아이디는 접근못하게 차단
-            if(!id.equals(rId)){
+            Review realReview = reviewService.readOne(review.getRno());
+            realReview.setContents(review.getContents());
+            realReview.setRating(review.getRating());
+            // 변경하려는 리뷰번호에 할당된 아이디와 세션의 아이디가 일치하지 않을시 예외발생
+            if(reviewValidator(realReview, id)){
                 throw new Exception("WRONG_APPROACH");
             }
-            // not_change값이 없을시 이미지 파일 새로 저장
-            if(not_change == null){
+            // not_change값이 지정한 값 true가 아닐경우 새로운 이미지 저장
+            if(not_change != "true"){
                 // 업로드 할 이미지가 있을시에만 처리
                 if(!file.isEmpty()){
                     // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 util메서드 호출
-                    String filename = FileMultiSaveUtil.uploadImg(file, request, "review-img", review.getRno() + "");
-                    review.setImage(filename);
+                    String filename = FileMultiSaveUtil.uploadImg(file, request, "review-img", realReview.getRno() + "");
+                    realReview.setImage(filename);
                 }
             }
-            review.setUser_id(id);
-            // reg_date가 null이 아닐때(이미 작성된 리뷰 일때) up_date를 set
-            if(review.getReg_date() != null){
-                review.setUp_date(new Date());
+            // reg_date가 null이 아닐때(이미 작성된 리뷰 일때) up_date만 set
+            if(realReview.getReg_date() != null){
+                realReview.setUp_date(new Date());
             }else{ // 처음 작성하는 리뷰일때 reg_date를 set
-                review.setReg_date(new Date());
+                realReview.setReg_date(new Date());
+                realReview.setUp_date(new Date());
             }
-            review.setWhether(1);
+            realReview.setWhether(1);
 
-            if(reviewService.modify(review) != 1){
+            if(reviewService.modify(realReview) != 1){
                 throw new Exception();
             }
             m.addAttribute("msg", "등록되었습니다.");
@@ -138,11 +137,12 @@ public class ReviewController {
     }
 
     @GetMapping("wrote")// 작성한 리뷰 목록 리스트
-    public String wroteReview(SearchCondition sc, HttpServletRequest request, HttpServletResponse response, Model m){
+    public String wroteReview(SearchCondition sc, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
+        // whether가 1일때 이미 작성된 리뷰
         map.put("whether", 1);
         map.put("sc", sc);
 
@@ -166,11 +166,9 @@ public class ReviewController {
         try{
             // rno값을 통해 해당 리뷰 가져오기
             Review review =  reviewService.readOne(rno);
-            if(!review.getUser_id().equals(id)){
-                throw new Exception("LONG_APPROACH");
-            }
-            if(review.getWhether() == 2){
-                throw new Exception("ALREADY_REMOVED");
+            // review 데이터 검증
+            if(reviewValidator(review, id)){
+                throw new Exception("WRONG_APPROACH");
             }
             m.addAttribute("review", review);
             m.addAttribute("modify", "modify");
@@ -179,11 +177,14 @@ public class ReviewController {
         }catch (Exception e){
             e.printStackTrace();
             if (e.getMessage() != null) {
-                if(e.getMessage().equals("LONG_APPROACH")){
+                if(e.getMessage().equals("ALREADY_REMOVED")){
+                    m.addAttribute("msg","삭제된 리뷰입니다.");
+                    m.addAttribute("url", "wrote");
+                }if(e.getMessage().equals("WRONG_APPROACH")){
                     m.addAttribute("msg","잘못된 접근입니다.");
                     m.addAttribute("url", "/jnh");
-                }if(e.getMessage().equals("ALREADY_REMOVED")){
-                    m.addAttribute("msg","삭제된 리뷰입니다.");
+                }else{
+                    m.addAttribute("msg","페이지 접근에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
                     m.addAttribute("url", "wrote");
                 }
             }else{
@@ -198,6 +199,7 @@ public class ReviewController {
     public String removeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
 
+        // 이전페이지를 확인하여 작성된 리뷰를 삭제하는지 작성목록에서 삭제하는지 구분하여 완료시 갱신되는 페이지 구분
         String referer = request.getHeader("referer");
         String url = "able";
         if(referer.contains("wrote")){
@@ -208,17 +210,10 @@ public class ReviewController {
 
         try{
             Review review = reviewService.readOne(rno);
-
-            if(!id.equals(review.getUser_id())){
+            // review 데이터 검증
+            if(reviewValidator(review, id)){
                 throw new Exception("WRONG_APPROACH");
             }
-            if(review.getWhether() == 2){
-                throw new Exception("WRONG_APPROACH");
-            }
-            Review remove = new Review();
-            remove.setUser_id(id);
-            remove.setRno(rno);
-            remove.setWhether(2);
             // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 수정
             review.setWhether(2);
             reviewService.modify(review);
@@ -239,11 +234,77 @@ public class ReviewController {
         return "alert";
     }
 
-    @GetMapping("list")
-    public Map<String, Object> productReviewList(Map<String, Object> map, HttpServletRequest request){
+    @PostMapping("list")
+    @ResponseBody
+    public Map<String, Object> list(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
+
+        // map에 이미 product_id가 담겨있으므로 해당 product가 가지고있는 리뷰 목록
+
+        sc.setPageSize(5); // 한 페이지에 보여주는 리뷰 5개
+        sc.setPage((int)map.get("page")); // 현재 요청 page 대입
+        sc.setOption((String)map.get("option"));
+        map.put("sc",sc);
+        // whether가 1이면 작성한 리뷰
         map.put("whether", 1);
 
+        try {
+            int totalCnt = reviewService.selectPageCnt(map);
+            List<Review> list = reviewService.selectPage(map);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            map.put("list", list);
+            map.put("ph", ph);
+            // 세션에 저장된 아이디를 알림으로써 사용자를 확인하여 프론트에 다른 옵션생성
+            map.put("id", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return map;
+    }
+
+    @PostMapping("removeAjax")
+    @ResponseBody
+    public Map<String, Object> removeAjax(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        String id = SessionIdUtil.getSessionId(request);
+        int rno = (Integer)map.get("rno");
+
+        try{
+            Review review = reviewService.readOne(rno);
+            // review 데이터 검증
+            if(reviewValidator(review, id)){
+                throw new Exception("WRONG_APPROACH");
+            }
+            // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 수정
+            review.setWhether(2);
+            reviewService.modify(review);
+            map.put("msg", "삭제되었습니다.");
+            map.put("success", true);
+        }catch (Exception e){
+            e.printStackTrace();
+            if(e.getMessage() != null){
+                if(e.getMessage().equals("WRONG_APPROACH")){
+                    map.put("msg", "잘못된 접근입니다.");
+                }
+            }else{
+                map.put("msg", "삭제에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
+            }
+        }
+        return map;
+    }
+
+    // if문에서 이 검증 메서드를 사용하여 true면 접근불가능하게 Exception 발생예정
+    private boolean reviewValidator(Review review, String id){
+        // rno를 통해 가져온 Review에 할당된 아이디값과 세션에 로그인된 아이디값이 같지 않을경우 접근불가
+        // 삭제 처리된(whether=2) 리뷰일경우 접근불가
+        if(review.getWhether() == 2){
+            return true;
+        }
+        // 세션에서 받아온 id와 review에 저장된 id가 같지않을경우 접근불가
+        if(!review.getUser_id().equals(id)){
+            return true;
+        }
+        return false;
     }
 }

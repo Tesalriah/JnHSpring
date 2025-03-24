@@ -22,12 +22,12 @@
 .user_table td{
     padding:10px;
 }
-.user_suspension, .user_release, .adress_blind{
+.user_suspension, .user_unsuspend, .address_blind, .user_nothing{
     background-color: #ffffff;
     border:1px solid #dddddd;
     font-size: 16px;
 }
-.user_suspension:hover, .user_release:hover, .adress_blind:hover{
+.user_suspension:hover, .user_unsuspend:hover, .address_blind:hover{
     cursor: pointer;
 }
 .paging{

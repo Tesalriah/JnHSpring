@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -50,7 +49,10 @@
                     <a ${ph.sc.option.equals('rating') ? "style='color: #FFAEC9; font-weight: bold;'" : ""} href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=rating">평점순</a>
                     <a ${ph.sc.option.equals('bought_cnt') ? "style='color: #FFAEC9; font-weight: bold;'" : ""} href="<c:url value="/product-list"/>${ph.sc.getNonOption(ph.sc.page)}&option=bought_cnt">판매량순</a>
                 </div>
-                <c:if test="${grade == 0}">
+                <c:if test="${not empty ph.sc.keyword}">
+                    <div>'${ph.sc.keyword}'(으)로 검색한 결과</div>
+                </c:if>
+                <c:if test="${sessionScope.user.grade == 0}">
                     <div>
                         <a href="<c:url value="/product-add"/> " id="addProduct">상품추가</a>
                     </div>

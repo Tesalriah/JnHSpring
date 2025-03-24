@@ -50,6 +50,7 @@ a {
 
 input, button{
     border:none;
+    background:none;
 }
 input:focus{
     outline:none;

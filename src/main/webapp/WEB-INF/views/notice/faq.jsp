@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page session="true"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -30,13 +28,7 @@
                 <div style="font-family: 'Raleway', sans-serif;">FAQ</div>
             </div>
             <div class="nav">
-                <div class="left_menu">
-                    <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
-                    <div><a href="<c:url value='/notice/list'/>?option=event">이벤트</a></div>
-                    <div><a href="<c:url value='/FAQ/list'/>">FAQ</a></div>
-                </div>
-
-
+                <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <div class="top_nav">
                         <a href="<c:url value='/FAQ/list'/>" ${empty param.option ? "style='text-decoration: underline;'" : ""}>전체</a>
@@ -64,14 +56,14 @@
                                         <c:out value="${list.question}"/>
                                     </div>
 
-                                    <c:if test="${grade==0}">
-                                        <form action="" method="post" style="flex-grow: 0; flex-shrink: 1; flex-basis: 7%;">
-                                            <div>
-                                                <input type="hidden" name="no" value="${list.no}">
-                                                <input type="submit" formaction="<c:url value='/FAQ/remove'/>" value="삭제" onclick="return confirmDelete();">
-                                                <button type="button" onclick="location.href='<c:url value='/FAQ/modify'/>?no=${list.no}'">수정</button>
-                                            </div>
-                                        </form>
+                                    <c:if test="${user.grade==0}">
+                                        <div class="admin_btn">
+                                            <form action="" method="post" style="flex-grow: 0; flex-shrink: 1; flex-basis: 7%;">
+                                                    <input type="hidden" name="no" value="${list.no}">
+                                                    <input type="submit" formaction="<c:url value='/FAQ/remove'/>" value="삭제" onclick="return confirmDelete();">
+                                                    <button type="button" onclick="location.href='<c:url value='/FAQ/modify'/>?no=${list.no}'">수정</button>
+                                            </form>
+                                        </div>
                                     </c:if>
 
                                 </div>
@@ -87,25 +79,26 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <c:if test="${grade == 0}">
+                    <c:if test="${user.grade == 0}">
                         <div class="post_button">
                             <button type="button" onclick="location.href='<c:url value="/FAQ/write"/>'">글 작성</button>
                         </div>
                     </c:if>
 
 
-
-                    <div class="paging">
-                        <c:if test="${ph.showPrev}">
-                            <a href="<c:url value='/FAQ/list'/>?page=${ph.beginPage-1}">&lt;</a>
-                        </c:if>
-                        <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                            <a ${i == ph.sc.page ? "style='color:#FFAEC9'" : ""} href="<c:url value='/FAQ/list'/>?page=${i}">${i}</a>
-                        </c:forEach>
-                        <c:if test="${ph.showNext}">
-                            <a href="<c:url value='/FAQ/list'/>?page=${ph.endPage+1}">&gt;</a>
-                        </c:if>
-                    </div>
+                    <c:if test="${ph.totalPage} != 0">
+                        <div class="paging">
+                            <c:if test="${ph.showPrev}">
+                                <a href="<c:url value='/FAQ/list'/>?page=${ph.beginPage-1}">&lt;</a>
+                            </c:if>
+                            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+                                <a ${i == ph.sc.page ? "style='color:#FFAEC9'" : ""} href="<c:url value='/FAQ/list'/>?page=${i}">${i}</a>
+                            </c:forEach>
+                            <c:if test="${ph.showNext}">
+                                <a href="<c:url value='/FAQ/list'/>?page=${ph.endPage+1}">&gt;</a>
+                            </c:if>
+                        </div>
+                    </c:if>
                 </div>
 
 

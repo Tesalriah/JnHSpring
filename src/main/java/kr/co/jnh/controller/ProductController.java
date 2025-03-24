@@ -213,15 +213,6 @@ public class ProductController {
         String[] product_id = order.getProduct_id().split(",");
         String[] size = order.getSize().split(",");
         String[] quan = quantity.split(",");
-        /*// 선택된 주문요청사항이 없을시 이전페이지로
-        if(order.getDel_request().equals("")) {
-            String referer = request.getHeader("referer");
-            try {
-                response.sendRedirect(referer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
         order.setUser_id(id);
         // 상세주소를 입력했을 시 추가
         if(!address2.isBlank()){
@@ -291,7 +282,7 @@ public class ProductController {
         int total = 0;
 
         try {
-            List<Product> list = new ArrayList();
+            List<Product> list = new ArrayList<>();
             for (int i = 0; i < p_id.length; i++) { // 받아온 정보를 토대로 객체에 할당하여 각각 list에 추가
                 Product product = productService.getProduct(p_id[i]);
                 product.setSize(product_size[i]);

@@ -42,12 +42,6 @@ public class AskingServiceImpl implements AskingService {
         return askingDao.selectAll(sc);
     }
 
-    // 최신순, 대기중-답변완료 순으로 글 정렬
-   /* @Override
-    public List<AskingDto> readAll(SearchCondition sc) throws Exception{
-        return askingDao.selectAll(sc);
-    }*/
-
     // No순으로 desc
     @Override
     public int readNo() throws Exception{
@@ -81,13 +75,18 @@ public class AskingServiceImpl implements AskingService {
     // 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int remove(Map<String,Integer> map) throws Exception {
+    public int remove(Map<String,Object> map) throws Exception {
         int result = askingDao.delete(map);
-        AskingDto askingDto = new AskingDto();
-        askingDto.setNo(map.get("no"));
-        askingDto.setState(0);
-        if(askingDao.updateState(askingDto) != 1){
-            throw new Exception("ASKING_STATE_UPDATE_FAIL");
+        if(result != 1){
+            throw new Exception("ASKING_DELETE_FAIL");
+        }
+        if(map.get("cno") != null){
+            AskingDto askingDto = new AskingDto();
+            askingDto.setNo((Integer) map.get("no"));
+            askingDto.setState(0);
+            if(askingDao.updateState(askingDto) != 1){
+                throw new Exception("ASKING_STATE_UPDATE_FAIL");
+            }
         }
         return result;
     }

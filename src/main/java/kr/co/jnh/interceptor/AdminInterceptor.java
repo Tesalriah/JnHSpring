@@ -1,11 +1,13 @@
 package kr.co.jnh.interceptor;
 
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,20 +24,21 @@ public class AdminInterceptor implements HandlerInterceptor {
         String id = SessionIdUtil.getSessionId(request);
 
         if (session != null && id != null && !id.equals("")) {
-            Integer grade = (Integer) session.getAttribute("grade");
+            User user = (User) session.getAttribute("user");
+            Integer grade = user.getGrade();
 
             if (grade != null && grade == 0) {
                 return true;
             }
         }
 
-        // 관리자가 아닌 경우 이전 페이지로 리다이렉트
-        String referer = request.getHeader("referer");
-        if(referer == null || referer.equals("")){
-            response.sendRedirect("/jnh?msg=WRONG_APPROACH");
-        }else{
-            response.sendRedirect(referer);
-        }
-        return false;
+        // 관리자가 아닌경우 alert 메세지를 띄운 후 메인페이지로
+        String redirectUrl = "/jnh"; // 이동할 URL
+        request.setAttribute("msg", "잘못된 접근입니다.");
+        request.setAttribute("url", redirectUrl);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/alert.jsp");
+        dispatcher.forward(request, response);
+        return false; // 요청 진행 중단
     }
 }

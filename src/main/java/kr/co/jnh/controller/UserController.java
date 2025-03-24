@@ -41,7 +41,7 @@ public class UserController {
     public String checkPwd(@RequestParam String user_pwd, HttpServletRequest request, Model m) {
         String id = SessionIdUtil.getSessionId(request);
 
-        Map<String, String> map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("pwd", user_pwd);
         try {
@@ -96,6 +96,9 @@ public class UserController {
         String id = SessionIdUtil.getSessionId(request);
         String c_address = address;
         if(!address2.equals("")){ // 상세주소를 입력했을시 추가
+            if(c_address.charAt(c_address.length() - 1) != ' '){
+                c_address += " ";
+            }
             c_address += address2;
         }
         try{

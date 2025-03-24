@@ -41,7 +41,7 @@ public class Cart {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
-    }
+    } // "asd123"
 
     public String getProduct_id() {
         return product_id;

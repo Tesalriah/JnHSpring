@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jnh.dao.ReportReviewMapper">
+    <select id="selectAll" resultType="ReportReview">
+        SELECT * FROM report_review
+        ORDER BY no desc
+    </select>
+
+    <insert id="insert" parameterType="ReportReview">
+        INSERT INTO report_review
+            (user_id, reporter_id, reason, rno, contents)
+        VALUE
+            (#{user_id}, #{reporter_id}, #{reason}, #{rno}, #{contents})
+    </insert>
+
+    <update id="update" parameterType="int">
+        UPDATE report_review
+        SET state = 0
+        WHERE no = #{no}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM report_review
+        WHERE no = #{no}
+    </delete>
+
+    <select id="selectDup" parameterType="Map" resultType="int">
+        SELECT count(*) FROM report_review
+        <where>
+            <if test="reoporter != null"> AND reporter_id =  #{reporter}</if>
+            <if test="rno != null"> AND rno =  #{rno}</if>
+        </where>
+    </select>
+    
+    <select id="selectPageCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*) FROM report_review
+        <if test="keyword != ''">
+            WHERE user_id LIKE concat('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="selectPage" parameterType="SearchCondition" resultType="ReportReview">
+        SELECT * FROM report_review
+        <if test="keyword != ''">
+            WHERE user_id LIKE concat('%', #{keyword}, '%')
+        </if>
+        ORDER BY no desc
+        LIMIT #{offset}, #{pageSize}
+    </select>
+</mapper>

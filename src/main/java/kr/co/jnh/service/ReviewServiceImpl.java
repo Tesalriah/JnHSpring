@@ -3,10 +3,8 @@ package kr.co.jnh.service;
 import kr.co.jnh.dao.OrderDao;
 import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.ReviewDao;
-import kr.co.jnh.domain.Order;
-import kr.co.jnh.domain.PageHandler;
-import kr.co.jnh.domain.Product;
-import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,21 +47,20 @@ public class ReviewServiceImpl implements ReviewService {
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", get.getProduct_id());
         map.put("whether", 1);
-        int cnt = reviewDao.selectPageCnt(map);
-        if(cnt > 0){
-            product.setRating(reviewDao.reviewAvg(get.getProduct_id()));
-        }else{
-            product.setRating(0);
+        int cnt = 0;
+        try{
+            cnt = reviewDao.selectPageCnt(map);
+            if(cnt <= 0){
+                throw new Exception();
+            }
+            double rating = Math.round(reviewDao.reviewAvg(get.getProduct_id()) * 10) / 10.0;
+            map.put("rating",(float)rating);
+        }catch(Exception e){
+            map.put("rating", 0);
         }
         product.setReview_cnt(cnt);
-        productDao.update(product);
+        productDao.update(map);
         return result;
-    }
-
-    @Override
-    @Transactional
-    public int remove(int no) throws Exception{
-        return reviewDao.delete(no);
     }
 
     @Override
@@ -76,6 +73,23 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewDao.selectPage(map);
         for( Review review : reviews){
             getOrderAndProduct(review);
+        }
+        return reviews;
+    }
+
+    @Override
+    public int readPageByReportCnt(SearchCondition sc) throws Exception{
+        return reviewDao.SelectPageByReportCnt(sc);
+    }
+
+    @Override
+    public List<Review> readPageByReport(SearchCondition sc) throws Exception{
+        List<Review> reviews = reviewDao.SelectPageByReport(sc);
+        for (Review review : reviews) {
+            Product product = productDao.select(review.getProduct_id());
+            Order order = new Order();
+            order.setProduct(product);
+            review.setOrder(order);
         }
         return reviews;
     }

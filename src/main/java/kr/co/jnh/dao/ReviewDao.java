@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Review;
+import kr.co.jnh.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,13 @@ public interface ReviewDao {
 
     float reviewAvg(String product_id) throws Exception;
 
-    int delete(int no) throws Exception;
+    int cancelDelete(Map map) throws Exception;
 
     int selectPageCnt(Map map);
 
     List<Review> selectPage(Map map);
+
+    int SelectPageByReportCnt(SearchCondition sc);
+
+    List<Review> SelectPageByReport(SearchCondition sc);
 }

@@ -1,6 +1,5 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.domain.Cart;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Question;
 import kr.co.jnh.domain.SearchCondition;

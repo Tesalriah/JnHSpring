@@ -1,5 +1,6 @@
 package kr.co.jnh.interceptor;
 
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,18 +19,24 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         String id = null;
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if(session != null){
-            id = (String)session.getAttribute("id");
+            User user = (User)session.getAttribute("user");
+            if(user != null){
+                id = user.getUser_id();
+            }
             String requestURI = request.getRequestURI(); // 요청 URI 가져오기
             String method = request.getMethod();
+
+
+            // product의 get요청은 로그인을 하지않았어도 보여주기
             if(requestURI.equals("/jnh/product") && "GET".equalsIgnoreCase(method)){
                 return true;
             }
 
             String prevPage = null;
 
-            if(session == null || id == null || id.equals("")){
+            if(id == null || id.isEmpty()){
                 if("POST".equalsIgnoreCase(method)){
                     prevPage = request.getHeader("referer");
                     session.setAttribute("prevPage", prevPage);
@@ -38,7 +45,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                     prevPage = prevPage.replace("/jnh", "");
                     session.setAttribute("prevPage", prevPage);
                 }
-                response.sendRedirect("/jnh/login" + "?msg=NEED_LOGIN");
+                session.setAttribute("msg", "로그인을 해주세요.");
+                response.sendRedirect("/jnh/login");
                 return false;
             }
         }

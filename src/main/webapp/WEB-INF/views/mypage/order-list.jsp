@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -13,6 +12,7 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/order-list.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
+    <script type="text/javascript" src="<c:url value='/resources/js/order-list.js'/>" defer></script>
     <main>
         <div class="container">
             <div class="title">
@@ -55,8 +55,16 @@
                                             </div>
                                             <div class="order_button">
                                                 <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
-                                                <div><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></div>
-                                                <div><button type="button" onclick="location.href = '<c:url value="/mypage/review/able"/>'">리뷰작성</button></div>
+                                                <div>
+                                                    <c:choose>
+                                                        <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" class="cancel_btn" formaction="<c:url value="/mypage/return/cancel"/>?page=${ph.sc.page}">주문취소</button></c:when>
+                                                        <c:when test="${orderList[0].status == '취소완료'}"><button type="button" class="moveLink" data-link="<c:url value="/mypage/asking/write"/>">문의하기</button></c:when>
+                                                        <c:otherwise><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                                <c:if test="${orderList[0].status == '배송완료'}">
+                                                    <div><button type="button" class="moveLink" data-link="<c:url value="/mypage/review/able"/>">리뷰작성</button></div>
+                                                </c:if>
                                             </div>
                                         </form>
                                     </div>
@@ -70,7 +78,7 @@
                                 <a href="<c:url value="/mypage/order/list"/>?page=${ph.beginPage-1}"><i class="fa-solid fa-angle-left"></i></a>
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                                <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/mypage/order/list"/>?page=${i}">${i}</a>
+                                <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""} href="<c:url value="/mypage/order/list"/>?page=${i}">${i}</a>
                             </c:forEach>
                             <c:if test="${ph.showNext}">
                                 <a href="<c:url value="/mypage/order/list"/>?page=${ph.endPage+1}"><i class="fa-solid fa-angle-left"></i></a>

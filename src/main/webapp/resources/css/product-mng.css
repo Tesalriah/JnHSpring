@@ -1,8 +1,21 @@
 .MNG_nav{
-    margin-top: 15px;
     position: relative;
     display: flex;
     padding: 13px 0;
+}
+#admin_keyword{
+    border:1px solid #dddddd;
+    padding: 8px;
+    font-size: 18px;
+}
+#admin_search{
+    background: #FFAEC9;
+    color: #ffffff;
+    font-size: 18px;
+    padding: 9px 15px;
+}
+#admin_search:hover{
+    cursor: pointer;
 }
 .point{
     font-weight: bold;

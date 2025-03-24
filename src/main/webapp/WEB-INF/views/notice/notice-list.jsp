@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page session="true"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -27,13 +26,7 @@
                 <div style="font-family: 'Raleway', sans-serif;">Notice</div>
             </div>
             <div class="nav">
-                <div class="left_menu">
-                    <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
-                    <div><a href="<c:url value='/notice/list'/>?option=event ">이벤트</a></div>
-                    <div><a href="<c:url value='/FAQ/list'/>">FAQ</a></div>
-                </div>
-
-
+                <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <h2>
                         <c:choose>
@@ -80,7 +73,7 @@
                                 </tr>
                             </c:forEach>
                         </table>
-                        <c:if test="${grade == 0}">
+                        <c:if test="${user.grade == 0}">
                             <div class="post_button">
                                 <button type="button" onclick="location.href='<c:url value="/notice/write"/>'">글 작성</button>
                             </div>

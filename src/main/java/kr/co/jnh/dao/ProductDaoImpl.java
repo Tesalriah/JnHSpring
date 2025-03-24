@@ -35,8 +35,8 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public int update(Product product) throws Exception{
-        return session.update( nameSpace + "update", product);
+    public int update(Map map) throws Exception{
+        return session.update( nameSpace + "update", map);
     }
 
     @Override
@@ -74,4 +74,13 @@ public class ProductDaoImpl implements ProductDao {
         return session.selectOne(nameSpace + "selectAtSize", map);
     }
 
+    @Override
+    public List<Product> selectProductAdmin(SearchCondition sc) throws Exception{
+        return session.selectList(nameSpace + "selectProductAdmin", sc);
+    }
+
+    @Override
+    public int selectProductAdminCnt(SearchCondition sc) throws Exception{
+        return session.selectOne(nameSpace + "selectProductAdminCnt", sc);
+    }
 }

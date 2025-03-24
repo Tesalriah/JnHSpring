@@ -57,4 +57,9 @@
 		<property name="maxUploadSizePerFile" value="104857600"/>
 		<property name="maxInMemorySize" value="104857600"/>
 	</bean>
+
+	<!-- 비밀번호 해싱을 위한 PasswordEncoder -->
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg value="10" /> <!-- 10은 해싱 강도 (보통 10~12 권장) -->
+	</bean>
 </beans>

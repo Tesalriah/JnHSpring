@@ -36,7 +36,7 @@ public interface AskingService {
     int modifyState(AskingDto askingDto) throws Exception;
 
     // 삭제
-    int remove(Map<String, Integer> map) throws Exception;
+    int remove(Map<String, Object> map) throws Exception;
 
     AskingDto getAnswer(int no) throws Exception;
 

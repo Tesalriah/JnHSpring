@@ -6,16 +6,15 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/change-pwd.css'/>">
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
         <title>J&H 비밀번호 변경</title>
     </head>
     <body>
         <%@ include file="../header.jsp" %>
-        <script>
-            msg = "${msg}";
-            if(msg == "NOT_MATCH_PWD")alert("비밀번호 확인이 일치하지 않습니다.");
-            if(msg == "NOT_MATCH_BIRTH")alert("생년월일이 일치하지 않습니다.");
-            if(msg == "CHANGE_FAIL")alert("변경에 실패하였습니다.");
-        </script>
+        <c:if test="${not empty sessionScope.msg}">
+            <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
+            <c:remove var="msg" scope="session"/>
+        </c:if>
         <main>
             <div class="container">
                 <div class="title">계정정보 찾기</div>

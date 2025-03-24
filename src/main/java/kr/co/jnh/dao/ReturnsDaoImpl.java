@@ -1,6 +1,7 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.Returns;
+import kr.co.jnh.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,6 +45,11 @@ public class ReturnsDaoImpl implements ReturnsDao {
     }
 
     @Override
+    public int mngUpdate(Map map) throws Exception{
+        return  session.update( nameSpace + "mngUpdate", map);
+    }
+
+    @Override
     public int getCount(String id) throws Exception{
         return session.selectOne(nameSpace + "selectPageCnt", id);
     }
@@ -56,5 +62,15 @@ public class ReturnsDaoImpl implements ReturnsDao {
     @Override
     public String selectId(String return_id) throws Exception{
         return session.selectOne( nameSpace + "selectId", return_id);
+    }
+
+    @Override
+    public int selectMngCnt(SearchCondition sc) throws Exception{
+        return session.selectOne(nameSpace + "selectMngCnt", sc);
+    }
+
+    @Override
+    public List<Returns> selectMng(SearchCondition sc) throws Exception{
+        return session.selectList(nameSpace + "selectMng", sc);
     }
 }

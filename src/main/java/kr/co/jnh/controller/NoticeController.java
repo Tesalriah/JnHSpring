@@ -5,7 +5,6 @@ import kr.co.jnh.domain.NoticeDto;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.NoticeService;
-import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +26,6 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
-    @Autowired
-    UserService userService;
 
     // 공지사항 작성 페이지 이동
     @GetMapping("/write")
@@ -39,14 +35,9 @@ public class NoticeController {
 
     // 공지사항 작성
     @PostMapping("/write")
-    public String postNoticeWrite(SearchCondition sc, NoticeDto noticeDto, HttpServletRequest request, Model m){
+    public String postNoticeWrite(NoticeDto noticeDto, HttpServletRequest request, Model m){
         String id = SessionIdUtil.getSessionId(request);
         try {
-            if(userService.getGrade(id) != 0){ // 현재 유저가 관리자인지 확인 아닐 시 목록으로 이동
-                m.addAttribute("msg","관리자만 작성 가능합니다.");
-                m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
-                return "alert";
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,12 +126,12 @@ public class NoticeController {
             m.addAttribute("sc", sc);
             m.addAttribute("noticeDto", noticeDto);
 
-            Map bnoCategory = new HashMap();
+            Map<String,Object> bnoCategory = new HashMap<>();
             bnoCategory.put("bno", bno);
             bnoCategory.put("option", sc.getOption());
 
             // 현재 bno와 sc.category의 기준으로 앞뒤 2개의 게시물의 bno 확인
-            Map map = noticeService.getPrevNext(bnoCategory); // Map형태로 arr0(이후후) arr1(이후) arr2(현재) arr3(이전) arr4(이전전) 게시물을의 bno 반환
+            Map<String,Object> map = noticeService.getPrevNext(bnoCategory); // Map형태로 arr0(이후후) arr1(이후) arr2(현재) arr3(이전) arr4(이전전) 게시물을의 bno 반환
             List<NoticeDto> list = new ArrayList<>();
             ArrayList<Integer> arr = new ArrayList<>();
             Integer[] prevNext = new Integer[2]; // 이전 이후 게시글을 확인하기 위함
@@ -171,16 +162,10 @@ public class NoticeController {
 
     // 게시물 제거
     @PostMapping("/remove")
-    public String remove(Integer bno ,SearchCondition sc , HttpServletRequest request, RedirectAttributes rattr, Model m){
-        String id = SessionIdUtil.getSessionId(request);
-        Map map = new HashMap();
+    public String remove(Integer bno ,SearchCondition sc, RedirectAttributes rattr, Model m){
+        Map<String,Object> map = new HashMap<>();
         map.put("bno", bno);
         try {
-            if(userService.getGrade(id) != 0){ // 관리자인지 확인
-                m.addAttribute("msg","관리자만 삭제가 가능합니다.");
-                m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
-                return "alert";
-            }
             if (noticeService.remove(map)!=1){ // 삭제실패시 Exception 발생
                 throw new Exception("DEL_FAIL");
             }
@@ -217,13 +202,11 @@ public class NoticeController {
     // 게시물 수정
     @PostMapping("/modify")
     public String modify(NoticeDto noticeDto,SearchCondition sc , HttpServletRequest request, RedirectAttributes rattr, Model m){
-        String id= SessionIdUtil.getSessionId(request);
+        // 필독이 체크됐을때 0이라는 값을 할당, 아닐 시 1
+        String mustread = request.getParameter("mustread");
+        int mRead = mustread != null ? 0 : 1;
+        noticeDto.setMust_read(mRead);
         try {
-            if(userService.getGrade(id) != 0){ // 관리자 확인
-                m.addAttribute("msg","관리자만 수정 가능합니다.");
-                m.addAttribute("url", "notice/list"+sc.getOptionQueryString());
-                return "alert";
-            }
             // 필수 값이 비어있는지 확인 비어있을 시 작성페이지로 이동
             if(noticeRequired(noticeDto)){
                 throw new Exception("NOT_BLANK");

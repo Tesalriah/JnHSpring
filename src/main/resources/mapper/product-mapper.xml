@@ -20,15 +20,19 @@
         WHERE product_id = #{product_id} AND size = #{size}
     </update>
 
-    <update id="update" parameterType="Product">
+    <update id="update" parameterType="map">
         UPDATE product
         <set>
             <if test="bought_cnt != null">bought_cnt = #{bought_cnt},</if>
             <if test="wish_cnt != null">wish_cnt = #{wish_cnt},</if>
             <if test="rating != null">rating = #{rating},</if>
             <if test="review_cnt != null">review_cnt = #{review_cnt},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="discount != null">discount = #{discount},</if>
+            <if test="stock != null">stock = #{stock},</if>
         </set>
-        WHERE product_id = #{product_id};
+        WHERE product_id = #{product_id}
+        <if test="size != null" >AND size=#{size}</if>
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -70,7 +74,17 @@
             AND gender LIKE concat(#{gender})
             AND category LIKE concat(#{category})
         </if>
-        AND stock > 0
+        OR product_id LIKE concat('%', #{keyword}, '%')
+        <if test="!gender.equals('')">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="!gender.equals('') and category.equals('')">
+            AND gender LIKE concat(#{gender})
+        </if>
+        <if test="!gender.equals('') and !category.equals('')">
+            AND gender LIKE concat(#{gender})
+            AND category LIKE concat(#{category})
+        </if>
     </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="Product">
@@ -94,5 +108,21 @@
     <select id="selectAtSize" parameterType="map" resultType="Product">
         SELECT * FROM product
         WHERE product_id LIKE CONCAT(#{product_id},'%') AND size = #{size}
+    </select>
+
+    <select id="selectProductAdmin" parameterType="SearchCondition" resultType="Product">
+        SELECT *
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectProductAdminCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM  product
+        WHERE true
+        <include refid="searchCondition"/>
+        ORDER BY rating desc
     </select>
 </mapper>

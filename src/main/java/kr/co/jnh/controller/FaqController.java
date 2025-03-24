@@ -2,36 +2,21 @@ package kr.co.jnh.controller;
 
 
 import kr.co.jnh.domain.Faq;
-import kr.co.jnh.domain.NoticeDto;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.FaqService;
-import kr.co.jnh.service.NoticeService;
-import kr.co.jnh.service.UserService;
-import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/FAQ")
 public class FaqController {
-
-    @Autowired
-    UserService userService;
-
     @Autowired
     FaqService faqService;
-
-
 
     /* 관리자만 글 작성 */
     @GetMapping("/write")
@@ -39,17 +24,8 @@ public class FaqController {
         return "notice/faq-write";
     }
     @PostMapping("/write")
-    public String wrt(HttpServletRequest request, Model m, Faq faq) {
-        String id = SessionIdUtil.getSessionId(request);
-
+    public String wrt(Model m, Faq faq) {
         try {
-            // 관리자인지 확인 후 아닐 시 목록으로 이동
-            if (userService.getGrade(id) != 0) {
-                m.addAttribute("msg", "관리자만 작성가능합니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
-                return "alert";
-            }
-
             // 필수 값이 비어있는지 확인 비어있을 시 작성페이지로 이동
             if ( faq.getQuestion_type().isBlank() ||
                     faq.getQuestion().isBlank() ||
@@ -102,9 +78,7 @@ public class FaqController {
 
 
     @GetMapping("/modify")
-    public String getMod(SearchCondition sc, Model m, HttpServletRequest request, int no){
-        String id = SessionIdUtil.getSessionId(request);
-
+    public String getMod(SearchCondition sc, Model m, int no){
         Faq faq = null;
         try {
             // 해당 번호의 FAQ 정보를 불러오기
@@ -121,17 +95,9 @@ public class FaqController {
     }
 
     @PostMapping("/modify")
-    public String mod(HttpServletRequest request, Model m, Faq faq){
-        String id = SessionIdUtil.getSessionId(request);
-
+    public String mod( Model m, Faq faq){
         try {
             m.addAttribute("faq",faq);
-            // 관리자 확인
-            if (userService.getGrade(id) != 0) {
-                m.addAttribute("msg", "관리자만 수정가능합니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
-                return "alert";
-            }
 
             // 수정 완료시
             if (faqService.modify(faq)>0) {
@@ -140,7 +106,7 @@ public class FaqController {
                 return "alert";
             }else {
                 m.addAttribute("msg", "등록에 실패했습니다.");
-                m.addAttribute("url", "write");
+                m.addAttribute("url", "/jnh/FAQ/list");
                 return "alert";
             }
         } catch (Exception e) {
@@ -153,16 +119,8 @@ public class FaqController {
     }
 
     @PostMapping("/remove")
-    public String remove(HttpServletRequest request, Model m, @RequestParam("no") Integer no){
-        String id = SessionIdUtil.getSessionId(request);
-
+    public String remove(Model m, @RequestParam("no") Integer no){
         try {
-            // 관리자인지 확인 후 아닐 시 목록으로 이동
-            if (userService.getGrade(id) != 0) {
-                m.addAttribute("msg", "관리자만 삭제가능합니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
-                return "alert";
-            }
             // no 값이 없으면 오류 처리
             if (no == null) {
                 m.addAttribute("msg", "삭제할 게시글을 찾을 수 없습니다.");
@@ -187,12 +145,6 @@ public class FaqController {
             m.addAttribute("url","/jnh/FAQ/list");
             return "alert";
         }
-
     }
-
-
-
-
-
 
 }

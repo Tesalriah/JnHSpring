@@ -1,6 +1,7 @@
 package kr.co.jnh.interceptor;
 
 import kr.co.jnh.dao.UserDao;
+import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,21 +21,24 @@ public class StatusInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         HttpSession session = request.getSession(false);
         if(session != null){
-            String id = (String)session.getAttribute("id");
-            // 전처리 로그인 돼있을시 스테이터스 확인
-            if(session != null || id != null || !id.equals("")){
-                Integer status = (Integer)session.getAttribute("status");
+            User user = (User)session.getAttribute("user");
+            if(user != null){
+                String id = user.getUser_id();
+                // 전처리 로그인 돼있을시 스테이터스 확인
+                if(session != null || id != null || !id.equals("")){
+                    Integer status = user.getStatus();
 
-                if (status != null) {
-                    if (status != 0) {
-                        // 정지된 유저 로그아웃, 회원탈퇴된 유저 로그아웃
-                        if (status == 1 || status == 2) {
-                            session.invalidate();
-                            response.sendRedirect("/jnh");
-                        }
-                        // 이메일 미인증 유저 이메일 인증으로
-                        if (status == 3) {
-                            response.sendRedirect("/jnh/email-auth");
+                    if (status != null) {
+                        if (status != 0) {
+                            // 정지된 유저 로그아웃, 회원탈퇴된 유저 로그아웃
+                            if (status == 1 || status == 2) {
+                                session.invalidate();
+                                response.sendRedirect("/jnh");
+                            }
+                            // 이메일 미인증 유저 이메일 인증으로
+                            if (status == 3) {
+                                response.sendRedirect("/jnh/email-auth");
+                            }
                         }
                     }
                 }

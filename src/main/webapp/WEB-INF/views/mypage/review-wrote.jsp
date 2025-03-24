@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -34,7 +33,7 @@
                     <div id="reviews_img" style="display:none;">
                         <button id="review_img_x" type="button"><i class="fa-solid fa-xmark"></i></button>
                         <div class="img_modal">
-                            <img id="enlarge_img" src="img/best.jpg">
+                            <img id="enlarge_img" src="">
                         </div>
                     </div>
                     <div class="reviews_contents">

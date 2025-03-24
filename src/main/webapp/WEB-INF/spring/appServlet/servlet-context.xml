@@ -36,16 +36,14 @@
 
 	<interceptors>
 		<interceptor>
-			<mapping path="/**"/>
-			<exclude-mapping path="/resources/**"/>
-			<beans:bean id="GradeIntreceptor" class="kr.co.jnh.interceptor.GradeInterceptor"/>
-		</interceptor>
-		<interceptor>
 			<mapping path="/admin/**"/>
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
 			<mapping path="/add-product"/>
+			<mapping path="/faq/write"/>
+			<mapping path="/faq/remove"/>
+			<mapping path="/faq/modify"/>
 			<beans:bean id="AdminInterceptor" class="kr.co.jnh.interceptor.AdminInterceptor"/>
 		</interceptor>
 		<interceptor>
@@ -63,15 +61,13 @@
 			<mapping path="/add-cart"/>
 			<mapping path="/del-cart"/>
 			<mapping path="/del-one-cart"/>
+			<mapping path="/email-auth"/>
 			<mapping path="/mypage/**"/>
 			<exclude-mapping path="/mypage/wish/add"/>
 			<exclude-mapping path="/mypage/wish/del"/>
+			<exclude-mapping path="/mypage/review/list"/>
+			<exclude-mapping path="/mypage/review/removeAjax"/>
 			<beans:bean id="LoginInterceptor" class="kr.co.jnh.interceptor.LoginInterceptor"/>
-		</interceptor>
-		<interceptor>
-			<mapping path="/mypage/**"/>
-			<mapping path="/admin/**"/>
-			<beans:bean id="CurrentPageInterceptor" class="kr.co.jnh.interceptor.CurrentPageInterceptor"/>
 		</interceptor>
 	</interceptors>
 

@@ -55,7 +55,7 @@ public class CartController {
         String[] checkbox = check_box.split(",");
 
         try {
-            List<Product> list = new ArrayList();
+            List<Product> list = new ArrayList<>();
             for(int i=0; i<product_id.length; i++){ // 받아온 정보를 토대로 객체에 할당하여 각각 list에 추가
                 for(int j=0; j<checkbox.length; j++){
                     if( i == Integer.parseInt(checkbox[j])){ // 해당 상품의 checkbox를 선택하지 않았으면 추가하지않음
@@ -82,7 +82,7 @@ public class CartController {
     public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request){
         String id = SessionIdUtil.getSessionId(request);
 
-        Map map = new HashMap(); // 등록한 상품인지 확인하기 위한 Map
+        Map<String,Object> map = new HashMap<>(); // 등록한 상품인지 확인하기 위한 Map
         map.put("user_id", id);
         map.put("product_id", cart.getProduct_id());
         map.put("size", cart.getSize());
@@ -120,7 +120,7 @@ public class CartController {
             return "alert";
         }
 
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("user_id", id);
         // 상품을 제거하기 위해 상품id와 size 그리고 선택된지 확인하기위해 checkbox의 값 각각 배열에 할당
         String[] product_id = cart.getProduct_id().split(",");
@@ -158,7 +158,7 @@ public class CartController {
         String id = SessionIdUtil.getSessionId(request);
 
         // 삭제하기위해 해당유저 id와 product_id, size 값 Map에 할당
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("product_id", del_product_id);
         map.put("size", del_size);
         map.put("user_id", id);

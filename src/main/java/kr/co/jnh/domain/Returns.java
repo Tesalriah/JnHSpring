@@ -6,6 +6,7 @@ import java.util.Date;
 public class Returns {
 
     private Product product;
+    private Order order;
     private String return_id;
     private String user_id;
     private String address;
@@ -60,6 +61,7 @@ public class Returns {
     public String toString() {
         return "Returns{" +
                 "product=" + product +
+                "order=" + order +
                 ", return_id='" + return_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", address='" + address + '\'' +
@@ -83,6 +85,14 @@ public class Returns {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public String getReturn_id() {

@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.jnh.dao.OrderMapper">
     <select id="select" parameterType="Map" resultType="Order">
         SELECT * FROM orders
-        WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
+        WHERE user_id = #{id} AND is_deleted != 1
         group by order_no
         ORDER BY order_no DESC
         LIMIT #{sc.offset}, #{sc.pageSize}
@@ -13,7 +13,7 @@
 
     <select id="selectCnt" parameterType="Map" resultType="int">
         SELECT count(distinct order_no) FROM orders
-        WHERE user_id = #{id} AND NOT status LIKE CONCAT('%','삭제처리','%')
+        WHERE user_id = #{id} AND is_deleted != 1
     </select>
 
     <select id="selectOne" parameterType="Map" resultType="Order">
@@ -21,6 +21,9 @@
         WHERE user_id = #{id} AND order_no = #{order_no}
         <if test="product_id != null">AND product_id = #{product_id}</if>
         <if test="size != null">AND size = #{size}</if>
+        <if test="exception != null and exception  == 1">
+            AND status NOT IN ('반품접수', '교환접수', '교환중', '반품완료', '교환완료', '취소완료');
+        </if>
     </select>
 
     <select id="selectAll" resultType="Order">
@@ -41,18 +44,50 @@
 
     <update id="update" parameterType="Map">
         UPDATE orders
-        SET status = #{status}
+        <set>
+            <if test="is_deleted != null">delete = #{is_deleted}</if>
+        </set>
         WHERE order_no = #{order_no} AND user_id = #{id}
     </update>
 
     <update id="returnUpdate" parameterType="Map">
         UPDATE orders
         SET status = #{status}
-        WHERE order_no = #{order_no} AND user_id = #{id} AND product_id = #{product_id} AND size = #{size}
+        WHERE order_no = #{order_no}
+          AND user_id = #{id}
+          <if test="product_id != null">AND product_id = #{product_id}</if>
+          <if test="size != null"> AND size = #{size}</if>
     </update>
 
     <select id="selectId" parameterType="String" resultType="String">
         SELECT order_no FROM orders
         WHERE order_no LIKE CONCAT(#{order_no},'%') ORDER BY order_no DESC LIMIT 1
+    </select>
+
+    <select id="selectMngCnt" parameterType="SearchCondition" resultType="int" >
+        SELECT
+        <if test="gender neq ''">count(DISTINCT order_no)</if>
+        <if test="gender eq ''">count(*)</if>
+        FROM orders
+        <where>
+            <if test="category neq ''">status = #{category}</if>
+            <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectMng" parameterType="SearchCondition" resultType="Order">
+        SELECT o.*
+        FROM orders o
+        JOIN (
+        SELECT DISTINCT order_no
+        FROM orders
+        <where>
+            <if test="category neq ''">status = #{category}</if>
+            <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+        </where>
+        ORDER BY order_no ASC
+        LIMIT #{offset}, #{pageSize}
+        ) sub ON o.order_no = sub.order_no
+        ORDER BY o.order_no ASC, o.product_id ASC;
     </select>
 </mapper>

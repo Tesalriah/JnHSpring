@@ -23,21 +23,29 @@
     <update id="update" parameterType="Review">
         UPDATE review
         <set>
-            <if test="contents != null">contents = #{contents},</if>
-            <if test="rating != null">rating = #{rating},</if>
+            <if test="contents != null and contents != ''">contents = #{contents},</if>
+            <if test="rating != null and rating > 0">rating = #{rating},</if>
             <if test="reg_date != null">reg_date = #{reg_date},</if>
-            <if test="whether != null">whether = #{whether},</if>
-            <if test="image != null">image = #{image},</if>
+            <if test="up_date != null">up_date = #{up_date},</if>
+            <if test="whether != null and whether >= 0">whether = #{whether},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
+            <if test="report_cnt != null and report_cnt > 0">report_cnt = #{report_cnt},</if>
         </set>
         WHERE rno = #{rno} AND user_id = #{user_id}
     </update>
 
     <update id="delete" parameterType="int">
-        UPDATE INTO WHERE
+        UPDATE review
         SET whether = #{whether}
         WHERE rno = #{rno}
     </update>
 
+<update id="cancelDelete" parameterType="Map">
+        DELETE FROM review
+        WHERE order_no = #{order_no} AND product_id = #{product_id} AND user_id = #{id} AND size = #{size}
+    </update>
+
+    <!--  해당 product_id의 작성된(whether=1) 리뷰들의 점수 평균 반환  -->
     <select id="ratingAvg" parameterType="String" resultType="float">
         SELECT AVG(rating) AS average_value
         FROM review
@@ -54,11 +62,46 @@
 
     <select id="selectPage" parameterType="Map" resultType="Review">
         SELECT * FROM review
-        WHERE
-        <if test="id != null"> user_id = #{id}</if>
-        <if test="product_id != null">product_id = #{product_id}</if>
+        WHERE true
+        <if test="id != null">AND user_id = #{id}</if>
+        <if test="product_id != null">AND product_id = #{product_id}</if>
             AND whether = #{whether}
-        ORDER BY reg_date desc, rno desc
+        <if test="sc.option == 'reg_date'">
+            ORDER BY reg_date desc
+        </if>
+        <if test="sc.option == 'rating'">
+            ORDER BY rating desc, rno desc
+        </if>
         LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+
+    <select id="SelectPageByReportCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*) FROM review
+        WHERE true
+        <if test="keyword != null">
+            <if test="option == 'rno'">
+                AND rno LIKE concat('%',#{keyword},'%')
+            </if>
+            <if test="option == 'user_id'">
+                AND user_id LIKE concat('%',#{keyword},'%')
+            </if>
+        </if>
+        AND whether != 0
+    </select>
+
+    <select id="SelectPageByReport" parameterType="SearchCondition" resultType="Review">
+        SELECT * FROM review
+        WHERE true
+        <if test="keyword != null">
+            <if test="option == 'rno'">
+                AND rno LIKE concat('%',#{keyword},'%')
+            </if>
+            <if test="option == 'user_id'">
+                AND user_id LIKE concat('%',#{keyword},'%')
+            </if>
+        </if>
+        AND whether != 0
+        ORDER BY whether asc, report_cnt desc
+        LIMIT #{offset}, #{pageSize}
     </select>
 </mapper>

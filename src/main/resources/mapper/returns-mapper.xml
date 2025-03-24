@@ -33,6 +33,12 @@
         WHERE return_id = #{return_id}
     </update>
 
+    <update id="mngUpdate" parameterType="Map">
+        UPDATE returns
+        SET status = #{status}
+        WHERE return_id = #{return_id} AND user_id = #{id} AND product_id = #{product_id} AND size = #{size}
+    </update>
+
     <select id="selectPage" parameterType="Map" resultType="Returns">
         SELECT * FROM returns
         WHERE user_id = #{id}
@@ -50,5 +56,34 @@
     <select id="selectId" parameterType="String" resultType="String">
         SELECT return_id FROM returns
         WHERE return_id LIKE CONCAT(#{return_id}, '%') ORDER BY return_id DESC LIMIT 1
+    </select>
+
+    <select id="selectMng" parameterType="SearchCondition" resultType="Returns">
+        SELECT r.*
+        FROM returns r
+        JOIN (
+        SELECT DISTINCT return_id
+        FROM returns
+        <where>
+            <if test="category neq ''">status = #{category}</if>
+            <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+        </where>
+        ORDER BY return_id ASC
+        LIMIT #{offset}, #{pageSize}
+        ) sub ON r.return_id = sub.return_id
+        ORDER BY r.return_id ASC, r.product_id ASC;
+    </select>
+
+    <select id="selectMngCnt" parameterType="SearchCondition" resultType="int">
+        SELECT
+               <choose>
+                   <when test="gender neq ''">count(DISTINCT return_id)</when>
+                   <otherwise>count(*)</otherwise>
+               </choose>
+        FROM returns
+        <where>
+            <if test="category neq ''">status = #{category}</if>
+            <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+        </where>
     </select>
 </mapper>
