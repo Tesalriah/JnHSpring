@@ -12,6 +12,9 @@
     <%@ include file="../header.jsp" %>
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/question-list.css"/>">
+    <script type="text/javascript" src="<c:url value='/resources/js/asking.js'/>" defer></script>
+
+
     <main>
         <div class="container">
             <div class="title">
@@ -28,7 +31,12 @@
                         <div><a href="<c:url value="/mypage/asking/list"/>">1:1 문의</a></div>
                         <div style=" border-bottom: none;"><a href="<c:url value="/mypage/asking/question/list"/>">상품문의</a></div>
                     </div>
+
                     <div class="questions_contents">
+                        <c:if test="${empty qList}">
+                            <div style="text-align: center; padding:100px 20px; font-size: 24px;">문의내역이 존재하지 않습니다..</div>
+                        </c:if>
+
                         <c:forEach var="list" items="${qList}">
                             <c:choose>
                                 <c:when test="${list.ano == 1}">
@@ -44,8 +52,17 @@
                                     <div style="float: right; font-weight:100;"><fmt:formatDate value="${list.reg_date}" pattern="yyyy-MM-dd"/></div>
                                 </div>
                                 <div class="question_bottom">
-                                    질문내용
+                                    ${list.contents}
                                 </div>
+                                    <c:if test="${list.ano==1}">
+                                        <div class="post_button" style="margin-top: 15px;">
+                                            <form method="post" action="">
+                                                <input type="hidden" name="qno" value="${list.qno}">
+                                                <button type="submit" formaction="<c:url value="/mypage/asking/question/remove"/>" onclick="return deleteConfirm()">삭제</button>
+                                            </form>
+                                        </div>
+                                    </c:if>
+
                             </div>
                         </c:forEach>
                         </div>

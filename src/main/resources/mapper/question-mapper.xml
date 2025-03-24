@@ -90,6 +90,6 @@
 <!-- 삭제 -->
     <delete id="delete" parameterType="map">
         DELETE FROM question
-        where qno = #{qno} and ano=1;
+        where qno = #{qno} AND user_id = #{user_id}
     </delete>
 </mapper>

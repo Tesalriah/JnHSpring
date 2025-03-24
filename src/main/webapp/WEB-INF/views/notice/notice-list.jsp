@@ -30,8 +30,10 @@
                 <div class="left_menu">
                     <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
                     <div><a href="<c:url value='/notice/list'/>?option=event ">이벤트</a></div>
-                    <div><a href="">FAQ</a></div>
+                    <div><a href="<c:url value='/FAQ/list'/>">FAQ</a></div>
                 </div>
+
+
                 <div class="contents">
                     <h2>
                         <c:choose>
@@ -65,6 +67,8 @@
                                     <td><fmt:formatDate value="${noticeDto.reg_date}" pattern="yyyy-MM-dd HH:mm" ></fmt:formatDate>
                                 </tr>
                             </c:forEach>
+
+
                             <c:forEach var="notice" items="${list}">
                                 <tr>
                                     <td>${notice.number}</td>
@@ -81,6 +85,8 @@
                                 <button type="button" onclick="location.href='<c:url value="/notice/write"/>'">글 작성</button>
                             </div>
                         </c:if>
+
+
                         <div class="paging">
                             <c:if test="${ph.showPrev}">
                                 <a href="<c:url value='/notice/list'/>?page=${ph.beginPage-1}&pageSize=${ph.pageSize}">&lt;</a>

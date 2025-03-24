@@ -23,6 +23,8 @@ public class CurrentPageInterceptor implements HandlerInterceptor{
             current = "review";
         }if(currentUrl.contains("/product")){
             current = "product";
+        }if(currentUrl.contains("/ask")){
+            current = "ask";
         }if(currentUrl.contains("/asking")){
             current = "asking";
         }if(currentUrl.contains("/asking/write")){

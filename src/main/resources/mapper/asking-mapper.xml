@@ -5,6 +5,7 @@
 <mapper namespace="kr.co.jnh.dao.AskingMapper">
     <select id="count" resultType="int">
         SELECT count(*) FROM asking
+        where cno = 1
     </select>
 
     <select id="idCount" resultType="int" parameterType="String">
@@ -27,9 +28,11 @@
         SELECT * FROM asking
     </sql>
 
-    <select id="selectAll" resultType="AskingDto">
+    <select id="selectAll" resultType="AskingDto" parameterType="SearchCondition">
         <include refid="selectFromAsking"/>
-        ORDER BY state asc, no desc
+        where cno=1
+        ORDER BY state asc, no asc
+        LIMIT #{offset}, #{pageSize}
     </select>
 
 
@@ -45,6 +48,7 @@
         WHERE no = #{no}
         ORDER BY cno asc
     </select>
+    <!--ORDER BY cno ASC로 인해 askingDto[0]이 질문, askingDto[1]이 답변이 됨.-->
 
     <update id="update" parameterType="AskingDto">
         update asking
@@ -56,13 +60,22 @@
     <update id="updateState" parameterType="AskingDto">
         update asking
         set   state = #{state}
-        where no = #{no} AND state = 0
+        where no = #{no}
     </update>
 
     <delete id="delete" parameterType="map">
         DELETE FROM asking
-        WHERE no = #{no} AND user_id = #{user_id}
+        <where>
+            <if test="no != null"> AND no = #{no}</if>
+            <if test="cno != null"> AND cno = #{cno}</if>
+            <if test="user_id != null"> AND user_id = #{user_id}</if>
+        </where>
     </delete>
+
+    <select id="selectAnswer" parameterType="int" resultType="AskingDto">
+        SELECT * FROM asking WHERE no = #{no} AND cno = 2;
+    </select>
+
 
     <select id="prevNext" parameterType="map" resultType="map">
         select * from(

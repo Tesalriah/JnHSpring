@@ -1,11 +1,13 @@
 package kr.co.jnh.dao;
 
 import kr.co.jnh.domain.AskingDto;
+import kr.co.jnh.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +36,8 @@ public class AskingDaoImpl implements AskingDao {
     }
 
     @Override
-    public List<AskingDto> selectAll() throws Exception{
-        return session.selectList(namespace+"selectAll");
+    public List<AskingDto> selectAll(SearchCondition sc) throws Exception{
+        return session.selectList(namespace+"selectAll", sc);
     }
 
     @Override
@@ -68,6 +70,12 @@ public class AskingDaoImpl implements AskingDao {
     public int delete(Map map) throws Exception {
         return session.delete(namespace+"delete", map);
     }
+
+    @Override
+    public AskingDto selectAnswer(int no) throws Exception {
+        return session.selectOne(namespace+"selectAnswer", no);
+    }
+
 
     @Override
     public Map prevNext(Map map) throws Exception {

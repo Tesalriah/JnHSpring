@@ -19,7 +19,7 @@
                     <li class="gender_on">
                         <a href="<c:url value="/product-list?gender=WOMEN"/>">WOMEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">
-                            <li><a href="<c:url value="/product-list"/>"?gender=WOMEN&category=TOPS>TOPS</a></li>
+                            <li><a href="<c:url value="/product-list"/>?gender=WOMEN&category=TOPS">TOPS</a></li>
                             <li><a href="<c:url value="/product-list"/>?gender=WOMEN&category=BOTTOM">BOTTOM</a></li>
                             <li><a href="<c:url value="/product-list"/>?gender=WOMEN&category=OUTER">OUTER</a></li>
                         </ul>
