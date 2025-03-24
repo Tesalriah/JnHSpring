@@ -24,9 +24,14 @@
                 <div class="contents">
                     <h2>문의</h2>
                     <div class="top_nav">
-                        <div style=" border-bottom: none;"><a href="#">1:1 문의</a></div>
-                        <div><a href="questionList.html">상품문의</a></div>
+                        <div style=" border-bottom: none;"><a href="<c:url value="/mypage/asking/list"/>">1:1 문의</a></div>
+                        <div><a href="<c:url value="/mypage/asking/question/list"/>">상품문의</a></div>
                     </div>
+
+                    <c:if test="${empty askingDtoList}">
+                        <div style="text-align: center; padding:100px 20px; font-size: 24px;">문의내역이 존재하지 않습니다.</div>
+                    </c:if>
+
                     <div class="asking_list">
                         <div>
                             <div>제목</div>
@@ -41,6 +46,8 @@
                             </div>
                         </c:forEach>
                     </div>
+
+
                     <div class="paging">
                         <c:if test="${ph.showPrev}">
                             <a href="<c:url value='/mypage/asking/list'/>?page=${ph.beginPage-1}">&lt;</a>

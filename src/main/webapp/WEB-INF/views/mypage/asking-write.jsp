@@ -46,8 +46,8 @@
                                 <textarea name="contents" rows="15" placeholder="내용을 입력하세요"><c:out value="${askingDto.contents}"/></textarea>
                             </div>
                             <div class="write_button">
-                                <button type="submit">확인</button>
-                                <button type="button" onclick="if(confirm('취소하겠습니까?')==true)
+                                <button type="submit" onclick="return confirm('작성하시겠습니까?')">확인</button>
+                                <button type="button" onclick="if(confirm('취소하시겠습니까?')==true)
                                 { location.href = '<c:url value="/mypage/asking/list"/>'; }">취소</button>
                             </div>
                         </div>

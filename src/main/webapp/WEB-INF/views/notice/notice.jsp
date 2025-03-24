@@ -24,7 +24,7 @@
                 <div class="left_menu">
                     <div><a href="<c:url value='/notice/list'/>?option=notice">공지사항</a></div>
                     <div><a href="<c:url value='/notice/list'/>?option=event">이벤트</a></div>
-                    <div><a href="">FAQ</a></div>
+                    <div><a href="<c:url value='/FAQ/list'/>">FAQ</a></div>
                 </div>
                 <div class="contents">
                     <div class="post_box">

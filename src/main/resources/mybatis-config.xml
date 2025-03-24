@@ -17,5 +17,6 @@
         <typeAlias alias="ReportReview" type="kr.co.jnh.domain.ReportReview"/>
         <typeAlias alias="SearchCondition" type="kr.co.jnh.domain.SearchCondition"/>
         <typeAlias alias="Question" type="kr.co.jnh.domain.Question"/>
+        <typeAlias alias="Faq" type="kr.co.jnh.domain.Faq"/>
     </typeAliases>
 </configuration>

@@ -155,31 +155,6 @@ write_btn.addEventListener('click', function (){
     httpRequest.send(JSON.stringify(reqJson));
 })
 
-
-
-
-/*const pid1=document.getElementsByName('product_id');
-const wrt1 = document.getElementById('write');
-const cnt1 = document.getElementsByName('question_contents');
-
-wrt1.addEventListener('click', function (){
-    var j = new Object();
-    j.pid1 = pid1.value;
-    j.cnt1 = cnt1.value;
-
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = () => {
-        if(httpRequest.readyState === )
-    }
-
-
-})*/
-
-
-
-
-
-
 const wrt = document.getElementById('write');
 const cnt = document.getElementsByName('question_contents');
 const pid = document.getElementsByName('product_id')

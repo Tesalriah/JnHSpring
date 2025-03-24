@@ -53,15 +53,23 @@
 
 <!--  아이디 or 상품명에 맞춰 정보불러오기   -->
     <select id="selectInfo" resultType="Question" parameterType="Map">
-        <include refid="selectFromQuestion"/>
-        <if test="user_id != null">
-            where user_id = #{user_id}
-        </if>
-        <if test="product_id != null">
-            where product_id = #{product_id}
-        </if>
-        ORDER BY qno desc
-        LIMIT #{sc.offset}, #{sc.pageSize}
+        WITH QuestionList as(
+            SELECT qno
+            FROM question
+            WHERE ano=1 AND
+            <if test="user_id != null">
+                user_id = #{user_id}
+            </if>
+            <if test="product_id != null">
+                product_id = #{product_id}
+            </if>
+            ORDER BY qno desc
+            LIMIT #{sc.offset}, #{sc.pageSize}
+        )
+        SELECT q.qno, q.ano, q.user_id, q.product_id, q.contents, q.reg_date
+        FROM question q
+        WHERE q.qno in (select qno from QuestionList)
+        ORDER BY q.qno DESC, q.ano ASC;
     </select>
 
 
@@ -82,6 +90,6 @@
 <!-- 삭제 -->
     <delete id="delete" parameterType="map">
         DELETE FROM question
-        where qno = #{qno} and ano=1;
+        where qno = #{qno} AND user_id = #{user_id}
     </delete>
 </mapper>

@@ -3,13 +3,13 @@ package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
+import kr.co.jnh.service.QuestionService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.SessionIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +24,8 @@ public class AskingController {
     AskingService askingService;
     @Autowired
     UserService userService;
+    @Autowired
+    QuestionService questionService;
 
     // 문의목록 가져오기
     @GetMapping("/list")
@@ -31,7 +33,7 @@ public class AskingController {
 
         String user_id =SessionIdUtil.getSessionId(request);
 
-        Map map=new HashMap();
+        Map<String,Object> map=new HashMap<>();
         map.put("id",user_id);
         map.put("sc",sc);
 
@@ -52,6 +54,38 @@ public class AskingController {
 
         return "/mypage/asking-list";
     }
+
+
+    // 문의내역확인 - 상품문의
+    @GetMapping("/question/list")
+    public String qList(HttpServletRequest request,SearchCondition sc, Model m){
+
+        String user_id = SessionIdUtil.getSessionId(request);
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("user_id",user_id);
+        map.put("sc",sc);
+
+        try {
+            // 해당 id의 글 갯수(문의글, 답변 포함)
+            int idCount = questionService.getCount(map);
+            System.out.println("idCount = " + idCount);
+
+            // 해당 id 목록 가져오기
+            List<Question> list = questionService.readInfo(map);
+            System.out.println("list = " + list);
+            m.addAttribute("qList", list);
+
+            // 전체 게시물 갯수를 통해 PageHandler를 이용한 페이징 처리
+            PageHandler ph = new PageHandler(idCount,sc);
+            m.addAttribute("ph",ph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/mypage/question-list";
+    }
+
 
     // 하나의 게시물 읽기
     @GetMapping("/read")
@@ -110,7 +144,7 @@ public class AskingController {
         // 아이디 확인
         String user_id = SessionIdUtil.getSessionId(request);
 
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("no",no);
         map.put("user_id", user_id);
 
@@ -128,6 +162,36 @@ public class AskingController {
         }
         return "alert";
     }
+
+    @PostMapping("/question/remove")
+    public String qRemove(HttpServletRequest request, Integer qno, Model m,SearchCondition sc){
+        String user_id=SessionIdUtil.getSessionId(request);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("qno",qno);
+        map.put("user_id",user_id);
+
+        try {
+           /* int result = questionService.remove(map);
+            System.out.println("삭제 결과: " + result);*/
+            System.out.println("삭제 시도 - qno: " + qno + ", user_id: " + user_id);
+
+            if (questionService.remove(map)>0) {
+                m.addAttribute("msg","삭제되었습니다.");
+                m.addAttribute("url","/jnh/mypage/asking/question/list");
+            }else{
+                throw new Exception("Question_REMOVE_FAIL");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("msg","삭제에 실패했습니다.");
+            m.addAttribute("url","/jnh/mypage/asking/question/list");
+        }
+
+        return "alert";
+    }
+
 
     // 게시물작성 페이지불러오기
     @GetMapping("/write")
@@ -148,9 +212,8 @@ public class AskingController {
             askingDto.setUser_id(id);
             askingDto.setState(0);  // 문의글 작성 시 기본값 0(대기중)
 
-            System.out.println("askingDto = " + askingDto.toString());
             // 제목, 내용이 비었을 경우 알림창
-            if (askingDto.getTitle().isBlank() || askingDto.getContents().isBlank()) {
+            if (askingRequired(askingDto)) {
                 throw new Exception("NOT_BLANK");
             }
             // 작성에 실패할 경우
@@ -226,58 +289,8 @@ public class AskingController {
         }
     }
 
-    /*@Autowired
-    QuestionService questionService;
-    @GetMapping("question")
-    public String questionList(){
-//        String id = SessionIdUtil.getSessionId(request);
-//        Map<String, Object> map = new HashMap();
-//
-//        // page = 1, pageSize = 10
-//
-//        map.put("user_id", id);
-//        map.put("sc", sc);
-//        try {
-//            int totalCnt = questionService.getCount(map);
-//            List<Question> list = questionService.readInfo(map);
-//            PageHandler ph = new PageHandler(totalCnt, sc);
-//
-//            m.addAttribute("list", list);
-//            m.addAttribute("ph", ph);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-
-        return "question-list";
-    }*/
-
-    /*@PostMapping("question/list")
-    @ResponseBody
-    public Map<String, Object> questionList(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
-
-        sc.setPage((int)map.get("page"));
-        map.put("sc", sc);
-        map.put("user_id", id);
-
-        try{
-            int cnt = questionService.getCount(map);
-            List<Question> list = questionService.readInfo(map);
-
-            PageHandler ph = new PageHandler(cnt, sc);
-
-            map.put("list", list);
-            map.put("ph", ph);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return map;
-    }*/
-
     private boolean askingRequired(AskingDto askingDto) {
         return askingDto.getTitle() == null || askingDto.getTitle().isBlank()
                 || askingDto.getContents() == null || askingDto.getContents().isBlank();
     }
-
 }

@@ -3,8 +3,10 @@ package kr.co.jnh.service;
 
 import kr.co.jnh.dao.AskingDao;
 import kr.co.jnh.domain.AskingDto;
+import kr.co.jnh.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,9 @@ import java.util.Map;
 public class AskingServiceImpl implements AskingService {
     @Autowired
     AskingDao askingDao;
+
+
+
 
     // 글 갯수 세기
     @Override
@@ -32,11 +37,16 @@ public class AskingServiceImpl implements AskingService {
         return askingDao.insert(askingDto);
     }
 
-    // 최신순, 대기중-답변완료 순으로 글 정렬
     @Override
-    public List<AskingDto> readAll() throws Exception{
-        return askingDao.selectAll();
+    public List<AskingDto> readAll(SearchCondition sc) throws Exception {
+        return askingDao.selectAll(sc);
     }
+
+    // 최신순, 대기중-답변완료 순으로 글 정렬
+   /* @Override
+    public List<AskingDto> readAll(SearchCondition sc) throws Exception{
+        return askingDao.selectAll(sc);
+    }*/
 
     // No순으로 desc
     @Override
@@ -70,9 +80,23 @@ public class AskingServiceImpl implements AskingService {
 
     // 삭제
     @Override
-    public int remove(Map map) throws Exception {
-        return askingDao.delete(map);
+    @Transactional(rollbackFor = Exception.class)
+    public int remove(Map<String,Integer> map) throws Exception {
+        int result = askingDao.delete(map);
+        AskingDto askingDto = new AskingDto();
+        askingDto.setNo(map.get("no"));
+        askingDto.setState(0);
+        if(askingDao.updateState(askingDto) != 1){
+            throw new Exception("ASKING_STATE_UPDATE_FAIL");
+        }
+        return result;
     }
+
+    @Override
+    public AskingDto getAnswer(int no) throws Exception{
+        return askingDao.selectAnswer(no);
+    }
+
 
     public Map getPrevNext(Map map) throws Exception {
         return askingDao.prevNext(map);

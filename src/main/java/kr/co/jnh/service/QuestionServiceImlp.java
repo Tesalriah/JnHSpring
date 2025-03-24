@@ -1,10 +1,14 @@
 package kr.co.jnh.service;
 
+import kr.co.jnh.dao.ProductDao;
 import kr.co.jnh.dao.QuestionDao;
+import kr.co.jnh.domain.Product;
 import kr.co.jnh.domain.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +16,9 @@ import java.util.Map;
 public class QuestionServiceImlp implements QuestionService {
     @Autowired
     QuestionDao questionDao;
+
+    @Autowired
+    ProductDao productDao;
 
     /*아이디 or 상품명에 맞춰 정보불러오기*/
     @Override
@@ -47,7 +54,12 @@ public class QuestionServiceImlp implements QuestionService {
     /*아이디 or 상품명에 맞춰 정보불러오기*/
     @Override
     public List<Question> readInfo(Map map) throws Exception{
-        return questionDao.selectInfo(map);
+        List<Question> list = questionDao.selectInfo(map);
+        for (Question question : list) {
+            Product product = productDao.select(question.getProduct_id());
+            question.setProduct(product);
+        }
+        return list;
     }
 
     /*해당 번호에 대한 정보 불러오기*/
