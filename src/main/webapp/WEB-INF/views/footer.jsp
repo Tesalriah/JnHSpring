@@ -21,15 +21,15 @@
             <div class="cs">고객센터 <a href="tel:1544-0000">1544-0000</a></div>
             <div class="footer_menu">
                 <ul>
-                    <li><a href="">회사소개</a></li>
+                    <li><a href="<c:url value="/about-as"/>">회사소개</a></li>
                     <li><a href="">매장안내</a></li>
-                    <li><a href="">단체구매</a></li>
-                    <li><a href="<c:url value="/notice/list"/>">공지사항</a></li>
+                    <li><a href="<c:url value="/group-buy"/>">단체구매</a></li>
+                    <li><a href="<c:url value="/notice/list"/>?option=notice">공지사항</a></li>
                 </ul>
                 <ul>
-                    <li><a href="">문의</a></li>
-                    <li><a href="">FAQ</a></li>
-                    <li><a href="">이벤트</a></li>
+                    <li><a href="<c:url value="/mypage/asking/write"/>">문의</a></li>
+                    <li><a href="<c:url value="/FAQ/list"/>">FAQ</a></li>
+                    <li><a href="<c:url value="/notice/list"/>?option=event">이벤트</a></li>
                 </ul>
             </div>
         </div>

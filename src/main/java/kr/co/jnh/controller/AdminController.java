@@ -22,7 +22,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminContorller {
+public class AdminController {
 
     @Autowired
     ProductService productService;

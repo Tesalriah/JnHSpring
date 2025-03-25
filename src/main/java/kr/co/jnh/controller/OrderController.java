@@ -16,7 +16,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/mypage/order")
-public class OrderContoller {
+public class OrderController {
 
     @Autowired
     OrderService orderService;

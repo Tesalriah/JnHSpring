@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Controller
-public class LoginContoller {
+public class LoginController {
 
     @Autowired
     UserService userService;

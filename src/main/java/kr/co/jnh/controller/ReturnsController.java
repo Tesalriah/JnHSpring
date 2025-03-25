@@ -20,7 +20,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/mypage/return")
-public class ReturnsContorller {
+public class ReturnsController {
 
     @Autowired
     ReturnsService returnsService;
