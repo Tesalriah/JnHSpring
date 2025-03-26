@@ -5,13 +5,13 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <script type="text/javascript" src="<c:url value="/resources/js/review-wrote.js"/>" defer></script>
+        <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/review-wrote.css"/>">
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <script type="text/javascript" src="<c:url value="/resources/js/review-wrote.js"/>" defer></script>
-    <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/review-wrote.css"/>">
     <main>
         <div class="container">
             <div class="title">

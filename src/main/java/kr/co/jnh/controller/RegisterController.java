@@ -1,7 +1,7 @@
 package kr.co.jnh.controller;
 
-import kr.co.jnh.util.SessionIdUtil;
-import kr.co.jnh.util.mailAuthUtil;
+import kr.co.jnh.util.SessionUtils;
+import kr.co.jnh.util.MailAuthUtil;
 import kr.co.jnh.validation.UserValidator;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
@@ -83,7 +83,7 @@ public class RegisterController {
                 throw new Exception("AUTH_ADD_FAIL");
             }
             // 이메일 전송
-            MailDto mailDto = new MailDto(email, mailAuthUtil.customMsg(authNumber));
+            MailDto mailDto = new MailDto(email, MailAuthUtil.customMsg(authNumber));
             emailService.sendMail(mailDto); // dto (메일관련 정보)를 sendMail에 저장함
             return "account/email-auth";
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class RegisterController {
     // 이메일 인증
     @PostMapping("/email-auth")
     public String auth(HttpServletRequest request, HttpSession session){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try {
             String email = userService.getUser(id).getEmail(); // 해당 유저의 이메일값 반환

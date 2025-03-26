@@ -6,7 +6,7 @@ import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.service.WishService;
 import kr.co.jnh.util.FileMultiSaveUtil;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +34,7 @@ public class ProductController {
     // 상품정보 읽어오기
     @GetMapping("product")
     public String product(@RequestParam String product_id, SearchCondition sc, Model m, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         m.addAttribute("sc", sc);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
         try {
@@ -75,7 +75,7 @@ public class ProductController {
     // 해당 상품 결제 페이지 이동
     @PostMapping("product")
     public String PostProduct(@RequestParam String product_id, Integer quantity, String size, SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         product_id = product_id.split(",")[0];
 
         try {
@@ -204,10 +204,10 @@ public class ProductController {
         }
     }
 
-    // 상품 결제 처리
+    /*// 상품 결제 처리
     @PostMapping("/buy")
     public String buy(Order order, String quantity, String address2, HttpServletRequest request, HttpServletResponse response){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         // 하나이상의 주문을 각각 처리하기 위해 배열에 나눠서 저장
         String[] product_id = order.getProduct_id().split(",");
@@ -269,12 +269,12 @@ public class ProductController {
             request.setAttribute("url", "product-list");
         }
         return "alert";
-    }
+    }*/
 
     // 주문했던 상품 재구매
     @PostMapping("/repurchase")
     public String repurchase(String product_id, String size, String quantity, HttpServletRequest request) {
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         // 받아온 상품id, 사이즈, 갯수가 여러개일 수 있으므로 배열에 각각 저장
         String[] p_id = product_id.split(",");
         String[] product_size = size.split(",");

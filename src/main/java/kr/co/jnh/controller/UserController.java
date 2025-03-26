@@ -4,7 +4,7 @@ package kr.co.jnh.controller;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.CacheControlUtil;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +31,14 @@ public class UserController {
         // 캐싱 방지 헤더
         CacheControlUtil.setNoCacheHeaders(response);
 
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         m.addAttribute("id", id);
         return "mypage/check-pwd";
     }
 
     @PostMapping("check-pwd")
     public String checkPwd(@RequestParam String user_pwd, HttpServletRequest request, Model m) {
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         Map<String, String> map = new HashMap<>();
         map.put("id", id);
@@ -66,7 +65,7 @@ public class UserController {
         // 캐싱 방지 헤더
         CacheControlUtil.setNoCacheHeaders(response);
 
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         HttpSession session = request.getSession(false);
         try {
             // 비밀번호 확인에서 확인된 정보가 세션에 있을시에만 처리
@@ -93,7 +92,7 @@ public class UserController {
     public String changeAddress(@RequestParam String address,@RequestParam(required = false) String address2, HttpServletRequest request, Model m){
         HttpSession session = request.getSession(false);
 
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         String c_address = address;
         if(!address2.equals("")){ // 상세주소를 입력했을시 추가
             if(c_address.charAt(c_address.length() - 1) != ' '){
@@ -119,7 +118,7 @@ public class UserController {
     @PostMapping("change-pwd")
     public String changePwd(String user_pwd, String new_pwd, String new_pwd_check, HttpServletRequest request, Model m){
         HttpSession session = request.getSession(false);
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         // id, pwd 확인에 필요한 map 생성
         Map<String, String> map = new HashMap();
@@ -153,7 +152,7 @@ public class UserController {
 
     @PostMapping("del-account")
     public String delAccount(HttpServletRequest request, HttpSession session, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try {
             if(userService.changeStatus(id, 2) != 1){

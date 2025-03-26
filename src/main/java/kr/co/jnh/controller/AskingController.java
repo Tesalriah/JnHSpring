@@ -4,7 +4,7 @@ package kr.co.jnh.controller;
 import kr.co.jnh.domain.*;
 import kr.co.jnh.service.AskingService;
 import kr.co.jnh.service.QuestionService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class AskingController {
     @GetMapping("/list")
     public String list(SearchCondition sc, HttpServletRequest request, Model m){
 
-        String user_id =SessionIdUtil.getSessionId(request);
+        String user_id = SessionUtils.getSessionId(request);
 
         Map<String,Object> map=new HashMap<>();
         map.put("id",user_id);
@@ -57,7 +57,7 @@ public class AskingController {
     @GetMapping("/question/list")
     public String qList(HttpServletRequest request,SearchCondition sc, Model m){
 
-        String user_id = SessionIdUtil.getSessionId(request);
+        String user_id = SessionUtils.getSessionId(request);
 
         Map<String,Object> map=new HashMap<>();
         map.put("user_id",user_id);
@@ -85,7 +85,7 @@ public class AskingController {
     // 하나의 게시물 읽기
     @GetMapping("/read")
     public String read(Model m, @RequestParam int no, SearchCondition sc, HttpServletRequest request){
-        String user_id = SessionIdUtil.getSessionId(request);
+        String user_id = SessionUtils.getSessionId(request);
         try {
             // no를 통해 게시물 불러오기
             List<AskingDto> askingDto = askingService.read(no);
@@ -137,7 +137,7 @@ public class AskingController {
     @PostMapping("/remove")
     public String remove( int no, HttpServletRequest request, Model m, SearchCondition sc){
         // 아이디 확인
-        String user_id = SessionIdUtil.getSessionId(request);
+        String user_id = SessionUtils.getSessionId(request);
 
         Map<String,Object> map = new HashMap<>();
         map.put("no",no);
@@ -160,7 +160,7 @@ public class AskingController {
 
     @PostMapping("/question/remove")
     public String qRemove(HttpServletRequest request, Integer qno, Model m,SearchCondition sc){
-        String user_id=SessionIdUtil.getSessionId(request);
+        String user_id= SessionUtils.getSessionId(request);
 
         Map<String,Object> map = new HashMap<>();
         map.put("qno",qno);
@@ -193,7 +193,7 @@ public class AskingController {
 
     @PostMapping("/write")
     public String write(HttpServletRequest request, Model m, AskingDto askingDto, SearchCondition sc){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try {
             // 필수값을 다 넣어주기 위해 작성
@@ -231,7 +231,7 @@ public class AskingController {
     // 게시물 수정화면 요청
     @GetMapping("/modify")
     public String getMod(int no, Model m, SearchCondition sc, HttpServletRequest request){
-        String id= SessionIdUtil.getSessionId(request);
+        String id= SessionUtils.getSessionId(request);
         try {
             AskingDto askingDto = askingService.read(no).get(0);
             //작성자 id와 로그인id가 동일한 지 확인
@@ -255,7 +255,7 @@ public class AskingController {
     // 게시물 수정하기
     @PostMapping("/modify")
     public String modify(AskingDto askingDto, HttpServletRequest request, Model m, SearchCondition sc){
-        String id= SessionIdUtil.getSessionId(request);
+        String id= SessionUtils.getSessionId(request);
 
         try {
             // 실패시 Exception 발생

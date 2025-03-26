@@ -6,7 +6,7 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/find-id.css'/>">
         <script type="text/javascript" src="<c:url value='/resources/js/find-id.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
         <title>J&H 아이디 찾기</title>
     </head>

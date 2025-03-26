@@ -15,4 +15,9 @@ public class ViewController {
     public String groupBuy(){
         return "/group-buy";
     }
+
+    @GetMapping("privacy-policy")
+    public String privacyPolicy(){
+        return "/privacy-policy";
+    }
 }

@@ -3,7 +3,7 @@ package kr.co.jnh.controller;
 import kr.co.jnh.domain.ReportReason;
 import kr.co.jnh.domain.ReportReview;
 import kr.co.jnh.service.ReportReviewService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class ReportReviewController {
     @PostMapping("report")
     @ResponseBody
     public Map<String, Object> report(@RequestBody Map<String,Object> map, HttpServletRequest request){
-        String reporter = SessionIdUtil.getSessionId(request);
+        String reporter = SessionUtils.getSessionId(request);
         Integer rno = Integer.parseInt((String)map.get("rno"));
         String reason = (String)map.get("reason");
         String id = (String)map.get("id");

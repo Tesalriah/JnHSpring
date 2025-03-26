@@ -19,8 +19,8 @@
             </div>
             <div class="about_as">
                 <div>
-                    안녕하세요<br><br>
-                    저희 브랜드는 트렌티함을  만들고<br><br>
+                    안녕하세요 J&H 입니다<br><br>
+                    저희 브랜드는 트렌디함을  만들고<br><br>
                     당신만의 스타일을 찾을수있게 할 것입니다.<br><br>
                     당신이 원하는 것이 여기있습니다.<br><br>
                     <a href="<c:url value="/product"/>">지금 바로 확인하세요</a>

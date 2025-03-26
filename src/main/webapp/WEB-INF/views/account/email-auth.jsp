@@ -5,7 +5,7 @@
     <head>
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/email-auth.css'/>">
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <title>J&H 이메일 인증</title>
     </head>
     <body>

@@ -1,6 +1,6 @@
 package kr.co.jnh.util;
 
-public class mailAuthUtil {
+public class MailAuthUtil {
 
     public static String customMsg(Integer authNum){
         String content = "<div style='font-family: Arial, sans-serif; text-align: center; padding: 20px; border: 1px solid #ddd; border-radius: 10px; width: 400px; margin: auto;'>"

@@ -6,7 +6,7 @@
 <head>
     <script src="https://kit.fontawesome.com/f988057b70.js" crossorigin="anonymous"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
-    <script src="<c:url value="/resources/js/address.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/address.js" />" defer></script>
     <script type="text/javascript" src="<c:url value="/resources/js/loading.js"/>" defer></script>
     <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/signup.css'/>">

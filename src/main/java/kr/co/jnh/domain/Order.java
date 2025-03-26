@@ -18,6 +18,7 @@ public class Order {
     private String color;
     private String status;
     private Date order_date;
+    private String tid;
 
     public Order(){}
 
@@ -149,5 +150,13 @@ public class Order {
 
     public void setOrder_date(Date order_date) {
         this.order_date = order_date;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 }

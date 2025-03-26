@@ -5,12 +5,12 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <script type="text/javascript" src="<c:url value='/resources/js/wish-list.js'/>" defer></script>
+        <link rel="stylesheet" href="<c:url value="/resources/css/wish-list.css"/>">
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <script type="text/javascript" src="<c:url value='/resources/js/wish-list.js'/>" defer></script>
-    <link rel="stylesheet" href="<c:url value="/resources/css/wish-list.css"/>">
     <main>
         <div class="container">
             <div class="title">

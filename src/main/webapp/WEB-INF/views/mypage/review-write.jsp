@@ -5,16 +5,16 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <script type="text/javascript" src="<c:url value="/resources/js/review-write.js"/>" defer></script>
+        <c:if test="${not empty modify}">
+            <script type="text/javascript" src="<c:url value="/resources/js/review-modify.js"/>" defer></script>
+        </c:if>
+        <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/review-write.css"/>">
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <script type="text/javascript" src="<c:url value="/resources/js/review-write.js"/>" defer></script>
-    <c:if test="${not empty modify}">
-        <script type="text/javascript" src="<c:url value="/resources/js/review-modify.js"/>" defer></script>
-    </c:if>
-    <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/review-write.css"/>">
     <main>
         <div class="container">
             <div class="title">

@@ -6,6 +6,7 @@
     <select id="select" parameterType="Map" resultType="Order">
         SELECT * FROM orders
         WHERE user_id = #{id} AND is_deleted != 1
+        AND status NOT LIKE concat('%', '결제', '%')
         group by order_no
         ORDER BY order_no DESC
         LIMIT #{sc.offset}, #{sc.pageSize}
@@ -14,6 +15,7 @@
     <select id="selectCnt" parameterType="Map" resultType="int">
         SELECT count(distinct order_no) FROM orders
         WHERE user_id = #{id} AND is_deleted != 1
+        AND status NOT LIKE concat('%', '결제', '%')
     </select>
 
     <select id="selectOne" parameterType="Map" resultType="Order">
@@ -45,7 +47,9 @@
     <update id="update" parameterType="Map">
         UPDATE orders
         <set>
-            <if test="is_deleted != null">delete = #{is_deleted}</if>
+            <if test="is_deleted != null">,delete = #{is_deleted},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tid != null">tid = #{tid}</if>
         </set>
         WHERE order_no = #{order_no} AND user_id = #{id}
     </update>
@@ -72,6 +76,7 @@
         <where>
             <if test="category neq ''">status = #{category}</if>
             <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+            AND status NOT LIKE concat('%', '결제', '%')
         </where>
     </select>
 
@@ -84,6 +89,7 @@
         <where>
             <if test="category neq ''">status = #{category}</if>
             <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+            AND status NOT LIKE concat('%', '결제', '%')
         </where>
         ORDER BY order_no ASC
         LIMIT #{offset}, #{pageSize}

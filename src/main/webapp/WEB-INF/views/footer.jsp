@@ -4,9 +4,9 @@
         <div class="shopInfo">
             <div class="logo" style="color:#fff;"><a href="<c:url value="/"/>">J&H</a></div>
             <ul class="terms">
-                <li><a href="">이용안내</a></li>
-                <li><a href="">이용약관</a></li>
-                <li><a href="">개인정보처리방침</a></li>
+                <li><a href="<c:url value="/privacy-policy"/>">이용안내</a></li>
+                <li><a href="<c:url value="/privacy-policy"/>">이용약관</a></li>
+                <li><a href="<c:url value="/privacy-policy"/>">개인정보처리방침</a></li>
             </ul>
             <div class="Info"><span>J&H</span><span>서울특별시 OO구 OO로OO길 OO빌딩 OOOO호</span><span>대표자 OOO</span><span>shopjnhmall@gmail.com</span></div>
             <div class="Info" style="padding-top:5px;"><span>사업자등록번호 000-00-00000</span></div>

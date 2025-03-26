@@ -46,11 +46,14 @@ table {
 a {
     text-decoration:none;
     color: inherit;
+    font-width: normal;
 }
 
 input, button{
     border:none;
     background:none;
+    color:#000000;
+    font-weight: normal;
 }
 input:focus{
     outline:none;
