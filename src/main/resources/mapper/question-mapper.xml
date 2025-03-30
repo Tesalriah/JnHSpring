@@ -12,7 +12,7 @@
             where user_id = #{user_id}
         </if>
         <if test="product_id != null">
-            where product_id = #{product_id}
+            where product_id = #{product_id} AND ano = 1
         </if>
         order by qno desc
     </select>
