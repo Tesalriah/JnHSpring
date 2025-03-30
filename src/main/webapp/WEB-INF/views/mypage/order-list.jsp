@@ -5,14 +5,19 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/order-list.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
+        <script type="text/javascript" src="<c:url value='/resources/js/order-list.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/order-list.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
-    <script type="text/javascript" src="<c:url value='/resources/js/order-list.js'/>" defer></script>
+    <c:if test="${not empty sessionScope.msg}">
+        <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
+        <c:remove var="msg" scope="session"/>
+    </c:if>
     <main>
         <div class="container">
             <div class="title">
@@ -57,7 +62,7 @@
                                                 <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
                                                 <div>
                                                     <c:choose>
-                                                        <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" class="cancel_btn" formaction="<c:url value="/mypage/return/cancel"/>?page=${ph.sc.page}">주문취소</button></c:when>
+                                                        <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" class="cancel_btn" formaction="<c:url value="/mypage/return/cancel"/>?page=${ph.sc.page}"><span>주문취소</span></button></c:when>
                                                         <c:when test="${orderList[0].status == '취소완료'}"><button type="button" class="moveLink" data-link="<c:url value="/mypage/asking/write"/>">문의하기</button></c:when>
                                                         <c:otherwise><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></c:otherwise>
                                                     </c:choose>

@@ -113,11 +113,11 @@ public class ReturnsServiceImpl implements ReturnsService {
                 throw new Exception("RETURNS_INSERT_FAIL");
             }
             if(returns.getType().equals("exchange")){
-                map.put("status", "대기중");
+                map.put("status", "교환대기중");
             }if(returns.getType().equals("return")){
-                map.put("status", "대기중");
+                map.put("status", "반품대기중");
             }if(returns.getType().equals("cancel")){
-                map.put("status", "완료");
+                map.put("status", "취소완료");
                 map.put("return_id", returns.getReturn_id());
                 if(returnsDao.update(map) == 0){
                     throw new Exception("RETURNS_UPDATE_FAIL");
@@ -127,9 +127,6 @@ public class ReturnsServiceImpl implements ReturnsService {
             map.put("id", returns.getUser_id());
             map.put("product_id", returns.getProduct_id());
             map.put("size", returns.getSize());
-            if(reviewDao.cancelDelete(map) <= 0){
-                throw new Exception("CANCEL_REVIEW_DELETE_FAIL");
-            }
             if(orderDao.returnUpdate(map) <= 0){
                 throw new Exception("ORDER_STATUS_UPDATE_FAIL");
             }

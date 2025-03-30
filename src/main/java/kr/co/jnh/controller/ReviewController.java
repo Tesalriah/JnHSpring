@@ -6,7 +6,7 @@ import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.ReviewService;
 import kr.co.jnh.util.CacheControlUtil;
 import kr.co.jnh.util.FileMultiSaveUtil;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class ReviewController {
 
     @GetMapping("able") // 리뷰 작성가능 목록 리스트
     public String reviewAble(SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try {
             Map<String, Object> map = new HashMap<>();
@@ -52,7 +52,7 @@ public class ReviewController {
 
     @GetMapping("write") // 작성가능한 리뷰를 작성할수있게 가져오는 메서드
     public String writeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try{
             // rno를 못불러올때 예외
@@ -87,7 +87,7 @@ public class ReviewController {
     @PostMapping("write") // 작성가능한 리뷰를 작성하고 수정에서 또한 작동하는 메서드
     public String writeReview(Review review, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "uploadFile", required = false) MultipartFile file, Model m){
         CacheControlUtil.setNoCacheHeaders(response);
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         // 이미지를 변경하지 않았을때 not_change에서 true라는 문자를 받아옴
         String not_change = request.getParameter("not_change");
 
@@ -138,7 +138,7 @@ public class ReviewController {
 
     @GetMapping("wrote")// 작성한 리뷰 목록 리스트
     public String wroteReview(SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -161,7 +161,7 @@ public class ReviewController {
 
     @GetMapping("modify") // 수정할 리뷰를 가져오는 메서드
     public String modifyReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try{
             // rno값을 통해 해당 리뷰 가져오기
@@ -197,7 +197,7 @@ public class ReviewController {
 
     @PostMapping("remove")
     public String removeReview(@RequestParam(required = false) Integer rno, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         // 이전페이지를 확인하여 작성된 리뷰를 삭제하는지 작성목록에서 삭제하는지 구분하여 완료시 갱신되는 페이지 구분
         String referer = request.getHeader("referer");
@@ -237,7 +237,7 @@ public class ReviewController {
     @PostMapping("list")
     @ResponseBody
     public Map<String, Object> list(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         // map에 이미 product_id가 담겨있으므로 해당 product가 가지고있는 리뷰 목록
 
@@ -267,7 +267,7 @@ public class ReviewController {
     @PostMapping("removeAjax")
     @ResponseBody
     public Map<String, Object> removeAjax(@RequestBody Map<String, Object> map, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         int rno = (Integer)map.get("rno");
 
         try{

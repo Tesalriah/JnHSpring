@@ -4,7 +4,7 @@ import kr.co.jnh.domain.*;
 import kr.co.jnh.service.CartService;
 import kr.co.jnh.service.ProductService;
 import kr.co.jnh.service.UserService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class CartController {
     // 장바구니 목록 가져오기
     @GetMapping("cart")
     public String getCart(HttpServletRequest request, SearchCondition sc){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         try {
             List<Cart> cartList = cartService.showCart(id); // 해당 id의 장바구니 모두 가져오기
@@ -40,7 +40,7 @@ public class CartController {
     // 장바구니에서 선택한 항목을 결제페이지로 보내기
     @PostMapping("cart")
     public String postCart(Cart cart, String quantity, String check_box, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         if(check_box == null || check_box.equals("")){ // 선택한 항목이 없을시 장바구니로 리다이렉트
             request.setAttribute("msg", "상품을 선택해주세요.");
@@ -80,7 +80,7 @@ public class CartController {
     // 해당 상품 장바구니에 추가
     @PostMapping("add-cart")
     public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         Map<String,Object> map = new HashMap<>(); // 등록한 상품인지 확인하기 위한 Map
         map.put("user_id", id);
@@ -112,7 +112,7 @@ public class CartController {
     // 장바구니에서 체크한 상품들 제거
     @PostMapping("del-cart")
     public String delCart(String check_box, Cart cart, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         if(check_box == null || check_box.equals("")){
             request.setAttribute("msg", "선택된 상품이 없습니다.");
@@ -155,7 +155,7 @@ public class CartController {
     // 장바구니 목록에서 해당 라인의 삭제버튼 클릭 시 장바구니 목록에서 제거
     @PostMapping("del-one-cart")
     public String delOneCart(String del_product_id, String del_size, HttpServletRequest request, RedirectAttributes rattr){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         // 삭제하기위해 해당유저 id와 product_id, size 값 Map에 할당
         Map<String,Object> map = new HashMap<>();
@@ -181,7 +181,7 @@ public class CartController {
     @ResponseBody
     public Map<String, Object> setQuantity(@RequestBody Map<String, Object> cartMap, HttpServletRequest request){
         Map<String, Object> map = new HashMap<>();
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         if(id == null || id.equals("")){ // 만약 로그인 정보가 명확하지 않을경우 알림
             map.put("msg", "로그인을 확인해주세요.");
             return map;

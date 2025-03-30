@@ -4,7 +4,7 @@ import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.Question;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.QuestionService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +49,7 @@ public class QuestionController {
     @PostMapping("write")
     @ResponseBody
     public Map<String, Object> write(@RequestBody Map<String, Object> map ,HttpServletRequest request){
-        String user_id = SessionIdUtil.getSessionId(request);
+        String user_id = SessionUtils.getSessionId(request);
         String product_id = (String)map.get("product_id");
         String contents = (String)map.get("contents");
 
@@ -86,7 +85,7 @@ public class QuestionController {
     @PostMapping("write1")
     @ResponseBody
     public Map<String, Object> w (@RequestBody Map<String, Object> map, HttpServletRequest re){
-        String user_id = SessionIdUtil.getSessionId(re);
+        String user_id = SessionUtils.getSessionId(re);
         String pid1 =(String) map.get("pid1"); // productID
         String cnt1 =(String) map.get("cnot1"); // contents
 

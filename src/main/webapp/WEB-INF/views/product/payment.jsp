@@ -9,6 +9,7 @@
         <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
         <script type="text/javascript" src="<c:url value="/resources/js/address.js"/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/order.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/payment.js"/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/payment.css'/>">
         <title>J&H 상품결제</title>
     </head>
@@ -16,7 +17,7 @@
     <%@ include file="../header.jsp" %>
     <main>
         <div class="container">
-            <form action="<c:url value="/buy"/>" method="post" id="buy">
+            <form method="post" id="buy">
                 <div class="payment">
                     <div class="title">주문 / 결제</div>
                     <div class="subheading">구매자 정보</div>
@@ -79,10 +80,6 @@
                                 <input type="hidden" name="product_id" value="${product.product_id}"><input type="hidden" name="size" value="${product.size}"><input type="hidden" name="quantity" value="${product.quantity}">
                                 <div><span><a href="product?product_id=${product.product_id}" target="_blank">${product.product_name}</a></span>/<span>${product.color}</span>/<span>${product.size}</span>/<span>${product.quantity}개</span>/<span><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.total}"/>₩</span></div>
                             </c:forEach>
-<%--                        <div><span>옥스포드 셔츠</span>/<span>Blue</span>/<span>XL</span>/<span>1개</span></div>--%>
-<%--                        <div><span>라이더 자켓</span>/<span>Black</span>/<span>L</span>/<span>1개</span></div>--%>
-<%--                        <div><span>와이드 팬츠</span>/<span>Pink</span>/<span>XL</span>/<span>1개</span></div>--%>
-<%--                        <div><span>옥스포드 셔츠</span>/<span>Black</span>/<span>XL</span>/<span>1개</span></div>--%>
                         </div>
                     </div>
                     <table style="margin-top:85px;">
@@ -99,98 +96,9 @@
                             <td>총결제금액</td>
                             <td><fmt:formatNumber type="number" maxFractionDigits="0" value="${total+3000}"/>₩</td>
                         </tr>
-                        <!-- <tr>
-                            <td>결제방법</td>
-                            <td class="payment_method">
-                                <div>
-                                    <div>
-                                        <input name="method" type="radio" id="account"><label for="account">계좌이체</label>
-                                    </div>
-                                    <div>
-                                        <input name="method" type="radio" id="card"><label for="card">신용/체크카드</label>
-                                    </div>
-                                    <div>
-                                        <input name="method" type="radio" id="phone"><label for="phone">휴대폰</label>
-                                    </div>
-                                    <div>
-                                        <input name="method" type="radio" id="bank"><label for="bank">무통장입금(가상계좌)</label>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="account">
-                                        <div>은행선택</div>
-                                        <div>
-                                            <select name="bank" >
-                                                <option value="" selected style="display:none;">선택</option>
-                                                <option value="카카오뱅크">카카오뱅크</option>
-                                                <option value="기업은형">기업은행</option>
-                                                <option value="국민은형">국민은행</option>
-                                                <option value="농협은형">농협은행</option>
-                                                <option value="하나은형">하나은행</option>
-                                                <option value="신한은형">신한은행</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="card" style="flex-wrap:wrap;">
-                                        <div>카드선택</div>
-                                        <div style="width: 90%;">
-                                            <select name="card" >
-                                                <option value="" selected style="display:none;">선택</option>
-                                                <option value="카카오뱅크">카카오뱅크카드</option>
-                                                <option value="기업은형">BC카드</option>
-                                                <option value="국민은형">국민카드</option>
-                                                <option value="농협은형">농협카드</option>
-                                                <option value="하나은형">하나카드</option>
-                                                <option value="신한은형">신한카드</option>
-                                            </select>
-                                        </div>
-                                        <div style="width: 100%;"><hr></div>
-                                        <div>
-                                            할부기간
-                                        </div>
-                                        <div>
-                                            <select name="installment">
-                                                <option value="일시불" selected>일시불</option>
-                                                <option value="1개월">1개월</option>
-                                                <option value="2개월">2개월</option>
-                                                <option value="3개월">3개월</option>
-                                                <option value="4개월">4개월</option>
-                                                <option value="5개월">5개월</option>
-                                                <option value="6개월">6개월</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="phone">
-                                        <div>통신사종류</div>
-                                        <div>
-                                            <select name="agency" >
-                                                <option value="" selected style="display:none;">선택</option>
-                                                <option value="SKT">SKT</option>
-                                                <option value="KT">KT</option>
-                                                <option value="헬로모바일">헬로모바일</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="transfer">
-                                        <div>입금은행</div>
-                                        <div>
-                                            <select name="bank" >
-                                                <option value="" selected style="display:none;">선택</option>
-                                                <option value="카카오뱅크">카카오뱅크</option>
-                                                <option value="기업은형">기업은행</option>
-                                                <option value="국민은형">국민은행</option>
-                                                <option value="농협은형">농협은행</option>
-                                                <option value="하나은형">하나은행</option>
-                                                <option value="신한은형">신한은행</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr> -->
                     </table>
                     <div class="payment_btn">
-                        <button type="button" id="submit_btn" >결제하기</button><button type="button" onclick="window.history.go(-1);">취소</button>
+                        <button type="button" id="btn-pay-ready" >결제하기</button><button type="button" onclick="window.history.go(-1);">취소</button>
                     </div>
                 </div>
             </form>

@@ -5,7 +5,7 @@ import kr.co.jnh.domain.NoticeDto;
 import kr.co.jnh.domain.PageHandler;
 import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.service.NoticeService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +36,7 @@ public class NoticeController {
     // 공지사항 작성
     @PostMapping("/write")
     public String postNoticeWrite(NoticeDto noticeDto, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         try {
         } catch (Exception e) {
             e.printStackTrace();

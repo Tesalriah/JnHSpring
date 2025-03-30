@@ -19,7 +19,7 @@
                 <div class="image">
                     <img src="<c:url value="/resources/img/admin.png"/>">
                 </div>
-                <div style="font-family: 'Raleway', sans-serif;">여기수정중Admin Page</div>
+                <div style="font-family: 'Raleway', sans-serif;">Admin Page</div>
             </div>
             <div class="nav">
                 <%@ include file="left-menu.jsp" %>

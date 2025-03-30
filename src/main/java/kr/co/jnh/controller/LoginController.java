@@ -6,8 +6,8 @@ import kr.co.jnh.domain.User;
 import kr.co.jnh.service.EmailService;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.CacheControlUtil;
-import kr.co.jnh.util.SessionIdUtil;
-import kr.co.jnh.util.mailAuthUtil;
+import kr.co.jnh.util.SessionUtils;
+import kr.co.jnh.util.MailAuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Controller
-public class LoginContoller {
+public class LoginController {
 
     @Autowired
     UserService userService;
@@ -51,7 +51,7 @@ public class LoginContoller {
     @GetMapping("/find-id")
     public String findId(HttpServletRequest request){
         // 로그인 했을 시 메인페이지로
-        if(SessionIdUtil.getSessionId(request) != null){
+        if(SessionUtils.getSessionId(request) != null){
             return "redirect:/";
         }
         return "find-id";
@@ -92,7 +92,7 @@ public class LoginContoller {
             // 입력한 이름과 해당 이메일 사용자의 이름이 일치하면 실행
             if(foundName.equals(name)){
                 emailService.addAuth(mailAuthDto); // 데이터베이스에 인증번호와 요청 이메일을 저장
-                MailDto mailDto = new MailDto(email, mailAuthUtil.customMsg(authNumber)); // 이메일 수신자, 내용(인증번호)을 할당
+                MailDto mailDto = new MailDto(email, MailAuthUtil.customMsg(authNumber)); // 이메일 수신자, 내용(인증번호)을 할당
                 emailService.sendMail(mailDto); // 이메일 전송
                 map.put("msg", "전송완료");
                 return map;
@@ -110,7 +110,7 @@ public class LoginContoller {
     @GetMapping("/find-pwd")
     public String findPwd(HttpServletRequest request){
         // 로그인 했을 시 메인페이지로
-        if(SessionIdUtil.getSessionId(request) != null){
+        if(SessionUtils.getSessionId(request) != null){
             return "redirect:/";
         }
         return "account/find-pwd";
@@ -156,7 +156,7 @@ public class LoginContoller {
             // 입력한 id와 해당 이메일 사용자의 id가 일치하면 실행
             if(foundId.equals(id)){
                 emailService.addAuth(mailAuthDto); // 데이터베이스에 인증번호와 요청 이메일을 저장
-                MailDto mailDto = new MailDto(email, mailAuthUtil.customMsg(authNumber)); // 이메일 수신자, 내용(인증번호)을 할당
+                MailDto mailDto = new MailDto(email, MailAuthUtil.customMsg(authNumber)); // 이메일 수신자, 내용(인증번호)을 할당
                 emailService.sendMail(mailDto); // 이메일 전송
                 map.put("msg", "전송완료");
                 return map;
@@ -174,7 +174,7 @@ public class LoginContoller {
     @GetMapping("/change-pwd")
     public String changePwd(HttpServletRequest request){
         // 로그인했을 시 메인페이지로
-        if(SessionIdUtil.getSessionId(request) != null){
+        if(SessionUtils.getSessionId(request) != null){
             return "redirect:/";
         }
 
@@ -226,7 +226,7 @@ public class LoginContoller {
         CacheControlUtil.setNoCacheHeaders(response);
 
         HttpSession session = request.getSession();
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         if(id == null){ // 로그인하지 않았을때만 보여주기
             // 이전페이지가 없을 시 받아서 세션으로 넘겨주기
             if(session.getAttribute("prevPage") == null){

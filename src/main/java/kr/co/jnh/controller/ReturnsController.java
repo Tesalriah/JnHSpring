@@ -1,11 +1,9 @@
 package kr.co.jnh.controller;
 
 import kr.co.jnh.domain.*;
-import kr.co.jnh.service.OrderService;
-import kr.co.jnh.service.ProductService;
-import kr.co.jnh.service.ReturnsService;
-import kr.co.jnh.service.UserService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.service.*;
+import kr.co.jnh.util.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/mypage/return")
-public class ReturnsContorller {
+public class ReturnsController {
 
     @Autowired
     ReturnsService returnsService;
@@ -33,19 +32,23 @@ public class ReturnsContorller {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    KakaoPayService kakaoPayService;
+
     // 주문목록에서 주문취소 클릭시 주문취소와 동시에 취소/반품/교환 리스트에 취소된 항목 갱신
     @PostMapping("cancel")
-    public String cancel(@RequestParam(required = false) String order_no, @RequestParam(required = false) int page, HttpServletRequest request, Model m) {
+    public String cancel(@RequestParam(required = false) String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m) {
         if (order_no == null) { // 받아온 order_no이 없을때 list로 리다이렉트
             return "redirect:/mypage/order-list?page=" + page;
         }
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         Map<String,Object>map = new HashMap<>();
         map.put("id", id);
         map.put("order_no", order_no);
 
         try {
             List<Order> orderList = orderService.readOne(map);
+
             List<Returns> returnsList = new ArrayList<>();
 
             // 현재날짜 + 001~999까지의 세자리 수로 return_id를 만드는 메서드
@@ -70,6 +73,8 @@ public class ReturnsContorller {
             if(returnsService.returns(returnsList) != 1){
                 throw new Exception("cancel_FAIL");
             }
+            String type = "cancel";
+            CancelResponse cancelResponse = kakaoPayService.payCancel(orderList, type);
 
             m.addAttribute("msg", "주문이 취소되었습니다.");
             m.addAttribute("url", "list");
@@ -82,11 +87,11 @@ public class ReturnsContorller {
 
     // 교환 또는 반품하는 상품을 선택하는 step1페이지
     @PostMapping("step1")
-    public String returnStep1(@RequestParam(required = false) String order_no, @RequestParam(required = false) int page, HttpServletRequest request, Model m) {
+    public String returnStep1(@RequestParam(required = false) String order_no, @RequestParam(defaultValue = "1") int page, HttpServletRequest request, Model m) {
         if (order_no == null) { // 받아온 order_no이 없을때 list로 리다이렉트
             return "redirect:/mypage/order-list?page=" + page;
         }
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         Map<String,Object> map = new HashMap<>();
         map.put("id", id);
         map.put("order_no", order_no);
@@ -105,7 +110,7 @@ public class ReturnsContorller {
 
     @PostMapping("step2")
     public String returnStep2(@RequestParam(required = false) String order_no, @RequestParam(required = false) String check_box, HttpServletRequest request, Model m) {
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
         Map<String,Object> map = new HashMap<>();
         map.put("id", id);
@@ -148,7 +153,7 @@ public class ReturnsContorller {
 
     @PostMapping
     public String returns(Returns returns, @RequestParam String quan, HttpServletRequest request){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         returns.setUser_id(id);
         String type = ""; // 교환인지 반품인지 타입 분류
         if(returns.getType().equals("exchange")){
@@ -211,7 +216,7 @@ public class ReturnsContorller {
     @GetMapping("list")
     public String returnList(SearchCondition sc, HttpServletRequest request, Model m){
         sc.setPageSize(5);
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
 
         Map<String,Object> map = new HashMap<>();
         map.put("sc", sc);

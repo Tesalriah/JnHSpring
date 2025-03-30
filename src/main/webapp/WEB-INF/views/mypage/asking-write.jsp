@@ -5,13 +5,12 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/asking-write.css"/>">
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/asking-write.css"/>">
-
     <main>
         <div class="container">
             <div class="title">

@@ -6,13 +6,14 @@
 <html lang="kr">
     <head>
         <%@ include file="../head.jsp" %>
+        <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
+        <link rel="stylesheet" href="<c:url value="/resources/css/order-list.css"/>">
+        <script type="text/javascript" src="<c:url value='/resources/js/order-list.js'/>" defer></script>
         <title>J&H</title>
     </head>
     <body>
     <%@ include file="../header.jsp" %>
-    <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/order-detail.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/order-list.css"/>">
     <main>
         <div class="container">
             <div class="title">
@@ -47,12 +48,13 @@
                                         <div><fmt:formatNumber type="number" maxFractionDigits="0" value="${order.product.total}"/>원 / ${order.quantity}개</div>
                                     </c:forEach>
                                 </div>
-                                <div class="order_button"> <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
+                                <div class="order_button">
+                                    <div><button type="submit" formaction="<c:url value="/repurchase"/>">재구매</button></div>
                                     <div>
                                         <c:choose>
-                                            <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" formaction="<c:url value="/mypage/return/cancel"/>?page=${ph.sc.page}">주문취소</button></c:when>
+                                            <c:when test="${orderList[0].status == '주문완료'}"><button type="submit" class="cancel_btn" formaction="<c:url value="/mypage/return/cancel"/>?page=${param.page}"><span>주문취소</span></button></c:when>
                                             <c:when test="${orderList[0].status == '취소완료'}"><button type="button" class="moveLink" data-link="<c:url value="/mypage/asking/write"/>">문의하기</button></c:when>
-                                            <c:otherwise><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${ph.sc.page}">교환, 반품신청</button></c:otherwise>
+                                            <c:otherwise><button type="submit" formaction="<c:url value="/mypage/return/step1"/>?page=${param.page}">교환, 반품신청</button></c:otherwise>
                                         </c:choose>
                                     </div>
                                     <c:if test="${orderList[0].status == '배송완료'}">
@@ -89,7 +91,12 @@
                         <div>
                             <div>
                                 <div>결제수단</div>
-                                <div>OO카드 / 일시불</div>
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${orderList[0].payment_method_type eq 'CARD'}">${orderList[0].issuer_corp}카드 / 일시불</c:when>
+                                        <c:otherwise>${orderList[0].issuer_corp}카카오페이 / 현금(페이머니)</c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
                             <div>
                                 <div><div>총 상품가격</div><div><fmt:formatNumber type="number" maxFractionDigits="0" value="${total}"/>원</div></div>

@@ -6,7 +6,6 @@ const report_btn = document.querySelector('#report_btn');
 const reason = document.querySelector('[name="reason"]');
 
 function report(){
-    console.log(report_rno.value + report_id.value + report_reason.value + report_contents.value);
     /* 입력된 데이터 Json 형식으로 변경 */
     var reqJson = new Object();
     reqJson.rno =  report_rno.value;

@@ -6,7 +6,7 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/change-pwd.css'/>">
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <title>J&H 비밀번호 변경</title>
     </head>
     <body>

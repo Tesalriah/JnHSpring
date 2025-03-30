@@ -6,7 +6,7 @@ import kr.co.jnh.domain.SearchCondition;
 import kr.co.jnh.domain.Wish;
 import kr.co.jnh.service.CartService;
 import kr.co.jnh.service.WishService;
-import kr.co.jnh.util.SessionIdUtil;
+import kr.co.jnh.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +29,7 @@ public class WishController {
     @GetMapping("list")
     public String list(SearchCondition sc, HttpServletRequest request, Model m){
         Map<String, Object> map = new HashMap<>();
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         map.put("id", id);
         map.put("sc", sc);
         sc.setPageSize(5);
@@ -51,7 +51,7 @@ public class WishController {
 
     @PostMapping("remove")
     public String remove( SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         String product_id = request.getParameter("product_id");
         Wish wish = new Wish(id, product_id);
 
@@ -71,7 +71,7 @@ public class WishController {
 
     @PostMapping("remove-all")
     public String removeAll(@RequestParam(required = false) String check_box,@RequestParam(required = false) String product_id, SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         String[] checkBox = check_box.split(",");
         String[] productId = product_id.split(",");
 
@@ -106,7 +106,7 @@ public class WishController {
     @ResponseBody
     public Map<String,Object> addWish(@RequestBody Map<String, Object> wishMap , HttpServletRequest request){
         Map<String, Object> map = new HashMap<>();
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         if(id == null || id.equals("")){ // 만약 로그인 정보가 명확하지 않을경우 알림
             map.put("msg", "로그인을 해주세요.");
             map.put("result", "fail");
@@ -134,7 +134,7 @@ public class WishController {
     @ResponseBody
     public Map<String,Object> delWish(@RequestBody Map<String, Object> wishMap , HttpServletRequest request){
         Map<String, Object> map = new HashMap<>();
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         if(id == null || id.equals("")){ // 만약 로그인 정보가 명확하지 않을경우 알림
             map.put("msg", "로그인을 확인해주세요.");
             map.put("result", "fail");
@@ -159,7 +159,7 @@ public class WishController {
 
     @PostMapping("add-cart")
     public String addCart(SearchCondition sc, HttpServletRequest request, Model m){
-        String id = SessionIdUtil.getSessionId(request);
+        String id = SessionUtils.getSessionId(request);
         String product_id = request.getParameter("product_id");
         String size = request.getParameter(product_id + "_size");
         System.out.println("product_id = " + product_id);
