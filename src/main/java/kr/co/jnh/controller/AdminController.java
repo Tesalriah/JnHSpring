@@ -214,6 +214,9 @@ public class AdminController {
     // 주문 리스트
     @GetMapping("order-mng")
     public String orderMng(SearchCondition sc, Model m){
+        if(sc.getOption().equals("")){
+            sc.setOption("order_no");
+        }
         if(sc.getCategory().equals("")){
             sc.setCategory(category[0]);
         }

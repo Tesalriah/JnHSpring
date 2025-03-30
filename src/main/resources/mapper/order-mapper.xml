@@ -47,9 +47,11 @@
     <update id="update" parameterType="Map">
         UPDATE orders
         <set>
-            <if test="is_deleted != null">,delete = #{is_deleted},</if>
+            <if test="is_deleted != null">is_delete = #{is_deleted},</if>
             <if test="status != null">status = #{status},</if>
-            <if test="tid != null">tid = #{tid}</if>
+            <if test="tid != null">tid = #{tid},</if>
+            <if test="payment_method_type != null">payment_method_type = #{payment_method_type},</if>
+            <if test="issuer_corp != null">issuer_corp = #{issuer_corp}</if>
         </set>
         WHERE order_no = #{order_no} AND user_id = #{id}
     </update>

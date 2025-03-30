@@ -92,9 +92,9 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.put("quantity", list.size() + "");                                        // 상품 수량
         parameters.put("total_amount", String.valueOf(totalPrice));             // 상품 총액
         parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-        parameters.put("approval_url", "http://localhost/jnh/mypage/order/pay/completed"); // 결제 성공 시 URL
-        parameters.put("cancel_url", "http://localhost/jnh/mypage/order/pay/cancel");      // 결제 취소 시 URL
-        parameters.put("fail_url", "http://localhost/jnh/mypage/order/pay/fail");          // 결제 실패 시 URL
+        parameters.put("approval_url", "http://www.jnh.kro.kr/jnh/mypage/order/pay/completed"); // 결제 성공 시 URL
+        parameters.put("cancel_url", "http://www.jnh.kro.kr/jnh/mypage/order/pay/cancel");      // 결제 취소 시 URL
+        parameters.put("fail_url", "http://www.jnh.kro.kr/jnh/mypage/order/pay/fail");          // 결제 실패 시 URL
 
         // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -116,15 +116,6 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     // 최종적으로 결제 완료 처리를 하는 단계
     @Override
     public ApproveResponse payApprove(String tid, String pgToken, Order order) throws Exception{
-        Map<String,Object> map = new HashMap<>();
-        map.put("order_no",order.getOrder_no());
-        map.put("id", order.getUser_id());
-        map.put("status","주문완료");
-        map.put("tid", tid);
-        if(orderDao.updete(map) == 0){
-            throw new Exception("ORDER_STATUS_UPDATE_FAIL");
-        }
-
         Map<String, String> parameters = new HashMap<>();
         parameters.put("cid", "TC0ONETIME");              // 가맹점 코드(테스트용)
         parameters.put("tid", tid);                       // 결제 고유번호
@@ -139,13 +130,29 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         ApproveResponse approveResponse = template.postForObject(url, requestEntity, ApproveResponse.class);
         log.info("결제승인 응답객체: " + approveResponse);
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("order_no",order.getOrder_no());
+        map.put("id", order.getUser_id());
+        map.put("status","주문완료");
+        map.put("tid", tid);
+        map.put("payment_method_type", approveResponse.getPayment_method_type());
+        if(!approveResponse.getPayment_method_type().equals("MONEY")){
+            map.put("issuer_corp", approveResponse.getCard_info().getKakaopay_issuer_corp());
+        }
+        if(orderDao.updete(map) == 0){
+            throw new Exception("ORDER_STATUS_UPDATE_FAIL");
+        }
+
         return approveResponse;
     }
 
     // 카카오페이 결제 취소
     @Override
-    public CancelResponse payCancel(List<Order> list) throws Exception{
+    public CancelResponse payCancel(List<Order> list, String type) throws Exception{
         int totalPrice = 0;
+        if(type.equals("cancel")){
+            totalPrice += 3000;
+        }
         for (Order order : list) {
             Product product = productDao.select(order.getProduct_id());
             product.setQuantity(order.getQuantity());
@@ -153,11 +160,11 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         }
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("cid", "TC0ONETIME");              // 가맹점 코드(테스트용)
-        parameters.put("tid", list.get(0).getTid());                       // 결제 고유번호
+        parameters.put("cid", "TC0ONETIME");                            // 가맹점 코드(테스트용)
+        parameters.put("tid", list.get(0).getTid());                    // 결제 고유번호
         parameters.put("cancel_amount", totalPrice+"");
         parameters.put("cancel_tax_free_amount", "0");
-        parameters.put("partner_order_id", list.get(0).getOrder_no()); // 주문번호
+        parameters.put("partner_order_id", list.get(0).getOrder_no());  // 주문번호
         parameters.put("partner_user_id", list.get(0).getUser_id());    // 회원 아이디
 
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());

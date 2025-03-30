@@ -73,7 +73,8 @@ public class ReturnsController {
             if(returnsService.returns(returnsList) != 1){
                 throw new Exception("cancel_FAIL");
             }
-            CancelResponse cancelResponse = kakaoPayService.payCancel(orderList);
+            String type = "cancel";
+            CancelResponse cancelResponse = kakaoPayService.payCancel(orderList, type);
 
             m.addAttribute("msg", "주문이 취소되었습니다.");
             m.addAttribute("url", "list");

@@ -20,7 +20,7 @@ public interface KakaoPayService {
     ApproveResponse payApprove(String tid, String pgToken, Order order) throws Exception;
 
     // 카카오페이 결제 취소
-    CancelResponse payCancel(List<Order> list) throws Exception;
+    CancelResponse payCancel(List<Order> list, String type) throws Exception;
 
     // 카카오페이 측에 요청 시 헤더부에 필요한 값
     default HttpHeaders getHeaders() {

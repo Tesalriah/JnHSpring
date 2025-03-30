@@ -19,6 +19,8 @@ public class Order {
     private String status;
     private Date order_date;
     private String tid;
+    private String payment_method_type;
+    private String issuer_corp;
 
     public Order(){}
 
@@ -158,5 +160,21 @@ public class Order {
 
     public void setTid(String tid) {
         this.tid = tid;
+    }
+
+    public String getPayment_method_type() {
+        return payment_method_type;
+    }
+
+    public void setPayment_method_type(String payment_method_type) {
+        this.payment_method_type = payment_method_type;
+    }
+
+    public String getIssuer_corp() {
+        return issuer_corp;
+    }
+
+    public void setIssuer_corp(String issuer_corp) {
+        this.issuer_corp = issuer_corp;
     }
 }

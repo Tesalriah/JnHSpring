@@ -83,11 +83,6 @@ public class OrderController {
             int total = 0; // 총 상품가격
             List<Order> orderList = orderService.readOne(map); // 한 주문번호의 주문 상품들을 가져오기
             for(Order order : orderList){
-                if(order.getStatus().equals("삭제처리")){
-                    m.addAttribute("msg", "삭제된 주문입니다.");
-                    m.addAttribute("url", "list?page=" + page);
-                    return "alert";
-                }
                 total += order.getProduct().getTotal();
             }
             if(orderList.isEmpty()){

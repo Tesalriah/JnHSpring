@@ -91,7 +91,12 @@
                         <div>
                             <div>
                                 <div>결제수단</div>
-                                <div>카카오페이 / 일시불</div>
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${orderList[0].payment_method_type eq 'CARD'}">${orderList[0].issuer_corp}카드 / 일시불</c:when>
+                                        <c:otherwise>${orderList[0].issuer_corp}카카오페이 / 현금(페이머니)</c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
                             <div>
                                 <div><div>총 상품가격</div><div><fmt:formatNumber type="number" maxFractionDigits="0" value="${total}"/>원</div></div>
