@@ -8,7 +8,7 @@ import java.util.Map;
 public interface QuestionDao {
     int count(Map map) throws Exception;
 
-    int lastqno() throws Exception;
+    int lastQno() throws Exception;
 
     int insert(Question question) throws Exception;
 

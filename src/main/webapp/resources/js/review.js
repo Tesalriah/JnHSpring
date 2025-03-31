@@ -20,7 +20,7 @@ function reviewList(page){
                 var ph = result.ph
 
                 if(ph.totalCnt <= 0) {
-                    r_contents.innerHTML += '<div class="empty_list">작성된 리뷰가 없습니다.</div>';
+                    r_contents.innerHTML = '<div class="empty_list">작성된 리뷰가 없습니다.</div>';
                 }else{
                     let html = '';
                     for (let i = 0; i < list.length; i++) {

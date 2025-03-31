@@ -61,7 +61,7 @@ public class QuestionController {
             if (user_id==null){
                 throw new Exception("NEED_LOGIN");
             }
-            int qno = questionService.getLastqno()+1;
+            int qno = questionService.getLastQno()+1;
             question.setQno(qno);
 
             if (questionService.write(question)!=1) {
@@ -80,39 +80,4 @@ public class QuestionController {
         }
         return map;
     }
-
-
-    @PostMapping("write1")
-    @ResponseBody
-    public Map<String, Object> w (@RequestBody Map<String, Object> map, HttpServletRequest re){
-        String user_id = SessionUtils.getSessionId(re);
-        String pid1 =(String) map.get("pid1"); // productID
-        String cnt1 =(String) map.get("cnot1"); // contents
-
-        Question q = new Question();
-        q.setProduct_id(pid1);
-        q.setContents(cnt1);
-        q.setUser_id(user_id);
-
-            try {
-                if (user_id==null) {
-                    throw new Exception("NEED LOGIN");
-                }
-
-                int qno1 = questionService.getLastqno()+1;
-                q.setQno(qno1);
-
-
-                if (questionService.write(q)!=1){
-                    throw new Exception();
-                }
-                map.put("suc","작성 완");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        return map;
-    }
-
-
-
 }

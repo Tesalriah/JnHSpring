@@ -20,7 +20,7 @@ document.querySelector(".reviews_contents").addEventListener("click", function(e
         reportId.value =  event.target.dataset.id;
         reportRno.value = event.target.dataset.rno;
         document.querySelector('[name="report_contents"]').value = '';
-        document.querySelector("select[name=reason] option:c")
+        // document.querySelector("select[name=reason] option:c")
     }
 });
 
@@ -67,6 +67,10 @@ document.querySelector(".reviews_contents").addEventListener("click", function(e
         enlargeImg.src = event.target.src;
     }
 });
+document.querySelector('.product_img').addEventListener('click', function (event){
+    openImg();
+    enlargeImg.src = document.querySelector('.product_img_src').src;
+})
 reviewImgX.addEventListener('click',function(){
     closeImg();
 })

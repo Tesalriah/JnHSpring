@@ -25,8 +25,8 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     @Override
-    public int lastqno() throws Exception{
-        return session.selectOne(namespace+"lastqno");
+    public int lastQno() throws Exception{
+        return session.selectOne(namespace+"lastQno");
     }
 
     @Override

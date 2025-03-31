@@ -10,7 +10,7 @@ public interface QuestionService {
     int getCount(Map map) throws Exception;
 
     /*마지막 번호보여주기*/
-    int getLastqno() throws Exception;
+    int getLastQno() throws Exception;
 
     /*상품문의하기*/
     int write(Question question) throws Exception;
