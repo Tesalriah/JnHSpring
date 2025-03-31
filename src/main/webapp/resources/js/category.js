@@ -55,11 +55,11 @@ const arrow = document.querySelector('#arrow');
 
 function genderSet(val){
     genderSpan.innerHTML = val;
-    productGender[0].value = val;
+    productGender[1].value = val;
 }
 function categorySet(val){
     categorySpan.innerHTML = val;
-    productCategory[0].value = val;
+    productCategory[1].value = val;
     arrow.style.display = 'inline';
 }
 function unfold(){

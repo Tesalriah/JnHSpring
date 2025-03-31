@@ -32,15 +32,20 @@
             <div class="move">
                 <div>
                     <a href="<c:url value="/"/>">HOME</a>
-                    <c:if test="${!ph.sc.gender.equals('')}">
-                         > <a href="<c:url value="/product-list?gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${!ph.sc.gender.equals('')}">
+                            > <a href="<c:url value="/product-list?gender=${ph.sc.gender}"/>">${ph.sc.gender}</a>
+                        </c:when>
+                        <c:otherwise>
+                            > ALL
+                        </c:otherwise>
+                    </c:choose>
                     <c:choose>
                         <c:when test="${!ph.sc.category.equals('')}">
                             > ${ph.sc.category}
                         </c:when>
                         <c:otherwise>
-                            > ALL
+                            ${ph.sc.gender eq '' ? "" : "> ALL"}
                         </c:otherwise>
                     </c:choose>
                 </div>

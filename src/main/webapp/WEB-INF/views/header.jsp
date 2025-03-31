@@ -7,7 +7,14 @@
             </div>
             <div class="menu_list">
                 <ul class="top_menu">
-                    <li><a href="<c:url value='/'/>">HOME</a></li>
+                    <li class="gender_on">
+                        <a href="<c:url value="/product-list"/>">ALL&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+                        <ul class="submenu_nav">
+                            <li><a href="<c:url value="/product-list"/>?category=TOPS">TOPS</a></li>
+                            <li><a href="<c:url value="/product-list"/>?category=BOTTOM">BOTTOM</a></li>
+                            <li><a href="<c:url value="/product-list"/>?category=OUTER">OUTER</a></li>
+                        </ul>
+                    </li>
                     <li class="gender_on">
                         <a href="<c:url value="/product-list"/>?gender=MEN">MEN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="submenu_nav">

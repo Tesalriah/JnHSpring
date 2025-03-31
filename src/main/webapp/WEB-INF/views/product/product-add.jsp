@@ -6,7 +6,7 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/side-menu.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/add-product.css'/>">
-        <script type="text/javascript" src="<c:url value='/resources/js/product-mng.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/product-add.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/category.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/stock.js'/>" defer></script>
         <title>J&H 상품 추가</title>
@@ -27,7 +27,7 @@
             </div>
             <div class="nav" style="display: block;">
                 <div class="content">
-                    <form action="<c:url value="/add-product"/>" method="post" enctype="multipart/form-data">
+                    <form action="<c:url value="/product-add"/>" method="post" enctype="multipart/form-data">
                         <div class="table_box">
                             <div class="add_table">
                                 <div class="product_name">
@@ -39,20 +39,19 @@
                                     <div>
                                         <div id="category_menu">
                                             <div>
-                                                <div id="set_men"><span>MEN</span><span><i class="fa-solid fa-angle-right"></i></span></div>
+                                                <div class="set_gender" id="set_men"><span>MEN</span><span><i class="fa-solid fa-angle-right"></i></span></div>
                                                 <div id="set_women"><span>WOMEN</span><span><i class="fa-solid fa-angle-right"></i></span></div>
                                             </div>
                                             <div class="emptied"></div>
                                             <div class="display_category" style="display: none;">
-                                                <div id="set_tops"><span>TOPS</span><span><i class="fa-solid fa-angle-right"></i></span></div>
-                                                <div id="set_bottom"><span>BOTTOM</span><span><i class="fa-solid fa-angle-right"></i></span></div>
-                                                <div id="set_outer"><span>OUTER</span><span><i class="fa-solid fa-angle-right"></i></span></div>
+                                                <div class="set_category" id="set_tops"><span>TOPS</span><span><i class="fa-solid fa-angle-right"></i></span></div>
+                                                <div class="set_category" id="set_bottom"><span>BOTTOM</span><span><i class="fa-solid fa-angle-right"></i></span></div>
+                                                <div class="set_category" id="set_outer"><span>OUTER</span><span><i class="fa-solid fa-angle-right"></i></span></div>
                                             </div>
                                         </div>
                                         <div class="selected_category">
                                             선택한 카테고리 : <span id="gender_span"></span><span id="arrow" style="display: none;">&nbsp;<i class="fa-solid fa-angle-right"></i>&nbsp;</span><span id="category_span"></span>
-                                            <input type="hidden" name="gender" value="">
-                                            <input type="hidden" name="category" value="">
+                                            <input type="hidden" name="gender" value=""><input type="hidden" name="category" value="">
                                         </div>
                                     </div>
                                 </div>
