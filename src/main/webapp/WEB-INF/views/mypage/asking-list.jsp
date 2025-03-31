@@ -32,21 +32,23 @@
                         <div style="text-align: center; padding:100px 20px; font-size: 24px;">문의내역이 존재하지 않습니다.</div>
                     </c:if>
 
-                    <div class="asking_list">
-                        <div>
-                            <div>제목</div>
-                            <div>상태</div>
-                            <div>작성일</div>
-                        </div>
-                        <c:forEach var="askingDto" items="${askingDtoList}">
+                    <c:if test="${not empty askingDtoList}">
+                        <div class="asking_list">
                             <div>
-                                <div><a href="<c:url value="/mypage/asking/read"/>?no=${askingDto.no}&page=${ph.sc.page}">${askingDto.title}</a></div>
-                                <div>${askingDto.state == 1 ? "답변완료" : "대기중"}</div>
-                                <div><fmt:formatDate value="${askingDto.reg_date}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                <div>제목</div>
+                                <div>상태</div>
+                                <div>작성일</div>
                             </div>
-                        </c:forEach>
-                    </div>
 
+                            <c:forEach var="askingDto" items="${askingDtoList}">
+                                <div>
+                                    <div><a href="<c:url value="/mypage/asking/read"/>?no=${askingDto.no}&page=${ph.sc.page}">${askingDto.title}</a></div>
+                                    <div>${askingDto.state == 1 ? "답변완료" : "대기중"}</div>
+                                    <div><fmt:formatDate value="${askingDto.reg_date}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:if>
 
                     <div class="paging">
                         <c:if test="${ph.showPrev}">

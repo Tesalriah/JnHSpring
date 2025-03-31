@@ -392,7 +392,6 @@ public class AdminController {
     public String ask(Model m, SearchCondition sc){
         sc.setPageSize(15);
 
-
         try {
             // 전체게시글 갯수
             int total = askingService.getCount();
@@ -430,7 +429,7 @@ public class AdminController {
     }
 
     @PostMapping("/ask-remove")
-    public String remove(Model m, @RequestParam("no") Integer no, @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
+    public String askRemove(Model m, @RequestParam("no") Integer no, @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
         try {
             // no 값이 없으면 오류 처리
             if (no == null) {
@@ -444,7 +443,7 @@ public class AdminController {
             map.put("cno", cno);
 
             // 삭제 실행
-            int result = askingService.remove(map);
+            int result = askingService.adminRemove(map);
 
             // 삭제 성공의 경우
             if (result <= 0) {

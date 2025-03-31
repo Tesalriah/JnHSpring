@@ -72,10 +72,15 @@ public class AskingServiceImpl implements AskingService {
         return askingDao.updateState(askingDto);
     }
 
+    @Override
+    public int remove(Map<String,Object> map) throws Exception {
+        return askingDao.delete(map);
+    }
+
     // 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int remove(Map<String,Object> map) throws Exception {
+    public int adminRemove(Map<String,Object> map) throws Exception {
         int result = askingDao.delete(map);
         if(result != 1){
             throw new Exception("ASKING_DELETE_FAIL");

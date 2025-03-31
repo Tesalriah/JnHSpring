@@ -14,7 +14,8 @@
     </select>
 
     <select id="lastBno" resultType="int">
-        select no from asking order by no desc LIMIT 1;
+        /*select no from asking order by no desc LIMIT 1;*/
+        SELECT COALESCE(MAX(no), 0) FROM asking order by no desc LIMIT 1;
     </select>
 
     <insert id="insert" parameterType="AskingDto">

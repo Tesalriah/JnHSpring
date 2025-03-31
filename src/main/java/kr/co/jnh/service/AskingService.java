@@ -38,6 +38,8 @@ public interface AskingService {
     // 삭제
     int remove(Map<String, Object> map) throws Exception;
 
+    int adminRemove(Map<String, Object> map) throws Exception;
+
     // 답변작성 후 상태변경
     int adminWrite(AskingDto askingDto) throws Exception;
 
