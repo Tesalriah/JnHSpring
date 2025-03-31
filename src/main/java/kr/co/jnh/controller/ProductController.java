@@ -138,10 +138,11 @@ public class ProductController {
     }
 
     // 상품 추가
-    @PostMapping("/add-product")
+    @PostMapping("/product-add")
     public String addProduct(Product product, HttpServletRequest request, @RequestParam("uploadFile")MultipartFile file, Model m){
         // 메서드를 이용하여 검증
         String msg = productValidation(product, file);
+        System.out.println("product = " + product);
         if(!msg.isBlank()){
             m.addAttribute("msg", msg);
             m.addAttribute("product_name", product.getProduct_name());

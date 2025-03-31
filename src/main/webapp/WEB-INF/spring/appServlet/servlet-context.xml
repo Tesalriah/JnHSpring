@@ -40,7 +40,7 @@
 			<mapping path="/notice/remove"/>
 			<mapping path="/notice/write"/>
 			<mapping path="/notice/modify"/>
-			<mapping path="/add-product"/>
+			<mapping path="/product-add"/>
 			<mapping path="/faq/write"/>
 			<mapping path="/faq/remove"/>
 			<mapping path="/faq/modify"/>
