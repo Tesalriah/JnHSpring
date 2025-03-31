@@ -28,8 +28,8 @@ public class QuestionServiceImlp implements QuestionService {
 
     /*마지막 번호보여주기*/
     @Override
-    public int getLastqno() throws Exception{
-        return questionDao.lastqno();
+    public int getLastQno() throws Exception{
+        return questionDao.lastQno();
     }
 
     /*상품문의하기*/

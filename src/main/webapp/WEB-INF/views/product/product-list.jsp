@@ -69,7 +69,7 @@
                         해당하는 상품이 없습니다.
                     </div>
                 </c:if>
-                <div class="product_line">
+                <div class="product_line" style="${list.size() <= 3 ? "grid-template-rows: repeat(1, 1fr);" : ""}">
                 <c:forEach var="product" items="${list}" varStatus="status">
                         <div class="product">
                             <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
@@ -82,7 +82,7 @@
                                             <del><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price}"/>₩</del>
                                         </c:if>
                                         <c:if test="${product.discount == 0}">
-                                            {product.price}
+                                            <fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price}"/>₩
                                         </c:if>
                                     </div>
                                     <div><span class="heart"><i class="fa-solid fa-heart"></i>&nbsp;<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.wish_cnt}"/></span>&nbsp;<span class="star"><i class="fa-solid fa-star"></i>&nbsp;${product.rating}(${product.review_cnt})</span></div>

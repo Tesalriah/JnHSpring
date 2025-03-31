@@ -15,7 +15,7 @@ public class Product {
     private String size;
     private String stock;
     private Integer price;
-    private Integer discount;
+    private Integer discount = 0;
     private String image;
     private Date reg_date;
     private Date up_date;

@@ -40,7 +40,7 @@
             <!-- 상품정보 -->
             <div class="product_info">
                 <div class="product_img">
-                    <img src="<c:url value="/resources/img/upload/product-img/${product.product_id}/${product.image}"/>">
+                    <img class="product_img_src" src="<c:url value="/resources/img/upload/product-img/${product.product_id}/${product.image}"/>">
                 </div>
                 <div class="info" style="width:45%;">
                     <form action="" method="post">
@@ -53,7 +53,7 @@
                                 <del><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price}"/>₩</del>
                             </c:if>
                             <c:if test="${product.discount == 0}">
-                                {product.price}
+                                <fmt:formatNumber type="number" maxFractionDigits="0" value="${product.price}"/>₩
                             </c:if>
                         </div>
                         <div class="delivery_fee"><div>Delivery Fee</div><div>3,000₩</div></div>

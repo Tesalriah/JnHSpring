@@ -120,9 +120,13 @@ public class ProductController {
             m.addAttribute("totalCnt", totalCnt);
             // SearchCondition과 총 상품갯수를 PageHandler에 할당하여 페이징처리 계산
             PageHandler ph = new PageHandler(totalCnt, sc);
+            ph.setNaviSize(5);
+            ph.doPaging(totalCnt, sc);
 
             // SearchCondition 정보에 따른 상품가져오기 (6개씩)
             List<Product> list = productService.getSearchSelectPage(sc);
+            System.out.println("list = " + list);
+            System.out.println("totalCnt = " + totalCnt);
             m.addAttribute("list", list);
             m.addAttribute("ph", ph);
         } catch (Exception e) {
@@ -142,7 +146,6 @@ public class ProductController {
     public String addProduct(Product product, HttpServletRequest request, @RequestParam("uploadFile")MultipartFile file, Model m){
         // 메서드를 이용하여 검증
         String msg = productValidation(product, file);
-        System.out.println("product = " + product);
         if(!msg.isBlank()){
             m.addAttribute("msg", msg);
             m.addAttribute("product_name", product.getProduct_name());
@@ -319,6 +322,9 @@ public class ProductController {
         }
         if(product.getPrice() > 1000000000){
             return "가격은 1,000,000,000을 초과 할 수 없습니다.";
+        }
+        if(product.getDiscount() == null){
+            product.setDiscount(0);
         }
         if((product.getDiscount() < 0 || product.getDiscount() > 90) && product.getDiscount() != null){
             return "할인율은 90까지 입력가능합니다.";
