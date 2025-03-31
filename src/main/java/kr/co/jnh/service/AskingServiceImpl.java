@@ -72,24 +72,44 @@ public class AskingServiceImpl implements AskingService {
         return askingDao.updateState(askingDto);
     }
 
+    @Override
+    public int remove(Map<String,Object> map) throws Exception {
+        return askingDao.delete(map);
+    }
+
     // 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int remove(Map<String,Object> map) throws Exception {
+    public int adminRemove(Map<String,Object> map) throws Exception {
         int result = askingDao.delete(map);
         if(result != 1){
             throw new Exception("ASKING_DELETE_FAIL");
         }
-        if(map.get("cno") != null){
-            AskingDto askingDto = new AskingDto();
-            askingDto.setNo((Integer) map.get("no"));
-            askingDto.setState(0);
-            if(askingDao.updateState(askingDto) != 1){
-                throw new Exception("ASKING_STATE_UPDATE_FAIL");
-            }
+        AskingDto askingDto = new AskingDto();
+        askingDto.setNo((Integer) map.get("no"));
+        askingDto.setState(0);
+        if(askingDao.updateState(askingDto) != 1){
+            throw new Exception("ASKING_STATE_UPDATE_FAIL");
         }
         return result;
     }
+
+    // 답변작성 후 상태변경
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int adminWrite(AskingDto askingDto) throws Exception{
+        int result = askingDao.insert(askingDto);
+        if (result != 1) {
+            throw new Exception("WRT_FAIL");
+        }
+        askingDto.setState(1);
+
+        if (askingDao.updateState(askingDto) != 2) {
+            throw new Exception("STATE_UPDATE_FAIL");
+        }
+        return result;
+    }
+
 
     @Override
     public AskingDto getAnswer(int no) throws Exception{

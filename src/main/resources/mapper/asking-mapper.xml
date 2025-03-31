@@ -14,7 +14,8 @@
     </select>
 
     <select id="lastBno" resultType="int">
-        select no from asking order by no desc LIMIT 1;
+        /*select no from asking order by no desc LIMIT 1;*/
+        SELECT COALESCE(MAX(no), 0) FROM asking order by no desc LIMIT 1;
     </select>
 
     <insert id="insert" parameterType="AskingDto">
@@ -63,7 +64,7 @@
         where no = #{no}
     </update>
 
-    <delete id="delete" parameterType="map"> // 실패 or 아무일도 안함 = 0 , 무슨일을 했을때는 실행한 행 갯수 반환 result >= 1
+    <delete id="delete" parameterType="map"> /* 실패 or 아무일도 안함 = 0 , 무슨일을 했을때는 실행한 행 갯수 반환 result >= 1*/
         DELETE FROM asking
         <where>
             <if test="no != null"> AND no = #{no}</if>

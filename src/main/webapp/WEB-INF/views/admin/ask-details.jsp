@@ -64,7 +64,7 @@
                                 <div class="ask_contents">${askingDto[1].contents}</div>
                             </div>
 
-                            <form method="post" action="<c:url value="/admin/remove"/>">
+                            <form method="post" action="<c:url value="/admin/ask-remove"/>">
                                 <div class="post_button">
                                     <input type="hidden" name="no" value="${askingDto[1].no}">
                                     <input type="hidden" name="cno" value="2">
@@ -74,44 +74,24 @@
                         </c:if>
 
                         <c:if test="${empty askingDto[1]}">
-                            <div class="answer_write">
-                                <h2>답변작성</h2>
-                                <div class="write_flex">
-                                    <textarea name="report_answer" rows="5" placeholder="답변작성"></textarea><button type="button">등록</button>
+
+                            <form action="<c:url value="/admin/ask-write"/>" method="post">
+                                <div class="answer_write">
+                                    <h2>답변작성</h2>
+                                    <div class="write_flex">
+                                        <input type="hidden" name="no" value="${askingDto[0].no}">
+                                        <textarea name="contents" rows="5" placeholder="답변작성"></textarea>
+                                        <button type="submit" onclick="return confirm('작성하시겠습니까?')">등록</button>
+                                    </div>
                                 </div>
-                            </div>
+
+                            </form>
+
+
                         </c:if>
                     </div>
 
 
-
-
-
-                    <div class="list_box">
-                        <h2>전체글</h2>
-                        <div class="post_list">
-                            <div class="post_each">
-                                <div><a href="">문의합니다.</a></div>
-                                <div class="id_date"><div>red121</div><div>2024-01-01 00:00</div></div>
-                            </div>
-                            <div class="post_each">
-                                <div><a href="">문의합니다.</a></div>
-                                <div class="id_date"><div>asd123</div><div>2024-01-01 00:00</div></div>
-                            </div>
-                            <div class="post_each" style="background-color: #f5f5f5;">
-                                <div><a href="">문의합니다.</a></div>
-                                <div class="id_date"><div>asd123</div><div>2024-01-01 00:00</div></div>
-                            </div>
-                            <div class="post_each">
-                                <div><a href="">문의합니다.</a></div>
-                                <div class="id_date"><div>zxc123</div><div>2024-01-01 00:00</div></div>
-                            </div>
-                            <div class="post_each">
-                                <div><a href="">문의합니다.</a></div>
-                                <div class="id_date"><div>abc123</div><div>2024-01-01 00:00</div></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="post_button">
                         <button type="button" onclick="location.href='<c:url value="/admin/ask-mng"/>'" >목록</button>
                     </div>

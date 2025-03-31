@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -22,7 +21,7 @@
                 <div style="font-family: 'Raleway', sans-serif;">Mypage</div>
             </div>
             <div class="nav">
-                <%@ include file="left-menu.jsp" %>
+                <%@ include file="../admin/left-menu.jsp" %>
                 <div class="contents">
                     <h2>문의</h2>
                     <div class="top_nav">

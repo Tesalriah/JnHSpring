@@ -38,9 +38,16 @@ public interface AskingService {
     // 삭제
     int remove(Map<String, Object> map) throws Exception;
 
+    int adminRemove(Map<String, Object> map) throws Exception;
+
+    // 답변작성 후 상태변경
+    int adminWrite(AskingDto askingDto) throws Exception;
+
     AskingDto getAnswer(int no) throws Exception;
 
     // 현재 no 를 기준으로 앞뒤 2개의 게시물의 no 확인
     Map getPrevNext(Map map) throws Exception;
+
+
 
 }

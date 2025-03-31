@@ -196,6 +196,7 @@ public class AskingController {
         String id = SessionUtils.getSessionId(request);
 
         try {
+
             // 필수값을 다 넣어주기 위해 작성
             int no = askingService.readNo();
             askingDto.setNo(no+1);  //마지막 숫자+1 해서 no지정

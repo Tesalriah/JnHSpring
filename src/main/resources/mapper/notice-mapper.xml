@@ -56,7 +56,8 @@
         UPDATE notice
         SET   title = #{title}
           , contents = #{contents}
-          , up_date = now()
+          , up_date = now(),
+            must_read = #{must_read}
         , must_read = #{must_read}
           , category = #{category}
         WHERE bno = #{bno}

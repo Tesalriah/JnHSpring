@@ -385,11 +385,12 @@ public class AdminController {
         return "redirect:/admin/return-mng";
     }
 
-    /* 문의목록 가져오기 */
+
+    /* admin 문의관리*/
+    // 문의목록 가져오기
     @GetMapping("/ask-mng")
     public String ask(Model m, SearchCondition sc){
         sc.setPageSize(15);
-
 
         try {
             // 전체게시글 갯수
@@ -410,7 +411,7 @@ public class AdminController {
         return "/admin/ask-mng";
     }
 
-    /* 하나의 게시물 읽기 */
+    // 하나의 게시물 읽기
     @GetMapping("/ask-details")
     public String askDetail(Model m, SearchCondition sc, @RequestParam int no){
         try {
@@ -427,8 +428,8 @@ public class AdminController {
         return "/admin/ask-details";
     }
 
-    @PostMapping("/remove")
-    public String remove(Model m, @RequestParam("no") Integer no, @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
+    @PostMapping("/ask-remove")
+    public String askRemove(Model m, @RequestParam("no") Integer no, @RequestParam(value = "cno", required = false, defaultValue = "2") Integer cno){
         try {
             // no 값이 없으면 오류 처리
             if (no == null) {
@@ -442,22 +443,60 @@ public class AdminController {
             map.put("cno", cno);
 
             // 삭제 실행
-            int result = askingService.remove(map);
+            int result = askingService.adminRemove(map);
 
             // 삭제 성공의 경우
             if (result <= 0) {
                 throw new Exception("ASKING-MNG_REMOVE_FAIL");
             }
             m.addAttribute("msg", "삭제되었습니다.");
-            m.addAttribute("url", "/jnh/admin/ask-mng");
+            m.addAttribute("url", "/jnh/admin/ask-details?no=" + no);
 
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "삭제에 실패했습니다.");
-            m.addAttribute("url", "/jnh/admin/ask-mng");
+            m.addAttribute("url", "/jnh/admin/ask-details?no=" + no);
+
         }
         return "alert";
 
+    }
+    //    @GetMapping("/write")
+//    public String getWrite(){
+//        return "admin/ask-details";
+//    }
+    @PostMapping("/ask-write")
+    public String askWrite(AskingDto askingDto, Model m){
+        try {
+            askingDto.setCno(2);
+            askingDto.setUser_id("관리자");
+            askingDto.setTitle("관리자 답변");
+            askingDto.setState(0);
+
+            if (askingRequired(askingDto)) {
+                throw new Exception("NOT_BLANK");
+            }
+
+            if (askingService.adminWrite(askingDto)!=1) {
+                throw new Exception("WRT_FAIL");
+            } else {
+                m.addAttribute("msg","작성되었습니다.");
+                m.addAttribute("url", "/jnh/admin/ask-details?no=" + askingDto.getNo());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getMessage().equals("NOT_BLANK")){
+                m.addAttribute("msg", "필수값을 입력해주세요");
+            } else {
+                m.addAttribute("msg", "다시 입력해주세요");
+            }
+            m.addAttribute("url","/jnh/admin/ask-details?no=" + askingDto.getNo());
+        }
+        return "alert";
+    }
+
+    private boolean askingRequired(AskingDto askingDto) {
+        return askingDto.getContents() == null || askingDto.getContents().isBlank();
     }
 
 }
