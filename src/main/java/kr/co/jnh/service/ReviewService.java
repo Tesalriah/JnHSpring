@@ -17,7 +17,7 @@ public interface ReviewService {
 
     List<Review> selectPage(Map map) throws Exception;
 
-    int readPageByReportCnt(SearchCondition sc) throws Exception;
+    int readPageByReviewCnt(SearchCondition sc) throws Exception;
 
-    List<Review> readPageByReport(SearchCondition sc) throws Exception;
+    List<Review> readPageByReview(SearchCondition sc) throws Exception;
 }

@@ -144,6 +144,7 @@ public class ReviewController {
         map.put("id", id);
         // whether가 1일때 이미 작성된 리뷰
         map.put("whether", 1);
+        sc.setOption("reg_date");
         map.put("sc", sc);
 
         try{
@@ -214,8 +215,12 @@ public class ReviewController {
             if(reviewValidator(review, id)){
                 throw new Exception("WRONG_APPROACH");
             }
-            // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 수정
-            review.setWhether(2);
+            // 실제로 삭제하지않고 삭제처리 상태를 2(삭제처리)로 수정, 작성하지 않은 리뷰삭제는 3으로 처리
+            if(url.equals("able")){
+                review.setWhether(3);
+            }else{
+                review.setWhether(2);
+            }
             reviewService.modify(review);
             m.addAttribute("msg", "삭제되었습니다.");
             m.addAttribute("url", url);

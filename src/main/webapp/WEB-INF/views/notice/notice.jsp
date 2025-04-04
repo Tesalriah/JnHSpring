@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <div class="notice_contents">
-                                <c:out value="${noticeDto.contents}"/>
+                                <pre><c:out value="${noticeDto.contents}"/></pre>
                             </div>
                         </div>
                     </div>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -110,6 +111,11 @@ public class ReturnsController {
 
     @PostMapping("step2")
     public String returnStep2(@RequestParam(required = false) String order_no, @RequestParam(required = false) String check_box, HttpServletRequest request, Model m) {
+        HttpSession session = request.getSession();
+        if(check_box == null || check_box.equals("")){
+            session.setAttribute("msg", "상품을 선택해주세요.");
+            return "redirect:/mypage/order/list";
+        }
         String id = SessionUtils.getSessionId(request);
         String[] sizeFrame = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"}; // 사이즈 순으로 정렬하기 위해 선언
         Map<String,Object> map = new HashMap<>();

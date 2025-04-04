@@ -7,15 +7,10 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
     <script type="text/javascript" src="<c:url value='/resources/js/main-menu.js'/>" defer></script>
     <script type="text/javascript" src="<c:url value='/resources/js/banner-slide.js'/>" defer></script>
-    <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
     <title>J&H</title>
 </head>
 <body>
     <%@ include file="header.jsp" %>
-    <c:if test="${not empty sessionScope.msg}">
-        <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
-        <c:remove var="msg" scope="session"/>
-    </c:if>
     <main>
         <div class="container">
             <div class="move_img">

@@ -14,7 +14,9 @@ public interface QuestionDao {
 
     List<Question> selectAll() throws Exception;
 
-    List<Question> selectId(Map map) throws Exception;
+    List<Question> selectMng(Map map) throws Exception;
+
+    int selectMngCnt() throws Exception;
 
     List<Question> selectInfo(Map map) throws Exception;
 

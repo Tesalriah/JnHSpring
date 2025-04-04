@@ -6,15 +6,10 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/find-pwd.css'/>">
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <title>J&H 비밀번호 찾기</title>
     </head>
     <body>
         <%@ include file="../header.jsp" %>
-        <c:if test="${not empty sessionScope.msg}">
-            <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
-            <c:remove var="msg" scope="session"/>
-        </c:if>
         <main>
             <div class="container">
                 <div class="title">계정정보 찾기</div>

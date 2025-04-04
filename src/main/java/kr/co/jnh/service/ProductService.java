@@ -9,6 +9,8 @@ import java.util.Map;
 public interface ProductService {
     Product getProduct(String product_id) throws Exception;
 
+    List<Product> readOne(String product_id) throws Exception;
+
     int addProduct(Product product) throws Exception;
 
     boolean productIdCheck(String date) throws Exception;
@@ -28,4 +30,8 @@ public interface ProductService {
     int getProductAdminCnt(SearchCondition sc) throws Exception;
 
     int updateProduct(Map map) throws Exception;
+
+    int modifyInfo(Product product) throws Exception;
+
+    int remove(String product_id) throws Exception;
 }

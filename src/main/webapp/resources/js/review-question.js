@@ -20,7 +20,7 @@ document.querySelector(".reviews_contents").addEventListener("click", function(e
         reportId.value =  event.target.dataset.id;
         reportRno.value = event.target.dataset.rno;
         document.querySelector('[name="report_contents"]').value = '';
-        // document.querySelector("select[name=reason] option:c")
+        document.querySelector('select[name="reason"]').value = '';
     }
 });
 
@@ -38,6 +38,7 @@ const questionX = document.querySelector('#question_x');
 
 openQuetions.addEventListener('click',function(){
     questionOpen();
+    document.querySelector('[name="question_contents"]').value = '';
 })
 questionX.addEventListener('click',function(){
     questionClose();

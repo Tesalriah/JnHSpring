@@ -23,6 +23,7 @@ public class ReportReviewController {
     @ResponseBody
     public Map<String, Object> report(@RequestBody Map<String,Object> map, HttpServletRequest request){
         String reporter = SessionUtils.getSessionId(request);
+        map.put("reporter", reporter);
         Integer rno = Integer.parseInt((String)map.get("rno"));
         String reason = (String)map.get("reason");
         String id = (String)map.get("id");

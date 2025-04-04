@@ -125,8 +125,6 @@ public class ProductController {
 
             // SearchCondition 정보에 따른 상품가져오기 (6개씩)
             List<Product> list = productService.getSearchSelectPage(sc);
-            System.out.println("list = " + list);
-            System.out.println("totalCnt = " + totalCnt);
             m.addAttribute("list", list);
             m.addAttribute("ph", ph);
         } catch (Exception e) {
@@ -135,77 +133,33 @@ public class ProductController {
         return "product/product-list";
     }
 
-    // 상품 추가 페이지 이동 (인터셉터로 관리자 확인)
-    @GetMapping("product-add")
-    public String getAddProduct(){
-        return "product/product-add";
-    }
-
-    // 상품 추가
-    @PostMapping("/product-add")
-    public String addProduct(Product product, HttpServletRequest request, @RequestParam("uploadFile")MultipartFile file, Model m){
-        // 메서드를 이용하여 검증
-        String msg = productValidation(product, file);
-        if(!msg.isBlank()){
-            m.addAttribute("msg", msg);
-            m.addAttribute("product_name", product.getProduct_name());
-            m.addAttribute("price", product.getPrice());
-            m.addAttribute("discount", product.getDiscount());
-            m.addAttribute("color", product.getColor());
-            return "product/product-add";
-        }
-        int result = -1;
-        // 사이즈, 갯수가 여러개일 경우 각각의 배열에 저장
-        String[] sizeArr = product.getSize().split(",");
-        String[] stockArr = product.getStock().split(",");
-        // 상품 id를 생성하기위해 현재 날짜 가져오기
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String today = format.format(date);
-        long product_id;
+    // 주문했던 상품 재구매
+    @PostMapping("/repurchase")
+    public String repurchase(String product_id, String size, String quantity, HttpServletRequest request) {
+        String id = SessionUtils.getSessionId(request);
+        // 받아온 상품id, 사이즈, 갯수가 여러개일 수 있으므로 배열에 각각 저장
+        String[] p_id = product_id.split(",");
+        String[] product_size = size.split(",");
+        String[] product_quantity = quantity.split(",");
+        int total = 0;
 
         try {
-            // 현재 날짜에 생성한 상품이 없으면 현재날짜001로 생성, 상품이 있으면 마지막 product_id에 +1한 product_id값 생성 일일 최대 999개 생성
-            if(productService.productIdCheck(today)){
-                String product_id_str = productService.returnId(today);
-                product_id = Long.parseLong(product_id_str);
-                product_id += 1;
-                if(product_id + "" == today + "999"){
-                    throw new Exception("PRODUCT_LIMITED");
-                }
-            }else{
-                product_id = Long.parseLong(today + "001");
+            List<Product> list = new ArrayList<>();
+            for (int i = 0; i < p_id.length; i++) { // 받아온 정보를 토대로 객체에 할당하여 각각 list에 추가
+                Product product = productService.getProduct(p_id[i]);
+                product.setSize(product_size[i]);
+                product.setQuantity(Integer.parseInt(product_quantity[i]));
+                total += product.getTotal();
+                list.add(product);
             }
-            product.setProduct_id(product_id + "");
-            product.setState("판매");
-
-            // 이미지를 경로에 저장하고 생성하여 저장된 파일이름을 반환하는 메서드
-            String fileName = FileMultiSaveUtil.uploadImg(file, request, "product-img", product_id + "");
-
-            // 바꾼 이미지이름+확장자를 product.image에 set
-            product.setImage(fileName);
-
-            // 사이즈가 하나가 아닐때 모든 정보 데이터베이스에 추가
-            if(sizeArr.length > 1 || stockArr.length > 1){
-                for(int i=0; i<sizeArr.length; i++){
-                    product.setSize(sizeArr[i]);
-                    product.setStock(stockArr[i]);
-                    result = productService.addProduct(product);
-                }
-            }else{ // 사이즈가 하나일때
-                result = productService.addProduct(product);
-            }
-            if(result != 1){
-                throw new Exception("ADD_FAIL");
-            }
-            m.addAttribute("msg", "상품을 등록하였습니다.");
-            m.addAttribute("url", "product-list");
-            return "alert";
+            User user = userService.getUser(id); // 배송지 정보를 할당하기위해 user정보 가져오기
+            request.setAttribute("list", list);
+            request.setAttribute("total", total);
+            request.setAttribute("user", user);
         } catch (Exception e) {
             e.printStackTrace();
-            m.addAttribute("msg", "상품 등록에 실패했습니다.");
-            return "product/product-add";
         }
+        return "product/payment";
     }
 
     /*// 상품 결제 처리
@@ -274,65 +228,4 @@ public class ProductController {
         }
         return "alert";
     }*/
-
-    // 주문했던 상품 재구매
-    @PostMapping("/repurchase")
-    public String repurchase(String product_id, String size, String quantity, HttpServletRequest request) {
-        String id = SessionUtils.getSessionId(request);
-        // 받아온 상품id, 사이즈, 갯수가 여러개일 수 있으므로 배열에 각각 저장
-        String[] p_id = product_id.split(",");
-        String[] product_size = size.split(",");
-        String[] product_quantity = quantity.split(",");
-        int total = 0;
-
-        try {
-            List<Product> list = new ArrayList<>();
-            for (int i = 0; i < p_id.length; i++) { // 받아온 정보를 토대로 객체에 할당하여 각각 list에 추가
-                Product product = productService.getProduct(p_id[i]);
-                product.setSize(product_size[i]);
-                product.setQuantity(Integer.parseInt(product_quantity[i]));
-                total += product.getTotal();
-                list.add(product);
-            }
-            User user = userService.getUser(id); // 배송지 정보를 할당하기위해 user정보 가져오기
-            request.setAttribute("list", list);
-            request.setAttribute("total", total);
-            request.setAttribute("user", user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "product/payment";
-    }
-
-
-    private String productValidation(Product product, MultipartFile file){
-        if(product.getProduct_name().isBlank() || product.getGender().isBlank() || product.getCategory().isBlank()
-            || product.getColor().isBlank() || (product.getSize() == null || product.getSize().isEmpty())
-            || (product.getStock() == null || product.getStock().isEmpty()) || (product.getPrice() < 1
-            || product.getPrice() == null)){
-            return "모든 값을 입력해주세요.";
-        }
-        String[] arr = product.getSize().split(",");
-        String[] arr2 = product.getStock().split(",");
-        if(arr.length < 1 || arr2.length < 1){
-            return "모든 값을 입력해주세요.";
-        }
-        if(file.isEmpty()){
-            return "이미지를 추가해주세요.";
-        }
-        if(product.getPrice() > 1000000000){
-            return "가격은 1,000,000,000을 초과 할 수 없습니다.";
-        }
-        if(product.getDiscount() == null){
-            product.setDiscount(0);
-        }
-        if((product.getDiscount() < 0 || product.getDiscount() > 90) && product.getDiscount() != null){
-            return "할인율은 90까지 입력가능합니다.";
-        }
-
-        if(product.getDiscount() == null){
-            product.setDiscount(0);
-        }
-        return "";
-    }
 }

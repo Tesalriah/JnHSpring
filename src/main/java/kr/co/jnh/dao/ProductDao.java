@@ -9,11 +9,17 @@ import java.util.Map;
 public interface ProductDao {
     Product select(String product_id) throws Exception;
 
+    List<Product> selectOne(String product_id) throws Exception;
+
     int insert(Product product) throws Exception;
 
     int updateStock(Product product) throws Exception;
 
+    int updateInfo(Product product) throws Exception;
+
     int update(Map map) throws Exception;
+
+    int updateReviewAvg() throws Exception;
 
     int delete(String product_id) throws Exception;
 

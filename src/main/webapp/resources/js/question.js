@@ -53,7 +53,7 @@ function sendReqeust(page){
                                 + '<span class="question_span">질문</span>' + list[i].user_id + '<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
                                 + '</div>'
                                 + '<div class="question_bottom">'
-                                + list[i].contents
+                                + '<pre>' + list[i].contents + '</pre>'
                                 + '</div>'
                                 + '</div>';
                         } else {
@@ -62,7 +62,7 @@ function sendReqeust(page){
                                 + '<span class="answer_span">답변</span>관리자<div style="float: right; font-weight:100;">' + dateFormatter(new Date(list[i].reg_date)) + '</div>'
                                 + '</div>'
                                 + '<div class="question_bottom">'
-                                + list[i].contents
+                                + '<pre>' + list[i].contents + '</pre>'
                                 + '</div>'
                                 + '</div>';
                         }

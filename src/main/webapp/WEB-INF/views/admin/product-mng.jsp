@@ -67,10 +67,10 @@
                         <table class="MNG_table">
                             <tr>
                                 <td style="width: 15%;">품번</td>
-                                <td style="width: 15%;">상품명</td>
-                                <td style="width: 15%;">가격</td>
-                                <td style="width: 15%;">할인율(%)</td>
-                                <td style="width: 15%;">재고</td>
+                                <td style="width: 21%;">상품명</td>
+                                <td style="width: 13%;">가격</td>
+                                <td style="width: 13%;">할인율(%)</td>
+                                <td style="width: 13%;">재고</td>
                                 <td style="width: 8%;">상세수정</td>
                             </tr>
                             <c:if test="${ph.totalCnt < 1}">
@@ -81,11 +81,11 @@
                             <c:forEach items="${list}" var="productList">
                                 <tr>
                                     <td>${productList.product_id}</td>
-                                    <td>${productList.product_name} / ${productList.size}</td>
+                                    <td>${productList.product_name} / ${productList.size} / ${productList.color}</td>
                                     <td><input type="text" class="product_price" value="${productList.price}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="price">OK</button></td>
                                     <td><input type="text" class="product_discount" value="${productList.discount}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="discount">OK</button></td>
                                     <td><input type="text" class="product_stock" value="${productList.stock}"><button type="button" class="send-btn" data-product_id="${productList.product_id}" data-size="${productList.size}" data-type="stock">OK</button></td>
-                                    <td><a href="">이동</a></td>
+                                    <td><a href="<c:url value="/admin/product-modify"/>${ph.sc.getQueryString(ph.sc.page)}&product_id=${productList.product_id}">이동</a></td>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -98,7 +98,7 @@
                                     <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/admin/product-mng"/>${ph.sc.getQueryString(i)}">${i}</a>
                                 </c:forEach>
                                 <c:if test="${ph.showNext}">
-                                    <a href="<c:url value="/admin/product-mng"/>${ph.sc.getQueryString(ph.endPage+1)}"><i class="fa-solid fa-angle-left"></i></a>
+                                    <a href="<c:url value="/admin/product-mng"/>${ph.sc.getQueryString(ph.endPage+1)}"><i class="fa-solid fa-angle-right"></i></a>
                                 </c:if>
                             </c:if>
                         </div>

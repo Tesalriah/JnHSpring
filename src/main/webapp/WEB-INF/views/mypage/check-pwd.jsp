@@ -27,7 +27,7 @@
                     </table>
                     <div class="check_pwd">
                         <button type="submit">확인</button>&nbsp;
-                        <button type="button">취소</button>
+                        <button type="button" onclick="history.back();">취소</button>
                     </div>
                 </form>
             </div>

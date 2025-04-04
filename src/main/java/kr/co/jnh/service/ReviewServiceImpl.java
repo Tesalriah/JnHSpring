@@ -41,25 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(rollbackFor = {Exception.class})
     public int modify(Review review) throws Exception {
         int result = reviewDao.update(review);
-        Review get = reviewDao.selectOne(review.getRno());
-        Product product = new Product();
-        product.setProduct_id(get.getProduct_id());
-        Map<String, Object> map = new HashMap<>();
-        map.put("product_id", get.getProduct_id());
-        map.put("whether", 1);
-        int cnt = 0;
-        try{
-            cnt = reviewDao.selectPageCnt(map);
-            if(cnt <= 0){
-                throw new Exception();
-            }
-            double rating = Math.round(reviewDao.reviewAvg(get.getProduct_id()) * 10) / 10.0;
-            map.put("rating",(float)rating);
-        }catch(Exception e){
-            map.put("rating", 0);
-        }
-        product.setReview_cnt(cnt);
-        productDao.update(map);
+        productDao.updateReviewAvg();
         return result;
     }
 
@@ -78,13 +60,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public int readPageByReportCnt(SearchCondition sc) throws Exception{
-        return reviewDao.SelectPageByReportCnt(sc);
+    public int readPageByReviewCnt(SearchCondition sc) throws Exception{
+        return reviewDao.SelectPageByReviewCnt(sc);
     }
 
     @Override
-    public List<Review> readPageByReport(SearchCondition sc) throws Exception{
-        List<Review> reviews = reviewDao.SelectPageByReport(sc);
+    public List<Review> readPageByReview(SearchCondition sc) throws Exception{
+        List<Review> reviews = reviewDao.SelectPageByReview(sc);
         for (Review review : reviews) {
             Product product = productDao.select(review.getProduct_id());
             Order order = new Order();

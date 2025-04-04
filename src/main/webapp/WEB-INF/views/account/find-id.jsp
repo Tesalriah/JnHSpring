@@ -6,16 +6,11 @@
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/find-id.css'/>">
         <script type="text/javascript" src="<c:url value='/resources/js/find-id.js'/>" defer></script>
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
         <title>J&H 아이디 찾기</title>
     </head>
     <body>
         <%@ include file="../header.jsp" %>
-        <c:if test="${not empty sessionScope.msg}">
-            <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
-            <c:remove var="msg" scope="session"/>
-        </c:if>
         <%--<script>
             msg = "${msg}";
             if(msg == "AUTH_FAIL")alert("잘못된 인증번호입니다. 다시 입력해주세요.");

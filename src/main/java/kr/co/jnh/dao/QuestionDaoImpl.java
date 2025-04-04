@@ -39,8 +39,12 @@ public class QuestionDaoImpl implements QuestionDao {
         return session.selectList(namespace+"selectAll");
     }
     @Override
-    public List<Question> selectId(Map map) throws Exception{
-        return session.selectList(namespace+"selectId",map);
+    public List<Question> selectMng(Map map) throws Exception{
+        return session.selectList(namespace+"selectMng",map);
+    }
+    @Override
+    public int selectMngCnt() throws Exception{
+        return session.selectOne(namespace+"selectMngCnt");
     }
     @Override
     public List<Question> selectInfo(Map map) throws Exception{

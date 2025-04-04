@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="ask_contents">
-                                ${askingDto[0].contents}
+                                <pre><c:out value="${askingDto[0].contents}"/></pre>
                             </div>
                         </div>
                         <div class="post_button" style="margin-top: 15px;">
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="ask_contents">
-                                    ${askingDto[1].contents}
+                                    <pre><c:out value="${askingDto[1].contents}"/></pre>
                                 </div>
                             </div>
                         </c:if>

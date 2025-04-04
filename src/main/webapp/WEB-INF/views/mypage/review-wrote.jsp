@@ -60,7 +60,7 @@
                                         <c:if test="${not empty list.image}">
                                             <div class="review_img"><img class="each_img" src='<c:url value="/resources/img/upload/review-img/${list.rno}/${list.image}"/>'></div>
                                         </c:if>
-                                        ${list.contents}
+                                        <pre><c:out value="${list.contents}"/></pre>
                                     </div>
                                 </div>
                             </div>

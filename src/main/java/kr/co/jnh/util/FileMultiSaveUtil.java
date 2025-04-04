@@ -10,8 +10,12 @@ import java.nio.file.Paths;
 
 public class FileMultiSaveUtil {
     public static String uploadImg(MultipartFile file, HttpServletRequest request, String path, String id) throws Exception{
-        String[] savePathArr = {request.getServletContext().getRealPath("resources/img/upload/" + path + "/"), request.getServletContext().getRealPath("webapp/resources/img/upload/" + path + "/")};
+        String[] savePathArr = {request.getServletContext().getRealPath("resources/img/upload/" + path + "/"), request.getServletContext().getRealPath("")};
 
+        // target경로에서 프로젝트 경로로 이동
+        int targetIndex = savePathArr[1].indexOf("\\target");
+        savePathArr[1] = savePathArr[1].substring(0, targetIndex);
+        savePathArr[1] += "\\src\\main\\webapp\\resources\\img\\upload\\" + path + "\\";
         // 파일이름 설정 (파일형식 확장자 유지)
         String originalFileName = file.getOriginalFilename();
         String[] fileNameArr = originalFileName.split("\\.");
@@ -32,4 +36,7 @@ public class FileMultiSaveUtil {
         return fileName;
     }
 
+    public static String getProjectRoot() {
+        return System.getProperty("project.root", System.getProperty("user.dir"));
+    }
 }

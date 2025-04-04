@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/css/return-mng.css"/>">
     <script type="text/javascript" src="<c:url value='/resources/js/checkbox-ctrl.js'/>" defer></script>
-    <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/resources/js/return-mng.js'/>" defer></script>
     <title>J&H</title>
 </head>
@@ -28,10 +27,6 @@
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <h2>취소/반품/교환 관리</h2>
-                    <c:if test="${not empty sessionScope.msg}">
-                        <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
-                        <c:remove var="msg" scope="session"/>
-                    </c:if>
                     <div class="return_MNG">
                         <div class="status_menu">
                             <div style="${ph.sc.category eq "대기중" ? "border-color:black;" : ""}" data-link="<c:url value="/admin/return-mng"/>?category=대기중">

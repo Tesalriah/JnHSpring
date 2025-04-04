@@ -44,11 +44,20 @@ public class QuestionServiceImlp implements QuestionService {
         return questionDao.selectAll();
     }
 
-    /*해당 아이디에 대한 정보 불러오기
-    질문:ano=1 / 답변:ano=2*/
+    // 답변이없는 문의만 가져오기
     @Override
-    public List<Question> readId(Map map) throws Exception{
-        return questionDao.selectId(map);
+    public List<Question> readMng(Map map) throws Exception{
+        List<Question> list =questionDao.selectMng(map);
+        for (Question question : list) {
+            Product product = productDao.select(question.getProduct_id());
+            question.setProduct(product);
+        }
+        return list;
+    }
+
+    @Override
+    public int readMngCnt() throws Exception{
+        return questionDao.selectMngCnt();
     }
 
     /*아이디 or 상품명에 맞춰 정보불러오기*/

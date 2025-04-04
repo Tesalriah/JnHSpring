@@ -61,13 +61,17 @@ public class KakaoPayServiceImpl implements KakaoPayService {
             Map<String, Object> map = new HashMap();
             map.put("user_id", order.getUser_id());
             map.put("product_id", order.getProduct_id());
+
+            // 구매횟수 상품ID 공통으로 오르게
+            map.put("bought_cnt", product.getBought_cnt() + order.getQuantity());
+            productDao.update(map);
+            map.remove("bought_cnt");
             map.put("size", order.getSize());
 
             // product의 stock 구매수량만큼 감소
             int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
             map.put("stock", calStock);
             map.put("size", order.getSize());
-            map.put("bought_cnt", product.getBought_cnt() + order.getQuantity());
             productDao.update(map);
 
             // 구매시 카트의 해당 상품 삭제

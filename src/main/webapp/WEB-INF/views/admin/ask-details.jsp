@@ -41,14 +41,14 @@
 
                         <div class="ask_post">
                             <div class="ask_title">
-                                <div><span>Q</span><span>${askingDto[0].title}</span></div>
+                                <div><span>Q</span><span><c:out  value="${askingDto[0].title}"/></span></div>
                                 <div>
                                     <div>${askingDto[0].user_id}</div>
                                     <div><fmt:formatDate value="${askingDto[0].reg_date}" pattern="yyyy-MM-dd HH:mm" /></div>
                                 </div>
                             </div>
                             <div class="ask_contents">
-                                ${askingDto[0].contents}
+                                <pre><c:out value="${askingDto[0].contents}"/></pre>
                             </div>
                         </div>
 
@@ -61,7 +61,9 @@
                                         <div><fmt:formatDate value="${askingDto[1].reg_date}" pattern="yyyy-MM-dd HH:mm" /></div>
                                     </div>
                                 </div>
-                                <div class="ask_contents">${askingDto[1].contents}</div>
+                                <div class="ask_contents">
+                                    <pre><c:out value="${askingDto[1].contents}"/></pre>
+                                </div>
                             </div>
 
                             <form method="post" action="<c:url value="/admin/ask-remove"/>">

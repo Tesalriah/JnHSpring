@@ -24,7 +24,7 @@
         <if test="product_id != null">AND product_id = #{product_id}</if>
         <if test="size != null">AND size = #{size}</if>
         <if test="exception != null and exception  == 1">
-            AND status NOT IN ('반품접수', '교환접수', '교환중', '반품완료', '교환완료', '취소완료');
+            AND status NOT IN ('반품대기중' , '교환대기중', '반품처리중', '교환처리중', '반품완료', '교환완료', '취소완료');
         </if>
     </select>
 
@@ -47,7 +47,7 @@
     <update id="update" parameterType="Map">
         UPDATE orders
         <set>
-            <if test="is_deleted != null">is_delete = #{is_deleted},</if>
+            <if test="is_deleted != null">is_deleted = #{is_deleted},</if>
             <if test="status != null">status = #{status},</if>
             <if test="tid != null">tid = #{tid},</if>
             <if test="payment_method_type != null">payment_method_type = #{payment_method_type},</if>

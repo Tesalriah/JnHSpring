@@ -5,16 +5,11 @@
     <head>
         <%@ include file="../head.jsp" %>
         <link rel="stylesheet" href="<c:url value='/resources/css/email-auth.css'/>">
-        <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
         <title>J&H 이메일 인증</title>
     </head>
     <body>
     <%@include file="../header.jsp"%>
         <main>
-            <c:if test="${not empty sessionScope.msg}">
-                <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
-                <c:remove var="msg" scope="session"/>
-            </c:if>
             <div class="auth_box">
                 <div class="auth_title">
                     ${sessionScope.user.user_id}님 회원가입 해주셔서 감사합니다!

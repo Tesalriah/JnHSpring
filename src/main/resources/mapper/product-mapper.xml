@@ -8,6 +8,11 @@
         WHERE product_id LIKE CONCAT(#{product_id},'%') ORDER BY size ASC LIMIT 1
     </select>
 
+    <select id="selectOne" parameterType="String" resultType="Product">
+        SELECT * FROM product
+        WHERE product_id = #{product_id} ORDER BY size desc
+    </select>
+
     <insert id="insert" parameterType="Product">
         INSERT INTO product
             (product_id, product_name, gender, category, color, size, stock, price, discount, image)
@@ -20,13 +25,27 @@
         WHERE product_id = #{product_id} AND size = #{size}
     </update>
 
+    <update id="updateInfo" parameterType="Product">
+        UPDATE product
+        <set>
+            <if test="product_name != null">product_name = #{product_name},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="discount != null">discount = #{discount},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="up_date != null">up_date = #{up_date},</if>
+        </set>
+        WHERE product_id = #{product_id} AND size=#{size}
+    </update>
+
     <update id="update" parameterType="map">
         UPDATE product
         <set>
             <if test="bought_cnt != null">bought_cnt = #{bought_cnt},</if>
             <if test="wish_cnt != null">wish_cnt = #{wish_cnt},</if>
-            <if test="rating != null">rating = #{rating},</if>
-            <if test="review_cnt != null">review_cnt = #{review_cnt},</if>
             <if test="price != null">price = #{price},</if>
             <if test="discount != null">discount = #{discount},</if>
             <if test="stock != null">stock = #{stock},</if>
@@ -35,7 +54,21 @@
         <if test="size != null" >AND size=#{size}</if>
     </update>
 
-    <delete id="delete" parameterType="Integer">
+    <update id="updateReviewAvg">
+        UPDATE product p
+            LEFT JOIN (
+            SELECT product_id,
+            ROUND(AVG(rating), 1) AS avg_rating,  -- 소수점 첫째 자리 반올림
+            COUNT(*) AS review_count
+            FROM review
+            WHERE whether = 1
+            GROUP BY product_id
+            ) r ON p.product_id = r.product_id
+            SET p.rating = COALESCE(r.avg_rating, 0),
+                p.review_cnt = COALESCE(r.review_count, 0);
+    </update>
+
+    <delete id="delete" parameterType="String">
         DELETE FROM product
         WHERE product_id = #{product_id}
     </delete>

@@ -52,7 +52,7 @@ function reviewList(page){
                         if(!!list[i].image){
                             html += '<div class="review_img"><img class="each_img" src="/jnh/resources/img/upload/review-img/' + list[i].rno + '/' + list[i].image +'"/></div>';
                         }
-                        html += list[i].contents +
+                        html += '<pre>' + list[i].contents + '</pre>' +
                             '</div>' +
                             '</div>' +
                             '</div>';

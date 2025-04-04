@@ -36,6 +36,11 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
+                <c:if test="${sessionScope.user.grade == 0}">
+                    <div>
+                        <a href="<c:url value="/admin/product-remove"/>?product_id=${product.product_id}" id="addProduct">상품삭제</a>
+                    </div>
+                </c:if>
             </div>
             <!-- 상품정보 -->
             <div class="product_info">

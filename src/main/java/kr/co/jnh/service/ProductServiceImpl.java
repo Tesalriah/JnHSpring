@@ -15,8 +15,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductDao productDao;
 
+    @Override
     public Product getProduct(String product_id) throws Exception{
         return productDao.select(product_id);
+    }
+
+    @Override
+    public List<Product> readOne(String product_id) throws Exception{
+        return productDao.selectOne(product_id);
     }
 
     @Override
@@ -69,5 +75,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int updateProduct(Map map) throws Exception{
         return productDao.update(map);
+    }
+
+    @Override
+    public int modifyInfo(Product product) throws Exception{
+        return productDao.updateInfo(product);
+    }
+
+    @Override
+    public int remove(String product_id) throws Exception{
+        return productDao.delete(product_id);
     }
 }

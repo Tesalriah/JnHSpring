@@ -15,15 +15,13 @@ public interface ReviewDao {
 
     int update(Review review) throws Exception;
 
-    float reviewAvg(String product_id) throws Exception;
-
     int cancelDelete(Map map) throws Exception;
 
     int selectPageCnt(Map map);
 
     List<Review> selectPage(Map map);
 
-    int SelectPageByReportCnt(SearchCondition sc);
+    int SelectPageByReviewCnt(SearchCondition sc);
 
-    List<Review> SelectPageByReport(SearchCondition sc);
+    List<Review> SelectPageByReview(SearchCondition sc);
 }

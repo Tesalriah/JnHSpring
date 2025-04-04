@@ -3,7 +3,6 @@ const report_id = document.querySelector('[name="report_id"]');
 const report_reason = document.querySelector('[name="reason"]');
 const report_contents = document.querySelector('[name="report_contents"]');
 const report_btn = document.querySelector('#report_btn');
-const reason = document.querySelector('[name="reason"]');
 
 function report(){
     /* 입력된 데이터 Json 형식으로 변경 */
@@ -22,9 +21,9 @@ function report(){
                 alert(result.msg);
                 if(result.result == 'close'){
                     reportClose();
-                    reportId.value =  '';
-                    reportRno.value = '';
-                    reason.value = '';
+                    report_id.value =  '';
+                    report_rno.value = '';
+                    report_reason.value = '';
                 }
             } else {
                 alert(httpRequest.status + ' Error');

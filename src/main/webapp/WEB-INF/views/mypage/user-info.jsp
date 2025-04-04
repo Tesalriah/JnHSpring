@@ -68,7 +68,7 @@
                     </table>
                     <div class="right">회원탈퇴를 원하시면 우측의 회원탈퇴 버튼을 눌러주세요<button id="withdrawal" type="submit" formaction="<c:url value="/mypage/user/del-account"/>">회원탈퇴</button></div>
                     <div class="edit_button">
-                        <button type="submit" formaction="<c:url value="/mypage/user/change-pwd"/>">수정</button>
+                        <button type="submit" id="change_pwd" formaction="<c:url value="/mypage/user/change-pwd"/>">수정</button>
                     </div>
                 </form>
             </div>
@@ -84,7 +84,7 @@
             if(!isConfirmed){
                 e.preventDefault();
             }
-        })
+        });
     </script>
 </body>
 </html>

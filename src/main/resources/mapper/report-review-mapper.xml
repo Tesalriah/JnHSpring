@@ -29,7 +29,7 @@
     <select id="selectDup" parameterType="Map" resultType="int">
         SELECT count(*) FROM report_review
         <where>
-            <if test="reoporter != null"> AND reporter_id =  #{reporter}</if>
+            <if test="reporter != null"> AND reporter_id =  #{reporter}</if>
             <if test="rno != null"> AND rno =  #{rno}</if>
         </where>
     </select>

@@ -66,9 +66,12 @@ main{
     min-width:1220px;
     min-height:700px;
 }
-input, textarea, select, button{
+input, textarea, select, button, pre{
     font-family: 'Noto Sans KR', sans-serif;
 }
 select:focus, textarea:focus{
     outline: none;
+}
+pre{
+    line-height: 1.5;
 }

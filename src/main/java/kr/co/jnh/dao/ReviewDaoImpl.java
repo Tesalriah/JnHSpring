@@ -42,11 +42,6 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public float reviewAvg(String product_id) throws Exception{
-        return session.selectOne( nameSpace + "ratingAvg", product_id);
-    }
-
-    @Override
     public int cancelDelete(Map map) throws Exception{
         return session.update( nameSpace + "cancelDelete", map);
     }
@@ -62,12 +57,12 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int SelectPageByReportCnt(SearchCondition sc){
-        return session.selectOne( nameSpace + "SelectPageByReportCnt", sc);
+    public int SelectPageByReviewCnt(SearchCondition sc){
+        return session.selectOne( nameSpace + "SelectPageByReviewCnt", sc);
     }
 
     @Override
-    public List<Review> SelectPageByReport(SearchCondition sc){
-        return session.selectList( nameSpace + "SelectPageByReport", sc);
+    public List<Review> SelectPageByReview(SearchCondition sc){
+        return session.selectList( nameSpace + "SelectPageByReview", sc);
     }
 }

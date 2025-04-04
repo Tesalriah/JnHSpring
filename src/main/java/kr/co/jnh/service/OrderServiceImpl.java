@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int statusModify(Map map) throws Exception{
-        if(map.get("status").equals("배송중")){
+        if(map.get("status").equals("배송완료")){
             Review review = new Review((String)map.get("order_no"), (String)map.get("id"),(String)map.get("product_id"),(String)map.get("size"));
             reviewDao.insert(review);
         }

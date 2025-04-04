@@ -4,6 +4,18 @@
 }
 .move{
     margin:40px 0;
+    display: flex;
+    justify-content: space-between;
+}
+#addProduct{
+    padding:5px 15px;
+    background-color: #FFAEC9;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 18px;
+}
+#addProduct:hover{
+    background-color: #DC98AF;
 }
 .product_info{
     width:100%;

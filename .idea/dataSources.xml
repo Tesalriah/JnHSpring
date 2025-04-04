@@ -13,15 +13,11 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="jnh@localhost [2]" uuid="b2229ee2-3379-4dce-9791-d2254d33e268">
+    <data-source source="LOCAL" name="jnh@localhost [2]" uuid="491ea18b-37cf-42e2-b824-35c79392b672">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <isolation>4</isolation>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/jnh</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

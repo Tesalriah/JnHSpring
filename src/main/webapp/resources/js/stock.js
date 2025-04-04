@@ -1,17 +1,15 @@
 const insertHere = document.getElementById('insert_here');
 const tbody = document.querySelector('#insert_here tbody');
-let cnt = 0;
 
 function removeCell(here){
-    cnt--;
-    if(cnt == 0){
+    tbody.removeChild(here.parentElement.parentElement);
+    console.log(document.querySelectorAll('input[name="size"]').length);
+    if(document.querySelectorAll('input[name="size"]').length == 0){
         document.querySelector('.display_set').style.display = 'table-row';
     }
-    tbody.removeChild(here.parentElement.parentElement);
 }
 
 document.getElementById('add_stock').addEventListener("click", function(){
-    cnt++;
     document.querySelector('.display_set').style.display = 'none';
     let row = insertHere.insertRow();
 
@@ -23,3 +21,7 @@ document.getElementById('add_stock').addEventListener("click", function(){
     cell2.innerHTML = '<input type="text" name="stock" oninput="Slimit(this);" autocomplete="off">';
     cell3.innerHTML = '<button type="button" class="del_table" onclick="removeCell(this);">삭제</button>'
 });
+
+document.querySelector('[name="uploadFile"]').addEventListener('input', function (){
+    document.querySelector('input[name="not_change"]').remove();
+})

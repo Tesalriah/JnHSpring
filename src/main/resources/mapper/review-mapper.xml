@@ -40,8 +40,9 @@
         WHERE rno = #{rno}
     </update>
 
-<update id="cancelDelete" parameterType="Map">
-        DELETE FROM review
+    <update id="cancelDelete" parameterType="Map">
+        UPDATE review
+        set whether = #{whether}
         WHERE order_no = #{order_no} AND product_id = #{product_id} AND user_id = #{id} AND size = #{size}
     </update>
 
@@ -75,7 +76,7 @@
         LIMIT #{sc.offset}, #{sc.pageSize}
     </select>
 
-    <select id="SelectPageByReportCnt" parameterType="SearchCondition" resultType="int">
+    <select id="SelectPageByReviewCnt" parameterType="SearchCondition" resultType="int">
         SELECT count(*) FROM review
         WHERE true
         <if test="keyword != null">
@@ -86,10 +87,10 @@
                 AND user_id LIKE concat('%',#{keyword},'%')
             </if>
         </if>
-        AND whether != 0
+        AND whether NOT IN(0, 3)
     </select>
 
-    <select id="SelectPageByReport" parameterType="SearchCondition" resultType="Review">
+    <select id="SelectPageByReview" parameterType="SearchCondition" resultType="Review">
         SELECT * FROM review
         WHERE true
         <if test="keyword != null">
@@ -100,7 +101,7 @@
                 AND user_id LIKE concat('%',#{keyword},'%')
             </if>
         </if>
-        AND whether != 0
+        AND whether NOT IN(0, 3)
         ORDER BY whether asc, report_cnt desc
         LIMIT #{offset}, #{pageSize}
     </select>

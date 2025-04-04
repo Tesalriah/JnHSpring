@@ -34,18 +34,27 @@
                                 <td style="width:10%;">신고자</td>
                                 <td style="width:15%;">작성일자</td>
                             </tr>
+                            <c:if test="${empty list}">
+                                <tr>
+                                    <td colspan="6">
+                                        <div style="text-align: center; padding:100px 20px; font-size: 24px;">신고내역이 존재하지 않습니다.</div>
+                                    </td>
+                                </tr>
+                            </c:if>
                             <c:forEach items="${list}" var="report">
                                 <tr>
                                     <td>${report.no}</td>
                                     <td><a target="_blank" href="<c:url value="/admin/review-mng"/>?option=rno&keyword=${report.rno}">${report.rno}</a></td>
                                     <td><a href="<c:url value="/admin/user-mng"/>?keyword=${report.user_id}" target="_blank">${report.user_id}</a></td>
-                                    <td class="contents_open">${report.reason}</td>
+                                    <td class="contents_open">
+                                        <pre><c:out value="${report.reason}"/></pre>
+                                    </td>
                                     <td>${report.reporter_id}</td>
                                     <td><fmt:formatDate value="${report.reg_date}" pattern="yyyy-MM-dd" /></td>
                                 </tr>
                                 <tr class="report_contents" >
                                     <td colspan="6" >
-                                        ${report.contents}
+                                        <pre><c:out value="${report.contents}"/></pre>
                                     </td>
                                 </tr>
                             </c:forEach>

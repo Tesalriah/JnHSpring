@@ -6,7 +6,7 @@
 <head>
     <%@ include file="../head.jsp" %>
     <link rel="stylesheet" href="<c:url value="/resources/css/side-menu.css"/>">
-    <link rel="stylesheet" href="<c:url value="/resources/css/ask.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/css/ask-mng.css"/>">
     <title>J&H</title>
 </head>
 <body>
@@ -23,13 +23,15 @@
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
                     <h2>문의관리</h2>
+                    <div class="top_nav">
+                        <div style=" border-bottom: none;"><a href="<c:url value="/admin/ask-mng"/>">1:1 문의</a></div>
+                        <div><a href="<c:url value="/admin/question-mng"/>">상품문의</a></div>
+                    </div>
                     <div class="ask_MNG">
                         <table class="ask_table" border="1">
-
                             <c:if test="${empty readAll}">
                                 <div style="text-align: center; padding:100px 20px; font-size: 24px;">문의내역이 존재하지 않습니다.</div>
                             </c:if>
-
                             <tr>
                                 <td style="width:10%;">문의번호</td>
                                 <td style="width:55%;">제목</td>
@@ -37,13 +39,10 @@
                                 <td style="width:10%;">작성자</td>
                                 <td style="width:15%;">작성일자</td>
                             </tr>
-
-
-
                             <c:forEach var="list" items="${readAll}">
                                 <tr>
                                     <td>${list.no}</td>
-                                    <td><a href="<c:url value="/admin/ask-details"/>?no=${list.no}">${list.title}</a></td>
+                                    <td><a href="<c:url value="/admin/ask-details"/>?no=${list.no}"><c:out value="${list.title}"/></a></td>
                                     <td>${list.state == 1? "답변완료":"대기중"}</td>
                                     <td>${list.user_id}</td>
                                     <td><fmt:formatDate value="${list.reg_date}" pattern="yyyy-MM-dd" /></td>

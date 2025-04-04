@@ -42,7 +42,7 @@
 
                             <c:forEach var="askingDto" items="${askingDtoList}">
                                 <div>
-                                    <div><a href="<c:url value="/mypage/asking/read"/>?no=${askingDto.no}&page=${ph.sc.page}">${askingDto.title}</a></div>
+                                    <div><a href="<c:url value="/mypage/asking/read"/>?no=${askingDto.no}&page=${ph.sc.page}"><c:out value="${askingDto.title}"/></a></div>
                                     <div>${askingDto.state == 1 ? "답변완료" : "대기중"}</div>
                                     <div><fmt:formatDate value="${askingDto.reg_date}" pattern="yyyy-MM-dd HH:mm" /></div>
                                 </div>

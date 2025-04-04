@@ -25,6 +25,7 @@ public class QuestionController {
     @PostMapping("list")
     @ResponseBody
     public Map<String, Object> list(@RequestBody Map<String, Object> map, SearchCondition sc){
+        sc.setPageSize(5);
         String product_id = (String)map.get("product_id");
         int currentPage = (int)map.get("page");
 

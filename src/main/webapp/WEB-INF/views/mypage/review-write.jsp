@@ -55,11 +55,9 @@
                                 <div>사진</div>
                                 <div>
                                     <c:if test="${not empty review.image}">
-                                        <div id="ex_img" style="margin-bottom: 5px;">
-                                            기존이미지 :<br><br>
-                                            <img id="review_img" src='<c:url value="/resources/img/upload/review-img/${review.rno}/${review.image}"/>' >
-                                            <input type="hidden" name="not_change" value="${review.image}">
-                                        </div>
+                                        기존이미지 :<br><br>
+                                        <img id="review_img" src='<c:url value="/resources/img/upload/review-img/${review.rno}/${review.image}"/>' >
+                                        <input type="hidden" name="not_change" value="${review.image}">
                                         변경할 파일 선택 :
                                     </c:if>
                                     <input type="file" name="uploadFile">

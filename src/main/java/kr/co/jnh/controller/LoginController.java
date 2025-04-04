@@ -37,7 +37,6 @@ public class LoginController {
         session.invalidate();
         // 이전페이지가 있을 경우 이전페이지로 리다이렉트
         String referer = request.getHeader("referer");
-        System.out.println("referer = " + referer);
         if(referer.contains("mypage")){
             return "redirect:/";
         }
@@ -54,7 +53,7 @@ public class LoginController {
         if(SessionUtils.getSessionId(request) != null){
             return "redirect:/";
         }
-        return "find-id";
+        return "account/find-id";
     }
 
     // 아이디 찾기

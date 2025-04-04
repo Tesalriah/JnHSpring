@@ -18,9 +18,10 @@ public interface QuestionService {
     /*전체 문의글 정렬*/
     List<Question> readAll() throws Exception;
 
-    /*해당 아이디에 대한 정보 불러오기
-        질문:ano=1 / 답변:ano=2*/
-    List<Question> readId(Map map) throws Exception;
+    // 답변이없는 문의만 가져오기
+    List<Question> readMng(Map map) throws Exception;
+
+    int readMngCnt() throws Exception;
 
     /*아이디 or 상품명에 맞춰 정보불러오기*/
     List<Question> readInfo(Map map) throws Exception;

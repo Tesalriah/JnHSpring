@@ -64,6 +64,11 @@
 .display_category i{
     color:#ffffff;
 }
+#product_img{
+    height: 180px;
+    width: 160px;
+    object-fit: cover;
+}
 .submit_button{
     margin-top: 30px;
     text-align: center;

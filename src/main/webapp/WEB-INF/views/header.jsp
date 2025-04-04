@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:if test="${not empty sessionScope.msg}">
+    <div id="alert-message" style="display: none;">${sessionScope.msg}</div>
+    <c:remove var="msg" scope="session"/>
+</c:if>
 <header>
     <div class="header_area">
         <div class="row">
@@ -36,8 +40,8 @@
                         <li class="gender_on">
                             <a href="<c:url value="/admin/product-mng"/>">ADMIN&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
                             <ul class="submenu_nav" >
-                                <li><a href="<c:url value="/admin/user-mng"/>">유저관리</a></li>
                                 <li><a href="<c:url value="/admin/product-mng"/>">상품관리</a></li>
+                                <li><a href="<c:url value="/admin/user-mng"/>">유저관리</a></li>
                             </ul>
                         </li>
                     </c:if>

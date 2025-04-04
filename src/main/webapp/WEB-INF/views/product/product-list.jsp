@@ -59,7 +59,7 @@
                 </c:if>
                 <c:if test="${sessionScope.user.grade == 0}">
                     <div>
-                        <a href="<c:url value="/product-add"/> " id="addProduct">상품추가</a>
+                        <a href="<c:url value="/admin/product-add"/> " id="addProduct">상품추가</a>
                     </div>
                 </c:if>
             </div>
@@ -73,7 +73,7 @@
                 <c:forEach var="product" items="${list}" varStatus="status">
                         <div class="product">
                             <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
-                                <img src="<c:url value='/resources/img/upload/product-img/${product.product_id}/${product.image}'/>">
+                                <img src="<c:url value='/resources/img/upload/product-img'/>/${product.product_id}/${product.image}">
                                 <div class="detail">
                                     <div>${product.product_name}</div>
                                     <div>
@@ -100,8 +100,7 @@
                     <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                         <a ${i == ph.sc.page ? "style='color:#FFAEC9;'" : ""}href="<c:url value="/product-list"/>${ph.sc.getQueryString(i)}">${i}</a>
                     </c:forEach>
-                    <c:if test="${ph.showNext}">
-                        <a href="<c:url value="/product-list"/>${ph.sc.getQueryString(ph.endpage+1)}"><i class="fa-solid fa-angle-left"></i></a>
+                    <c:if test="${ph.showNext}"><a href="<c:url value="/product-list"/>${ph.sc.getQueryString(ph.endPage +1)}"><i class="fa-solid fa-angle-right"></i></a>
                     </c:if>
                 </c:if>
             </div>
