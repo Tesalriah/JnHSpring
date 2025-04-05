@@ -30,6 +30,7 @@ public class OrderDaoImpl implements OrderDao {
         return session.selectOne(nameSpace + "selectCnt", map);
     }
 
+    @Override
     public List<Order> selectOne(Map map) throws Exception{
         return session.selectList(nameSpace + "selectOne", map);
     }
@@ -73,5 +74,10 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public int selectMngCnt(SearchCondition sc) throws Exception{
         return session.selectOne(nameSpace + "selectMngCnt", sc);
+    }
+
+    @Override
+    public List<Order> selectOrderWithProduct(Map map) throws Exception{
+        return session.selectList( nameSpace + "selectOrderWithProduct", map);
     }
 }

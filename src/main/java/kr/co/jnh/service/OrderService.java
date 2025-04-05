@@ -17,7 +17,7 @@ public interface OrderService {
 
     String returnId(String order_no) throws Exception;
 
-    int buy(List<Order> order) throws Exception;
+    // int buy(List<Order> order) throws Exception;
 
     int delete(String order_no) throws Exception;
 

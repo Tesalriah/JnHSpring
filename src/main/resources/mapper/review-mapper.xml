@@ -3,6 +3,81 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.jnh.dao.ReviewMapper">
+    <resultMap id="reviewResultMap" type="review">
+        <result property="rno" column="rno"/>
+        <result property="order_no" column="r_order_no"/>
+        <result property="user_id" column="user_id"/>
+        <result property="product_id" column="r_product_id"/>
+        <result property="contents" column="contents"/>
+        <result property="rating" column="rating"/>
+        <result property="reg_date" column="reg_date"/>
+        <result property="up_date" column="up_date"/>
+        <result property="image" column="r_image"/>
+        <result property="whether" column="whether"/>
+        <result property="report_cnt" column="report_cnt"/>
+        <result property="size" column="size"/>
+
+        <association property="order" javaType="Order">
+            <result property="order_no" column="o_order_no"/>
+            <result property="size" column="o_size"/>
+            <result property="quantity" column="quantity"/>
+            <result property="color" column="o_color"/>
+            <result property="order_date" column="order_date"/>
+
+            <association property="product" javaType="Product">
+                <result property="product_name" column="product_name"/>
+                <result property="image" column="p_image"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="reviewWithOrder" parameterType="Map" resultMap="reviewResultMap">
+        SELECT
+            r.rno,
+            r.order_no AS r_order_no,
+            r.user_id,
+            r.product_id AS r_product_id,
+            r.contents,
+            r.rating,
+            r.reg_date,
+            r.up_date,
+            r.image as r_image,
+            r.whether,
+            r.report_cnt,
+            r.size,
+
+            o.order_no AS o_order_no,
+            o.size AS o_size,
+            o.quantity,
+            o.color AS o_color,
+            o.order_date,
+
+            p.product_name,
+            p.image as p_image
+
+        FROM review r
+                 JOIN orders o ON r.order_no = o.order_no AND r.product_id = o.product_id AND r.size = o.size
+                 JOIN product p ON o.product_id = p.product_id AND o.size = p.size
+        WHERE true
+        <if test="id != null">AND r.user_id = #{id}</if>
+        <if test="product_id != null">AND r.product_id = #{product_id}</if>
+        AND r.whether = #{whether}
+
+        <choose>
+            <when test="sc.option == 'reg_date'">
+                ORDER BY r.reg_date DESC
+            </when>
+            <when test="sc.option == 'rating'">
+                ORDER BY r.rating DESC, r.rno DESC
+            </when>
+            <otherwise>
+                ORDER BY r.rno DESC
+            </otherwise>
+        </choose>
+
+        LIMIT #{sc.offset}, #{sc.pageSize}
+    </select>
+
     <select id="selectAll" resultType="Review">
         SELECT * FROM review
         ORDER BY report_cnt desc
@@ -11,6 +86,36 @@
     <select id="selectOne" parameterType="int" resultType="Review">
         SELECT * FROM review
         WHERE rno = #{rno};
+    </select>
+
+    <select id="selectOneWithOrder" parameterType="int" resultMap="reviewResultMap">
+        SELECT
+        r.rno,
+        r.order_no AS r_order_no,
+        r.user_id,
+        r.product_id AS r_product_id,
+        r.contents,
+        r.rating,
+        r.reg_date,
+        r.up_date,
+        r.image as r_image,
+        r.whether,
+        r.report_cnt,
+        r.size,
+
+        o.order_no AS o_order_no,
+        o.size AS o_size,
+        o.quantity,
+        o.color AS o_color,
+        o.order_date,
+
+        p.product_name,
+        p.image as p_image
+
+        FROM review r
+        JOIN orders o ON r.order_no = o.order_no AND r.product_id = o.product_id AND r.size = o.size
+        JOIN product p ON o.product_id = p.product_id AND o.size = p.size
+        WHERE rno = #{rno}
     </select>
 
     <insert id="insert" parameterType="Review">

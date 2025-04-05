@@ -28,4 +28,6 @@ public interface OrderDao {
     List<Order> selectMng(SearchCondition sc) throws Exception;
 
     int selectMngCnt(SearchCondition sc) throws Exception;
+
+    List<Order> selectOrderWithProduct(Map map) throws Exception;
 }

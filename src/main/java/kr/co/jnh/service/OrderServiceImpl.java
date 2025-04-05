@@ -47,13 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> readOne(Map map) throws Exception{
-        List<Order> orderList = orderDao.selectOne(map);
-        for(Order order : orderList){
-            Product product = productDao.select(order.getProduct_id());
-            product.setQuantity(order.getQuantity());
-            order.setProduct(product);
-        }
-        return orderList;
+        return orderDao.selectOrderWithProduct(map);
     }
 
     @Override
@@ -61,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.selectId(order_no);
     }
 
-    @Override
+    /*@Override
     @Transactional(rollbackFor = Exception.class)
     public int buy(List<Order> list) throws Exception{
         int result = -1;
@@ -96,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return result;
-    }
+    }*/
 
     @Override
     public int delete(String order_no) throws Exception{

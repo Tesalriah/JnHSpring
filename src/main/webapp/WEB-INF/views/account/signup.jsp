@@ -20,7 +20,8 @@
         if(msg == "REG_ERR")alert("회원가입에 실패했습니다. 다시 시도해주세요.")
     </script>
     <div class="user">
-        <form:form modelAttribute="user"> <%--class="user" method="post" action="<c:url value="/signUp"/>"--%>
+        <c:url value="/signup" var="registerUrl" />
+        <form:form modelAttribute="user" action="${registerUrl}" method="post"> <%--class="user" method="post" action="<c:url value="/signUp"/>"--%>
             <div class="input"><i class="fa-regular fa-id-card"></i><input  type="text" name="user_id" value="${user.user_id}" placeholder="아이디" autocomplete="off"></div>
             <div class="error"><form:errors path="user_id"/></div>
             <div class="input"><i class="fa-solid fa-lock"></i><input type="password" name="user_pwd" placeholder="비밀번호"></div>

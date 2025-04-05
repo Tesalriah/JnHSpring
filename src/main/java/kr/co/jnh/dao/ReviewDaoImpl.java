@@ -27,8 +27,13 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public Review selectOne(int no) throws Exception{
-        return session.selectOne( nameSpace + "selectOne", no);
+    public Review selectOne(int rno) throws Exception{
+        return session.selectOne( nameSpace + "selectOne", rno);
+    }
+
+    @Override
+    public Review selectOneWithOrder(int rno) throws Exception{
+        return session.selectOne( nameSpace + "selectOneWithOrder", rno);
     }
 
     @Override
@@ -47,22 +52,27 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int selectPageCnt(Map map){
+    public int selectPageCnt(Map map) throws Exception{
         return session.selectOne( nameSpace + "selectPageCnt", map);
     }
 
     @Override
-    public List<Review> selectPage(Map map){
+    public List<Review> selectPage(Map map) throws Exception{
         return session.selectList( nameSpace + "selectPage", map);
     }
 
     @Override
-    public int SelectPageByReviewCnt(SearchCondition sc){
+    public List<Review> reviewWithOrder(Map map) throws Exception {
+        return  session.selectList( nameSpace + "reviewWithOrder", map);
+    }
+
+    @Override
+    public int SelectPageByReviewCnt(SearchCondition sc) throws Exception{
         return session.selectOne( nameSpace + "SelectPageByReviewCnt", sc);
     }
 
     @Override
-    public List<Review> SelectPageByReview(SearchCondition sc){
+    public List<Review> SelectPageByReview(SearchCondition sc) throws Exception{
         return session.selectList( nameSpace + "SelectPageByReview", sc);
     }
 }

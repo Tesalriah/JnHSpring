@@ -29,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addUser(User user) throws Exception{
+        // 패스워드 해싱,솔트화
+        String hashedPwd = passwordEncoder.encode(user.getUser_pwd());
+        user.setUser_pwd(hashedPwd);
         return userDao.insert(user);
     }
 
@@ -67,9 +70,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int changePassword(String id, String pwd) throws Exception{
+        // 패스워드 해싱,솔트화
+        String hashedPwd = passwordEncoder.encode(pwd);
+
         Map<String, Object> map = new HashMap<>();
         map.put("user_id", id);
-        map.put("user_pwd", pwd);
+        map.put("user_pwd", hashedPwd);
         return userDao.update(map);
     }
 
@@ -85,10 +91,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public int changePwd(String id, String pwd) throws Exception{
         User user = userDao.selectUserById(id);
-        user.setUser_pwd(pwd);
+        // 패스워드 해싱,솔트화
+        String hashedPwd = passwordEncoder.encode(pwd);
         Map<String, Object> map = new HashMap<>();
         map.put("user_id", id);
-        map.put("user_pwd", pwd);
+        map.put("user_pwd", hashedPwd);
         emailAuthDao.deleteAuth(user.getEmail());
         return userDao.update(map);
     }
@@ -137,6 +144,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean loginCheck(Map map) throws Exception{
         String pwd = userDao.selectUser((String)map.get("id")).getUser_pwd();
+        if(pwd == null || pwd.equals("")){
+            return false;
+        }
         String enteredPwd = (String)map.get("pwd");
         if(enteredPwd != null && passwordEncoder.matches(enteredPwd, pwd)){
             return true; // 비밀번호가 일치할시 true 반환

@@ -120,7 +120,7 @@ public class RegisterController {
 
     // 회원가입 Post
     @PostMapping("/signup")
-    public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, RedirectAttributes rattb, HttpSession session){
+    public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, HttpSession session){
         // 따로 받은 주소 값 합치기
         String address = request.getParameter("address1") + request.getParameter("address2");
         user.setAddress(address);
@@ -144,10 +144,10 @@ public class RegisterController {
             if(userService.addUser(user) != 1){
                 throw new Exception("Register Fail");
             }
-            // 성공
-            session.setAttribute("id", user.getUser_id());
-            rattb.addFlashAttribute("email" ,user.getEmail());
-            return "account/email-auth";
+            // 성공하여 db에 저장된 아이디정보를 가져와 로그인처리
+            User doneUser =  userService.getUser(user.getUser_id());
+            session.setAttribute("user", doneUser);
+            return "redirect:/email-auth";
         } catch (Exception e) {
             e.printStackTrace();
             // 실패시 원래 페이지에 생년월일 값을 반환받기 위함

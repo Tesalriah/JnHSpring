@@ -28,13 +28,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
     
     @Override
-    public Review readOne(int no) throws Exception{
-        Review review = reviewDao.selectOne(no);
-        if(review == null){
-            return null;
-        }
-        getOrderAndProduct(review);
-        return review;
+    public Review readOne(int rno) throws Exception{
+        return reviewDao.selectOne(rno);
+    }
+
+    @Override
+    public Review readOneWithOrder(int rno) throws Exception{
+        return reviewDao.selectOneWithOrder(rno);
     }
 
     @Override
@@ -51,12 +51,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> selectPage(Map map) throws Exception{
-        List<Review> reviews = reviewDao.selectPage(map);
-        for( Review review : reviews){
-            getOrderAndProduct(review);
-        }
-        return reviews;
+    public List<Review> readPage(Map map) throws Exception{
+        return reviewDao.selectPage(map);
+    }
+
+    @Override
+    public List<Review> readPageWithOrder(Map map) throws Exception{
+        return reviewDao.reviewWithOrder(map);
     }
 
     @Override
@@ -74,16 +75,5 @@ public class ReviewServiceImpl implements ReviewService {
             review.setOrder(order);
         }
         return reviews;
-    }
-
-    private void getOrderAndProduct(Review review) throws Exception{
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", review.getUser_id());
-        map.put("order_no", review.getOrder_no());
-        map.put("product_id", review.getProduct_id());
-        map.put("size", review.getSize());
-        Order order = orderDao.selectOne(map).get(0);
-        order.setProduct(productDao.select(review.getProduct_id()));
-        review.setOrder(order);
     }
 }

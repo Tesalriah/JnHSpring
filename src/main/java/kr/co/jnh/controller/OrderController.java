@@ -55,7 +55,7 @@ public class OrderController {
                 // 각 주문번호의 주문상품들을 each에 추가
                 map.put("order_no", list.get(i).getOrder_no());
                 List<Order> each = orderService.readOne(map);
-                map.remove("order_no"); // 할당된 order_no 초기화
+                System.out.println("each = " + each);
                 orderList.add(each);
             }
             m.addAttribute("orderList", orderList);

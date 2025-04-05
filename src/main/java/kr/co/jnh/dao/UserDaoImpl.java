@@ -19,8 +19,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private SqlSession session;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
     private static String namespace = "kr.co.jnh.dao.UserMapper.";
 
     @Override
@@ -40,17 +38,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int insert(User user) throws Exception{
-        String hashedPwd = passwordEncoder.encode(user.getUser_pwd());
-        user.setUser_pwd(hashedPwd);
         return session.insert(namespace + "insert", user);
     }
 
     @Override
     public int update(Map map) throws Exception{
-        if(map.get("user_pwd") != null){
-            String hashedPwd = passwordEncoder.encode((String)map.get("user_pwd"));
-            map.put("user_pwd", hashedPwd);
-        }
         return session.update( namespace + "update", map);
     }
 

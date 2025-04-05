@@ -25,8 +25,6 @@ public class ProductController {
     @Autowired
     ProductService productService;
     @Autowired
-    OrderService orderService;
-    @Autowired
     UserService userService;
     @Autowired
     WishService wishService;
@@ -133,7 +131,7 @@ public class ProductController {
         return "product/product-list";
     }
 
-    // 주문했던 상품 재구매
+    // 주문목록에서 요청시 주문했던 상품 재구매
     @PostMapping("/repurchase")
     public String repurchase(String product_id, String size, String quantity, HttpServletRequest request) {
         String id = SessionUtils.getSessionId(request);

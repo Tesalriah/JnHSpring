@@ -38,7 +38,7 @@ public class ReviewController {
             map.put("sc", sc);
 
             int totalCnt = reviewService.selectPageCnt(map);
-            List<Review> list = reviewService.selectPage(map);
+            List<Review> list = reviewService.readPageWithOrder(map);
             PageHandler ph = new PageHandler(totalCnt, sc);
 
             m.addAttribute("totalCnt", totalCnt);
@@ -59,7 +59,7 @@ public class ReviewController {
             if(rno == null){
                 throw new Exception("WRONG_APPROACH");
             }
-            Review review = reviewService.readOne(rno);
+            Review review = reviewService.readOneWithOrder(rno);
             // review 데이터 검증
             if(reviewValidator(review, id)){
                 throw new Exception("WRONG_APPROACH");
@@ -149,7 +149,7 @@ public class ReviewController {
 
         try{
             int totalCnt = reviewService.selectPageCnt(map);
-            List<Review> list = reviewService.selectPage(map);
+            List<Review> list = reviewService.readPageWithOrder(map);
             PageHandler ph = new PageHandler(totalCnt, sc);
 
             m.addAttribute("list", list);
@@ -166,7 +166,7 @@ public class ReviewController {
 
         try{
             // rno값을 통해 해당 리뷰 가져오기
-            Review review =  reviewService.readOne(rno);
+            Review review =  reviewService.readOneWithOrder(rno);
             // review 데이터 검증
             if(reviewValidator(review, id)){
                 throw new Exception("WRONG_APPROACH");
@@ -239,6 +239,7 @@ public class ReviewController {
         return "alert";
     }
 
+    // 상품정보 리뷰리스트 Ajax
     @PostMapping("list")
     @ResponseBody
     public Map<String, Object> list(@RequestBody Map<String, Object> map, SearchCondition sc, HttpServletRequest request){
@@ -255,7 +256,7 @@ public class ReviewController {
 
         try {
             int totalCnt = reviewService.selectPageCnt(map);
-            List<Review> list = reviewService.selectPage(map);
+            List<Review> list = reviewService.readPage(map);
             PageHandler ph = new PageHandler(totalCnt, sc);
 
             map.put("list", list);
