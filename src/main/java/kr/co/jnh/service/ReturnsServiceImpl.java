@@ -78,14 +78,12 @@ public class ReturnsServiceImpl implements ReturnsService {
             type = "취소";
         }
         if(type.equals("반품") && status.equals("완료")){
-            Order order = orderDao.selectOne(map).get(0);
-            Product product = productDao.select(order.getProduct_id());
-            product.setQuantity(order.getQuantity());
+            Order order = orderDao.selectOrderWithProduct(map).get(0);
 
             Map<String, String> parameters = new HashMap<>();
             parameters.put("cid", "TC0ONETIME");                            // 가맹점 코드(테스트용)
             parameters.put("tid", order.getTid());                    // 결제 고유번호
-            parameters.put("cancel_amount", product.getDis_price()+"");
+            parameters.put("cancel_amount", order.getProduct().getDis_price()+"");
             parameters.put("cancel_tax_free_amount", "0");
             parameters.put("partner_order_id", order.getOrder_no());  // 주문번호
             parameters.put("partner_user_id", order.getUser_id());    // 회원 아이디
@@ -168,17 +166,6 @@ public class ReturnsServiceImpl implements ReturnsService {
 
     @Override
     public List<Returns> readMng(SearchCondition sc) throws Exception{
-        List<Returns> returnsList = returnsDao.selectMng(sc);
-        for (Returns returns : returnsList) {
-            Map map = new HashMap();
-            map.put("product_id", returns.getProduct_id());
-            map.put("order_no", returns.getOrder_no());
-            map.put("id", returns.getUser_id());
-            map.put("size", returns.getSize());
-            Order order = orderDao.selectOne(map).get(0);
-
-            returns.setOrder(order);
-        }
-        return returnsList;
+        return returnsDao.selectMng(sc);
     }
 }

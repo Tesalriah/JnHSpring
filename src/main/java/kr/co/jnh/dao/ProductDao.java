@@ -38,4 +38,6 @@ public interface ProductDao {
     List<Product> selectProductAdmin(SearchCondition sc) throws Exception;
 
     int selectProductAdminCnt(SearchCondition sc) throws Exception;
+
+    Product selectForUpdate(Map map) throws Exception;
 }

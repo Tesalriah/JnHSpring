@@ -55,7 +55,6 @@ public class OrderController {
                 // 각 주문번호의 주문상품들을 each에 추가
                 map.put("order_no", list.get(i).getOrder_no());
                 List<Order> each = orderService.readOne(map);
-                System.out.println("each = " + each);
                 orderList.add(each);
             }
             m.addAttribute("orderList", orderList);
@@ -200,12 +199,12 @@ public class OrderController {
     }
     @GetMapping("/pay/cancel")
     public String payCancel(HttpSession session) {
-        session.setAttribute("msg", "상품 결제에 실패했습니다.");
-        return "redirect:/product";
+        session.setAttribute("msg", "취소되었습니다.");
+        return "redirect:/product-list";
     }
     @GetMapping("/pay/fail")
     public String payFail(HttpSession session) {
-        session.setAttribute("msg", "취소되었습니다.");
-        return "redirect:/product";
+        session.setAttribute("msg", "상품 결제에 실패했습니다.");
+        return "redirect:/product-list";
     }
 }

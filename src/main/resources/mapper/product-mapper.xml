@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.jnh.dao.ProductMapper">
     <select id="select" parameterType="String" resultType="Product">
         SELECT * FROM product
-        WHERE product_id LIKE CONCAT(#{product_id},'%') ORDER BY size ASC LIMIT 1
+        WHERE product_id = #{product_id} ORDER BY size ASC LIMIT 1
     </select>
 
     <select id="selectOne" parameterType="String" resultType="Product">
@@ -140,7 +140,7 @@
 
     <select id="selectAtSize" parameterType="map" resultType="Product">
         SELECT * FROM product
-        WHERE product_id LIKE CONCAT(#{product_id},'%') AND size = #{size}
+        WHERE product_id = ${product_id} AND size = #{size}
     </select>
 
     <select id="selectProductAdmin" parameterType="SearchCondition" resultType="Product">
@@ -157,5 +157,14 @@
         WHERE true
         <include refid="searchCondition"/>
         ORDER BY rating desc
+    </select>
+
+    <!-- 비관적 락 적용 쿼리 -->
+    <select id="selectForUpdate" parameterType="map" resultType="Product">
+        SELECT *
+        FROM product
+        WHERE product_id = #{product_id}
+          AND size = #{size}
+            FOR UPDATE
     </select>
 </mapper>

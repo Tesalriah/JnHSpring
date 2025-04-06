@@ -3,16 +3,77 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.jnh.dao.ReturnsMapper">
+
+    <resultMap id="returnsResultMap" type="returns">
+        <result property="return_id" column="return_id"/>
+        <result property="user_id" column="user_id"/>
+        <result property="address" column="address"/>
+        <result property="order_no" column="order_no"/>
+        <result property="product_id" column="r_product_id"/>
+        <result property="type" column="type"/>
+        <result property="size" column="size"/>
+        <result property="quantity" column="quantity"/>
+        <result property="status" column="status"/>
+        <result property="order_date" column="order_date"/>
+        <result property="return_date" column="return_date"/>
+        <result property="reason" column="reason"/>
+        <result property="contents" column="contents"/>
+        <result property="c_size" column="c_size"/>
+
+        <association property="order" javaType="Order">
+            <result property="name" column="name"/>
+            <result property="phone" column="phone"/>
+            <result property="color" column="color"/>
+
+            <association property="product" javaType="Product">
+                <result property="product_name" column="product_name"/>
+                <result property="image" column="p_image"/>
+                <result property="price" column="price"/>
+                <result property="discount" column="discount"/>
+                <result property="dis_price" column="dis_price"/>
+                <result property="total" column="total"/>
+            </association>
+        </association>
+    </resultMap>
+
     <select id="selectAll" parameterType="String" resultType="Returns">
         SELECT * FROM returns
         GROUP BY return_id
         ORDER BY return_id desc
     </select>
 
-    <select id="selectOne" parameterType="String" resultType="Returns">
-        SELECT * FROM returns
+    <select id="selectOne" parameterType="String" resultMap="returnsResultMap">
+        SELECT
+            r.return_id,
+            r.user_id,
+            r.address,
+            r.order_no,
+            r.product_id AS r_product_id,
+            r.type,
+            r.size,
+            r.quantity,
+            r.status,
+            r.order_date,
+            r.return_date,
+            r.reason,
+            r.contents,
+            r.c_size,
+
+            o.color,
+            o.name,
+            o.phone,
+
+            p.product_name,
+            p.image as p_image,
+            p.price,
+            p.discount,
+            FLOOR(p.price - p.price / 100 * p.discount) AS dis_price,
+            FLOOR((p.price - p.price / 100 * p.discount) * o.quantity) AS total
+        FROM returns r
+                 JOIN orders o ON r.order_no = o.order_no AND r.size = o.size AND r.product_id = o.product_id
+                 JOIN product p ON r.product_id = p.product_id AND r.size = p.size
         WHERE return_id = #{return_id}
-        ORDER BY product_id asc
+        ORDER BY r.product_id asc;
     </select>
 
     <insert id="insert" parameterType="Returns">
@@ -58,19 +119,43 @@
         WHERE return_id LIKE CONCAT(#{return_id}, '%') ORDER BY return_id DESC LIMIT 1
     </select>
 
-    <select id="selectMng" parameterType="SearchCondition" resultType="Returns">
-        SELECT r.*
+    <select id="selectMng" parameterType="SearchCondition" resultMap="returnsResultMap">
+        SELECT
+        r.return_id,
+        r.user_id,
+        r.address,
+        r.order_no,
+        r.product_id AS r_product_id,
+        r.type,
+        r.size,
+        r.quantity,
+        r.status,
+        r.order_date,
+        r.return_date,
+        r.reason,
+        r.contents,
+        r.c_size,
+
+        o.color,
+        o.name,
+        o.phone
         FROM returns r
         JOIN (
         SELECT DISTINCT return_id
         FROM returns
         <where>
             <if test="category neq ''">status = #{category}</if>
-            <if test="option neq '' and keyword neq ''">AND ${option} LIKE concat('%',#{keyword},'%')</if>
+            <if test="option neq '' and keyword neq ''">
+                AND ${option} LIKE concat('%',#{keyword},'%')
+            </if>
         </where>
         ORDER BY return_id ASC
-        LIMIT #{offset}, #{pageSize}
+        LIMIT ${offset}, ${pageSize}
         ) sub ON r.return_id = sub.return_id
+
+        JOIN orders o ON r.order_no = o.order_no
+        AND r.size = o.size
+        AND r.product_id = o.product_id
         ORDER BY r.return_id ASC, r.product_id ASC;
     </select>
 

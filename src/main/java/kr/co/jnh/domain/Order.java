@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Order {
 
-    private Product product;
     private String user_id;
     private String name;
     private String address;
@@ -21,6 +20,8 @@ public class Order {
     private String tid;
     private String payment_method_type;
     private String issuer_corp;
+
+    private Product product;
 
     public Order(){}
 

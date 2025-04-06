@@ -4,6 +4,20 @@
 
 <mapper namespace="kr.co.jnh.dao.QuestionMapper">
 
+    <resultMap id="questionResultMap" type="question">
+        <result property="qno" column="qno"/>
+        <result property="ano" column="ano"/>
+        <result property="user_id" column="user_id"/>
+        <result property="product_id" column="product_id"/>
+        <result property="contents" column="contents"/>
+        <result property="reg_date" column="reg_date"/>
+
+        <association property="product" javaType="Product">
+            <result property="product_name" column="product_name"/>
+            <result property="image" column="image"/>
+        </association>
+    </resultMap>
+
 <!--  총게시물 갯수  -->
 <!--  아이디 or 상품번호에 맞춰 정보불러오기   -->
     <select id="count" resultType="int" parameterType="Map">
@@ -44,38 +58,63 @@
     </select>
 
 <!--질문중에 답변이 달리지않은 질문만 가져오기-->
-    <select id="selectMng" resultType="Question" parameterType="Map">
-        SELECT * FROM question q1
-        WHERE q1.ano = 1
-        AND NOT EXISTS (
-        SELECT 1 FROM question q2
-        WHERE q2.qno = q1.qno
-        AND q2.ano = 2
-        )
+    <select id="selectMng" resultMap="questionResultMap" parameterType="map">
+        SELECT
+        q.qno,
+        q.ano,
+        q.user_id,
+        q.product_id,
+        q.contents,
+        q.reg_date,
+
+        p.product_name,
+        p.image
+        FROM question q
+            JOIN (
+                SELECT * FROM product
+                GROUP BY product_id
+            ) p
+            ON q.product_id = p.product_id
+        WHERE q.ano = 1
+          AND NOT EXISTS (
+                SELECT 1 FROM question q2
+                WHERE q2.qno = q.qno
+                  AND q2.ano = 2
+            )
         ORDER BY qno asc
         LIMIT #{sc.offset}, #{sc.pageSize};
     </select>
 
     <select id="selectMngCnt" resultType="int">
         SELECT COUNT(*)
-        FROM question q1
-        WHERE q1.ano = 1
+        FROM question q
+        WHERE q.ano = 1
           AND NOT EXISTS (
                 SELECT 1
                 FROM question q2
-                WHERE q2.qno = q1.qno
+                WHERE q2.qno = q.qno
                   AND q2.ano = 2
             );
     </select>
 
 <!--  아이디 or 상품번호에 맞춰 정보불러오기   -->
     <select id="selectInfo" resultType="Question" parameterType="Map">
-        SELECT q.qno, q.ano, q.user_id, q.product_id, q.contents, q.reg_date
+        SELECT
+        q.qno,
+        q.ano,
+        q.user_id,
+        q.product_id,
+        q.contents,
+        q.reg_date,
+
+        p.product_name,
+        p.image
         FROM question q
         JOIN (
         SELECT qno
         FROM question
-        WHERE true and ano = 1
+        WHERE true
+        AND ano = 1
         <if test="user_id != null">
             AND user_id = #{user_id}
         </if>
@@ -85,6 +124,14 @@
         ORDER BY qno DESC
         LIMIT #{sc.offset}, #{sc.pageSize}
         ) sub ON q.qno = sub.qno
+        JOIN (
+        SELECT
+        product_id,
+        MAX(product_name) AS product_name,
+        MAX(image) AS image
+        FROM product
+        GROUP BY product_id
+        ) p ON q.product_id = p.product_id
         ORDER BY q.qno DESC, q.ano ASC;
     </select>
 

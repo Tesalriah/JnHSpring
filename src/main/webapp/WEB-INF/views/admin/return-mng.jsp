@@ -74,7 +74,7 @@
                                         <td style="width:10%">사유/내용</td>
                                         <td style="width:10%">변경사이즈</td>
                                     </tr>
-                                    <c:if test="${ph.totalCnt <= 0}">
+                                    <c:if test="${empty list}">
                                         <tr><td style="padding:150px 0; font-size:24px" colspan="11">데이터가 존재하지 않습니다.</td></tr>
                                     </c:if>
                                     <c:forEach items="${list}" var="returns" varStatus="returnsStatus">
@@ -82,7 +82,7 @@
                                             <td><input type="checkbox" name="check_each" value="${returnsStatus.index}"></td>
                                             <td><c:choose><c:when test="${returns.type eq 'exchange'}">교환</c:when><c:when test="${returns.type eq 'return'}">반품</c:when><c:otherwise>취소</c:otherwise></c:choose><input type="hidden" name="returnsList[${returnsStatus.index}].type" value="${returns.type}"></td>
                                             <td>${returns.return_id}<input type="hidden" name="returnsList[${returnsStatus.index}].return_id" value="${returns.return_id}"></td>
-                                            <td><a href="<c:url value="/admin/order-mng"/>?keyword=${returns.order_no}">${returns.order_no}</a><br><a href="<c:url value="/product"/>?product_id=${returns.product_id}" target="_blank">${returns.product_id}</a><input type="hidden" name="returnsList[${returnsStatus.index}].product_id" value="${returns.product_id}"></td>
+                                            <td><a href="<c:url value="/admin/order-mng"/>?keyword=${returns.order_no}" target="_blank">${returns.order_no}</a><br><a href="<c:url value="/product"/>?product_id=${returns.product_id}" target="_blank">${returns.product_id}</a><input type="hidden" name="returnsList[${returnsStatus.index}].product_id" value="${returns.product_id}"></td>
                                             <td>${returns.order.color}/${returns.size}<input type="hidden" name="returnsList[${returnsStatus.index}].size" value="${returns.size}"></td>
                                             <td>${returns.quantity}<input type="hidden" name="returnsList[${returnsStatus.index}].order_no" value="${returns.order_no}"></td>
                                             <td>${returns.order.name}<input type="hidden" name="returnsList[${returnsStatus.index}].user_id" value="${returns.user_id}"></td>
@@ -123,8 +123,8 @@
                             <form action="<c:url value="/admin/return-mng"/>" method="get">
                                 <select name="option">
                                     <option value="order_no" ${empty param.option || param.option == "order_no" ? "selected" : ""}>주문번호</option>
-                                    <option value="return_id" ${param.option == "return_id" ? "selected" : ""}>요청번호</option>
-                                    <option value="user_id" ${param.option == "user_id" ? "selected" : ""}>아이디</option>
+                                    <option value="return_id" ${param.option == "return_id" ? "selected" : ""}>주문번호</option>
+                                    <option value="user_id" ${param.option == "name" ? "selected" : ""}>이름</option>
                                 </select>
                                 <input type="hidden" name="category" value="${ph.sc.category}">
                                 <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="${param.keyword}"><button type="submit">검색</button>

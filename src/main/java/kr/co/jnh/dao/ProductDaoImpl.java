@@ -98,4 +98,9 @@ public class ProductDaoImpl implements ProductDao {
     public int selectProductAdminCnt(SearchCondition sc) throws Exception{
         return session.selectOne(nameSpace + "selectProductAdminCnt", sc);
     }
+
+    @Override
+    public Product selectForUpdate(Map map) throws Exception{
+        return session.selectOne( nameSpace + "selectForUpdate", map);
+    }
 }

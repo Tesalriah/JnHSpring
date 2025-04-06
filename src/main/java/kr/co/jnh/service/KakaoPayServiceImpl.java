@@ -49,9 +49,13 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         }
 
         for (Order order : list) {
-            Product product = productDao.select(order.getProduct_id());
+            // 비관적 락 적용
+            Map<String, Object> lockMap = new HashMap<>();
+            lockMap.put("product_id", order.getProduct_id());
+            lockMap.put("size", order.getSize());
+            Product product = productDao.selectForUpdate(lockMap); // 비관적 락 적용 메서드
             order.setColor(product.getColor()); // order의 color set
-            product.setQuantity(order.getQuantity());
+            product.setQuantity(order.getQuantity()); // quantity를 set하면서 갯수에 따른 가격 계산(total)
             totalPrice += product.getTotal();
 
             if(orderDao.insert(order) != 1){
@@ -68,7 +72,8 @@ public class KakaoPayServiceImpl implements KakaoPayService {
             map.remove("bought_cnt");
             map.put("size", order.getSize());
 
-            // product의 stock 구매수량만큼 감소
+            // product의 stock 구매수량만큼 감소(비관적 락이 걸려있기때문에 동시실행 X)
+            // 동시에 요청한 다른 트랜젝션은 대기
             int calStock = Integer.parseInt(product.getStock()) - order.getQuantity();
             map.put("stock", calStock);
             map.put("size", order.getSize());

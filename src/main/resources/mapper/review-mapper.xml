@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.jnh.dao.ReviewMapper">
+
     <resultMap id="reviewResultMap" type="review">
         <result property="rno" column="rno"/>
         <result property="order_no" column="r_order_no"/>
@@ -31,6 +32,7 @@
         </association>
     </resultMap>
 
+    <!-- review를 가져올때 order와 안의 product 정보까지 함께 가져오는 다중 조인 동적 쿼리 -->
     <select id="reviewWithOrder" parameterType="Map" resultMap="reviewResultMap">
         SELECT
             r.rno,
@@ -88,6 +90,7 @@
         WHERE rno = #{rno};
     </select>
 
+    <!-- review를 가져올때 order와 안의 product 정보까지 함께 가져오는 다중 조인 동적 쿼리 -->
     <select id="selectOneWithOrder" parameterType="int" resultMap="reviewResultMap">
         SELECT
         r.rno,

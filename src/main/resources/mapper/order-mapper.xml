@@ -68,8 +68,8 @@
                       ON o.product_id = p.product_id
                           AND o.size = p.size
         WHERE o.order_no = #{order_no}
-        <if test="size != null">AND size = #{size}</if>
-        <if test="product_id != null">AND size = #{product_id}</if>
+        <if test="size != null">AND o.size = #{size}</if>
+        <if test="product_id != null">AND o.product_id = #{product_id}</if>
     </select>
 
     <select id="select" parameterType="Map" resultType="Order">

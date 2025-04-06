@@ -18,6 +18,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Autowired
     private SqlSession session;
+
     private static String nameSpace = "kr.co.jnh.dao.OrderMapper.";
 
     @Override

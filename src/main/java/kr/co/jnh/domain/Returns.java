@@ -5,8 +5,6 @@ import java.util.Date;
 
 public class Returns {
 
-    private Product product;
-    private Order order;
     private String return_id;
     private String user_id;
     private String address;
@@ -21,6 +19,9 @@ public class Returns {
     private String reason;
     private String contents;
     private String c_size;
+
+    private Product product;
+    private Order order;
 
     public Returns(){};
 

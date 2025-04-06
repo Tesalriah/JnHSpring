@@ -56,7 +56,7 @@
     <%@ include file="../footer.jsp" %>
     <script>
         document.querySelector('.submit_next').addEventListener('click', function (event){
-            const checkboxes = document.querySelectorAll('.check_box');
+            const checkboxes = document.querySelectorAll('input[name="check_box"]');
             const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
             if (!isChecked) {
