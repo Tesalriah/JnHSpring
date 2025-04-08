@@ -189,13 +189,13 @@ public class LoginController {
 
     // 비밀번호 변경
     @PostMapping("/change-pwd")
-    public String changePwd(HttpSession session, @RequestParam(required = false) String pwd, @RequestParam(required = false) String checkPwd,@RequestParam(required = false)String birth, Model m){
+    public String changePwd(HttpSession session, @RequestParam(required = false) String new_pwd, @RequestParam(required = false) String check_new_pwd,@RequestParam(required = false)String birth, Model m){
         // 비밀번호 찾기에서 저장한 changePwdID 값 가져오기
         String id = (String)session.getAttribute("changePwdID");
         // input 받은 값들 저장
         m.addAttribute("birth",birth);
 
-        if(!pwd.equals(checkPwd)){ // 비밀번호, 비밀번호 확인 일치하는지 체크
+        if(!new_pwd.equals(check_new_pwd)){ // 비밀번호, 비밀번호 확인 일치하는지 체크
             session.setAttribute("msg", "비밀번호 확인이 일치하지 않습니다.");
             return "account/change-pwd";
         }
@@ -208,7 +208,7 @@ public class LoginController {
                 return "account/change-pwd";
             };
             // 생년월일이 일치했을경우 비밀번호 변경
-            userService.changePwd(id, pwd);
+            userService.changePwd(id, new_pwd);
             session.removeAttribute("changePwdID");
             session.setAttribute("msg", "비밀번호가 변경되었습니다.");
             return "redirect:/login";
