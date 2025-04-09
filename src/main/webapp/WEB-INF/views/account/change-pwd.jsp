@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -24,23 +25,27 @@
                     </ul>
                 </div>
                 <div class="table_area">
-                    <form method="post" action="<c:url value='/change-pwd'/>">
+<%--                    <form method="post" action="<c:url value='/change-pwd'/>">--%>
+                    <form:form modelAttribute="changePwd" method="post">
                         <table class="info">
                             <tr>
                                 <td class="table_bg_color">새 비밀번호</td>
-                                <td class="border_left"><input class="input_text" type="password" value="${pwd}" name="new_pwd"></td>
+                                <td class="border_left"><input class="input_text" type="password" name="newPwd"><div class="error"><form:errors path="newPwd"/></div></td>
+                            </tr>
+                            <tr>
                             </tr>
                             <tr>
                                 <td class="table_bg_color">새 비밀번호 확인</td>
-                                <td class="border_left"><input class="input_text" type="password" name="check_new_pwd"></td>
+                                <td class="border_left"><input class="input_text" type="password" name="checkNewPwd"><div class="error"><form:errors path="checkNewPwd"/></div></td>
                             </tr>
                             <tr>
                                 <td class="table_bg_color">생년월일 확인</td>
-                                <td class="border_left"><input class="input_text" type="date" value="${birth}" name="birth"></td>
+                                <td class="border_left"><input class="input_text" type="date" value="${birth}" name="birth"><div class="error"><form:errors path="birth"/></div></td>
                             </tr>
                         </table>
                         <button type="submit" id="submit">제출</button>
-                    </form>
+<%--                    </form>--%>
+                    </form:form>
                 </div>
             </div>
         </main>

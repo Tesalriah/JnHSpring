@@ -97,8 +97,7 @@
                 bno as arr2,
                 LAG(bno,1) over (order by bno) as arr3,
                 LAG(bno,2) over (order by bno) as arr4
-            from notice where true AND category
-            LIKE concat('%',#{option},'%')
+            from notice
             order by bno desc )abc
         where arr2=#{bno};
     </select>

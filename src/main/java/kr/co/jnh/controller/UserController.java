@@ -1,21 +1,23 @@
 package kr.co.jnh.controller;
 
 
+import kr.co.jnh.domain.ChangePwd;
 import kr.co.jnh.domain.User;
 import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.CacheControlUtil;
 import kr.co.jnh.util.SessionUtils;
+import kr.co.jnh.validation.ChangePwdValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,11 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @InitBinder("changePwd")
+    public void toDate(WebDataBinder binder) {
+        binder.setValidator(new ChangePwdValidator());
+    }
 
     @GetMapping
     public String user(HttpServletRequest request, HttpServletResponse response, Model m) {
@@ -79,6 +86,7 @@ public class UserController {
             // 비밀번호 확인 조건을 재사용 되지않기 위해 세션에서 제거
             session.removeAttribute("passwordVerified");
             m.addAttribute("user", user);
+            m.addAttribute("changePwd", new ChangePwd());
             return "mypage/user-info";
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +97,7 @@ public class UserController {
     }
 
     @PostMapping("change-address")
-    public String changeAddress(@RequestParam String address,@RequestParam(required = false) String address2, HttpServletRequest request, Model m){
+    public String changeAddress(@RequestParam String address, @RequestParam(required = false) String address2, HttpServletRequest request, Model m){
         HttpSession session = request.getSession(false);
 
         String id = SessionUtils.getSessionId(request);
@@ -116,7 +124,7 @@ public class UserController {
     }
 
     @PostMapping("change-pwd")
-    public String changePwd(String user_pwd, String new_pwd, String new_pwd_check, HttpServletRequest request, Model m){
+    public String changePwd(@Valid @ModelAttribute("changePwd") ChangePwd changePwd, BindingResult result, String user_pwd, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         String id = SessionUtils.getSessionId(request);
 
@@ -126,28 +134,36 @@ public class UserController {
         map.put("pwd", user_pwd);
 
         try{
-            // 변경 비밀번호, 비밀번호 확인 체크
-            if(!new_pwd.equals(new_pwd_check)){
-                m.addAttribute("msg","두 비밀번호가 일치하지 않습니다.");
-                throw new Exception("CHECK_DOES_NOT_MATCH");
+            if(result.hasErrors()){
+                if (result.getFieldError("newPwd") != null) {
+                    String code = result.getFieldError("newPwd").getCode();
+                    if ("invalidLength".equals(code)) {
+                        session.setAttribute("msg", "비밀번호의 길이는 5~20사이어야 합니다.");
+                    }
+                }if (result.getFieldError("checkNewPwd") != null) {
+                    String code = result.getFieldError("checkNewPwd").getCode();
+                    if ("mismatch".equals(code)) {
+                        session.setAttribute("msg", "두 비밀번호가 일치하지않습니다.");
+                    }
+                }
+                throw new Exception("Validation Error");
             }
             // 현재 비밀번호 확인
             if(!userService.loginCheck(map)){
-                m.addAttribute("msg","현재 비밀번호가 일치하지 않습니다.");
+                session.setAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
                 throw new Exception("DOES_NOT_MATCH");
             }
-            if(userService.changePassword(id, new_pwd) != 1){
-                m.addAttribute("비밀번호 변경에 실패앴습니다.");
+            if(userService.changePassword(id, changePwd.getNewPwd()) != 1){
+                session.setAttribute("msg", "변경에 실패했습니다.");
                 throw new Exception("PWD_CHANGE_FAIL");
             }
-            m.addAttribute("msg", "비밀번호가 변경되었습니다.");
-            m.addAttribute("url", "/jnh");
+            session.setAttribute("msg", "비밀번호가 변경되었습니다.");
+            return "redirect:/";
         }catch (Exception e){
             e.printStackTrace();
             session.setAttribute("passwordVerified", true);
-            m.addAttribute("url","info");
+            return "redirect:/mypage/user/info";
         }
-        return "alert";
     }
 
     @PostMapping("del-account")

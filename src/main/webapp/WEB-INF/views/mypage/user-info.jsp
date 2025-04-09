@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="kr">
     <head>
@@ -16,7 +17,7 @@
         <div class="container">
             <div class="contents">
                 <h2>회원 정보 확인</h2>
-                <form action="" method="post">
+                <form:form modelAttribute="changePwd" method="post">
                     <table class="user_info">
                         <tr>
                             <td>아이디</td>
@@ -48,11 +49,11 @@
                                 </div>
                                 <div>
                                     <div>새 비밀번호</div>
-                                    <div><input name="new_pwd" type="password"></div>
+                                    <div><input name="newPwd" type="password"><div class="error"><form:errors path="newPwd"/></div></div>
                                 </div>
                                 <div>
                                     <div>새 비밀번호 확인</div>
-                                    <div><input name="new_pwd_check" type="password"></div>
+                                    <div><input name="checkNewPwd" type="password"><div class="error"><form:errors path="checkNewPwd"/></div></div>
                                 </div>
                             </td>
                         </tr>
@@ -70,7 +71,7 @@
                     <div class="edit_button">
                         <button type="submit" id="change_pwd" formaction="<c:url value="/mypage/user/change-pwd"/>">수정</button>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </main>
