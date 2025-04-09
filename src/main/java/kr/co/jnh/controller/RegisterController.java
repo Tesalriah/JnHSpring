@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,7 +49,8 @@ public class RegisterController {
 
     // 회원가입 Get
     @PostMapping("/register")
-    public String signUp(){
+    public String signUp(Model m){
+        m.addAttribute("user", new User());
         return "account/signup";
     }
 
@@ -120,7 +122,7 @@ public class RegisterController {
 
     // 회원가입 Post
     @PostMapping("/signup")
-    public String signUp(@Valid User user, BindingResult result, HttpServletRequest request, Model m, HttpSession session){
+    public String signUp(@ModelAttribute("user") @Valid User user, BindingResult result, HttpServletRequest request, Model m, HttpSession session){
         // 따로 받은 주소 값 합치기
         String address = request.getParameter("address1") + request.getParameter("address2");
         user.setAddress(address);

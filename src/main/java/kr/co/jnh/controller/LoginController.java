@@ -1,5 +1,6 @@
 package kr.co.jnh.controller;
 
+import kr.co.jnh.domain.ChangePwd;
 import kr.co.jnh.domain.MailAuthDto;
 import kr.co.jnh.domain.MailDto;
 import kr.co.jnh.domain.User;
@@ -8,13 +9,18 @@ import kr.co.jnh.service.UserService;
 import kr.co.jnh.util.CacheControlUtil;
 import kr.co.jnh.util.SessionUtils;
 import kr.co.jnh.util.MailAuthUtil;
+import kr.co.jnh.validation.ChangePwdValidator;
+import kr.co.jnh.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.*;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +35,11 @@ public class LoginController {
 
     @Autowired
     EmailService emailService;
+
+    @InitBinder("changePwd")
+    public void toDate(WebDataBinder binder) {
+        binder.setValidator(new ChangePwdValidator());
+    }
 
     // 로그아웃
     @GetMapping("/logout")
@@ -171,7 +182,7 @@ public class LoginController {
 
     // 비밀번호 찾기 성공 시 이동되는 비밀번호 변경 페이지
     @GetMapping("/change-pwd")
-    public String changePwd(HttpServletRequest request){
+    public String changePwd(HttpServletRequest request, Model m){
         // 로그인했을 시 메인페이지로
         if(SessionUtils.getSessionId(request) != null){
             return "redirect:/";
@@ -184,31 +195,26 @@ public class LoginController {
             session.setAttribute("msg", "잘못된 시도입니다.");
             return "redirect:/";
         }
+        m.addAttribute("changePwd", new ChangePwd());
         return "account/change-pwd";
     }
 
     // 비밀번호 변경
     @PostMapping("/change-pwd")
-    public String changePwd(HttpSession session, @RequestParam(required = false) String new_pwd, @RequestParam(required = false) String check_new_pwd,@RequestParam(required = false)String birth, Model m){
+    public String changePwd(@Valid ChangePwd changePwd, BindingResult result, HttpSession session, Model m){
         // 비밀번호 찾기에서 저장한 changePwdID 값 가져오기
         String id = (String)session.getAttribute("changePwdID");
-        // input 받은 값들 저장
-        m.addAttribute("birth",birth);
 
-        if(!new_pwd.equals(check_new_pwd)){ // 비밀번호, 비밀번호 확인 일치하는지 체크
-            session.setAttribute("msg", "비밀번호 확인이 일치하지 않습니다.");
-            return "account/change-pwd";
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             // 입력받은 생년월일과 해당id의 생년월일이 일치하는지 확인
-            Date birthToDate = formatter.parse(birth);
-            if(!userService.checkBirth(id, birthToDate)){
-                session.setAttribute("msg", "생년월일이 일치하지 않습니다.");
-                return "account/change-pwd";
+            if(!userService.checkBirth(id, changePwd.getBirth())){
+                result.rejectValue("birth", "mismatch");
             };
+            if(result.hasErrors()) {
+                throw new Exception("Validation Error");
+            }
             // 생년월일이 일치했을경우 비밀번호 변경
-            userService.changePwd(id, new_pwd);
+            userService.changePwd(id, changePwd.getNewPwd());
             session.removeAttribute("changePwdID");
             session.setAttribute("msg", "비밀번호가 변경되었습니다.");
             return "redirect:/login";
@@ -240,7 +246,7 @@ public class LoginController {
     // 로그인 처리
     @PostMapping("/login")
     public String login(String id, String pwd,@SessionAttribute(name = "prevPage", required = false) String prevPage, boolean rememberId,
-                        HttpServletRequest request, HttpServletResponse response, RedirectAttributes rattb){
+                        HttpServletRequest request, HttpServletResponse response){
         Map<String, String> map = new HashMap<>();
         map.put("id",id);
         map.put("pwd",pwd);
