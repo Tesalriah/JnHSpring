@@ -149,14 +149,14 @@ public class ReturnsServiceImpl implements ReturnsService {
             if(orderDao.returnUpdate(map) <= 0){
                 throw new Exception("ORDER_STATUS_UPDATE_FAIL");
             }
-            if(!returns.getType().equals("exchange")){
-                map.put("whether", 2);
+            map.put("whether", 2);
+            if(!returns.getType().equals("cancel")){
                 if(reviewDao.cancelDelete(map) <= 0){
                     throw new Exception("REVIEW_DELETE_FAIL");
                 }
             }
-            productDao.updateReviewAvg();
         }
+        productDao.updateReviewAvg();
 
         return result;
     }
