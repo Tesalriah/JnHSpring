@@ -1,7 +1,7 @@
 const r_contents = document.querySelector('.reviews_contents');
 const r_paging = document.querySelector('.review_paging');
 let r_currentPage = 0;
-let option = 'rating';
+let option = 'rating'; // 옵션 기본값(평점순)
 
 function reviewList(page){
     /* 입력된 데이터 Json 형식으로 변경 */
@@ -19,7 +19,7 @@ function reviewList(page){
                 var list = result.list;
                 var ph = result.ph
 
-                if(ph.totalCnt <= 0) {
+                if(ph.totalCnt <= 0) { // 받아온 리스트가 없을경우
                     r_contents.innerHTML = '<div class="empty_list">작성된 리뷰가 없습니다.</div>';
                 }else{
                     let html = '';
@@ -59,7 +59,7 @@ function reviewList(page){
 
                         r_contents.innerHTML = html;
                     }
-                }
+                } // 리스트가 있을경우 문자열로 html문을 중첩하여 r_contents에 innerHTML
                 if(ph.totalPage > 0){
                     let html = '';
                     if(ph.showPrev){

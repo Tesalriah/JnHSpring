@@ -267,7 +267,7 @@ public class AdminController {
         String type = (String)map.get("type");
         map.put(type, dynamic_value);
 
-        if(!type.equals("stock")){ // stock(재고)를 특정사이즈가 아닌 해당 product_id의 모든 값을 변경
+        if(!type.equals("stock")){ // stock(재고)이 아닐경우 특정사이즈가 아닌 해당 product_id의 모든 값을 변경
             map.remove("size");
         }
 

@@ -15,9 +15,6 @@ import javax.servlet.http.HttpSession;
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    UserService userService;
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         HttpSession session = request.getSession(false);
