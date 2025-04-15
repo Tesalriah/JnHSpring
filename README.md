@@ -1,6 +1,5 @@
 🛍️ JnH Spring - 의류 쇼핑몰 프로젝트<br><br>
-배포중 https://jnh.kro.kr<br>
-
+배포중 <a href="https://jnh.kro.kr" target="_blank">이동</a><br>
 프로젝트 개요<br>
 JnH Spring은 Spring Framework 기반의 의류 쇼핑몰 프로젝트입니다.<br>
 사용자는 상품을 검색, 주문, 결제, 리뷰 작성 등의 기능을 이용할 수 있으며, 관리자는 상품 및 주문을 관리할 수 있습니다.<br>
