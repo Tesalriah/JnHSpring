@@ -1,5 +1,5 @@
 🛍️ JnH Spring - 의류 쇼핑몰 프로젝트<br><br>
-AWS EC2 배포중 <a href="https://jnh.kro.kr/jnh" target="_blank">이동</a><br><br>
+AWS EC2로 배포중 <a href="https://jnh.kro.kr/jnh" target="_blank">이동</a><br><br>
 
 프로젝트 개요<br>
 JnH Spring은 Spring Framework 기반의 의류 쇼핑몰 프로젝트입니다.<br>
