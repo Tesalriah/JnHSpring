@@ -1,5 +1,6 @@
 🛍️ JnH Spring - 의류 쇼핑몰 프로젝트<br><br>
-<a href="https://jnh.kro.kr/jnh" target="_blank" style="color:red;font-weight:bold;"><AWS EC2로 배포중 서비스 이동></a><br>
+( PC 브라우저 환경에 최적화되어 있습니다. )<br>
+<a href="https://jnh.kro.kr/jnh" target="_blank" style="color:red;font-weight:bold;"><AWS EC2로 배포중입니다.></a><br>
 https://jnh.kro.kr/jnh<br><br>
 ID/PWD<br>
 관리자 asdf/1234<br>
