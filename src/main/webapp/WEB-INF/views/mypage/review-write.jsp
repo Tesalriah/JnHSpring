@@ -32,7 +32,7 @@
                         <div class="write_review">
                             <div class="review_product">
                                 <div class="review_product_img">
-                                    <img src="<c:url value="/resources/img/upload/product-img/${review.product_id}/${review.order.product.image}"/>">
+                                    <img src="<c:url value="/upload/product-img/${review.product_id}/${review.order.product.image}"/>">
                                 </div>
                                 <div class="review_product_detail">
                                     <div class="product_info">${review.order.product.product_name} / ${review.order.color} / ${review.order.size} / ${review.order.quantity}개</div>
@@ -56,7 +56,7 @@
                                 <div>
                                     <c:if test="${not empty review.image}">
                                         기존이미지 :<br><br>
-                                        <img id="review_img" src='<c:url value="/resources/img/upload/review-img/${review.rno}/${review.image}"/>' >
+                                        <img id="review_img" src='<c:url value="/upload/review-img/${review.rno}/${review.image}"/>' >
                                         <input type="hidden" name="not_change" value="${review.image}">
                                         변경할 파일 선택 :
                                     </c:if>

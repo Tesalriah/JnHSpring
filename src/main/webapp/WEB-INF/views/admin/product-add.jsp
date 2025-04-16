@@ -47,7 +47,7 @@
                                             </div>
                                         </div>
                                         <div class="selected_category">
-                                            선택한 카테고리 : <span id="gender_span"></span><span id="arrow" style="display: none;">&nbsp;<i class="fa-solid fa-angle-right"></i>&nbsp;</span><span id="category_span"></span>
+                                            선택한 카테고리 : <span id="gender_span">${list[0].gender}</span><span id="arrow" style="${empty modify ? "display: none;" : ""}">&nbsp;<i class="fa-solid fa-angle-right"></i>&nbsp;</span><span id="category_span">${list[0].category}</span>
                                             <input type="hidden" name="gender" value="${list[0].gender}"><input type="hidden" name="category" value="${list[0].category}">
                                         </div>
                                     </div>

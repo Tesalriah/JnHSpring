@@ -72,12 +72,13 @@ public class LoginController {
     public String findIdAuth(MailAuthDto mailAuthDto, HttpServletRequest request, Model m){
         try {
             String id = userService.emailAuth(mailAuthDto); // 인증번호가 일치하면 해당 id값 반환
+            System.out.println("id = " + id);
             if(id.isBlank()){ // 반환된 id가 없으면 Exception 발생
                 throw new Exception("Wrong approach");
             }
             HttpSession session = request.getSession();
             session.setAttribute("msg", "회원님의 ID는 " + id + " 입니다.");
-            return "redirect:/jnh/login";
+            return "redirect:/login";
         } catch (Exception e) { // 인증 실패시 원래 페이지로 이동
             e.printStackTrace();
             m.addAttribute("name", request.getParameter("name"));

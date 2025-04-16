@@ -8,6 +8,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
     <script type="text/javascript" src="<c:url value="/resources/js/address.js" />" defer></script>
     <script type="text/javascript" src="<c:url value="/resources/js/loading.js"/>" defer></script>
+    <link rel="icon" href="<c:url value="/resources/favicon.ico"/>" type="image/x-icon">
     <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/signup.css'/>">
     <title>J&H 회원가입</title>

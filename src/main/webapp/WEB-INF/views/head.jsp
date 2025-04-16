@@ -1,4 +1,5 @@
         <script src="https://kit.fontawesome.com/f988057b70.js" crossorigin="anonymous"></script>
+        <link rel="icon" href="<c:url value="/resources/favicon.ico"/>" type="image/x-icon">
         <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/header.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/footer.css'/>">

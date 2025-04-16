@@ -38,7 +38,7 @@
                         <li>
                             <input type="checkbox" class="delete_check" name="check_box" value="${status.index}" onclick="checkAll(this)">
                             <input type="hidden" name="product_id" value="${wish.product_id}">
-                            <a class="img_href" href="<c:url value="/product?product_id=${wish.product.product_id}"/>"><img src="<c:url value="/resources/img/upload/product-img/${wish.product.product_id}/${wish.product.image}"/>"></a>
+                            <a class="img_href" href="<c:url value="/product?product_id=${wish.product.product_id}"/>"><img src="<c:url value="/upload/product-img/${wish.product.product_id}/${wish.product.image}"/>"></a>
                             <div class="product_info">
                                 <a href="<c:url value='/product?product_id=${wish.product_id}'/>" target="_blank">${wish.product.product_name}</a><br><br>
                                 <fmt:formatNumber type="number" maxFractionDigits="0" value="${wish.product.dis_price}"/>원

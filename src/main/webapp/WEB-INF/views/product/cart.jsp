@@ -53,7 +53,7 @@
                                         <input type="checkbox" disabled name="check_box">
                                     </c:otherwise>
                                 </c:choose>
-                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/resources/img/upload/product-img/${cart.product.product_id}/${cart.product.image}"/>"></a>
+                                <a class="img_href" href="<c:url value="/product?product_id=${cart.product_id}"/>" target="_blank"><img src="<c:url value="/upload/product-img/${cart.product.product_id}/${cart.product.image}"/>"></a>
                                 <input type="hidden" name="product_id" value="${cart.product_id}">
                             </div>
                             <div class="product_info" ${cart.product.stock <= 0 ? "style='color:#dddddd'" : ""}>
