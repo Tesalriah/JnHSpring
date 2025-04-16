@@ -34,22 +34,22 @@ public class ReportReviewServiceImpl implements ReportReviewService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int write(ReportReview reportReviewre) throws Exception{
-        int result = reportReviewDao.insert(reportReviewre);
+    public int write(ReportReview reportReview) throws Exception{
+        int result = reportReviewDao.insert(reportReview);
         // 해당유저의 누적신고 수를 가져와서 + 1을 하여 저장
-        User user = userDao.selectUserById(reportReviewre.getUser_id());
+        User user = userDao.selectUserById(reportReview.getUser_id());
         int cumulative_report = user.getCumulative_report() + 1;
 
         // 누적신고 + 1 한 값을 해당유저 테이블에 저장
         Map map = new HashMap();
-        map.put("user_id", reportReviewre.getUser_id());
+        map.put("user_id", reportReview.getUser_id());
         map.put("cumulative_report", cumulative_report);
         if(userDao.update(map) != 1){
             throw new Exception("USER_UPDATE_FAIL");
         }
 
         // 리뷰테이블의 신고횟수를 +1 하여 저장
-        Review review = reviewDao.selectOne(reportReviewre.getRno());
+        Review review = reviewDao.selectOne(reportReview.getRno());
         review.setReport_cnt(review.getReport_cnt() + 1);
         if(reviewDao.update(review) != 1){
             throw new Exception("REVIEW_UPDATE_FAIL");

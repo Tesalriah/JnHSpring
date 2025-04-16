@@ -45,7 +45,7 @@
                         <c:forEach items="${list}" var="list">
                             <div class="reviews_each">
                                 <div class="review_top">
-                                    <div class="product_img"><a href='<c:url value="/product?product_id=${list.product_id}"/>' target="_blank"><img src='<c:url value="/resources/img/upload/product-img/${list.product_id}/${list.order.product.image}"/>'>${list.order.product.product_name}</a></div>
+                                    <div class="product_img"><a href='<c:url value="/product?product_id=${list.product_id}"/>' target="_blank"><img src='<c:url value="/upload/product-img/${list.product_id}/${list.order.product.image}"/>'>${list.order.product.product_name}</a></div>
                                     <div class="reviews_tools"><div class="edit_del" style="font-size: 14px;"><a href="<c:url value="/mypage/review/modify"/>?rno=${list.rno}">수정</a>|<form style="display: inline;" method="post" action="<c:url value="/mypage/review/remove"/>"><input name="rno" type="hidden" value="${list.rno}"> <button type="submit" onclick="return confirm('삭제하시겠습니까?');">삭제</button></form></div></div>
                                 </div>
                                 <div class="review_middle" style="display:flex; align-items: center;">
@@ -58,7 +58,7 @@
                                 <div class="review_bottom">
                                     <div>
                                         <c:if test="${not empty list.image}">
-                                            <div class="review_img"><img class="each_img" src='<c:url value="/resources/img/upload/review-img/${list.rno}/${list.image}"/>'></div>
+                                            <div class="review_img"><img class="each_img" src='<c:url value="/upload/review-img/${list.rno}/${list.image}"/>'></div>
                                         </c:if>
                                         <pre><c:out value="${list.contents}"/></pre>
                                     </div>

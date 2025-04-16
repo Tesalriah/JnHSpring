@@ -42,7 +42,7 @@
                             <c:forEach var="list" items="${readAll}">
                                 <tr>
                                     <td>${list.no}</td>
-                                    <td><a href="<c:url value="/admin/ask-details"/>?no=${list.no}"><c:out value="${list.title}"/></a></td>
+                                    <td><a href="<c:url value="/admin/ask-details"/>?no=${list.no}&page=${ph.sc.page}"><c:out value="${list.title}"/></a></td>
                                     <td>${list.state == 1? "답변완료":"대기중"}</td>
                                     <td>${list.user_id}</td>
                                     <td><fmt:formatDate value="${list.reg_date}" pattern="yyyy-MM-dd" /></td>

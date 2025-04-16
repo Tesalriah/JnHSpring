@@ -75,7 +75,7 @@ document.getElementById("btn-pay-ready").addEventListener("click", function(e) {
     };
 
     // POST 방식으로 요청
-    httpRequest.open('POST', '/jnh/mypage/order/pay/ready', true);
+    httpRequest.open('POST', '/mypage/order/pay/ready', true);
     // Response Type을 JSON으로 설정
     httpRequest.responseType = "json";
     // 요청 Header에 Content-Type을 JSON으로 설정

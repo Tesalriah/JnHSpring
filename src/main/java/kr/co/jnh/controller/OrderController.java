@@ -187,6 +187,9 @@ public class OrderController {
             // 카카오 결제 요청하기
             ApproveResponse approveResponse = kakaoPayService.payApprove(tid, pgToken, order);
 
+            if(approveResponse == null){
+                throw new NullPointerException();
+            }
             session.setAttribute("msg", "주문이 완료되었습니다.");
         }catch (Exception e){
             e.printStackTrace();

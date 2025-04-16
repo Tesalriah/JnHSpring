@@ -31,7 +31,7 @@
             <div class="nav">
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
-                    <h2>게시글 ${modify == "1" ? "수정" : "작성"}</h2>
+                    <h2>FAQ ${modify == "1" ? "수정" : "작성"}</h2>
                     <div class="notice_write">
 
                         <form action="<c:url value='/FAQ/write'/>" method="post" onsubmit="return confirmSubmit()">
@@ -40,7 +40,7 @@
                             </c:if>
                             <div class="title">
                                 <select name="question_type">
-                                    <option value="" style="display: none; color:#dddddd;" ${faq.question_type == "" ? "selected" : ""}>게시판 선택</option>
+                                    <option value="" style="display: none; color:#dddddd;" ${faq.question_type == "" ? "selected" : ""}>질문유형 선택</option>
                                     <option value="상품문의" ${faq.question_type == "상품문의" ? "selected" : ""}>상품문의</option>
                                     <option value="주문/배송" ${faq.question_type == "주문/배송" ? "selected" : ""}>주문/배송</option>
                                     <option value="반품/교환" ${faq.question_type == "반품/교환" ? "selected" : ""}>반품/교환</option>

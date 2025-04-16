@@ -1,7 +1,7 @@
 const r_contents = document.querySelector('.reviews_contents');
 const r_paging = document.querySelector('.review_paging');
 let r_currentPage = 0;
-let option = 'rating';
+let option = 'rating'; // 옵션 기본값(평점순)
 
 function reviewList(page){
     /* 입력된 데이터 Json 형식으로 변경 */
@@ -19,7 +19,7 @@ function reviewList(page){
                 var list = result.list;
                 var ph = result.ph
 
-                if(ph.totalCnt <= 0) {
+                if(ph.totalCnt <= 0) { // 받아온 리스트가 없을경우
                     r_contents.innerHTML = '<div class="empty_list">작성된 리뷰가 없습니다.</div>';
                 }else{
                     let html = '';
@@ -50,7 +50,7 @@ function reviewList(page){
                             '<div class="review_bottom">' +
                             '<div>';
                         if(!!list[i].image){
-                            html += '<div class="review_img"><img class="each_img" src="/jnh/resources/img/upload/review-img/' + list[i].rno + '/' + list[i].image +'"/></div>';
+                            html += '<div class="review_img"><img class="each_img" src="/upload/review-img/' + list[i].rno + '/' + list[i].image +'"/></div>';
                         }
                         html += '<pre>' + list[i].contents + '</pre>' +
                             '</div>' +
@@ -59,7 +59,7 @@ function reviewList(page){
 
                         r_contents.innerHTML = html;
                     }
-                }
+                } // 리스트가 있을경우 문자열로 html문을 중첩하여 r_contents에 innerHTML
                 if(ph.totalPage > 0){
                     let html = '';
                     if(ph.showPrev){
@@ -90,7 +90,7 @@ function reviewList(page){
         }
     };
     /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/mypage/review/list', true);
+    httpRequest.open('POST', '/mypage/review/list', true);
     /* Response Type을 Json으로 사전 정의 */
     httpRequest.responseType = "json";
     /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
@@ -135,7 +135,7 @@ function remove(rno){
         }
     };
     /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/mypage/review/removeAjax', true);
+    httpRequest.open('POST', '/mypage/review/removeAjax', true);
     /* Response Type을 Json으로 사전 정의 */
     httpRequest.responseType = "json";
     /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
@@ -155,7 +155,7 @@ r_paging.addEventListener("click", function(event) {
 r_contents.addEventListener("click",  function(event){
     if(event.target.classList.contains("modify")){
         const review_no = event.target.dataset.rno;
-        location.href = '/jnh/mypage/review/modify?rno=' + review_no;
+        location.href = '/mypage/review/modify?rno=' + review_no;
     }
     if(event.target.classList.contains("remove")){
         if(confirm("정말 삭제하시겠습니까?")){

@@ -62,7 +62,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
-            m.addAttribute("url", "/jnh/mypage/user");
+            m.addAttribute("url", "/mypage/user");
             return "alert";
         }
     }
@@ -91,7 +91,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "잘못된 접근입니다.");
-            m.addAttribute("url", "/jnh");
+            m.addAttribute("url", "/");
             return "alert";
         }
     }
@@ -176,7 +176,7 @@ public class UserController {
                 throw new Exception("WITHDRAWAL_FAIL");
             }
             m.addAttribute("msg", "회원탈퇴 처리되었습니다.");
-            m.addAttribute("url", "/jnh");
+            m.addAttribute("url", "/");
             session.invalidate();
         } catch (Exception e) {
             e.printStackTrace();

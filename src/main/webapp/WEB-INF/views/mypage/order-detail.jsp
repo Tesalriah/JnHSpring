@@ -34,7 +34,7 @@
                             <div class="order_contents">
                                 <div class="order_img">
                                     <c:forEach var="order" items="${orderList}">
-                                        <img src="<c:url value="/resources/img/upload/product-img/${order.product.product_id}/${order.product.image}"/>">
+                                        <img src="<c:url value="/upload/product-img/${order.product.product_id}/${order.product.image}"/>">
                                     </c:forEach>
                                 </div>
                                 <input type="hidden" name="order_no" value="${orderList[0].order_no}">

@@ -131,7 +131,7 @@ input[name="quantity"]{
     padding-top:50px;
     justify-content: space-around;
 }
-.product_button input{
+.product_button input, .product_button button{
     width:45%;
     font-size:24px;
     font-weight:bold;
@@ -139,10 +139,10 @@ input[name="quantity"]{
     background-color:#ffffff;
     border:1px solid #cccccc;
 }
-.product_button input:hover{
+.product_button input:hover, .product_button button:hover{
     cursor: pointer;
 }
-.product_button input:first-child:hover{
+.product_button button:first-child:hover{
     background-color:#eeeeee;
 }
 .product_button input:last-child:hover{

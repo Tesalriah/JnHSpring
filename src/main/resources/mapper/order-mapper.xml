@@ -70,6 +70,9 @@
         WHERE o.order_no = #{order_no}
         <if test="size != null">AND o.size = #{size}</if>
         <if test="product_id != null">AND o.product_id = #{product_id}</if>
+        <if test="exception != null and exception  == 1">
+            AND status NOT IN ('반품대기중' , '교환대기중', '반품처리중', '교환처리중', '반품완료', '교환완료', '취소완료');
+        </if>
     </select>
 
     <select id="select" parameterType="Map" resultType="Order">

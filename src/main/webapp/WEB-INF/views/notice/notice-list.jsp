@@ -28,13 +28,20 @@
             <div class="nav">
                 <%@ include file="left-menu.jsp" %>
                 <div class="contents">
-                    <h2>
-                        <c:choose>
-                            <c:when test="${param.option eq 'notice'}">공지사항</c:when>
-                            <c:when test="${param.option eq 'event'}">이벤트</c:when>
-                            <c:otherwise>전체</c:otherwise>
-                        </c:choose>
-                    </h2>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h2>
+                            <c:choose>
+                                <c:when test="${param.option eq 'notice'}">공지사항</c:when>
+                                <c:when test="${param.option eq 'event'}">이벤트</c:when>
+                                <c:otherwise>전체</c:otherwise>
+                            </c:choose>
+                        </h2>
+                        <c:if test="${user.grade == 0}">
+                            <div class="post_button">
+                                <button type="button" onclick="location.href='<c:url value="/notice/write"/>'">글 작성</button>
+                            </div>
+                        </c:if>
+                    </div>
                     <div class="top_nav" style="margin-top: 25px;">
                         <div ${ph.sc.option == null || ph.sc.option == "" ? 'style="border-bottom:none;"' : ""}>
                             <a href="<c:url value='/notice/list'/>">전체</a>
@@ -73,11 +80,6 @@
                                 </tr>
                             </c:forEach>
                         </table>
-                        <c:if test="${user.grade == 0}">
-                            <div class="post_button">
-                                <button type="button" onclick="location.href='<c:url value="/notice/write"/>'">글 작성</button>
-                            </div>
-                        </c:if>
 
 
                         <div class="paging">

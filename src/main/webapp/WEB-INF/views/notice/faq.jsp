@@ -65,11 +65,7 @@
                                             </form>
                                         </div>
                                     </c:if>
-
                                 </div>
-
-
-
                                 <div class="answer">
                                     <div style="flex-grow: 0; flex-shrink: 1; flex-basis: 5%;">A</div>
                                     <div class="answer_contents">
@@ -85,9 +81,8 @@
                         </div>
                     </c:if>
 
-
-                    <c:if test="${ph.totalPage} != 0">
-                        <div class="paging">
+                    <div class="paging">
+                        <c:if test="${ph.totalPage != 0}">
                             <c:if test="${ph.showPrev}">
                                 <a href="<c:url value='/FAQ/list'/>?page=${ph.beginPage-1}">&lt;</a>
                             </c:if>
@@ -97,12 +92,9 @@
                             <c:if test="${ph.showNext}">
                                 <a href="<c:url value='/FAQ/list'/>?page=${ph.endPage+1}">&gt;</a>
                             </c:if>
-                        </div>
-                    </c:if>
+                        </c:if>
+                    </div>
                 </div>
-
-
-
             </div>
         </div>
     </main>

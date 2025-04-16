@@ -267,7 +267,7 @@ public class AdminController {
         String type = (String)map.get("type");
         map.put(type, dynamic_value);
 
-        if(!type.equals("stock")){ // stock(재고)를 특정사이즈가 아닌 해당 product_id의 모든 값을 변경
+        if(!type.equals("stock")){ // stock(재고)이 아닐경우 특정사이즈가 아닌 해당 product_id의 모든 값을 변경
             map.remove("size");
         }
 
@@ -621,7 +621,7 @@ public class AdminController {
             // no 값이 없으면 오류 처리
             if (no == null) {
                 m.addAttribute("msg", "삭제할 게시글을 찾을 수 없습니다.");
-                m.addAttribute("url", "/jnh/admin/ask-mng");
+                m.addAttribute("url", "/admin/ask-mng");
                 return "alert";
             }
 
@@ -637,12 +637,12 @@ public class AdminController {
                 throw new Exception("ASKING-MNG_REMOVE_FAIL");
             }
             m.addAttribute("msg", "삭제되었습니다.");
-            m.addAttribute("url", "/jnh/admin/ask-details?no=" + no);
+            m.addAttribute("url", "/admin/ask-details?no=" + no);
 
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg", "삭제에 실패했습니다.");
-            m.addAttribute("url", "/jnh/admin/ask-details?no=" + no);
+            m.addAttribute("url", "/admin/ask-details?no=" + no);
 
         }
         return "alert";
@@ -665,7 +665,7 @@ public class AdminController {
                 throw new Exception("WRT_FAIL");
             } else {
                 m.addAttribute("msg","작성되었습니다.");
-                m.addAttribute("url", "/jnh/admin/ask-details?no=" + askingDto.getNo());
+                m.addAttribute("url", "/admin/ask-details?no=" + askingDto.getNo());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -674,7 +674,7 @@ public class AdminController {
             } else {
                 m.addAttribute("msg", "다시 입력해주세요");
             }
-            m.addAttribute("url","/jnh/admin/ask-details?no=" + askingDto.getNo());
+            m.addAttribute("url","/admin/ask-details?no=" + askingDto.getNo());
         }
         return "alert";
     }

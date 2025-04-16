@@ -35,7 +35,7 @@
                                 <c:if test="${!empty prevNext[1]}">
                                     <button type="button" onclick="location.href='<c:url value="/admin/ask-details"/>?bno=${prevNext[1]}'">다음글</button>
                                 </c:if>
-                                <button type="button" onclick="location.href='<c:url value="/admin/ask-mng"/>'" >목록</button>
+                                <button type="button" onclick="location.href='<c:url value="/admin/ask-mng"/>?page=${sc.page}'" >목록</button>
                             </div>
                         </form>
 
@@ -86,16 +86,10 @@
                                         <button type="submit" onclick="return confirm('작성하시겠습니까?')">등록</button>
                                     </div>
                                 </div>
-
                             </form>
 
 
                         </c:if>
-                    </div>
-
-
-                    <div class="post_button">
-                        <button type="button" onclick="location.href='<c:url value="/admin/ask-mng"/>'" >목록</button>
                     </div>
                 </div>
             </div>

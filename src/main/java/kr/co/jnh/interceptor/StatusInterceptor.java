@@ -33,11 +33,11 @@ public class StatusInterceptor implements HandlerInterceptor {
                             // 정지된 유저 로그아웃, 회원탈퇴된 유저 로그아웃
                             if (status == 1 || status == 2) {
                                 session.invalidate();
-                                response.sendRedirect("/jnh");
+                                response.sendRedirect("/");
                             }
                             // 이메일 미인증 유저 이메일 인증으로
                             if (status == 3) {
-                                response.sendRedirect("/jnh/email-auth");
+                                response.sendRedirect("/email-auth");
                             }
                         }
                     }

@@ -123,7 +123,7 @@
                             <form action="<c:url value="/admin/return-mng"/>" method="get">
                                 <select name="option">
                                     <option value="order_no" ${empty param.option || param.option == "order_no" ? "selected" : ""}>주문번호</option>
-                                    <option value="return_id" ${param.option == "return_id" ? "selected" : ""}>주문번호</option>
+                                    <option value="return_id" ${param.option == "return_id" ? "selected" : ""}>고유번호</option>
                                     <option value="user_id" ${param.option == "name" ? "selected" : ""}>이름</option>
                                 </select>
                                 <input type="hidden" name="category" value="${ph.sc.category}">

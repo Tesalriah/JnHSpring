@@ -59,7 +59,7 @@ public class NoticeController {
             }
             if(noticeService.write(noticeDto) == 1){
                 m.addAttribute("msg", "등록되었습니다.");
-                m.addAttribute("url", "/jnh/notice/list");
+                m.addAttribute("url", "/notice/list");
                 return "alert";
             }else{
                 throw new Exception("WRT_FAIL");

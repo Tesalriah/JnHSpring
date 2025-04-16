@@ -35,7 +35,7 @@
                         </c:if>
                         <c:forEach items="${list}" var="list">
                             <div class="able">
-                                <div><img src='<c:url value="/resources/img/upload/product-img/${list.product_id}/${list.order.product.image}"/>'></div>
+                                <div><img src='<c:url value="/upload/product-img/${list.product_id}/${list.order.product.image}"/>'></div>
                                 <div>
                                     <div>${list.order.product.product_name} / ${list.order.color} / ${list.order.size} / ${list.order.quantity}개</div>
                                     <div>구매일자 : <fmt:formatDate value="${list.order.order_date}" pattern="yyyy/MM/dd"/></div>

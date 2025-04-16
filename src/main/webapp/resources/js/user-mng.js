@@ -52,7 +52,7 @@ function changeStatus(id, status){
             }
         };
         /* Post 방식으로 요청 */
-        httpRequest.open('POST', '/jnh/admin/change-status', true);
+        httpRequest.open('POST', '/admin/change-status', true);
         /* Response Type을 Json으로 사전 정의 */
         httpRequest.responseType = "json";
         /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */

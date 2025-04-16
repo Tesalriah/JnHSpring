@@ -73,7 +73,7 @@
                 <c:forEach var="product" items="${list}" varStatus="status">
                         <div class="product">
                             <a href="<c:url value="/product"/>${ph.sc.queryString}&product_id=${product.product_id}">
-                                <img src="<c:url value='/resources/img/upload/product-img'/>/${product.product_id}/${product.image}">
+                                <img src="<c:url value='/upload/product-img'/>/${product.product_id}/${product.image}">
                                 <div class="detail">
                                     <div>${product.product_name}</div>
                                     <div>

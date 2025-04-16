@@ -1,10 +1,15 @@
+const report_btn = document.querySelector('#report_btn');
 const report_rno = document.querySelector('[name="rno"]');
 const report_id = document.querySelector('[name="report_id"]');
 const report_reason = document.querySelector('[name="reason"]');
 const report_contents = document.querySelector('[name="report_contents"]');
-const report_btn = document.querySelector('#report_btn');
 
 function report(){
+    if(report_reason.value == null || report_reason.value == ''){
+        alert("신고사유를 선택해주세요.");
+        return false;
+    }
+
     /* 입력된 데이터 Json 형식으로 변경 */
     var reqJson = new Object();
     reqJson.rno =  report_rno.value;
@@ -31,7 +36,7 @@ function report(){
         }
     };
     /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/report', true);
+    httpRequest.open('POST', '/report', true);
     /* Response Type을 Json으로 사전 정의 */
     httpRequest.responseType = "json";
     /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */

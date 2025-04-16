@@ -5,6 +5,7 @@
     <head>
         <script src="https://kit.fontawesome.com/f988057b70.js" crossorigin="anonymous"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/loading.js"/>" defer></script>
+        <link rel="icon" href="<c:url value="/resources/favicon.ico"/>" type="image/x-icon">
         <link rel="stylesheet" href="<c:url value='/resources/css/reset.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/login.css'/>">
         <script type="text/javascript" src="<c:url value='/resources/js/message.js'/>" defer></script>
