@@ -79,34 +79,30 @@ public class CartController {
 
     // 해당 상품 장바구니에 추가
     @PostMapping("add-cart")
-    public String addCart(Cart cart, SearchCondition sc, HttpServletRequest request){
+    @ResponseBody
+    public Map addCart(@RequestBody Map<String,Object> map, SearchCondition sc, HttpServletRequest request){
         String id = SessionUtils.getSessionId(request);
-
-        Map<String,Object> map = new HashMap<>(); // 등록한 상품인지 확인하기 위한 Map
-        map.put("user_id", id);
-        map.put("product_id", cart.getProduct_id());
-        map.put("size", cart.getSize());
-        cart.setUser_id(id);
         try {
-            if(cart.getSize().equals("") || cart.getSize() == null){
-                request.setAttribute("msg", "사이즈를 선택해주세요.");
-                throw new Exception("SIZE_IS_REQUIRED");
+            if(id == null || id == ""){
+                map.put("msg", "로그인을 해주세요.");
+                throw new Exception("NEED_LOGIN");
             }
+            map.put("user_id", id);
+
             if(cartService.checkCart(map) != null){ // Map에 등록한 정보를 통해 이미 등록한 상품인지 확인
-                request.setAttribute("msg", "이미 등록된 상품입니다.");
+                map.put("msg", "이미 등록된 상품입니다.");
                 throw new Exception("ALREADY_ADDED");
             }
 
+            Cart cart = new Cart(id,(String)map.get("product_id"), (String)map.get("size"), Integer.parseInt((String)map.get("quantity")));
             // 장바구니에 상품 추가
             if(cartService.addCart(cart) == 1){
-                request.setAttribute("msg", "장바구니에 상품을 추가하였습니다.");
+                map.put("msg", "장바구니에 상품을 추가하였습니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 추가 후 상품 정보 페이지로 리다이렉트
-        request.setAttribute("url", "product" + sc.getQueryString() + "&product_id=" + cart.getProduct_id());
-        return "alert";
+        return map;
     }
 
     // 장바구니에서 체크한 상품들 제거

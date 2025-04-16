@@ -30,7 +30,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
 
         // 관리자가 아닌경우 alert 메세지를 띄운 후 메인페이지로
-        String redirectUrl = "/jnh"; // 이동할 URL
+        String redirectUrl = "/"; // 이동할 URL
         request.setAttribute("msg", "잘못된 접근입니다.");
         request.setAttribute("url", redirectUrl);
 

@@ -50,7 +50,7 @@ function reviewList(page){
                             '<div class="review_bottom">' +
                             '<div>';
                         if(!!list[i].image){
-                            html += '<div class="review_img"><img class="each_img" src="/jnh/resources/img/upload/review-img/' + list[i].rno + '/' + list[i].image +'"/></div>';
+                            html += '<div class="review_img"><img class="each_img" src="/upload/review-img/' + list[i].rno + '/' + list[i].image +'"/></div>';
                         }
                         html += '<pre>' + list[i].contents + '</pre>' +
                             '</div>' +
@@ -90,7 +90,7 @@ function reviewList(page){
         }
     };
     /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/mypage/review/list', true);
+    httpRequest.open('POST', '/mypage/review/list', true);
     /* Response Type을 Json으로 사전 정의 */
     httpRequest.responseType = "json";
     /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
@@ -135,7 +135,7 @@ function remove(rno){
         }
     };
     /* Post 방식으로 요청 */
-    httpRequest.open('POST', '/jnh/mypage/review/removeAjax', true);
+    httpRequest.open('POST', '/mypage/review/removeAjax', true);
     /* Response Type을 Json으로 사전 정의 */
     httpRequest.responseType = "json";
     /* 요청 Header에 컨텐츠 타입은 Json으로 사전 정의 */
@@ -155,7 +155,7 @@ r_paging.addEventListener("click", function(event) {
 r_contents.addEventListener("click",  function(event){
     if(event.target.classList.contains("modify")){
         const review_no = event.target.dataset.rno;
-        location.href = '/jnh/mypage/review/modify?rno=' + review_no;
+        location.href = '/mypage/review/modify?rno=' + review_no;
     }
     if(event.target.classList.contains("remove")){
         if(confirm("정말 삭제하시겠습니까?")){

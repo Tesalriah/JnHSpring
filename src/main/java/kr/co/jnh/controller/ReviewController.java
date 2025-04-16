@@ -71,7 +71,7 @@ public class ReviewController {
             if(e.getMessage() != null){
                 if(e.getMessage().equals("WRONG_APPROACH")){
                     m.addAttribute("msg", "잘못된 접근입니다.");
-                    m.addAttribute("url", "/jnh");
+                    m.addAttribute("url", "/");
                 }if(e.getMessage().equals("ALREADY_REMOVED")){
                     m.addAttribute("msg", "삭제된 리뷰입니다.");
                     m.addAttribute("url", "able");
@@ -126,7 +126,7 @@ public class ReviewController {
             e.printStackTrace();
             if(e.getMessage() != null) {
                 m.addAttribute("msg", "잘못된 접근입니다.");
-                m.addAttribute("url", "/jnh");
+                m.addAttribute("url", "/");
             }else{
                 m.addAttribute("msg", "작성에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
                 m.addAttribute("url", review.getReg_date() != null ? "wrote" : "able");
@@ -183,7 +183,7 @@ public class ReviewController {
                     m.addAttribute("url", "wrote");
                 }if(e.getMessage().equals("WRONG_APPROACH")){
                     m.addAttribute("msg","잘못된 접근입니다.");
-                    m.addAttribute("url", "/jnh");
+                    m.addAttribute("url", "/");
                 }else{
                     m.addAttribute("msg","페이지 접근에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");
                     m.addAttribute("url", "wrote");
@@ -229,7 +229,7 @@ public class ReviewController {
             if(e.getMessage() != null){
                 if(e.getMessage().equals("WRONG_APPROACH")){
                     m.addAttribute("msg", "잘못된 접근입니다.");
-                    m.addAttribute("url", "/jnh");
+                    m.addAttribute("url", "/");
                 }
             }else{
                 m.addAttribute("msg", "삭제에 실패했습니다. 지속될 경우 고객센터에 문의해주세요.");

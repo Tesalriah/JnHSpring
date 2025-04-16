@@ -39,7 +39,7 @@ public class FaqController {
             // 작성 성공의 경우
             if (faqService.write(faq) > 0) {
                 m.addAttribute("msg", "등록되었습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
             } else {
                 m.addAttribute("msg", "등록에 실패했습니다.");
@@ -49,7 +49,7 @@ public class FaqController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg","오류가 발생했습니다.");
-            m.addAttribute("url","/jnh/FAQ/list");
+            m.addAttribute("url","/FAQ/list");
             return "alert";
         }
     }
@@ -102,17 +102,17 @@ public class FaqController {
             // 수정 완료시
             if (faqService.modify(faq)>0) {
                 m.addAttribute("msg","수정이 완료되었습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
             }else {
                 m.addAttribute("msg", "등록에 실패했습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
             }
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg","오류가 발생했습니다.");
-            m.addAttribute("url","/jnh/FAQ/list");
+            m.addAttribute("url","/FAQ/list");
             return "alert";
         }
 
@@ -124,25 +124,25 @@ public class FaqController {
             // no 값이 없으면 오류 처리
             if (no == null) {
                 m.addAttribute("msg", "삭제할 게시글을 찾을 수 없습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
             }
            // 삭제 성공의 경우
             if (faqService.delete(no) > 0) {
                 m.addAttribute("msg", "삭제되었습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
 
             } else {
                 m.addAttribute("msg", "삭제에 실패했습니다.");
-                m.addAttribute("url", "/jnh/FAQ/list");
+                m.addAttribute("url", "/FAQ/list");
                 return "alert";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg","오류가 발생했습니다.");
-            m.addAttribute("url","/jnh/FAQ/list");
+            m.addAttribute("url","/FAQ/list");
             return "alert";
         }
     }

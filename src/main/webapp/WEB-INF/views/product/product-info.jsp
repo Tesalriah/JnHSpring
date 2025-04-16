@@ -13,6 +13,7 @@
         <script type="text/javascript" src="<c:url value='/resources/js/review.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/report.js'/>" defer></script>
         <script type="text/javascript" src="<c:url value='/resources/js/add-wish.js'/>" defer></script>
+        <script type="text/javascript" src="<c:url value='/resources/js/add-cart.js'/>" defer></script>
         <link rel="stylesheet" href="<c:url value='/resources/css/product-info.css'/>">
         <link rel="stylesheet" href="<c:url value='/resources/css/review-question.css'/>">
         <title>J&H</title>
@@ -90,7 +91,7 @@
                             </div>
                         </div>
                         <div class="product_button">
-                            <input type="submit" formaction="<c:url value="/add-cart${sc.queryString}"/>" value="Add Cart">
+                            <button type="button" id="add_cart">Add Cart</button>
                             <input type="submit" formaction="<c:url value="/product${sc.queryString}&product_id=${product.product_id}"/>" value="Buy">
                         </div>
                     </form>

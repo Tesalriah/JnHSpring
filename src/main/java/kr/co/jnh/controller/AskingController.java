@@ -169,7 +169,7 @@ public class AskingController {
         try {
             if (questionService.remove(map)>0) {
                 m.addAttribute("msg","삭제되었습니다.");
-                m.addAttribute("url","/jnh/mypage/asking/question/list");
+                m.addAttribute("url","/mypage/asking/question/list");
             }else{
                 throw new Exception("Question_REMOVE_FAIL");
             }
@@ -177,7 +177,7 @@ public class AskingController {
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute("msg","삭제에 실패했습니다.");
-            m.addAttribute("url","/jnh/mypage/asking/question/list");
+            m.addAttribute("url","/mypage/asking/question/list");
         }
 
         return "alert";

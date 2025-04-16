@@ -30,7 +30,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 
             // product의 get요청은 로그인을 하지않았어도 보여주기
-            if(requestURI.equals("/jnh/product") && "GET".equalsIgnoreCase(method)){
+            if(requestURI.equals("/product") && "GET".equalsIgnoreCase(method)){
                 return true;
             }
 
@@ -42,11 +42,11 @@ public class LoginInterceptor implements HandlerInterceptor {
                     session.setAttribute("prevPage", prevPage);
                 }if("GET".equalsIgnoreCase(method)){
                     prevPage = requestURI;
-                    prevPage = prevPage.replace("/jnh", "");
+                    prevPage = prevPage.replace("/", "");
                     session.setAttribute("prevPage", prevPage);
                 }
                 session.setAttribute("msg", "로그인을 해주세요.");
-                response.sendRedirect("/jnh/login");
+                response.sendRedirect("/login");
                 return false;
             }
         }
